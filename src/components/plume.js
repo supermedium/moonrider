@@ -45,6 +45,7 @@ AFRAME.registerComponent('plume', {
     supercurve.alignToCurve(data.songPosition, el.object3D);
     el.object3D.position.x += this.horizontalPositions[data.horizontalPosition];
     el.object3D.position.y += this.verticalPositions[data.verticalPosition];
+    el.object3D.rotation.z = Math.random() * Math.PI * 2;
   },
 
   tock: function () {
