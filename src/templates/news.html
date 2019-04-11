@@ -1,0 +1,23 @@
+{% set text = 'A free and open source music visualizer website powered by the community BeatSaver public dataset, ' %}
+{% set text = text + 'from the creators of the BeatSaver Viewer featured on BeastSaber.\n\n' %}
+{% set text = text + 'Song maps and data are sourced from beatsaver.com with expressed support from the BeatSaver community admins.\n\n' %}
+{% set text = text + 'If there are any issues, please file requests using the form at beatsaver.com or leave a message in the BSMG Discord!' %}
+
+<a-entity
+  id="news"
+  bind__visible="menuActive && !menuSelectedChallenge.id && !isMenuOpening"
+  position="2.365374194652176 1.47 -1.1952715561051024"
+  rotation="0 -60 0"
+  render-order="menuitem">
+
+  <a-entity
+    id="newsBackground"
+    geometry="primitive: plane; width: 2.1; height: 1.9"
+    material="shader: panelShader; ratio: 1.14; brightness: 0.2"></a-entity>
+
+  <a-entity
+    id="newsText"
+    mixin="font"
+    text="align: left; color: #FAFAFA; baseline: center; width: 1.5; value: {{ text }}"
+    position="0 -0.04 0.001"></a-entity>
+</a-entity>

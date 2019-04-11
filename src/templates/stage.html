@@ -1,0 +1,63 @@
+<a-entity id="stage">
+  <a-entity
+    id="audioAnalyser"
+    bind__audioanalyser="beatDetectionThrottle: menuActive && 5000 || 1000"
+    audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000; unique: true"></a-entity>
+
+  <a-entity
+    id="backglow"
+    obj-model="obj: #backGlowObj"
+    materials="name: backglow"
+    follow-z="target: #curveFollowRig"
+    render-order="stage"></a-entity>
+
+  <a-entity
+    id="rings"
+    obj-model="obj: #ringsObj"
+    materials="name: rings"
+    follow-z="target: #curveFollowRig; offset: 0 0 -1500"
+    render-order="stage"></a-entity>
+
+  <a-entity
+    id="auroras"
+    class="aurora"
+    obj-model="obj: #aurorasObj"
+    materials="name: aurora"
+    follow-z="target: #curveFollowRig"
+    render-order="aurora"></a-entity>
+
+  <a-entity
+    id="merkaba"
+    obj-model="obj: #merkabaObj"
+    bind__visible="!isVictory && !isGameOver"
+    materials="name: merkaba"
+    animation="property: rotation; from:0 0 0; to: 360 360 360; dur: 50000; easing: linear; loop: true"
+    follow-z="target: #curveFollowRig; offset: 0 46 -1500"></a-entity>
+
+  <a-entity
+    class="merkababloom"
+    geometry="primitive: plane; width: 200; height: 200"
+    material="shader: flat; src: #merkabaBloomImg; blending: additive; depthTest: false; color: #888"
+    follow-z="target: #curveFollowRig; offset: 0 46 -1400"
+    render-order="stage"></a-entity>
+  <a-entity
+    class="merkababloom"
+    geometry="primitive: plane; width: 250; height: 250"
+    animation="property: object3D.rotation.z; from: 0; to: 360; loop: true; easing: linear; dur: 30000"
+    material="shader: flat; src: #merkabaBloomImg; blending: additive; depthTest: false; color: {{ COLORS.YELLOW }}"
+    follow-z="target: #curveFollowRig; offset: 0 46 -1380"
+    render-order="stage"></a-entity>
+
+  <a-entity
+    id="moon"
+    geometry="primitive: plane; width: 1000; height: 500"
+    follow-z="target: #curveFollowRig; offset: 0 1000 -1000"
+    rotation="45 0 0"
+    materials="name: moon"
+    ></a-entity>
+
+  <a-entity class="stars" stars position="0 0 -500" render-order="particles"></a-entity>
+
+  <require path="templates/intro.html"></require>
+
+</a-entity>

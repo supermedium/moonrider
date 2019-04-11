@@ -1,0 +1,33 @@
+# FIX CRLF always when developer has not set
+# Linux/Mac: git config --global core.autocrlf input
+# Windows: git config --global core.autocrlf true
+# Auto detect text files and perform LF normalization
+* text=auto
+* eol=lf
+*.js text
+*.html text
+*.npmignore text
+*.md text
+.ackrc text
+.gitattributes text
+.gitignore text
+.jshintrc text
+.nojekyll text
+.travis.yml text
+LICENSE text
+# Avoid creation of unnecessary big commit objects
+# For these files we do not want to see text diff for
+*.min.* binary minified
+*js.map* binary
+*.ogg binary
+*.svg binary
+*.mtl binary
+*.obj binary
+*.jpg  binary
+*.jpeg binary
+*.png binary
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.psb filter=lfs diff=lfs merge=lfs -text
+assets/raw_assets/*.* filter=lfs diff=lfs merge=lfs -text
