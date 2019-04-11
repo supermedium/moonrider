@@ -326,16 +326,20 @@ AFRAME.registerSystem('materials', {
       side: THREE.BackSide
     });
 
-    this.handStar = new THREE.ShaderMaterial({
-      vertexShader: require('./shaders/handstar.vert.glsl'),
-      fragmentShader: require('./shaders/handstar.frag.glsl'),
+    const trailTexture = new THREE.TextureLoader().load(document.getElementById('handStarTrailImg').src);
+    trailTexture.generateMipmaps = false;
+    trailTexture.minFilter = THREE.LinearFilter;
+    this.handStarTrail = new THREE.ShaderMaterial({
+      vertexShader: require('./shaders/handstartrail.vert.glsl'),
+      fragmentShader: require('./shaders/handstartrail.frag.glsl'),
       uniforms: {
-        time: {value: 0},
-        pulse: {value: 0}
+        pulse: {value: 0},
+        src: {value: trailTexture}
       },
       transparent: true,
       depthTest: false,
-      side: THREE.BackSide
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide
     });
   },
 
