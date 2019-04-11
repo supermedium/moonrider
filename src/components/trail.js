@@ -67,13 +67,9 @@ AFRAME.registerComponent('trail', {
   },
 
   update: function (oldData) {
+    this.mesh.visible = this.data.enabled;
     if (!oldData.enabled && this.data.enabled) {
       this.enabledTime = this.el.sceneEl.time;
-      this.mesh.visible = false;
-    }
-
-    if (oldData.enabled && !this.data.enabled) {
-      this.mesh.visible = false;
     }
   },
 
@@ -81,7 +77,7 @@ AFRAME.registerComponent('trail', {
     if (!this.data.enabled) { return; }
     // Delay before showing after enabled to prevent flash from old blade position.
     if (!this.mesh.visible && time > this.enabledTime + 250) { this.mesh.visible = true; }
-    this.samplebladePosition();
+    this.sampleBladePosition();
   },
 
   addLayer: function (length) {
@@ -312,7 +308,7 @@ AFRAME.registerComponent('trail', {
     this.geometry.attributes.vertexColor.needsUpdate = true;
   },
 
-  samplebladePosition: function () {
+  sampleBladePosition: function () {
     var sample;
 
     if (this.bladeTrajectory.length === this.maxPoints) {
