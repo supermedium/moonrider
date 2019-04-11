@@ -13,7 +13,7 @@ AFRAME.registerComponent('stars', {
     this.material = this.el.sceneEl.systems.materials.stars;
     var positions = [];
     for (var i = 0; i < this.data.count; i++) {
-      positions.push(rand(), rand(), rand());
+      positions.push(rand(), rand(), rand() * 2);
     }
     geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     geometry.computeBoundingSphere();
