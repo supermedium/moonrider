@@ -1,35 +1,33 @@
 # Moon Rider
 
-Surf the musical road among the stars, moon, and northern lights. A Web-based
-music visualizer powered by the unofficial community
-[BeatSaver](https://beatsaver.com) public data set.
+![moonrider](https://user-images.githubusercontent.com/674727/54646629-e91dc600-4a5c-11e9-8a6e-91e77f28523d.jpg)
 
-Created by the modders and creators of the popular [BeatSaver
-Viewer](https://supermedium.com/beatsaver-viewer). And liked by community
-admins!
+Surf the musical road among the stars, moon, and northern lights. A free and
+open source VR music visualizer website powered by the community
+[BeatSaver](https://beatsaver.com) public dataset.
 
-Songs and data are sourced from beatsaver.com. Nothing is hosted by Moon Rider.
-If there are any issues, please file requests at
-[beatsaver.com](https://beatsaver.com)!
+From the creators of the [BeatSaver
+Viewer](https://supermedium.com/beatsaver-viewer) used by the community to
+preview maps.
 
-Free and open source. Created with [A-Frame](https://aframe.io) to demonstrate
-the Web is capable of high-quality VR experiences and to provide a learning
-resource for the developer community.
+Songs and data are sourced from beatsaver.com with expressed support from the
+BeatSaver community admins. If there are any issues, please file requests at
+using the form at [beatsaver.com](https://beatsaver.com).
+
+Created with JavaScript and [A-Frame](https://aframe.io) to demonstrate the Web
+is capable of high-quality VR experiences and to provide a learning resource
+for the developer community.
 
 [**Try the website out now in your browser!**](https://supermedium.com/moonrider/)
 
-Features three modes:
+Featuring various modes:
 
-- **Classic Mode** - Surf and slice along the musical road.
-- **Punch Mode** - Crush the stars.
 - **Ride Mode** - Just sit back and enjoy the ride.
-
-![moonrider](https://user-images.githubusercontent.com/674727/54646629-e91dc600-4a5c-11e9-8a6e-91e77f28523d.jpg)
+- **Punch Mode** - Crush the stars.
+- **Viewer Mode** - Watch the beatmap within your browser.
+- **Classic Mode** - Surf and slice along the musical road.
 
 ## Development
-
-moonrider is built with [A-Frame](https://aframe.io) (incl.
-[three.js](https://threejs.org) and JavaScript).
 
 ```
 npm install
@@ -42,10 +40,8 @@ Then head to `localhost:3000` in your browser.
 
 | Flag                | Description                                          |
 |---------------------|------------------------------------------------------|
-| ?debug              | Move controller with mouse.                          |
 | ?debugstate=loading | Show loading screen.                                 |
 | ?debugstate=victory | Show victory screen.                                 |
-| ?godmode            | Never die.                                           |
 | ?skipintro          | Skip intro.                                          |
 | ?synctest           | Log beat timestamps and automatically destroy beats. |
 
@@ -55,5 +51,5 @@ For feedback, bugs, feature requests, or just chatting!
 
 - [Supermedium](https://supermedium.com)
 - [Supermedium Discord](https://supermedium.com/discord/)
+- [Modding Group Discord](https://discordapp.com/invite/6JcXMq3)
 - [Twitter](https://twitter.com/supermediumvr)
-- [BeatSaver Modding Group Discord](https://discordapp.com/invite/6JcXMq3)
