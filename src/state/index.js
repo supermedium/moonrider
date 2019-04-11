@@ -497,10 +497,10 @@ AFRAME.registerState({
       state.isVictory = true;
 
       // Percentage is score divided by total possible score.
-      const accuracy = (
+      let accuracy = (
         state.score.score /
         (state.challenge.numBeats[state.challenge.difficulty] * 100)) * 100;
-      state.score.accuracy = isNaN(accuracy) ? 0 : accuracy;
+      state.score.accuracy = isNaN(accuracy) ? 0 : accuracy.toFixed(2);
       state.score.score = isNaN(state.score.score) ? 0 : state.score.score;
 
       if (accuracy >= 90) {
@@ -677,4 +677,6 @@ function updateScoreAccuracy (state) {
   // Update live accuracy.
   const currentNumBeats = state.score.beatsHit + state.score.beatsMissed;
   state.score.accuracy = (state.score.score / (currentNumBeats * 100)) * 100;
+  state.score.accuracy = state.score.accuracy.toFixed(2);
+
 }
