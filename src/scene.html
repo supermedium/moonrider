@@ -155,6 +155,7 @@
           mixin="raycaster"
           bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
           bind__hand-velocity="enabled: isPlaying && gameMode !== 'ride'"
+          bind__haptics-weapon="enabled: isPlaying && gameMode === 'classic'"
           bind__menu-controls="page: search.page; selectedChallengeId: menuSelectedChallenge.id"
           bind__pauser="enabled: isPlaying"
           bind__raycaster="enabled: {{ hand }}RaycasterActive"
@@ -167,7 +168,6 @@
           haptics__beat="eventsFrom: #beatContainer; events: beatcollide{{ hand }}; dur: 80; force: 0.2"
           haptics__draw="events: drawblade; dur: 750; force: 0.025"
           haptics__plume="events: plumepulse; dur: 35; force: 0.025"
-          haptics-weapon
           haptics-wall
           raycaster="objects: [raycastable]; far: 5"
           raycaster__game="objects: [raycastable-game]:not(.blade{{ hand }}); far: 1; interval: 50"

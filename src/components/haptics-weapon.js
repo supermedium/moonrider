@@ -2,6 +2,10 @@
  * Haptics when weapons collide.
  */
 AFRAME.registerComponent('haptics-weapons', {
+  schema: {
+    enabled: {default: false}
+  },
+
   init: function () {
     const el = this.el;
 
@@ -11,7 +15,7 @@ AFRAME.registerComponent('haptics-weapons', {
     el.setAttribute('haptics__weapon', {dur: 100, force: 0.075});
 
     el.addEventListener('mouseenter', evt => {
-      if (!evt.detail || !evt.detail.intersectedEl) { return; }
+      if (!evt.detail || !evt.detail.intersectedEl || !this.data.enabled) { return; }
 
       const intersectedEl = evt.detail.intersectedEl;
       if (!intersectedEl.classList.contains('blade') || intersectedEl === el) {
@@ -29,7 +33,7 @@ AFRAME.registerComponent('haptics-weapons', {
   },
 
   tick: function () {
-    if (!this.isColliding) { return; }
+    if (!this.isColliding || !this.data.enabled) { return; }
     this.el.components.haptics__weapon.pulse();
   }
 });
