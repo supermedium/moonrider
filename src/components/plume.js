@@ -9,10 +9,10 @@ AFRAME.registerComponent('plume', {
   },
 
   horizontalPositions: {
-    left: -1,
-    middleleft: -0.75,
-    middleright: 0.75,
-    right: 1
+    left: -0.95,
+    middleleft: -0.6,
+    middleright: 0.6,
+    right: 0.95
   },
 
   verticalPositions: {
