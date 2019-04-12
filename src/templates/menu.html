@@ -267,6 +267,7 @@
           animation__mouseleave2="property: scale; from: 1.03 1.03 1.03; to: 1 1 1; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
           proxy-event__enter="event: mouseenter; to: CHILDREN; captureBubbles: true"
           proxy-event__leave="event: mouseleave; to: CHILDREN; captureBubbles: true"
+          play-sound__click="event: click; sound: #confirmSound; volume: 0.1"
           raycaster-target="bindToggle: genreMenuOpen; width: 0.35; height: 0.35">
           <a-entity
             mixin="font"
@@ -314,6 +315,7 @@
     bind-toggle__raycastable="menuActive && !genreMenuOpen && !isSearching && !genre"
     bind__visible="menuActive && !genreMenuOpen && !isSearching && !genre"
     animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
+    play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
     proxy-event="event: click; to: a-scene; as: genremenuopen">
     <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 20; value: BROWSE GENRES" bind__visible="!isMenuOpening" position="0 -0.07 0.01"></a-entity>
   </a-entity>
@@ -322,6 +324,8 @@
     mixin="bigMenuButton"
     bind-toggle__raycastable="menuActive && !!genre"
     bind__visible="menuActive && !!genre"
+    play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
+    play-sound__click="event: click; sound: #confirmSound; volume: 0.1"
     proxy-event="event: click; to: a-scene; as: searchclear">
     <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 20; value: CLEAR GENRE" position="0 -0.07 0.01"></a-entity>
   </a-entity>
@@ -333,6 +337,7 @@
   bind-toggle__raycastable="genreMenuOpen || isSearching"
   bind__visible="genreMenuOpen || isSearching"
   position="0 2.35 -1.95"
+  play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
   proxy-event__genres="event: click; to: a-scene; as: genremenuclose"
   proxy-event__searching="event: click; to: a-scene; as: keyboardclose">
   <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 20; value: BACK" position="0 -0.07 0.01"></a-entity>
@@ -349,6 +354,7 @@
     bind-toggle__raycastable="menuActive && !genreMenuOpen && !isSearching && !search.query"
     bind__visible="menuActive && !genreMenuOpen && !isSearching && !search.query"
     animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
+    play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
     proxy-event="event: click; to: a-scene; as: keyboardopen">
     <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 20; value: SEARCH SONGS" bind__visible="!isMenuOpening" position="0 -0.07 0.01"></a-entity>
   </a-entity>
@@ -357,6 +363,8 @@
     mixin="bigMenuButton"
     bind-toggle__raycastable="menuActive && !!search.query && !isSearching"
     bind__visible="menuActive && !!search.query && !isSearching"
+    play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
+    play-sound__click="event: click; sound: #confirmSound; volume: 0.1"
     proxy-event="event: click; to: a-scene; as: searchclear">
     <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 20; value: CLEAR SEARCH" position="0 -0.07 0.01"></a-entity>
   </a-entity>
