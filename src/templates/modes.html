@@ -11,7 +11,9 @@
 <a-mixin
   id="modeBackgroundHover"
   animation__mouseenter="property: components.material.material.uniforms.borderWidth.value; from: 0.002; to: 0.01; startEvents: mouseenter; pauseEvents: mouseleave; easing: linear; dur: 150"
-  animation__mouseleave="property: components.material.material.uniforms.borderWidth.value; from: 0.01; to: 0.002; startEvents: mouseleave; pauseEvents: mouseenter; easing: linear; dur: 150"></a-mixin>
+  animation__mouseleave="property: components.material.material.uniforms.borderWidth.value; from: 0.01; to: 0.002; startEvents: mouseleave; pauseEvents: mouseenter; easing: linear; dur: 150"
+  play-sound="event: mouseenter; sound: #hoverSound; volume: 0.3"
+  ></a-mixin>
 
 <a-mixin
   id="modeBackgroundSelect"
