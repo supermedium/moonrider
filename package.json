@@ -6,7 +6,7 @@
     "deploy": "ghpages git@github.com:supermedium/moonrider.git -p .ghpages && rm -rf .ghpages",
     "lint": "semistandard -v | snazzy",
     "lint:fix": "semistandard --fix",
-    "predeploy": "npm run build && shx mkdir -p .ghpages && cp -r index.html assets build vendor .ghpages",
+    "predeploy": "npm run build && shx mkdir -p .ghpages && cp -r index.html assets build vendor CNAME .ghpages",
     "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot-only --inline --port 3000"
   },
   "dependencies": {
