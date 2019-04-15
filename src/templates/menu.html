@@ -322,8 +322,8 @@
 
   <a-entity id="clearGenreButton"
     mixin="bigMenuButton"
-    bind-toggle__raycastable="menuActive && !!genre"
-    bind__visible="menuActive && !!genre"
+    bind-toggle__raycastable="menuActive && !!genre && !isSearching"
+    bind__visible="menuActive && !!genre && !isSearching"
     play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
     play-sound__click="event: click; sound: #confirmSound; volume: 0.1"
     proxy-event="event: click; to: a-scene; as: searchclear">
@@ -361,8 +361,8 @@
 
   <a-entity id="searchClearButton"
     mixin="bigMenuButton"
-    bind-toggle__raycastable="menuActive && !!search.query && !isSearching"
-    bind__visible="menuActive && !!search.query && !isSearching"
+    bind-toggle__raycastable="menuActive && !!search.query && !isSearching && !genreMenuOpen"
+    bind__visible="menuActive && !!search.query && !isSearching && !genreMenuOpen"
     play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
     play-sound__click="event: click; sound: #confirmSound; volume: 0.1"
     proxy-event="event: click; to: a-scene; as: searchclear">
