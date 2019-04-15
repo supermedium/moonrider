@@ -249,7 +249,7 @@
     bind__text-uppercase="value: genre || search.query"
     bind__visible="!!genre || !!search.query && !isSearching"
     text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
-    position="0 1.1 0.01"></a-entity>
+    bind__position="genre && '-0.55 1.08 0.035' || '0.55 1.08 0.035'"></a-entity>
 
   <a-entity
     id="genreMenu"
@@ -306,7 +306,7 @@
 
 <a-entity
   id="genreButtons"
-  position="-0.55 2.35 -1.95"
+  position="-0.55 2.35 -1.96"
   animation__position="property: object3D.position.z; to: -1.9; dur: 1500; easing: easeInOutCubic; delay: 300; startEvents: startgame"
   proxy-event="event: startgame; to: #genreButton">
   <a-entity id="genreButton"
@@ -345,7 +345,7 @@
 
 <a-entity
   id="searchButtons"
-  position="0.55 2.35 -1.95"
+  position="0.55 2.35 -1.96"
   animation__position="property: object3D.position.z; to: -1.9; dur: 1500; easing: easeInOutCubic; delay: 300; startEvents: startgame"
   proxy-event="event: startgame; to: #searchButton">
   <a-entity id="searchButton"
