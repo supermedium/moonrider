@@ -12,10 +12,12 @@ AFRAME.registerComponent('beat-cut-fx', {
 
   init: function () {
     this.breaking = false;
+    this.pool = null;
     this.fx = null;
     this.fxpool = null;
     this.pieces = [];
     this.returnToPoolTimer = DESTROY_TIME;
+    this.goodCut = true;
 
     this.el.addEventListener('model-loaded', this.setupModel.bind(this));
     this.el.addEventListener('explode', this.explode.bind(this), false);
@@ -26,17 +28,18 @@ AFRAME.registerComponent('beat-cut-fx', {
     const color = this.data.color;
     if (this.data.type == 'beat'){
       this.material = sceneEl.systems.materials[color + 'BeatPieces'];
-      this.pool = sceneEl.components[`pool__beat-broken-${color}`];
+      this.poolBeat = sceneEl.components[`pool__beat-broken-${color}`];
       this.poolBeatFx = sceneEl.components[`pool__beat-fx-${color}`];
       this.poolPunchFx = sceneEl.components[`pool__punch-fx-${color}`];
     } else if (this.data.type == 'dot'){
       this.material = sceneEl.systems.materials[color + 'BeatPieces'];
-      this.pool = sceneEl.components[`pool__beat-broken-${color}-dot`];
+      this.poolBeat = sceneEl.components[`pool__beat-broken-${color}-dot`];
+      this.poolPunch = sceneEl.components[`pool__punch-broken-${color}-dot`];
       this.poolBeatFx = sceneEl.components[`pool__beat-fx-${color}`];
       this.poolPunchFx = sceneEl.components[`pool__punch-fx-${color}`];
     } else {
       this.material = sceneEl.systems.materials['minePieces'];
-      this.pool = sceneEl.components['pool__beat-broken-mine'];
+      this.poolBeat = sceneEl.components['pool__beat-broken-mine'];
       this.poolBeatFx = sceneEl.components['pool__beat-fx-mine'];
       this.poolPunchFx = sceneEl.components['pool__punch-fx-mine'];
     }
@@ -80,24 +83,43 @@ AFRAME.registerComponent('beat-cut-fx', {
   explode: function (evt) {
     const position = evt.detail.position;
     const rotation = evt.detail.rotation;
-    const beatDirection = evt.detail.beatDirection;
+    const goodCut = this.goodCut = evt.detail.goodCut;
     const direction = evt.detail.direction;
+    const gameMode = evt.detail.gameMode;
+    var beatDirection = evt.detail.beatDirection;
 
     if (!position || !rotation || !direction) { return; }
 
     this.el.object3D.position.copy(position);
-    if (this.data.type === 'beat') {
+    if (gameMode === 'classic' && this.data.type !== 'mine') {
+      const isDot = this.data.type === 'dot';
+      if (isDot && beatDirection.length <= 5) {
+        beatDirection = Math.abs(direction.x) > Math.abs(direction.y) ? 'right' : 'down';
+      }
+      // minimize direction.z
       direction.z *= 0.01;
       this.auxVector.copy(direction).multiplyScalar(-0.0025).clampLength(0, MAX_VELOCITY);
       for (let i = 0; i < this.pieces.length; i++) {
         let piece = this.pieces[i];
-        let dir = i == 0? -0.001 : 0.001;
         piece.posVelocity.copy(this.auxVector);
         piece.rotation.z = THREE.Math.degToRad(this.rotations[beatDirection]);
-        piece.posVelocity.x += this.separations[beatDirection].x * dir;
-        piece.posVelocity.y += this.separations[beatDirection].y * dir;
-        randomizeVector(piece.posVelocity, 0.002);
-        randomizeVector(piece.rotVelocity, 0.004);
+        if (goodCut) {
+          // dir is a hardcoded value, based on the position of meshes in .OBJ files :P
+          let dir = i % 2 == 0 ? -0.001 : 0.001;
+          piece.posVelocity.x += this.separations[beatDirection].x * dir;
+          piece.posVelocity.y += this.separations[beatDirection].y * dir;
+          if (!isDot || i < 2) {
+            randomizeVector(piece.posVelocity, 0.002);
+            randomizeVector(piece.rotVelocity, 0.004);
+          } else {
+            // in dot, copy velocity and rotation from the "glued" chunk
+            piece.posVelocity.copy(this.pieces[i-2].posVelocity);
+            piece.rotVelocity.copy(this.pieces[i-2].rotVelocity);
+          }
+        } else {
+          piece.posVelocity.y += 0.002;
+          piece.rotVelocity.z += 0.01;
+        }
       }
     } else {
       for (let i = 0; i < this.pieces.length; i++) {
@@ -109,8 +131,10 @@ AFRAME.registerComponent('beat-cut-fx', {
       }
     }
 
+    this.pool = this[gameMode === 'classic' ? 'poolBeat' : 'poolPunch'];
+
     if (this.fx === null) {
-      this.fxpool = this[evt.detail.gameMode === 'classic' ? 'poolBeatFx' : 'poolPunchFx'];
+      this.fxpool = this[gameMode === 'classic' ? 'poolBeatFx' : 'poolPunchFx'];
       this.fx = this.fxpool.requestEntity();
     }
     if (this.fx) {

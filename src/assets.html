@@ -21,7 +21,8 @@
 <a-asset-item id="weaponHandleObj" src="assets/models/weaponhandle.obj"></a-asset-item>
 <a-asset-item id="weaponGlowObj" src="assets/models/weaponglow.obj"></a-asset-item>
 <a-asset-item id="beatBrokenObj" src="assets/models/beatbroken.obj"></a-asset-item>
-<a-asset-item id="dotBrokenObj" src="assets/models/dotbroken.gltf"></a-asset-item>
+<a-asset-item id="dotBrokenObj" src="assets/models/dotbroken.obj"></a-asset-item>
+<a-asset-item id="dotPunchBrokenObj" src="assets/models/dotbroken.gltf"></a-asset-item>
 <a-asset-item id="cutfxObj" src="assets/models/cutfx.obj"></a-asset-item>
 <a-asset-item id="punchfxObj" src="assets/models/punchfx.obj"></a-asset-item>
 <a-asset-item id="leftFistObj" src="assets/models/leftfist.obj"></a-asset-item>
@@ -129,12 +130,23 @@
   render-order="beats"></a-mixin>
 <a-mixin
   id="redDotBroken"
-  gltf-model="#dotBrokenObj"
+  obj-model="obj:#dotBrokenObj"
   beat-cut-fx="color: red; type: dot"
   render-order="beats"></a-mixin>
 <a-mixin
   id="blueDotBroken"
-  gltf-model="#dotBrokenObj"
+  obj-model="obj:#dotBrokenObj"
+  beat-cut-fx="color: blue; type: dot"
+  render-order="beats"></a-mixin>
+
+<a-mixin
+  id="redDotPunchBroken"
+  gltf-model="#dotPunchBrokenObj"
+  beat-cut-fx="color: red; type: dot"
+  render-order="beats"></a-mixin>
+<a-mixin
+  id="blueDotPunchBroken"
+  gltf-model="#dotPunchBrokenObj"
   beat-cut-fx="color: blue; type: dot"
   render-order="beats"></a-mixin>
 
