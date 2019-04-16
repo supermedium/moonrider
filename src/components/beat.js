@@ -337,6 +337,9 @@ AFRAME.registerComponent('beat', {
         this.shadow = null;
       }
 
+      if (goodCut) {
+        bladeEl.components.trail.pulse();
+      }
     };
   })(),
 

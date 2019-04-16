@@ -54,10 +54,14 @@ AFRAME.registerComponent('trail', {
       ].join(''),
       fragmentShader: [
         'varying vec4 vColor;',
+        'uniform float pulse;',
         'void main() {',
-        'gl_FragColor = vColor;',
+        'gl_FragColor = vec4(vColor.xyz, vColor.a + pulse);',
         '}'
-      ].join('')
+      ].join(''),
+      uniforms: {
+        pulse: {value: 0}
+      }
     });
 
     const mesh = this.mesh = new THREE.Mesh(geometry, material);
@@ -73,10 +77,16 @@ AFRAME.registerComponent('trail', {
     }
   },
 
+  pulse: function () {
+    this.mesh.material.uniforms.pulse.value = 1;
+  },
+
   tock: function (time, delta) {
     if (!this.data.enabled) { return; }
     // Delay before showing after enabled to prevent flash from old blade position.
     if (!this.mesh.visible && time > this.enabledTime + 250) { this.mesh.visible = true; }
+
+    this.mesh.material.uniforms.pulse.value *= 0.9;
     this.sampleBladePosition();
   },
 
