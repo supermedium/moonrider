@@ -124,10 +124,15 @@ AFRAME.registerComponent('beat-cut-fx', {
     } else {
       for (let i = 0; i < this.pieces.length; i++) {
         let piece = this.pieces[i];
-        piece.posVelocity.copy(piece.position).normalize().multiplyScalar(0.002);
-        piece.posVelocity.z = -0.004;
-        randomizeVector(piece.posVelocity, 0.001);
-        randomizeVector(piece.rotVelocity, 0.01);
+        if (goodCut) {
+          piece.posVelocity.copy(piece.position).normalize().multiplyScalar(0.002);
+          piece.posVelocity.z = -0.004;
+          randomizeVector(piece.posVelocity, 0.001);
+          randomizeVector(piece.rotVelocity, 0.01);
+        } else {
+          piece.posVelocity.y += 0.001;
+          piece.posVelocity.z -= 0.001;
+        }
       }
     }
 

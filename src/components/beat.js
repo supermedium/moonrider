@@ -319,10 +319,10 @@ AFRAME.registerComponent('beat', {
         auxObj3D.lookAt(cutDirection);
         explodeEventDetail.rotation = auxObj3D.rotation;
         explodeEventDetail.beatDirection = data.cutDirection;
-        explodeEventDetail.goodCut = goodCut;
         explodeEventDetail.direction.copy(cutDirection);
       }
 
+      explodeEventDetail.goodCut = goodCut;
       explodeEventDetail.gameMode = this.beatSystem.data.gameMode;
       explodeEventDetail.position.copy(this.el.object3D.position);
       rig.worldToLocal(explodeEventDetail.position);
