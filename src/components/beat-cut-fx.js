@@ -1,4 +1,5 @@
 const DESTROY_TIME = 1000;
+const MAX_VELOCITY = 0.01;
 
 /**
  * Handles beat cut effects: fragments of beat and fx sprites
@@ -11,7 +12,6 @@ AFRAME.registerComponent('beat-cut-fx', {
 
   init: function () {
     this.breaking = false;
-    this.direction = new THREE.Vector3();
     this.fx = null;
     this.fxpool = null;
     this.pieces = [];
@@ -55,25 +55,36 @@ AFRAME.registerComponent('beat-cut-fx', {
     }
   },
 
+  auxVector: new THREE.Vector3(),
+
   explode: function (evt) {
     const position = evt.detail.position;
     const rotation = evt.detail.rotation;
-    this.direction = evt.detail.direction;
+    const beatRotation = evt.detail.beatRotation;
+    const direction = evt.detail.direction;
 
-    if (!position || !rotation || !this.direction) { return; }
+    if (!position || !rotation || !direction) { return; }
 
     this.el.object3D.position.copy(position);
-    for (let i = 0; i < this.pieces.length; i++) {
-      let piece = this.pieces[i];
-      // move pieces in the direction of the stroke. Not used yet, but maybe in da future
-      // if (this.data.type === 'beat') {
-      //   piece.posVelocity.copy(this.direction).normalize().multiplyScalar(-0.002);
-      // } else {
-      // }
-      piece.posVelocity.copy(piece.position).normalize().multiplyScalar(0.002);
-      piece.posVelocity.z = -0.004;
-      randomizeVector(piece.posVelocity, 0.001);
-      randomizeVector(piece.rotVelocity, 0.01);
+    if (this.data.type === 'beat') {
+      direction.z *= 0.01;
+      this.auxVector.copy(direction).multiplyScalar(-0.0025).clampLength(0, MAX_VELOCITY);
+      for (let i = 0; i < this.pieces.length; i++) {
+        let piece = this.pieces[i];
+        piece.rotation.z = beatRotation;
+        piece.posVelocity.copy(this.auxVector);
+        piece.posVelocity.y += piece.position.y * 0.002;
+        randomizeVector(piece.posVelocity, 0.001);
+        randomizeVector(piece.rotVelocity, 0.003);
+      }
+    } else {
+      for (let i = 0; i < this.pieces.length; i++) {
+        let piece = this.pieces[i];
+        piece.posVelocity.copy(piece.position).normalize().multiplyScalar(0.002);
+        piece.posVelocity.z = -0.004;
+        randomizeVector(piece.posVelocity, 0.001);
+        randomizeVector(piece.rotVelocity, 0.01);
+      }
     }
 
     if (this.fx === null) {
@@ -130,8 +141,11 @@ AFRAME.registerComponent('beat-cut-fx', {
         piece.rotation.z + piece.rotVelocity.z * delta);
 
       if (this.data.type !== 'mine') {
-        if (this.returnToPoolTimer < DESTROY_TIME / 2) piece.scale.multiplyScalar(0.94);
+        if (this.returnToPoolTimer < DESTROY_TIME / 2) {
+          piece.scale.multiplyScalar(0.94);
+        }
         piece.posVelocity.multiplyScalar(0.97);
+        // gravity
         piece.posVelocity.y -= 0.000003 * delta;
       } else {
         // Mines.

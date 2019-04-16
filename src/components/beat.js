@@ -132,7 +132,7 @@ AFRAME.registerComponent('beat', {
       gameMode: '',
       position: new THREE.Vector3(),
       rotation: new THREE.Euler(),
-      direction: new THREE.Euler()
+      direction: new THREE.Vector3()
     };
 
     this.calculateScoreBlade = this.calculateScoreBlade.bind(this);
@@ -290,10 +290,11 @@ AFRAME.registerComponent('beat', {
     const point3 = new THREE.Vector3();
 
     return function (bladeEl) {
+      const data = this.data;
       const explodeEventDetail = this.explodeEventDetail;
       const rig = this.rigContainer.object3D;
 
-      if (this.data.debug) { this.debugDestroyBeat(); }
+      if (data.debug) { this.debugDestroyBeat(); }
 
       this.blockEl.object3D.visible = false;
 
@@ -308,24 +309,26 @@ AFRAME.registerComponent('beat', {
         point2.copy(trailPoints[0].center);
         point3.copy(trailPoints[trailPoints.length - 1].top);
 
-        rig.updateMatrixWorld();
+        /*rig.updateMatrixWorld();
         rig.localToWorld(point1);
         rig.localToWorld(point2);
         rig.localToWorld(point3);
+        */
 
         cutDirection.copy(point1).sub(point3);
-        rig.localToWorld(cutDirection);
+        //rig.localToWorld(cutDirection);
         cutPlane.setFromCoplanarPoints(point1, point2, point3);
 
         auxObj3D.up.copy(cutPlane.normal).multiplyScalar(-1);
         auxObj3D.lookAt(cutDirection);
         explodeEventDetail.rotation = auxObj3D.rotation;
-        explodeEventDetail.direction = cutDirection;
+        explodeEventDetail.beatRotation = THREE.Math.degToRad(this.rotations[data.cutDirection]);
+        explodeEventDetail.direction.copy(cutDirection);
       }
 
       explodeEventDetail.gameMode = this.beatSystem.data.gameMode;
-      explodeEventDetail.position = this.el.object3D.position;
-      explodeEventDetail.position.sub(this.curveFollowRig.object3D.position);
+      explodeEventDetail.position.copy(this.el.object3D.position);
+      rig.worldToLocal(explodeEventDetail.position);
 
       this.broken = this.el.sceneEl.components[this.brokenPoolName].requestEntity();
       if (this.broken) {
@@ -495,7 +498,7 @@ AFRAME.registerComponent('beat', {
   calculateScoreBlade: function (bladeEl) {
     const SUPER_SCORE_SPEED = 3;
     const speed = bladeEl.closest('[hand-velocity]').components['hand-velocity'].speed;
-    console.log(speed);
+    //console.log(speed);
     const score = Math.min((speed / SUPER_SCORE_SPEED) * 100, 100);
     this.score(score);
   },
