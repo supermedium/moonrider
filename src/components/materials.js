@@ -190,11 +190,13 @@ AFRAME.registerSystem('materials', {
 
     this.beat = new THREE.MeshLambertMaterial({map: beatTexture, transparent: true});
     this.blueBeatPieces = new THREE.MeshLambertMaterial({
+      map: beatTexture,
       color: COLORS.BLUE,
       emissive: COLORS.BLUE,
       emissiveIntensity: 0.2
     });
     this.redBeatPieces = new THREE.MeshLambertMaterial({
+      map: beatTexture,
       color: COLORS.RED,
       emissive: COLORS.RED,
       emissiveIntensity: 0.2

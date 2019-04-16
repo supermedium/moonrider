@@ -20,7 +20,7 @@
 <a-asset-item id="weaponObj" src="assets/models/weapon.obj"></a-asset-item>
 <a-asset-item id="weaponHandleObj" src="assets/models/weaponhandle.obj"></a-asset-item>
 <a-asset-item id="weaponGlowObj" src="assets/models/weaponglow.obj"></a-asset-item>
-<a-asset-item id="beatBrokenObj" src="assets/models/beatbroken.gltf"></a-asset-item>
+<a-asset-item id="beatBrokenObj" src="assets/models/beatbroken.obj"></a-asset-item>
 <a-asset-item id="dotBrokenObj" src="assets/models/dotbroken.gltf"></a-asset-item>
 <a-asset-item id="cutfxObj" src="assets/models/cutfx.obj"></a-asset-item>
 <a-asset-item id="punchfxObj" src="assets/models/punchfx.obj"></a-asset-item>
@@ -119,12 +119,12 @@
 
 <a-mixin
   id="redBeatBroken"
-  gltf-model="#beatBrokenObj"
+  obj-model="obj:#beatBrokenObj"
   beat-cut-fx="color: red"
   render-order="beats"></a-mixin>
 <a-mixin
   id="blueBeatBroken"
-  gltf-model="#beatBrokenObj"
+  obj-model="obj:#beatBrokenObj"
   beat-cut-fx="color: blue"
   render-order="beats"></a-mixin>
 <a-mixin

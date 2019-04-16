@@ -56,11 +56,31 @@ AFRAME.registerComponent('beat-cut-fx', {
   },
 
   auxVector: new THREE.Vector3(),
+  rotations: {
+    right: 0,
+    upright: 45,
+    up: 90,
+    upleft: 135,
+    left: 180,
+    downleft: 225,
+    down: 270,
+    downright: 315
+  },
+  separations: {
+    right: new THREE.Vector2(0, 1),
+    upright: new THREE.Vector2(-0.5, 0.5),
+    up: new THREE.Vector2(-1, 0),
+    upleft: new THREE.Vector2(-0.5, -0.5),
+    left: new THREE.Vector2(0, -1),
+    downleft: new THREE.Vector2(0.5, -0.5),
+    down: new THREE.Vector2(1, 0),
+    downright: new THREE.Vector2(0.5, 0.5)
+  },
 
   explode: function (evt) {
     const position = evt.detail.position;
     const rotation = evt.detail.rotation;
-    const beatRotation = evt.detail.beatRotation;
+    const beatDirection = evt.detail.beatDirection;
     const direction = evt.detail.direction;
 
     if (!position || !rotation || !direction) { return; }
@@ -71,11 +91,13 @@ AFRAME.registerComponent('beat-cut-fx', {
       this.auxVector.copy(direction).multiplyScalar(-0.0025).clampLength(0, MAX_VELOCITY);
       for (let i = 0; i < this.pieces.length; i++) {
         let piece = this.pieces[i];
-        piece.rotation.z = beatRotation;
+        let dir = i == 0? -0.001 : 0.001;
         piece.posVelocity.copy(this.auxVector);
-        piece.posVelocity.y += piece.position.y * 0.002;
-        randomizeVector(piece.posVelocity, 0.001);
-        randomizeVector(piece.rotVelocity, 0.003);
+        piece.rotation.z = THREE.Math.degToRad(this.rotations[beatDirection]);
+        piece.posVelocity.x += this.separations[beatDirection].x * dir;
+        piece.posVelocity.y += this.separations[beatDirection].y * dir;
+        randomizeVector(piece.posVelocity, 0.002);
+        randomizeVector(piece.rotVelocity, 0.004);
       }
     } else {
       for (let i = 0; i < this.pieces.length; i++) {

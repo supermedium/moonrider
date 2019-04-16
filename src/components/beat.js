@@ -322,7 +322,7 @@ AFRAME.registerComponent('beat', {
         auxObj3D.up.copy(cutPlane.normal).multiplyScalar(-1);
         auxObj3D.lookAt(cutDirection);
         explodeEventDetail.rotation = auxObj3D.rotation;
-        explodeEventDetail.beatRotation = THREE.Math.degToRad(this.rotations[data.cutDirection]);
+        explodeEventDetail.beatDirection = data.cutDirection;
         explodeEventDetail.direction.copy(cutDirection);
       }
 
