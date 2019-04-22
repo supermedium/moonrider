@@ -337,7 +337,7 @@ AFRAME.registerComponent('beat', {
         this.shadow = null;
       }
 
-      if (goodCut) {
+      if (this.beatSystem.data.gameMode === 'classic' && goodCut) {
         bladeEl.components.trail.pulse();
       }
     };

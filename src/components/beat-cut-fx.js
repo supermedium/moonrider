@@ -146,7 +146,8 @@ AFRAME.registerComponent('beat-cut-fx', {
       this.fx.play();
       this.fx.object3D.position.copy(position);
       this.fx.object3D.rotation.copy(rotation);
-      this.fx.getObject3D('mesh').rotation.x += Math.PI;
+      // this.fx.object3D.rotation.x += Math.PI;
+      //this.fx.object3D.scale.z = -1;
       this.fx.emit('explode');
     }
 
