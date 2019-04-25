@@ -221,7 +221,7 @@ AFRAME.registerState({
       state.score.beatsHit = 125;
       state.score.beatsMissed = 125;
       state.score.maxCombo = 123;
-      state.score.rank = 'C';
+      state.score.rank = 'F';
       state.score.score = 9001;
       computeBeatsText(state);
     },
@@ -514,7 +514,7 @@ AFRAME.registerState({
       } else if (accuracy >= 30) {
         state.score.rank = 'D';
       } else {
-        state.score.rank = 'E';
+        state.score.rank = 'F';
       }
 
       computeBeatsText(state);

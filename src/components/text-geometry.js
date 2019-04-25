@@ -29,6 +29,8 @@ AFRAME.registerComponent('text-geometry', {
     const data = this.data;
     const el = this.el;
 
+    if (!data.value) { return; }
+
     let mesh = el.getObject3D('mesh');
     if (!mesh) {
       mesh = new THREE.Mesh();
