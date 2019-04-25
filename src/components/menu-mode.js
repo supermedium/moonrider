@@ -1,10 +1,10 @@
 const COLORS = require('../constants/colors.js');
 
 const iconPositions = {
-  classicvr: 0.87,
+  classicvr: -0.6,
   punchvr: 0.15,
-  ridevr: -0.6,
   ride2d: 0.87,
+  ridevr: 0.87,
   viewer2d: 0.15
 };
 
