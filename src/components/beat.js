@@ -217,6 +217,11 @@ AFRAME.registerComponent('beat', {
     const data = this.data;
     const el = this.el;
 
+    if (!this.blockEl) {
+      console.warn('Unable to generate beat. blockEl was undefined.');
+      return;
+    }
+
     this.blockEl.object3D.visible = true;
     this.destroyed = false;
     el.object3D.visible = true;
