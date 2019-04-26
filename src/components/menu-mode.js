@@ -21,7 +21,7 @@ AFRAME.registerComponent('menu-mode', {
 
   play: function () {
     if (AFRAME.utils.device.checkHeadsetConnected()) {
-      this.setModeOption('classicvr');
+      this.setModeOption('ridevr');
     } else {
       this.setModeOption('ride2d');
     }
