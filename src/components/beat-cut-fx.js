@@ -2,11 +2,11 @@ const DESTROY_TIME = 1000;
 const MAX_VELOCITY = 0.01;
 
 /**
- * Handles beat cut effects: fragments of beat and fx sprites
+ * Handles beat cut effects: fragments of beat and fx sprites.
  */
 AFRAME.registerComponent('beat-cut-fx', {
   schema: {
-    color: {type:'string'},
+    color: {type: 'string'},
     type: {oneOf: ['beat', 'dot', 'mine'], default: 'beat'}
   },
 
@@ -26,12 +26,13 @@ AFRAME.registerComponent('beat-cut-fx', {
   update: function () {
     const sceneEl = this.el.sceneEl;
     const color = this.data.color;
-    if (this.data.type == 'beat'){
+
+    if (this.data.type === 'beat') {
       this.material = sceneEl.systems.materials[color + 'BeatPieces'];
       this.poolBeat = sceneEl.components[`pool__beat-broken-${color}`];
       this.poolBeatFx = sceneEl.components[`pool__beat-fx-${color}`];
       this.poolPunchFx = sceneEl.components[`pool__punch-fx-${color}`];
-    } else if (this.data.type == 'dot'){
+    } else if (this.data.type === 'dot') {
       this.material = sceneEl.systems.materials[color + 'BeatPieces'];
       this.poolBeat = sceneEl.components[`pool__beat-broken-${color}-dot`];
       this.poolPunch = sceneEl.components[`pool__punch-broken-${color}-dot`];
@@ -59,6 +60,7 @@ AFRAME.registerComponent('beat-cut-fx', {
   },
 
   auxVector: new THREE.Vector3(),
+
   rotations: {
     right: 0,
     upright: 45,
@@ -69,6 +71,7 @@ AFRAME.registerComponent('beat-cut-fx', {
     down: 270,
     downright: 315
   },
+
   separations: {
     right: new THREE.Vector2(0, 1),
     upright: new THREE.Vector2(-0.5, 0.5),
@@ -88,9 +91,12 @@ AFRAME.registerComponent('beat-cut-fx', {
     const gameMode = evt.detail.gameMode;
     var beatDirection = evt.detail.beatDirection;
 
-    if (!position || !rotation || !direction) { return; }
+    if (!position || !rotation || !direction || this.data.color !== evt.detail.color) {
+      return;
+    }
 
     this.el.object3D.position.copy(position);
+
     if (gameMode === 'classic' && this.data.type !== 'mine') {
       const isDot = this.data.type === 'dot';
       if (isDot && beatDirection.length <= 5) {
@@ -195,7 +201,7 @@ AFRAME.registerComponent('beat-cut-fx', {
           piece.scale.multiplyScalar(0.94);
         }
         piece.posVelocity.multiplyScalar(0.97);
-        // gravity
+        // Gravity.
         piece.posVelocity.y -= 0.000003 * delta;
       } else {
         // Mines.

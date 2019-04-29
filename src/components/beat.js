@@ -129,7 +129,9 @@ AFRAME.registerComponent('beat', {
     this.superCuts = document.querySelectorAll('.superCutFx');
 
     this.explodeEventDetail = {
+      color: this.data.color,
       gameMode: '',
+      goodCut: false,
       position: new THREE.Vector3(),
       rotation: new THREE.Euler(),
       direction: new THREE.Vector3()
@@ -327,6 +329,7 @@ AFRAME.registerComponent('beat', {
         explodeEventDetail.direction.copy(cutDirection);
       }
 
+      explodeEventDetail.color = this.data.color;
       explodeEventDetail.goodCut = goodCut;
       explodeEventDetail.gameMode = this.beatSystem.data.gameMode;
       explodeEventDetail.position.copy(this.el.object3D.position);
@@ -406,9 +409,8 @@ AFRAME.registerComponent('beat', {
         break;
       }
 
-      var goodCut = true;
-
       // Wrong color hit.
+      let goodCut = true;
       if (swinging && this.data.color !== weaponColors[hand]) {
         const otherWeapon = i === 0 ? weaponEls[1] : weaponEls[0];
         if (!this.checkOtherWeaponCollision(otherWeapon, beatBbox)) {
@@ -503,7 +505,6 @@ AFRAME.registerComponent('beat', {
   calculateScoreBlade: function (bladeEl) {
     const SUPER_SCORE_SPEED = 3;
     const speed = bladeEl.closest('[hand-velocity]').components['hand-velocity'].speed;
-    //console.log(speed);
     const score = Math.min((speed / SUPER_SCORE_SPEED) * 100, 100);
     this.score(score);
   },
