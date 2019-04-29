@@ -84,12 +84,12 @@ AFRAME.registerComponent('beat-cut-fx', {
   },
 
   explode: function (evt) {
-    const position = evt.detail.position;
-    const rotation = evt.detail.rotation;
-    const goodCut = this.goodCut = evt.detail.goodCut;
+    const beatDirection = evt.detail.beatDirection;
     const direction = evt.detail.direction;
     const gameMode = evt.detail.gameMode;
-    var beatDirection = evt.detail.beatDirection;
+    const goodCut = this.goodCut = evt.detail.goodCut;
+    const position = evt.detail.position;
+    const rotation = evt.detail.rotation;
 
     if (!position || !rotation || !direction || this.data.color !== evt.detail.color) {
       return;

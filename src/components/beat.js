@@ -129,12 +129,13 @@ AFRAME.registerComponent('beat', {
     this.superCuts = document.querySelectorAll('.superCutFx');
 
     this.explodeEventDetail = {
+      beatDirection: '',
       color: this.data.color,
+      direction: new THREE.Vector3(),
       gameMode: '',
       goodCut: false,
       position: new THREE.Vector3(),
-      rotation: new THREE.Euler(),
-      direction: new THREE.Vector3()
+      rotation: new THREE.Euler()
     };
 
     this.calculateScoreBlade = this.calculateScoreBlade.bind(this);
