@@ -1,8 +1,10 @@
-var algoliasearch = require('algoliasearch/lite');
-var bindEvent = require('aframe-event-decorators').bindEvent;
+const algoliasearch = require('algoliasearch/lite');
+const bindEvent = require('aframe-event-decorators').bindEvent;
 
-var client = algoliasearch('QULTOY3ZWU', 'be07164192471df7e97e6fa70c1d041d');
-var algolia = client.initIndex('beatsaver');
+const client = algoliasearch('QULTOY3ZWU', 'be07164192471df7e97e6fa70c1d041d');
+const algolia = client.initIndex('beatsaver');
+
+const topSearch = require('../lib/search.json');
 
 /**
  * Search (including the initial list of popular searches).
@@ -10,9 +12,12 @@ var algolia = client.initIndex('beatsaver');
  */
 AFRAME.registerComponent('search', {
   init: function () {
-    this.eventDetail = {query: '', results: []};
+    this.eventDetail = {query: '', results: topSearch};
     this.popularHits = null;
     this.queryObject = {hitsPerPage: 100, query: ''};
+
+    // Pre-populate top.
+    this.el.sceneEl.emit('searchresults', this.eventDetail);
 
     // Populate popular.
     this.search('');
@@ -47,8 +52,13 @@ AFRAME.registerComponent('search', {
         return;
       }
 
-      if (!query) { this.popularHits = content.hits; }
-      this.eventDetail.results = content.hits;
+      if (!query) {
+        this.popularHits = topSearch.concat(content.hits);
+        this.eventDetail.results = this.popularHits;
+      } else {
+        this.eventDetail.results = content.hits;
+      }
+
       this.el.sceneEl.emit('searchresults', this.eventDetail);
     });
   }

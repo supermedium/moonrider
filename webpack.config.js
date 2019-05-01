@@ -37,6 +37,12 @@ module.exports = {
         use: ['babel-loader', 'aframe-super-hot-loader']
       },
       {
+        test: /\.json/,
+        exclude: /(node_modules)/,
+        type: 'javascript/auto',
+        loader: ['json-loader']
+      },
+      {
         test: /\.html/,
         exclude: /(node_modules)/,
         use: [

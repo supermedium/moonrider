@@ -210,12 +210,16 @@ AFRAME.registerComponent('song-preview-system', {
  * Data component attached to search result for song preview system.
  */
 AFRAME.registerComponent('song-preview', {
+  dependencies: ['song-preview-system'],
+
   schema: {
     challengeId: {type: 'string'},
     previewStartTime: {type: 'number'}
   },
 
   update: function (oldData) {
+    if (!this.el.sceneEl.components['song-preview-system']) { return; }
+
     if (oldData.challengeId && this.data.challengeId !== oldData.challengeId) {
       this.el.sceneEl.components['song-preview-system'].clearSong(oldData.challengeId);
     }
