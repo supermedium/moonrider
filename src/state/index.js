@@ -4,7 +4,7 @@ var utils = require('../utils');
 const challengeDataStore = {};
 const NUM_LEADERBOARD_DISPLAY = 10;
 const SEARCH_PER_PAGE = 6;
-const SONG_NAME_TRUNCATE = 24;
+const SONG_NAME_TRUNCATE = 22;
 const SONG_SUB_NAME_TRUNCATE = 32;
 
 const DAMAGE_DECAY = 0.25;
@@ -327,6 +327,7 @@ AFRAME.registerState({
       // Copy from challenge store populated from search results.
       let challenge = challengeDataStore[id];
       Object.assign(state.menuSelectedChallenge, challenge);
+      state.menuSelectedChallenge.songName = truncate(challenge.songName, 24);
 
       // Populate difficulty options.
       state.menuDifficulties.length = 0;
@@ -670,7 +671,7 @@ function clearLeaderboard (state) {
 }
 
 function updateMenuSongInfo (state, challenge) {
-  state.menuSelectedChallenge.songInfoText = `By ${truncate(challenge.author, 12)} ${challenge.genre && challenge.genre !== 'Uncategorized' ? '/ ' + challenge.genre : ''}\n${challenge.downloads} Downloads\nUpvotes: ${challenge.upvotes} / Downvotes: ${challenge.downvotes}\n${formatSongLength(challenge.songDuration)} / ${challenge.numBeats[state.menuSelectedChallenge.difficulty]} beats`;
+  state.menuSelectedChallenge.songInfoText = `By ${truncate(challenge.author, 12)}\n${challenge.genre && challenge.genre !== 'Uncategorized' ? challenge.genre + '\n' : ''}${formatSongLength(challenge.songDuration)} / ${challenge.numBeats[state.menuSelectedChallenge.difficulty]} beats`;
 }
 
 function updateScoreAccuracy (state) {
@@ -678,5 +679,4 @@ function updateScoreAccuracy (state) {
   const currentNumBeats = state.score.beatsHit + state.score.beatsMissed;
   state.score.accuracy = (state.score.score / (currentNumBeats * 100)) * 100;
   state.score.accuracy = state.score.accuracy.toFixed(2);
-
 }
