@@ -16,16 +16,18 @@ AFRAME.registerComponent('search', {
     this.popularHits = null;
     this.queryObject = {hitsPerPage: 100, query: ''};
 
+    // Less hits on normal searches.
+    this.queryObject.hitsPerPage = 30;
+
+    this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
+  },
+
+  play: function () {
     // Pre-populate top.
     this.el.sceneEl.emit('searchresults', this.eventDetail);
 
     // Populate popular.
     this.search('');
-
-    // Less hits on normal searches.
-    this.queryObject.hitsPerPage = 30;
-
-    this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
   },
 
   superkeyboardchange: bindEvent(function (evt) {
