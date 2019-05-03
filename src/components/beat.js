@@ -87,7 +87,7 @@ AFRAME.registerComponent('beat', {
   },
 
   verticalPositions: {
-    bottom: 1,
+    bottom: 0.8,
     middle: 1.25,
     top: 1.65
   },
