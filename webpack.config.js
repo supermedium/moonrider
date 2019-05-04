@@ -4,10 +4,10 @@ var path = require('path');
 var webpack = require('webpack');
 const COLORS = require('./src/constants/colors.js');
 
-// @firebase/polyfill not loading, stub it with some random module.
 PLUGINS = [
   new webpack.EnvironmentPlugin(['NODE_ENV']),
   new webpack.HotModuleReplacementPlugin(),
+  // @firebase/polyfill not loading, stub it with some random module.
   new webpack.NormalModuleReplacementPlugin(
     /firebase\/polyfill/,
     '../../../../src/constants/colors.js'
