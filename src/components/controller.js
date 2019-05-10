@@ -18,12 +18,29 @@ AFRAME.registerComponent('controller', {
     });
 
     const hand = {hand: data.hand, model: false};
+    el.setAttribute('daydream-controls', hand);
+    el.setAttribute('oculus-go-controls', hand);
     el.setAttribute('oculus-touch-controls', hand);
     el.setAttribute('vive-controls', hand);
+    el.setAttribute('vive-focus-controls', hand);
     el.setAttribute('windows-motion-controls', hand);
   },
 
   config: {
+    'daydream-controls': {
+      cursor: {
+        downEvents: ['trackpaddown', 'triggerdown'],
+        upEvents: ['trackpadup', 'triggerup']
+      }
+    },
+
+    'oculus-go-controls': {
+      cursor: {
+        downEvents: ['trackpaddown', 'triggerdown'],
+        upEvents: ['trackpadup', 'triggerup']
+      }
+    },
+
     'oculus-touch-controls': {
       cursor: {
         downEvents: [
@@ -46,6 +63,13 @@ AFRAME.registerComponent('controller', {
     },
 
     'vive-controls': {
+      cursor: {
+        downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
+        upEvents: ['trackpadup', 'triggerup', 'gripup']
+      }
+    },
+
+    'vive-focus-controls': {
       cursor: {
         downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
         upEvents: ['trackpadup', 'triggerup', 'gripup']
