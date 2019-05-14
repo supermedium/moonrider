@@ -124,8 +124,9 @@ AFRAME.registerComponent('blade', {
 
   updateStrokeDirection: function () {
     const bladeTrajectory = this.el.components.trail.bladeTrajectory;
+    if (bladeTrajectory.length < 5) { return; }
     this.strokeDirectionVector
-      .copy(bladeTrajectory[0].center)
-      .sub(bladeTrajectory[bladeTrajectory.length - 1].center);
+      .copy(bladeTrajectory[0].top)
+      .sub(bladeTrajectory[bladeTrajectory.length - 6].top)
   }
 });

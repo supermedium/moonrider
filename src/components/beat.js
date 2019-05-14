@@ -12,7 +12,7 @@ const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 
 const elasticEasing = getElasticEasing(1.33, 0.5);
 
-const DEGREES_80 = (Math.PI / 180) * 80;
+const DEGREES_20 = (Math.PI / 180) * 20;
 const DESTROYED_SPEED = 1.0;
 const ONCE = {once: true};
 const DESTROY_TIME = 1000;
@@ -93,14 +93,14 @@ AFRAME.registerComponent('beat', {
   },
 
   cutDirectionVectors: {
-    up: new THREE.Vector3(0, -1, 0),
-    down: new THREE.Vector3(0, 1, 0),
-    left: new THREE.Vector3(1, 0, 0),
-    right: new THREE.Vector3(-1, 0, 0),
-    upleft: new THREE.Vector3(1, -1, 0),
-    upright: new THREE.Vector3(-1, -1, 0),
-    downleft: new THREE.Vector3(1, 1, 0),
-    downright: new THREE.Vector3(-1, 1, 0)
+    up: new THREE.Vector3(0, 1, 0),
+    down: new THREE.Vector3(0, -1, 0),
+    left: new THREE.Vector3(-1, 0, 0),
+    right: new THREE.Vector3(1, 0, 0),
+    upleft: new THREE.Vector3(-1, 1, 0).normalize(),
+    upright: new THREE.Vector3(1, 1, 0).normalize(),
+    downleft: new THREE.Vector3(-1, -1, 0).normalize(),
+    downright: new THREE.Vector3(1, -1, 0).normalize()
   },
 
   init: function () {
@@ -470,7 +470,7 @@ AFRAME.registerComponent('beat', {
       // Wrong angle.
       const strokeBeatAngle = blade.strokeDirectionVector.angleTo(
         this.cutDirectionVectors[data.cutDirection]);
-      if (strokeBeatAngle > DEGREES_80) {
+      if (strokeBeatAngle > DEGREES_20) {
         this.wrongHit(hand);
         return false;
       }
