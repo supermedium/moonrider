@@ -84,12 +84,13 @@ AFRAME.registerComponent('beat-cut-fx', {
   },
 
   explode: function (evt) {
-    const beatDirection = evt.detail.beatDirection;
     const direction = evt.detail.direction;
     const gameMode = evt.detail.gameMode;
     const goodCut = this.goodCut = evt.detail.goodCut;
     const position = evt.detail.position;
     const rotation = evt.detail.rotation;
+
+    let beatDirection = evt.detail.beatDirection;
 
     if (!position || !rotation || !direction || this.data.color !== evt.detail.color) {
       return;
@@ -102,7 +103,7 @@ AFRAME.registerComponent('beat-cut-fx', {
       if (isDot && beatDirection.length <= 5) {
         beatDirection = Math.abs(direction.x) > Math.abs(direction.y) ? 'right' : 'down';
       }
-      // minimize direction.z
+      // Minimize direction.z.
       direction.z *= 0.01;
       this.auxVector.copy(direction).multiplyScalar(-0.0025).clampLength(0, MAX_VELOCITY);
       for (let i = 0; i < this.pieces.length; i++) {
