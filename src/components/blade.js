@@ -22,13 +22,10 @@ AFRAME.registerComponent('blade', {
     this.boundingBox = new THREE.Box3();
     this.deltaSamples = [];
     this.distanceSamples = [];
-    this.projectedBladeVector = new THREE.Vector3();
     this.rigEl = document.getElementById('curveFollowRig');
     this.strokeDirectionVector = new THREE.Vector3();
+    this.strokeSpeed = 0;
     this.swinging = false;
-    this.xPlaneNormal = new THREE.Vector3(0, 1, 0);
-    this.xyPlaneNormal = new THREE.Vector3(1, 1, 0);
-    this.yPlaneNormal = new THREE.Vector3(1, 0, 0);
 
     this.bladeEl = this.el.querySelector('.blade');
   },
@@ -63,17 +60,12 @@ AFRAME.registerComponent('blade', {
 
     // Angles between blade and major planes.
     this.bladeVector.copy(this.bladeTipPosition).sub(this.bladePosition).normalize();
-    const anglePlaneX = this.projectedBladeVector.copy(this.bladeTipPosition)
-      .projectOnPlane(this.xPlaneNormal).angleTo(this.bladeVector);
-    const anglePlaneY = this.projectedBladeVector.copy(this.bladeTipPosition)
-      .projectOnPlane(this.yPlaneNormal).angleTo(this.bladeVector);
-    const anglePlaneXY = this.projectedBladeVector.copy(this.bladeTipPosition)
-      .projectOnPlane(this.xyPlaneNormal).angleTo(this.bladeVector);
 
     // Distance covered but the blade tip in one frame.
     this.strokeDirectionVector.copy(this.bladeTipPosition).sub(this.bladeTipPreviousPosition);
     const distance = this.strokeDirectionVector.length();
     this.strokeDirectionVector.z = 0; this.strokeDirectionVector.normalize();
+    this.strokeSpeed = distance / (delta / 1000);
 
     // Sample distance of the last 5 frames.
     if (this.distanceSamples.length === 5) {
@@ -93,15 +85,8 @@ AFRAME.registerComponent('blade', {
         this.swinging = true;
         this.strokeDuration = 0;
       }
-
       this.strokeDuration += delta;
-      const anglePlaneXIncreased = anglePlaneX > this.maxAnglePlaneX;
-      const anglePlaneYIncreased = anglePlaneY > this.maxAnglePlaneY;
-      const anglePlaneXYIncreased = anglePlaneXY > this.maxAnglePlaneXY;
-      this.maxAnglePlaneX = anglePlaneXIncreased ? anglePlaneX : this.maxAnglePlaneX;
-      this.maxAnglePlaneY = anglePlaneYIncreased ? anglePlaneY : this.maxAnglePlaneY;
-      this.maxAnglePlaneXY = anglePlaneXYIncreased ? anglePlaneXY : this.maxAnglePlaneXY;
-      if (!anglePlaneXIncreased && !anglePlaneYIncreased) { this.endStroke(); }
+      this.endStroke();
     } else {
       this.endStroke();
     }
@@ -111,15 +96,10 @@ AFRAME.registerComponent('blade', {
 
   endStroke: function () {
     if (!this.swinging || this.strokeDuration < this.data.strokeMinDuration) { return; }
-
-    this.el.emit('strokeend');
     this.swinging = false;
     // Stroke finishes. Reset swinging state.
     this.accumulatedDistance = 0;
     this.accumulatedDelta = 0;
-    this.maxAnglePlaneX = 0;
-    this.maxAnglePlaneY = 0;
-    this.maxAnglePlaneXY = 0;
     for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
     for (let i = 0; i < this.deltaSamples.length; i++) { this.deltaSamples[i] = 0; }
   }
