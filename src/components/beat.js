@@ -504,8 +504,8 @@ AFRAME.registerComponent('beat', {
    * Blade scoring.
    */
   calculateScoreBlade: function (bladeEl) {
-    const SUPER_SCORE_SPEED = 3;
-    const speed = bladeEl.closest('[hand-velocity]').components['hand-velocity'].speed;
+    const SUPER_SCORE_SPEED = 6;
+    const speed = bladeEl.closest('[blade]').components.blade.strokeSpeed;
     const score = Math.min((speed / SUPER_SCORE_SPEED) * 100, 100);
     this.score(score);
   },
