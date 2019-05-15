@@ -12,7 +12,7 @@ const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 
 const elasticEasing = getElasticEasing(1.33, 0.5);
 
-const DEGREES_20 = (Math.PI / 180) * 20;
+const DEGREES_35 = (Math.PI / 180) * 35;
 const DESTROYED_SPEED = 1.0;
 const ONCE = {once: true};
 const DESTROY_TIME = 1000;
@@ -470,7 +470,7 @@ AFRAME.registerComponent('beat', {
       // Wrong angle.
       const strokeBeatAngle = blade.strokeDirectionVector.angleTo(
         this.cutDirectionVectors[data.cutDirection]);
-      if (strokeBeatAngle > DEGREES_20) {
+      if (strokeBeatAngle > DEGREES_35) {
         this.wrongHit(hand);
         return false;
       }

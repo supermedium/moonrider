@@ -71,7 +71,9 @@ AFRAME.registerComponent('blade', {
       .projectOnPlane(this.xyPlaneNormal).angleTo(this.bladeVector);
 
     // Distance covered but the blade tip in one frame.
-    const distance = this.bladeTipPreviousPosition.sub(this.bladeTipPosition).length();
+    this.strokeDirectionVector.copy(this.bladeTipPosition).sub(this.bladeTipPreviousPosition);
+    const distance = this.strokeDirectionVector.length();
+    this.strokeDirectionVector.z = 0; this.strokeDirectionVector.normalize();
 
     // Sample distance of the last 5 frames.
     if (this.distanceSamples.length === 5) {
@@ -91,7 +93,7 @@ AFRAME.registerComponent('blade', {
         this.swinging = true;
         this.strokeDuration = 0;
       }
-      this.updateStrokeDirection();
+
       this.strokeDuration += delta;
       const anglePlaneXIncreased = anglePlaneX > this.maxAnglePlaneX;
       const anglePlaneYIncreased = anglePlaneY > this.maxAnglePlaneY;
@@ -120,13 +122,5 @@ AFRAME.registerComponent('blade', {
     this.maxAnglePlaneXY = 0;
     for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
     for (let i = 0; i < this.deltaSamples.length; i++) { this.deltaSamples[i] = 0; }
-  },
-
-  updateStrokeDirection: function () {
-    const bladeTrajectory = this.el.components.trail.bladeTrajectory;
-    if (bladeTrajectory.length < 5) { return; }
-    this.strokeDirectionVector
-      .copy(bladeTrajectory[0].top)
-      .sub(bladeTrajectory[bladeTrajectory.length - 6].top)
   }
 });

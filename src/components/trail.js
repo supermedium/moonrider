@@ -27,9 +27,21 @@ AFRAME.registerComponent('trail', {
 
     this.layers = 0;
     this.bladeTrajectory = [
-      {top: new THREE.Vector3(-0.5, 0, 0), center: new THREE.Vector3(0, 0, 0), bottom: new THREE.Vector3(0.5, 0, 0)},
-      {top: new THREE.Vector3(-0.5, 0.5, 0), center: new THREE.Vector3(0, 0.5, 0), bottom: new THREE.Vector3(0.5, 0.5, 0)},
-      {top: new THREE.Vector3(-0.5, 1.0, 0), center: new THREE.Vector3(0, 1.0, 0), bottom: new THREE.Vector3(0.5, 1.0, 0)}
+      {
+        top: new THREE.Vector3(-0.5, 0, 0),
+        center: new THREE.Vector3(0, 0, 0),
+        bottom: new THREE.Vector3(0.5, 0, 0)
+      },
+      {
+        top: new THREE.Vector3(-0.5, 0.5, 0),
+        center: new THREE.Vector3(0, 0.5, 0),
+        bottom: new THREE.Vector3(0.5, 0.5, 0)
+      },
+      {
+        top: new THREE.Vector3(-0.5, 1.0, 0),
+        center: new THREE.Vector3(0, 1.0, 0),
+        bottom: new THREE.Vector3(0.5, 1.0, 0)
+      }
     ];
 
     this.newSample = null;
@@ -324,23 +336,33 @@ AFRAME.registerComponent('trail', {
     if (this.bladeTrajectory.length === this.maxPoints) {
       // Dump oldest point.
       sample = this.newSample = this.bladeTrajectory.shift();
-      sample.top.set(0, -0.4, 0);
+      sample.top.set(0, -0.5, 0);
       sample.center.set(0, 0, 0);
-      sample.bottom.set(0, 0.4, 0);
+      sample.bottom.set(0, 0.5, 0);
     } else {
       if (this.newSample) {
-        this.newSample.top.set(0, -0.4, 0);
-        this.newSample.center.set(0, -0.4, 0);
-        this.newSample.bottom.set(0, -0.4, 0);
+        this.newSample.top.set(0, -0.5, 0);
+        this.newSample.center.set(0, 0, 0);
+        this.newSample.bottom.set(0, 0.5, 0);
         sample = this.newSample;
       } else {
         sample = {
-          top: new THREE.Vector3(0, -0.4, 0),
-          center: new THREE.Vector3(0, -0.4, 0),
-          bottom: new THREE.Vector3(0, -0.4, 0)
+          top: new THREE.Vector3(0, -0.5, 0),
+          center: new THREE.Vector3(0, 0, 0),
+          bottom: new THREE.Vector3(0, 0.5, 0)
         };
       }
     }
+
+    const bladeObject = this.bladeEl.object3D;
+    bladeObject.parent.updateMatrixWorld();
+    bladeObject.localToWorld(sample.top);
+    bladeObject.localToWorld(sample.center);
+    bladeObject.localToWorld(sample.bottom);
+
+    this.rigContainer.object3D.worldToLocal(sample.top);
+    this.rigContainer.object3D.worldToLocal(sample.center);
+    this.rigContainer.object3D.worldToLocal(sample.bottom);
 
     this.bladeTrajectory.push(sample);
     this.initGeometry();
