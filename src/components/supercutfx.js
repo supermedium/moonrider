@@ -2,28 +2,32 @@ const COLORS = require('../constants/colors');
 
 AFRAME.registerComponent('supercutfx', {
   init: function () {
-    this.startTime = -1100; // pause on first tick
     this.colors = {
       red: new THREE.Color(COLORS.RED),
       blue: new THREE.Color(COLORS.BLUE)
     };
+    this.position = new THREE.Vector3();
+    this.rigEl = document.getElementById('curveFollowRig');
+    this.startTime = -1100;  // Pause on first tick.
   },
 
-  createSuperCut: function (position, color) {
+  createSuperCut: function (object3D, color) {
     const col = this.colors[color];
+    const el = this.el;
     const mesh = this.el.getObject3D('mesh');
-    this.el.object3D.position.copy(position);
-    this.el.object3D.position.z = -1;
-    this.el.object3D.visible = true;
 
-    this.startTime = this.el.sceneEl.time;
+    mesh.material.transparent = true;
+    this.rigEl.object3D.worldToLocal(el.object3D.position.copy(object3D.position));
+    el.object3D.visible = true;
+
+    this.startTime = el.sceneEl.time;
 
     const colorUniform = mesh.material.uniforms.color.value;
     colorUniform.x = col.r;
     colorUniform.y = col.g;
     colorUniform.z = col.b;
     mesh.material.uniforms.startTime.value = this.startTime - 50;
-    this.el.play();
+    el.play();
   },
 
   tick: function (time) {

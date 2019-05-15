@@ -495,7 +495,7 @@ AFRAME.registerComponent('beat', {
     // Super FX.
     if (score > 90) {
       this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
-        el.object3D.position, this.data.color);
+        el.object3D, this.data.color);
       this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
     }
   },
