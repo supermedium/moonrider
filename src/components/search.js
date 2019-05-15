@@ -1,5 +1,4 @@
 const algoliasearch = require('algoliasearch/lite');
-const bindEvent = require('aframe-event-decorators').bindEvent;
 
 const client = algoliasearch('QULTOY3ZWU', 'be07164192471df7e97e6fa70c1d041d');
 const algolia = client.initIndex('beatsaver');
@@ -15,10 +14,6 @@ AFRAME.registerComponent('search', {
     this.eventDetail = {query: '', results: topSearch};
     this.popularHits = null;
     this.queryObject = {hitsPerPage: 100, query: ''};
-
-    // Less hits on normal searches.
-    this.queryObject.hitsPerPage = 30;
-
     this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
   },
 
@@ -30,10 +25,12 @@ AFRAME.registerComponent('search', {
     this.search('');
   },
 
-  superkeyboardchange: bindEvent(function (evt) {
-    if (evt.target !== this.el) { return; }
-    this.search(evt.detail.value);
-  }),
+  events: {
+    superkeyboardchange: function (evt) {
+      if (evt.target !== this.el) { return; }
+      this.search(evt.detail.value);
+    }
+  },
 
   search: function (query) {
     // Use cached for popular hits.
@@ -46,6 +43,7 @@ AFRAME.registerComponent('search', {
 
     this.eventDetail.query = query;
     this.queryObject.query = query;
+    this.queryObject.hitsPerPage = query ? 30 : 100;
     algolia.search(this.queryObject, (err, content) => {
       // Cache popular hits.
       if (err) {
@@ -61,6 +59,7 @@ AFRAME.registerComponent('search', {
         this.eventDetail.results = content.hits;
       }
 
+      console.log(content.hits.length, topSearch.length, this.eventDetail.results.length);
       this.el.sceneEl.emit('searchresults', this.eventDetail);
     });
   }
@@ -117,13 +116,16 @@ AFRAME.registerComponent('search-result-list', {
     obv.observe(this.el, {attributes: true, childList: false, subtree: true});
   },
 
-  refreshLayout: function () {
-    this.el.emit('layoutrefresh', null, false);
+  events: {
+    click: function (evt) {
+      this.el.sceneEl.emit(
+        'menuchallengeselect',
+        evt.target.closest('.searchResult').dataset.id,
+        false);
+    }
   },
 
-  click: bindEvent(function (evt) {
-    this.el.sceneEl.emit('menuchallengeselect',
-                         evt.target.closest('.searchResult').dataset.id,
-                         false);
-  })
+  refreshLayout: function () {
+    this.el.emit('layoutrefresh', null, false);
+  }
 });
