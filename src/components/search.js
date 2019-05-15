@@ -59,7 +59,6 @@ AFRAME.registerComponent('search', {
         this.eventDetail.results = content.hits;
       }
 
-      console.log(content.hits.length, topSearch.length, this.eventDetail.results.length);
       this.el.sceneEl.emit('searchresults', this.eventDetail);
     });
   }
