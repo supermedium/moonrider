@@ -174,7 +174,15 @@
                 animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 75"
                 event-set__mouseleave="visible: true; _delay: 160"
                 render-order="menuitem"></a-entity>
-            <a-entity class="difficultyText" mixin="font" bind-item__active-text-color="active: menuSelectedChallenge.difficulty === item" active-text-color="color: #fff" bind-item__text-uppercase="value: item" text="wrapCount: 28; align: center; color: #8d8d8d" position="0 -0.057 0.001" render-order="menutext"></a-entity>
+            <a-entity
+              class="difficultyText"
+              mixin="font"
+              bind-item__active-text-color="active: menuSelectedChallenge.difficulty === item"
+              bind-item__difficulty-text="difficulty: item"
+              active-text-color="color: #fff"
+              text="wrapCount: 30; align: center; color: #8d8d8d"
+              position="0 -0.057 0.001"
+              render-order="menutext"></a-entity>
           </a-entity>
         </template>
       {% endraw %}
