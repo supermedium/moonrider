@@ -464,7 +464,8 @@ AFRAME.registerState({
       state.score.score = isNaN(state.score.score) ? 0 : state.score.score;
       updateScoreAccuracy(state);
 
-      if (parseFloat(state.score.accuracy) >= 90) {
+      const accuracy = parseFloat(state.score.accuracy);
+      if (accuracy >= 90) {
         state.score.rank = 'S';
       } else if (accuracy >= 80) {
         state.score.rank = 'A';
