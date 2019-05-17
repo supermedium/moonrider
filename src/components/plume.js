@@ -26,6 +26,8 @@ AFRAME.registerComponent('plume', {
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.handsEls = this.el.sceneEl.querySelectorAll('.handStar');
     this.handPos = new THREE.Vector3();
+
+    this.el.sceneEl.addEventListener('cleargame', this.returnToPool.bind(this));
   },
 
   update: function () {
