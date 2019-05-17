@@ -163,7 +163,7 @@ AFRAME.registerComponent('song', {
 
   onSongComplete: function () {
     if (!this.data.isPlaying) { return; }
-    this.el.sceneEl.emit('songcomplete', null, false);
+    this.el.emit('songcomplete');
   },
 
   onGameOver: function () {

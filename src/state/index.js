@@ -222,8 +222,9 @@ AFRAME.registerState({
       state.score.beatsHit = 125;
       state.score.beatsMissed = 125;
       state.score.maxCombo = 123;
-      state.score.rank = 'F';
+      state.score.rank = 'A';
       state.score.score = 9001;
+      state.introActive = false;
       computeBeatsText(state);
     },
 
@@ -448,7 +449,7 @@ AFRAME.registerState({
     },
 
     songcomplete: state => {
-      // Move back to menu in ride or viewer mode.
+      // Move back to menu in Ride or Viewer Mode.
       if (state.gameMode === 'ride' || !state.inVR) {
         state.challenge.isBeatsPreloaded = false;
         state.isVictory = false;

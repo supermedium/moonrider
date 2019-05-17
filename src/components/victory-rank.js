@@ -14,7 +14,7 @@ AFRAME.registerComponent('victory-rank', {
     const el = this.el;
     const rank = this.data.rank;
 
-    if (!this.data.isVictory) {
+    if (oldData.isVictory && !this.data.isVictory) {
       this.el.object3D.scale.set(0.001, 0.001, 0.001);
     }
 
