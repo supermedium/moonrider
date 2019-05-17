@@ -447,6 +447,42 @@ AFRAME.registerState({
       }
     },
 
+    songcomplete: state => {
+      // Move back to menu in ride or viewer mode.
+      if (state.gameMode === 'ride' || !state.inVR) {
+        state.challenge.isBeatsPreloaded = false;
+        state.isVictory = false;
+        state.menuActive = true;
+        state.challenge.id = '';
+        return;
+      }
+
+      state.isVictory = true;
+
+      // Percentage is score divided by total possible score.
+      let accuracy = (
+        state.score.score /
+        (state.challenge.numBeats[state.challenge.difficulty] * 100)) * 100;
+      state.score.accuracy = isNaN(accuracy) ? 0 : accuracy.toFixed(2);
+      state.score.score = isNaN(state.score.score) ? 0 : state.score.score;
+
+      if (accuracy >= 90) {
+        state.score.rank = 'S';
+      } else if (accuracy >= 80) {
+        state.score.rank = 'A';
+      } else if (accuracy >= 60) {
+        state.score.rank = 'B';
+      } else if (accuracy >= 40) {
+        state.score.rank = 'C';
+      } else if (accuracy >= 30) {
+        state.score.rank = 'D';
+      } else {
+        state.score.rank = 'F';
+      }
+
+      computeBeatsText(state);
+    },
+
     songloadcancel: state => {
       state.challenge.isBeatsPreloaded = false;
       // Unset selected challenge.
@@ -484,42 +520,6 @@ AFRAME.registerState({
     startgame: state => {
       state.introActive = false;
       state.menuActive = true;
-    },
-
-    victory: state => {
-      // Move back to menu in ride or viewer mode.
-      if (state.gameMode === 'ride' || !state.inVR) {
-        state.challenge.isBeatsPreloaded = false;
-        state.isVictory = false;
-        state.menuActive = true;
-        state.challenge.id = '';
-        return;
-      }
-
-      state.isVictory = true;
-
-      // Percentage is score divided by total possible score.
-      let accuracy = (
-        state.score.score /
-        (state.challenge.numBeats[state.challenge.difficulty] * 100)) * 100;
-      state.score.accuracy = isNaN(accuracy) ? 0 : accuracy.toFixed(2);
-      state.score.score = isNaN(state.score.score) ? 0 : state.score.score;
-
-      if (accuracy >= 90) {
-        state.score.rank = 'S';
-      } else if (accuracy >= 80) {
-        state.score.rank = 'A';
-      } else if (accuracy >= 60) {
-        state.score.rank = 'B';
-      } else if (accuracy >= 40) {
-        state.score.rank = 'C';
-      } else if (accuracy >= 30) {
-        state.score.rank = 'D';
-      } else {
-        state.score.rank = 'F';
-      }
-
-      computeBeatsText(state);
     },
 
     victoryfake: state => {

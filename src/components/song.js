@@ -43,7 +43,7 @@ AFRAME.registerComponent('song', {
     this.isAudioPlaying = false;
     this.songStartTime = 0;
 
-    this.victory = this.victory.bind(this);
+    this.onSongComplete = this.onSongComplete.bind(this);
 
     // Base volume.
     this.audioAnalyser.gainNode.gain.value = BASE_VOLUME;
@@ -57,7 +57,7 @@ AFRAME.registerComponent('song', {
         this.source.onended = null;
         this.source.stop();
         this.source.disconnect();
-        this.victory();
+        this.onSongComplete();
       });
     }
   },
@@ -96,6 +96,7 @@ AFRAME.registerComponent('song', {
         gain.setValueAtTime(0.05, 0);
         this.source = evt.detail;
         this.source.start();
+        this.el.emit('victory');
       }, ONCE);
       this.audioAnalyser.refreshSource();
       return;
@@ -160,9 +161,9 @@ AFRAME.registerComponent('song', {
     this.isAudioPlaying = false;
   },
 
-  victory: function () {
+  onSongComplete: function () {
     if (!this.data.isPlaying) { return; }
-    this.el.sceneEl.emit('victory', null, false);
+    this.el.sceneEl.emit('songcomplete', null, false);
   },
 
   onGameOver: function () {
@@ -215,7 +216,7 @@ AFRAME.registerComponent('song', {
     const gain = this.audioAnalyser.gainNode.gain;
     gain.setValueAtTime(BASE_VOLUME, this.context.currentTime);
     this.songStartTime = this.context.currentTime;
-    this.source.onended = this.victory;
+    this.source.onended = this.onSongComplete;
     this.source.start(0, skipDebug || 0);
     this.isAudioPlaying = true;
   },
