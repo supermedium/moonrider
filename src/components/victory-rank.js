@@ -6,12 +6,17 @@ const shineObj = {sphericalEnvMap: '#envmapImg', roughness: 0.2, metalness: 0.6}
  */
 AFRAME.registerComponent('victory-rank', {
   schema: {
+    isVictory: {default: false},
     rank: {type: 'string'}
   },
 
-  update: function () {
+  update: function (oldData) {
     const el = this.el;
     const rank = this.data.rank;
+
+    if (!this.data.isVictory) {
+      this.el.object3D.scale.set(0.001, 0.001, 0.001);
+    }
 
     if (!rank) { return; }
 
