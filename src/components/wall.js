@@ -1,9 +1,9 @@
 const HEIGHT = 2.5;
 const CEILING_THICKNESS = 1.5;
-const CEILING_HEIGHT = 1.5;
+const CEILING_HEIGHT = 1.3;
 const CEILING_WIDTH = 4;
 
-// TODO: Currently reversed left / right because curve is upside down / mirrored.
+// Currently reversed left / right because curve is upside down / mirrored.
 const HORIZONTAL_POSITIONS = {
   left: 0.75,
   middleleft: 0.25,
