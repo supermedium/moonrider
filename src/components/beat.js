@@ -6,6 +6,8 @@ const bbox = new THREE.Box3();
 const otherBbox = new THREE.Box3();
 const collisionZThreshold = -1.65;
 
+const ANGLE_MAX_SUPER = THREE.Math.degToRad(10);
+const ANGLE_THRESHOLD = THREE.Math.degToRad(40);
 const CUT_THICKNESS = 0.02;
 const WARMUP_TIME = 2000;
 const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
@@ -458,30 +460,28 @@ AFRAME.registerComponent('beat', {
   /**
    * Angle-related stuff.
    */
-  checkCollisionBlade: (function () {
-    const ANGLE_THRESHOLD = THREE.Math.degToRad(40);
+  checkCollisionBlade: function (bladeEl) {
+    const data = this.data;
+    const cutDirection = this.data.cutDirection;
+    const blade = bladeEl.components.blade;
+    const hand = bladeEl.getAttribute('blade').hand;
 
-    return function (bladeEl) {
-      const data = this.data;
-      const cutDirection = this.data.cutDirection;
-      const blade = bladeEl.components.blade;
-      const hand = bladeEl.getAttribute('blade').hand;
-
-      // Dot.
-      if (data.type === 'arrow') {
-        // Wrong angle.
-        const strokeBeatAngle = blade.strokeDirectionVector.angleTo(
-          this.cutDirectionVectors[data.cutDirection]);
-        if (strokeBeatAngle > ANGLE_THRESHOLD) {
-          this.wrongHit(hand);
-          return false;
-        }
+    // Dot.
+    if (data.type === 'arrow') {
+      // Wrong angle.
+      const strokeBeatAngle = blade.strokeDirectionVector.angleTo(
+        this.cutDirectionVectors[data.cutDirection]);
+      if (strokeBeatAngle > ANGLE_THRESHOLD) {
+        this.wrongHit(hand);
+        return false;
       }
+      this.calculateScoreBlade(bladeEl, strokeBeatAngle);
+    } else {
+      this.calculateScoreBlade(bladeEl, 0);
+    }
 
-      this.calculateScoreBlade(bladeEl);
-      return true;
-    };
-  })(),
+    return true;
+  },
 
   /**
    * Emit score and show score effects.
@@ -496,7 +496,7 @@ AFRAME.registerComponent('beat', {
     el.sceneEl.emit('textglowbold', null, false);
 
     // Super FX.
-    if (score > 90) {
+    if (score > 80) {
       this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
         el.object3D, this.data.color);
       this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
@@ -506,11 +506,23 @@ AFRAME.registerComponent('beat', {
   /**
    * Blade scoring.
    */
-  calculateScoreBlade: function (bladeEl) {
-    const SUPER_SCORE_SPEED = 6;
+  calculateScoreBlade: function (bladeEl, angle) {
+    // 80% score on speed.
+    let SUPER_SCORE_SPEED = 8;
+    if (this.data.cutDirection === 'down') {
+      SUPER_SCORE_SPEED = 20;
+    }
     const speed = bladeEl.closest('[blade]').components.blade.strokeSpeed;
-    const score = Math.min((speed / SUPER_SCORE_SPEED) * 100, 100);
-    this.score(score);
+    let score = (Math.min((speed / SUPER_SCORE_SPEED) * 100, 100) / 100) * 80;
+
+    // 20% score on direction.
+    if (angle < ANGLE_MAX_SUPER) {
+      score += 20;
+    } else {
+      score += ((ANGLE_THRESHOLD - angle) / ANGLE_THRESHOLD) * 20;
+    }
+
+    this.score(Math.round(score));
   },
 
   /**
