@@ -12,7 +12,6 @@ const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 
 const elasticEasing = getElasticEasing(1.33, 0.5);
 
-const DEGREES_35 = (Math.PI / 180) * 35;
 const DESTROYED_SPEED = 1.0;
 const ONCE = {once: true};
 const DESTROY_TIME = 1000;
@@ -459,26 +458,30 @@ AFRAME.registerComponent('beat', {
   /**
    * Angle-related stuff.
    */
-  checkCollisionBlade: function (bladeEl) {
-    const data = this.data;
-    const cutDirection = this.data.cutDirection;
-    const blade = bladeEl.components.blade;
-    const hand = bladeEl.getAttribute('blade').hand;
+  checkCollisionBlade: (function () {
+    const ANGLE_THRESHOLD = THREE.Math.degToRad(40);
 
-    // Dot.
-    if (data.type === 'arrow') {
-      // Wrong angle.
-      const strokeBeatAngle = blade.strokeDirectionVector.angleTo(
-        this.cutDirectionVectors[data.cutDirection]);
-      if (strokeBeatAngle > DEGREES_35) {
-        this.wrongHit(hand);
-        return false;
+    return function (bladeEl) {
+      const data = this.data;
+      const cutDirection = this.data.cutDirection;
+      const blade = bladeEl.components.blade;
+      const hand = bladeEl.getAttribute('blade').hand;
+
+      // Dot.
+      if (data.type === 'arrow') {
+        // Wrong angle.
+        const strokeBeatAngle = blade.strokeDirectionVector.angleTo(
+          this.cutDirectionVectors[data.cutDirection]);
+        if (strokeBeatAngle > ANGLE_THRESHOLD) {
+          this.wrongHit(hand);
+          return false;
+        }
       }
-    }
 
-    this.calculateScoreBlade(bladeEl);
-    return true;
-  },
+      this.calculateScoreBlade(bladeEl);
+      return true;
+    };
+  })(),
 
   /**
    * Emit score and show score effects.
@@ -515,7 +518,7 @@ AFRAME.registerComponent('beat', {
    * More points scored if punching straight down the curve.
    */
   calculateScorePunch: function (punchEl) {
-    const SUPER_SCORE_SPEED = 1.8;
+    const SUPER_SCORE_SPEED = 2.5;
     const speed = punchEl.closest('[hand-velocity]').components['hand-velocity'].speed;
     const score = Math.min((speed / SUPER_SCORE_SPEED) * 100, 100);
     this.score(score);
