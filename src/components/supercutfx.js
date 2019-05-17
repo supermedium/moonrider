@@ -11,13 +11,14 @@ AFRAME.registerComponent('supercutfx', {
     this.startTime = -1100;  // Pause on first tick.
   },
 
-  createSuperCut: function (object3D, color) {
+  createSuperCut: function (beatObject3D, color) {
     const col = this.colors[color];
     const el = this.el;
     const mesh = this.el.getObject3D('mesh');
 
     mesh.material.transparent = true;
-    this.rigEl.object3D.worldToLocal(el.object3D.position.copy(object3D.position));
+    this.rigEl.object3D.worldToLocal(el.object3D.position.copy(beatObject3D.position));
+    el.object3D.position.z -= 0.25;
     el.object3D.visible = true;
 
     this.startTime = el.sceneEl.time;
