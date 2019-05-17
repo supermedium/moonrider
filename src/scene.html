@@ -152,7 +152,6 @@
       {% macro weapon (hand, otherHand, bladeColor, beamColor) %}
         <a-entity id="{{ hand }}Hand"
           class="weapon"
-          mixin="raycaster"
           bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
           bind__hand-velocity="enabled: isPlaying && gameMode !== 'ride'"
           bind__haptics-weapon="enabled: isPlaying && gameMode === 'classic'"
@@ -169,8 +168,8 @@
           haptics__draw="events: drawblade; dur: 750; force: 0.025"
           haptics__plume="events: plumepulse; dur: 35; force: 0.025"
           haptics-wall
-          raycaster="objects: [raycastable]; far: 5"
-          raycaster__game="objects: [raycastable-game]:not(.blade{{ hand }}); far: 1; interval: 50"
+          raycaster="objects: [raycastable]; far: 5; showLine: false"
+          raycaster__game="objects: [raycastable-game]:not(.blade{{ hand }}); far: 1; interval: 50; showLine: false"
           weapon="hand: {{ hand }}"
           weapon-particles="hand: {{ hand }}"
           thumb-controls
@@ -179,7 +178,7 @@
           trail="color: {{ bladeColor }}; hand: {{ hand }}">
           <a-entity
             id="{{ hand }}Laser"
-            bind__cursor-laser="enabled: !isPlaying && activeHand === '{{ hand }}'"
+            bind__cursor-laser="enabled: activeHand === '{{ hand }}' && !isPlaying"
             geometry="primitive: cylinder; height: 1; radius: 0.005"
             material="color: {{ beamColor }}; shader: flat"
             rotation="-90 0 0"></a-entity>
@@ -262,7 +261,6 @@
   <a-entity
     id="mouseCursor"
     bind__raycaster="enabled: !inVR"
-    mixin="raycaster"
     cursor="rayOrigin: mouse"
     raycaster="objects: [raycastable]"></a-entity>
   <a-entity
