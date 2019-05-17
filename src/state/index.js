@@ -5,7 +5,8 @@ const challengeDataStore = {};
 const NUM_LEADERBOARD_DISPLAY = 10;
 const SEARCH_PER_PAGE = 6;
 const SONG_NAME_TRUNCATE = 22;
-const SONG_SUB_NAME_TRUNCATE = 32;
+const SONG_SUB_NAME_RESULT_TRUNCATE = 32;
+const SONG_SUB_NAME_DETAIL_TRUNCATE = 45;
 
 const DAMAGE_DECAY = 0.25;
 const DAMAGE_MAX = 10;
@@ -431,7 +432,7 @@ AFRAME.registerState({
         let result = payload.results[i];
         result.songSubName = result.songSubName || 'Unknown Artist';
         result.shortSongName = truncate(result.songName, SONG_NAME_TRUNCATE).toUpperCase();
-        result.shortSongSubName = truncate(result.songSubName, SONG_SUB_NAME_TRUNCATE);
+        result.shortSongSubName = truncate(result.songSubName, SONG_SUB_NAME_RESULT_TRUNCATE);
         challengeDataStore[result.id] = result;
       }
       computeSearchPagination(state);
@@ -588,7 +589,7 @@ function computeSearchPagination (state) {
     state.search.songNameTexts +=
       truncate(state.search.results[i].songName, SONG_NAME_TRUNCATE).toUpperCase() + '\n';
     state.search.songSubNameTexts +=
-      truncate(state.search.results[i].songSubName, SONG_SUB_NAME_TRUNCATE) + '\n';
+      truncate(state.search.results[i].songSubName, SONG_SUB_NAME_RESULT_TRUNCATE) + '\n';
   }
 
   for (let i = 0; i < state.searchResultsPage.length; i++) {
@@ -671,7 +672,7 @@ function clearLeaderboard (state) {
 }
 
 function updateMenuSongInfo (state, challenge) {
-  state.menuSelectedChallenge.songInfoText = `By ${truncate(challenge.author, 12)}\n${challenge.genre && challenge.genre !== 'Uncategorized' ? challenge.genre + '\n' : ''}${formatSongLength(challenge.songDuration)} / ${challenge.numBeats[state.menuSelectedChallenge.difficulty]} beats`;
+  state.menuSelectedChallenge.songInfoText = `By ${truncate(challenge.author, SONG_SUB_NAME_DETAIL_TRUNCATE)}\n${challenge.genre && challenge.genre !== 'Uncategorized' ? challenge.genre + '\n' : ''}${formatSongLength(challenge.songDuration)} / ${challenge.numBeats[state.menuSelectedChallenge.difficulty]} beats`;
 }
 
 function updateScoreAccuracy (state) {
