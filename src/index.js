@@ -11,6 +11,7 @@ require('aframe-haptics-component');
 require('aframe-layout-component');
 require('aframe-orbit-controls');
 require('aframe-proxy-event-component');
+require('aframe-render-order-component');
 require('aframe-ring-shader');
 require('aframe-state-component');
 require('aframe-slice9-component');
