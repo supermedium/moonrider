@@ -257,11 +257,12 @@
     bind-for="for: genre; in: genres; updateInPlace: true; key: name"
     bind__visible="genreMenuOpen"
     layout="type: box; columns: 6; marginRow: 0.4; marginColumn: 0.4; align: center"
-    search-genre>
+    search-genre
+    position="0 0 0.05">
     <template>
       <a-entity class="genre" bind-item__data-genre="item">
         <a-entity
-          render-order="menuitem"
+          render-order="menugenre"
           mixin="slice"
           slice9="opacity: 0.9; width: 0.35; left: 70; top: 70; height: 0.35; padding: 0.07"
           animation__mouseenter2="property: scale; from: 1 1 1; to: 1.03 1.03 1.03; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
