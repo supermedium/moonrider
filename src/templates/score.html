@@ -10,28 +10,27 @@
   render-order="score">
   <a-entity
     id="songProgressRing"
-    bind__song-progress-info="enabled: isPlaying && challenge.isBeatsPreloaded"
+    bind__song-progress-info="enabled: isPlaying || isPaused && challenge.isBeatsPreloaded"
     geometry="primitive: plane; width: 0.57; height: 0.03"
     material="shader: flat; color: {{ COLORS.BLUE }}"
-    position="1.525 0.065 -3.94"
+    position="1.525 0.1 -3.94"
     rotation="-30 0 0">
-  </a-entity>
-
-  <a-entity id="comboContainer" position="-1.5 0.13 -4">
-    <a-entity
-      id="combo"
-      mixin="scoreText"
-      bind__text="value: score.combo + '\\nSTREAK'"
-      text="width: 4.5; align: right; anchor: right; color: {{ COLORS.RED }}"
-      rotation="-20 0 0"></a-entity>
   </a-entity>
 
   <a-entity id="scoreNumberContainer" position="1.5 0.13 -4">
     <a-entity
-      id="score"
+      id="combo"
       mixin="scoreText"
-      bind__text="value: score.score + '\\nSCORE'"
-      text="width: 4.5; align: left; anchor: left; color: {{ COLORS.BLUE }}"
+      bind__text="value: 'STREAK  ' + score.combo"
+      text="width: 3.5; align: left; anchor: left; color: {{ COLORS.RED }}"
+      rotation="-20 0 0"
+      position="-0.025 0.175 0"></a-entity>
+
+    <a-entity
+      id="accuracy"
+      mixin="scoreText"
+      bind__text="value: 'SCORE  ' + score.accuracyInt + '%'"
+      text="width: 3.5; align: left; anchor: left; color: {{ COLORS.BLUE }}"
       rotation="-20 0 0"></a-entity>
   </a-entity>
 </a-entity>

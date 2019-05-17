@@ -95,7 +95,8 @@ AFRAME.registerState({
       version: ''
     },
     score: {
-      accuracy: 0,  // Out of 100.
+      accuracy: 100,  // Out of 100.
+      accuracyInt: 100,  // Out of 100.
       active: false,
       beatsHit: 0,
       beatsMissed: 0,
@@ -460,12 +461,8 @@ AFRAME.registerState({
 
       state.isVictory = true;
 
-      // Percentage is score divided by total possible score.
-      let accuracy = (
-        state.score.score /
-        (state.challenge.numBeats[state.challenge.difficulty] * 100)) * 100;
-      state.score.accuracy = isNaN(accuracy) ? 0 : accuracy.toFixed(2);
       state.score.score = isNaN(state.score.score) ? 0 : state.score.score;
+      updateScoreAccuracy(state);
 
       if (accuracy >= 90) {
         state.score.rank = 'S';
@@ -620,8 +617,9 @@ function difficultyComparator (a, b) {
 function takeDamage (state) {
   if (!state.isPlaying || !state.inVR) { return; }
   state.score.combo = 0;
-  if (AFRAME.utils.getUrlParameter('godmode')) { return; }
-  state.damage++;
+  // No damage for now.
+  // state.damage++;
+  // if (AFRAME.utils.getUrlParameter('godmode')) { return; }
   // checkGameOver(state);
 }
 
@@ -681,4 +679,5 @@ function updateScoreAccuracy (state) {
   const currentNumBeats = state.score.beatsHit + state.score.beatsMissed;
   state.score.accuracy = (state.score.score / (currentNumBeats * 100)) * 100;
   state.score.accuracy = state.score.accuracy.toFixed(2);
+  state.score.accuracyInt = parseInt(state.score.accuracy);
 }
