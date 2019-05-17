@@ -13,7 +13,7 @@ AFRAME.registerComponent('search', {
   init: function () {
     this.eventDetail = {query: '', results: topSearch};
     this.popularHits = null;
-    this.queryObject = {hitsPerPage: 100, query: ''};
+    this.queryObject = {hitsPerPage: 0, query: ''};
     this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
   },
 
@@ -43,7 +43,7 @@ AFRAME.registerComponent('search', {
 
     this.eventDetail.query = query;
     this.queryObject.query = query;
-    this.queryObject.hitsPerPage = query ? 30 : 100;
+    this.queryObject.hitsPerPage = query ? 30 : 150;
     algolia.search(this.queryObject, (err, content) => {
       // Cache popular hits.
       if (err) {
