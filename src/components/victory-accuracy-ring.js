@@ -11,6 +11,6 @@ AFRAME.registerComponent('victory-accuracy-ring', {
   update: function () {
     this.el.getObject3D('mesh').material.uniforms.progress.value = 0;
     this.el.setAttribute('animation', 'to', this.data.accuracy / 100);
-    this.el.components['animation'].beginAnimation();
+    this.el.components.animation.beginAnimation();
   }
 });
