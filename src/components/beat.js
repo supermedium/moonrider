@@ -508,9 +508,9 @@ AFRAME.registerComponent('beat', {
    */
   calculateScoreBlade: function (bladeEl, angle) {
     // 80% score on speed.
-    let SUPER_SCORE_SPEED = 8;
+    let SUPER_SCORE_SPEED = 10;
     if (this.data.cutDirection === 'down') {
-      SUPER_SCORE_SPEED = 20;
+      SUPER_SCORE_SPEED = 22;
     }
     const speed = bladeEl.closest('[blade]').components.blade.strokeSpeed;
     let score = (Math.min((speed / SUPER_SCORE_SPEED) * 100, 100) / 100) * 80;
@@ -530,9 +530,11 @@ AFRAME.registerComponent('beat', {
    * More points scored if punching straight down the curve.
    */
   calculateScorePunch: function (punchEl) {
+    // Get 50% of the score just by hitting the beat.
+    let score = 50;
     const SUPER_SCORE_SPEED = 2.5;
     const speed = punchEl.closest('[hand-velocity]').components['hand-velocity'].speed;
-    const score = Math.min((speed / SUPER_SCORE_SPEED) * 100, 100);
+    score += Math.min((speed / SUPER_SCORE_SPEED), 1) * 50;
     this.score(score);
   },
 
