@@ -113,7 +113,7 @@ AFRAME.registerComponent('wall', {
     const curveProgress = this.curveFollowRig.components['supercurve-follow'].curveProgress;
     const songProgress = this.curveEl.components.supercurve.curveProgressToSongProgress(
       curveProgress);
-    if (songProgress >= data.songPosition + 0.02) {
+    if (songProgress >= data.songPosition + 0.08) {
       this.returnToPool();
     }
   },
