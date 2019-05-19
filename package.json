@@ -39,6 +39,7 @@
     "aframe-layout-component": "^5.3.0",
     "aframe-orbit-controls": "^1.2.0",
     "aframe-proxy-event-component": "^2.1.0",
+    "aframe-render-order-component": "^1.1.0",
     "aframe-ring-shader": "^1.2.0",
     "aframe-slice9-component": "^1.0.0",
     "aframe-state-component": "^6.7.0",
