@@ -9,6 +9,10 @@ const iconPositions = {
 };
 
 AFRAME.registerComponent('menu-mode', {
+  schema: {
+    has6DOFVR: {default: false}
+  },
+
   init: function () {
     this.el.addEventListener('click', evt => {
       const item = evt.target.closest('[data-mode]');
@@ -19,8 +23,8 @@ AFRAME.registerComponent('menu-mode', {
     });
   },
 
-  play: function () {
-    if (AFRAME.utils.device.checkHeadsetConnected()) {
+  update: function () {
+    if (this.data.has6DOFVR) {
       this.setModeOption('ridevr');
     } else {
       this.setModeOption('ride2d');
