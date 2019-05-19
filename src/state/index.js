@@ -58,6 +58,7 @@ AFRAME.registerState({
     genre: '',
     genres: require('../constants/genres'),
     genreMenuOpen: false,
+    has6DOFVR: false,
     hasVR: AFRAME.utils.device.checkHeadsetConnected(),
     introActive: !SKIP_INTRO,  // Just started game, main menu not opened yet.
     inVR: false,
