@@ -505,10 +505,10 @@ AFRAME.registerComponent('super-keyboard', {
     this.data.show = false;
   },
 
-  blur: function (ev) {
+  blur: function () {
     this.focused = false;
     if (this.keyHover && this.keyHover.key !== 'Shift') {
-      this.updateKeyColorPlane(this.keyHover.key, this.keyBgColor);
+      this.keyColorPlane.object3D.visible = false;
     }
     this.keyHover = null;
   },
