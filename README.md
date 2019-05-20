@@ -10,6 +10,8 @@ A free and open source music visualization and rhythm game website. From the
 creators of the [Beat Saver Viewer](https://supermedium.com/beatsaver-viewer)
 used by the community to preview maps.
 
+![gif](https://user-images.githubusercontent.com/674727/58050249-ab442900-7b03-11e9-8763-913d42a26708.gif)
+
 Song maps are sourced from beatsaver.com with expressed support from the Beat
 Saver community admins.  Supports all browsers and headsets (incl. Quest). If
 there are any issues, file requests using the form at beatsaver.com or leave a
