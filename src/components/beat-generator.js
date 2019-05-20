@@ -307,9 +307,12 @@ AFRAME.registerComponent('beat-generator', {
       wallEl.play();
 
       // Set render order (back to front so decreasing render order as index increases).
+      // For walls, set as the back end of the wall.
+      const lengthPercent = wallObj.length / this.curveEl.components.supercurve.length;
       wallEl.setAttribute(
         'render-order',
-        this.el.systems['render-order'].order.beats + 1 - wallObj.songPosition);
+        this.el.systems['render-order'].order.beats + 1 -
+        (wallObj.songPosition + lengthPercent));
     };
   })(),
 
