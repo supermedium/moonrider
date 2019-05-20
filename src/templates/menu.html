@@ -109,7 +109,7 @@
     render-order="menu"
     position="0 0 -0.005"></a-entity>
 
-  <a-entity id="mainMenu" bind__visible="!genreMenuOpen && !difficultyFilterMenuOpen && !isMenuOpening">
+  <a-entity id="mainMenu" bind__visible="mainMenuActive && !isMenuOpening || isSearching">
     <a-entity id="searchResultsContainer" position="0 0 0.001"
       class="menuAnimation"
       bind__menu-slide-animation="isSearching: isSearching; menuSelectedChallengeId: menuSelectedChallenge.id"
@@ -255,48 +255,9 @@
       position="0 0 0.01"></a-entity>
   </a-entity>
 
-  <a-entity
-    id="genreMenu"
-    bind-for="for: genre; in: genres; updateInPlace: true; key: name"
-    bind__visible="genreMenuOpen"
-    layout="type: box; columns: 6; marginRow: 0.4; marginColumn: 0.4; align: center"
-    search-genre
-    position="0 0 0.05">
-    <template>
-      <a-entity class="genre" bind-item__data-genre="item">
-        <a-entity
-          mixin="slice"
-          slice9="opacity: 0.9; width: 0.35; left: 70; top: 70; height: 0.35; padding: 0.07"
-          animation__mouseenter2="property: scale; from: 1 1 1; to: 1.03 1.03 1.03; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
-          animation__mouseleave2="property: scale; from: 1.03 1.03 1.03; to: 1 1 1; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
-          proxy-event__enter="event: mouseenter; to: CHILDREN; captureBubbles: true"
-          proxy-event__leave="event: mouseleave; to: CHILDREN; captureBubbles: true"
-          play-sound__click="event: click; sound: #confirmSound; volume: 0.1"
-          raycaster-target="bindToggle: genreMenuOpen; width: 0.35; height: 0.35"
-          render-order__nonrecursive="menubutton">
-          <a-entity
-            mixin="font"
-            bind-item__text="value: item.name"
-            text="align: center; width: 1.1; color: #888"
-            animation__mouseenter="property: components.text.material.uniforms.color.value; from: #888; to: #FFF; type: color; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
-            animation__mouseleave="property: components.text.material.uniforms.color.value; from: #FFF; to: #888; type: color; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
-            render-order="menutext"
-            position="0 -0.16 0.001"></a-entity>
-          <a-entity
-            class="genreIcon"
-            bind-item__atlas-uvs="totalColumns: 6; totalRows: 3; row: item.row; column: item.column"
-            geometry="primitive: plane; width: 0.22; height: 0.22; buffer: false; skipCache: true"
-            position="0 0.04 0.002"
-            material="shader: flat; src: #genresImg; transparent: true; color: #888"
-            render-order="menutext"
-            animation__mouseenter="property: components.material.material.color; type: color; from: #888; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
-            animation__mouseleave="property: components.material.material.color; type: color; from: #FAFAFA; to: #888; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"></a-entity>
-        </a-entity>
-      </a-entity>
-    </template>
-  </a-entity>
-
+  <require path="templates/genreMenu.html"></require>
   <require path="templates/difficultyMenu.html"></require>
+  <require path="templates/playlistMenu.html"></require>
 </a-entity>
 
 <a-entity
@@ -315,12 +276,13 @@
 <a-entity
   id="backButton"
   mixin="bigMenuTopButton"
-  bind__visible-raycastable="genreMenuOpen || isSearching || difficultyFilterMenuOpen"
+  bind__visible-raycastable="genreMenuOpen || isSearching || difficultyFilterMenuOpen || playlistMenuOpen"
   position="0 2.30 -1.96"
   play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
-  proxy-event__difficultyfilter="event: click; to: a-scene; as: difficultyfiltermenuclose"
-  proxy-event__genres="event: click; to: a-scene; as: genremenuclose"
-  proxy-event__searching="event: click; to: a-scene; as: keyboardclose">
+  proxy-event__difficulty="event: click; to: a-scene; as: difficultyfiltermenuclose"
+  proxy-event__genre="event: click; to: a-scene; as: playlistmenuclose"
+  proxy-event__playlist="event: click; to: a-scene; as: genremenuclose"
+  proxy-event__search="event: click; to: a-scene; as: keyboardclose">
   <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 20; value: BACK" position="0 -0.07 0.01"></a-entity>
 </a-entity>
 
@@ -339,7 +301,7 @@
     <a-entity
       id="searchButton"
       mixin="bigMenuTopButton"
-      bind__visible-raycastable="menuActive && !genreMenuOpen && !isSearching && !search.query && !difficultyFilterMenuOpen"
+      bind__visible-raycastable="mainMenuActive && !search.query"
       material="opacity: 0"
       animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
       play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
@@ -349,7 +311,7 @@
 
     <a-entity id="searchClearButton"
       mixin="bigMenuTopButton"
-      bind__visible-raycastable="menuActive && !!search.query && !isSearching && !genreMenuOpen && !difficultyFilterMenuOpen"
+      bind__visible-raycastable="mainMenuActive && !!search.query"
       play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
       play-sound__click="event: click; sound: #clearSound"
       proxy-event="event: click; to: a-scene; as: searchclear">
@@ -360,7 +322,7 @@
       id="searchText"
       mixin="font"
       bind__text-uppercase="value: search.query"
-      bind__visible="menuActive && !!search.query && !isSearching && !genreMenuOpen && !difficultyFilterMenuOpen"
+      bind__visible="mainMenuActive && !!search.query"
       text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
       position="0 0.1 0.035"></a-entity>
   </a-entity>
@@ -370,7 +332,7 @@
     <a-entity id="difficultyButton"
       mixin="bigMenuTopButton"
       material="opacity: 0"
-      bind__visible-raycastable="menuActive && !genreMenuOpen && !isSearching && !difficultyFilterMenuOpen && !isLoading"
+      bind__visible-raycastable="mainMenuActive"
       animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
       play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
       proxy-event="event: click; to: a-scene; as: difficultyfiltermenuopen">
@@ -381,7 +343,7 @@
       id="difficultyFilterText"
       mixin="font"
       bind__difficulty-text="difficulty: difficultyFilter"
-      bind__visible="menuActive && difficultyFilter !== 'All' && !genreMenuOpen && !difficultyFilterMenuOpen && !isLoading"
+      bind__visible="mainMenuActive && difficultyFilter !== 'All'"
       text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
       position="0 0.1 0.035"></a-entity>
   </a-entity>
@@ -390,7 +352,7 @@
   <a-entity id="genreButtons">
     <a-entity id="genreButton"
       mixin="bigMenuTopButton"
-      bind__visible-raycastable="menuActive && !genreMenuOpen && !isSearching && !genre && !difficultyFilterMenuOpen"
+      bind__visible-raycastable="mainMenuActive && !genre"
       material="opacity: 0"
       animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
       play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
@@ -400,10 +362,10 @@
 
     <a-entity id="clearGenreButton"
       mixin="bigMenuTopButton"
-      bind__visible-raycastable="menuActive && !!genre && !isSearching && !difficultyFilterMenuOpen"
+      bind__visible-raycastable="mainMenuActive && !!genre"
       play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
       play-sound__click="event: click; sound: #clearSound"
-      proxy-event="event: click; to: a-scene; as: searchclear">
+      proxy-event="event: click; to: a-scene; as: genreclear">
       <a-entity mixin="bigMenuTopButtonFont" text="align: center; color: #FFF; wrapCount: 20; value: CLEAR GENRE"></a-entity>
     </a-entity>
 
@@ -411,7 +373,7 @@
       id="genreText"
       mixin="font"
       bind__text-uppercase="value: genre"
-      bind__visible="!!genre && !isSearching && !difficultyFilterMenuOpen"
+      bind__visible="mainMenuActive && !!genre"
       text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
       position="0 0.1 0.035"></a-entity>
   </a-entity>
@@ -420,7 +382,7 @@
   <a-entity id="playlistButtons">
     <a-entity id="playlistButton"
       mixin="bigMenuTopButton"
-      bind__visible-raycastable="menuActive && !playlistMenuOpen && !isSearching && !playlist && !difficultyFilterMenuOpen"
+      bind__visible-raycastable="mainMenuActive && !playlist"
       material="opacity: 0"
       animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
       play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
@@ -430,10 +392,10 @@
 
     <a-entity id="clearPlaylistButton"
       mixin="bigMenuTopButton"
-      bind__visible-raycastable="menuActive && !!playlist && !isSearching && !difficultyFilterMenuOpen"
+      bind__visible-raycastable="menuActive && !!playlist"
       play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
       play-sound__click="event: click; sound: #clearSound"
-      proxy-event="event: click; to: a-scene; as: searchclear">
+      proxy-event="event: click; to: a-scene; as: playlistclear">
       <a-entity mixin="bigMenuTopButtonFont" text="align: center; color: #FFF; wrapCount: 20; value: CLEAR PLAYLIST"></a-entity>
     </a-entity>
 
@@ -441,7 +403,7 @@
       id="playlistText"
       mixin="font"
       bind__text-uppercase="value: playlist"
-      bind__visible="!!playlist && !isSearching && !difficultyFilterMenuOpen"
+      bind__visible="mainMenuActive && !!playlist"
       text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
       position="0 0.1 0.035"></a-entity>
   </a-entity>

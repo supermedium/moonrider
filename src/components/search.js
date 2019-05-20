@@ -5,6 +5,8 @@ const algolia = client.initIndex('beatsaver');
 
 const topSearch = require('../lib/search.json');
 
+const filters = [];
+
 /**
  * Search (including the initial list of popular searches).
  * Attached to super-keyboard.
@@ -12,19 +14,27 @@ const topSearch = require('../lib/search.json');
 AFRAME.registerComponent('search', {
   schema: {
     difficultyFilter: {default: 'All'},
+    genre: {default: ''},
+    playlist: {default: ''},
     query: {default: ''}
   },
 
   init: function () {
     this.eventDetail = {query: '', results: topSearch};
+    this.keyboardEl = document.getElementById('keyboard');
     this.popularHits = null;
     this.queryObject = {hitsPerPage: 0, query: ''};
     this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
   },
 
   update: function (oldData) {
-    if (this.popularHits && oldData.difficultyFilter !== this.data.difficultyFilter) {
-      this.search(this.data.query);
+    if (!this.popularHits) { return; }  // First load.
+    this.search(this.data.query);
+
+    // Clear keyboard.
+    if (oldData.query && !this.data.query) {
+      this.keyboardEl.components['super-keyboard'].data.value = '';
+      this.keyboardEl.components['super-keyboard'].updateTextInput('');
     }
   },
 
@@ -45,7 +55,8 @@ AFRAME.registerComponent('search', {
 
   search: function (query) {
     // Use cached for popular hits.
-    if (!query && this.data.difficultyFilter === 'All' && this.popularHits) {
+    if (!query && this.data.difficultyFilter === 'All' && !this.data.genre &&
+        !this.data.playlist && this.popularHits) {
       this.eventDetail.results = this.popularHits;
       this.eventDetail.query = '';
       this.el.sceneEl.emit('searchresults', this.eventDetail);
@@ -56,8 +67,27 @@ AFRAME.registerComponent('search', {
     this.queryObject.query = query;
     this.queryObject.hitsPerPage = query ? 30 : 150;
 
-    if (this.data.difficultyFilter && this.data.difficultyFilter !== 'All') {
-      this.queryObject.filters = `difficulties:"${this.data.difficultyFilter}"`;
+    if (this.data.difficultyFilter || this.data.genre || this.data.playlist) {
+      filters.length = 0;
+
+      // Difficulty filter.
+      if (this.data.difficultyFilter && this.data.difficultyFilter !== 'All') {
+        filters.push(`difficulties:"${this.data.difficultyFilter}"`);
+      }
+
+      // Genre filter.
+      if (this.data.genre === 'Video Games') {
+        filters.push(`genre:"Video Game" OR genre:"Video Games"`);
+      } else if (this.data.genre) {
+        filters.push(`genre:"${this.data.genre}"`);
+      }
+
+      // Playlist filter.
+      if (this.data.playlist) {
+        filters.push(`playlists:"${this.data.playlist}"`);
+      }
+
+      this.queryObject.filters = filters.join(' AND ');
     } else {
       delete this.queryObject.filters;
     }
@@ -77,42 +107,6 @@ AFRAME.registerComponent('search', {
         this.eventDetail.results = content.hits;
       }
 
-      this.el.sceneEl.emit('searchresults', this.eventDetail);
-    });
-  }
-});
-
-/**
- * Select genre filter.
- */
-AFRAME.registerComponent('search-genre', {
-  init: function () {
-    this.eventDetail = {isGenreSearch: true, genre: '', results: []};
-    this.queryObject = {
-      filters: '',
-      hitsPerPage: 100
-    };
-
-    this.el.addEventListener('click', evt => {
-      this.search(evt.target.closest('.genre').dataset.bindForKey);
-    });
-  },
-
-  search: function (genre) {
-    if (genre === 'Video Games') {
-      this.queryObject.filters = `genre:"Video Game" OR genre:"Video Games"`;
-    } else {
-      this.queryObject.filters = `genre:"${genre}"`;
-    }
-    algolia.search(this.queryObject, (err, content) => {
-      if (err) {
-        this.el.sceneEl.emit('searcherror', null, false);
-        console.error(err);
-        return;
-      }
-
-      this.eventDetail.genre = genre;
-      this.eventDetail.results = content.hits;
       this.el.sceneEl.emit('searchresults', this.eventDetail);
     });
   }

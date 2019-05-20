@@ -11,7 +11,7 @@
   bind__gameover="isGameOver: isGameOver"
   bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
   bind__leaderboard="gameMode: gameMode; inVR: inVR; isVictory: isVictory; menuSelectedChallengeId: menuSelectedChallenge.id; challengeId: challenge.id"
-  bind__search="difficultyFilter: difficultyFilter; query: search.query"
+  bind__search="difficultyFilter: difficultyFilter; genre: genre; query: search.query"
   bind__song="audio: challenge.audio; challengeId: challenge.id; isLoading: isLoading; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver; isVictory: isVictory"
   bind__song-preview-system="challengeId: challenge.id; isSearching: isSearching; isLoading: isLoading; selectedChallengeId: menuSelectedChallenge.id"
   bind__tunnels="isPlaying: isPlaying; songDuration: challenge.songDuration"
@@ -270,7 +270,8 @@
     id="mouseCursorMesh"
     mixin="cursorMesh"
     cursor-mesh="cursorEl: #mouseCursor"
-    bind__cursor-mesh="active: menuActive"></a-entity>
+    bind__cursor-mesh="active: menuActive"
+    render-order="cursor"></a-entity>
 
   <a-entity
     tail="target: #leftstar"

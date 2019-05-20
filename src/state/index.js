@@ -78,6 +78,7 @@ AFRAME.registerState({
     leaderboardQualified: false,
     leaderboardNames: '',
     leaderboardScores: '',
+    mainMenuActive: false,
     menuActive: SKIP_INTRO, // Main menu active.
     menuDifficulties: [],  // List of strings of available difficulties for selected.
     menuSelectedChallenge: {  // Currently selected challenge in the main menu.
@@ -98,6 +99,7 @@ AFRAME.registerState({
       version: ''
     },
     playlist: '',
+    playlists: require('../constants/playlists'),
     playlistMenuOpen: false,
     score: {
       accuracy: 100,  // Out of 100.
@@ -291,6 +293,15 @@ AFRAME.registerState({
 
     genreclear: state => {
       state.genre = '';
+      state.menuSelectedChallenge.id = '';
+    },
+
+    genreselect: (state, genre) => {
+      state.genre = genre;
+      state.genreMenuOpen = false;
+      state.menuSelectedChallenge.id = '';
+      state.playlist = '';
+      state.search.query = '';
     },
 
     genremenuclose: state => {
@@ -435,6 +446,27 @@ AFRAME.registerState({
       state.isLoading = true;
     },
 
+    playlistclear: (state, playlist) => {
+      state.menuSelectedChallenge.id = '';
+      state.playlist = '';
+    },
+
+    playlistselect: (state, playlist) => {
+      state.genre = '';
+      state.menuSelectedChallenge.id = '';
+      state.playlist = playlist;
+      state.playlistMenuOpen = false;
+      state.search.query = '';
+    },
+
+    playlistmenuclose: state => {
+      state.playlistMenuOpen = false;
+    },
+
+    playlistmenuopen: state => {
+      state.playlistMenuOpen = true;
+    },
+
     searcherror: (state, payload) => {
       state.search.hasError = true;
     },
@@ -470,15 +502,10 @@ AFRAME.registerState({
         challengeDataStore[result.id] = result;
       }
       computeSearchPagination(state);
-
-      if (payload.isGenreSearch) {
-        state.genreMenuOpen = false;
-        state.genre = payload.genre;
-        state.search.query = '';
-        state.menuSelectedChallenge.id = '';
-      } else {
+      state.menuSelectedChallenge.id = '';
+      if (state.isSearching) {
         state.genre = '';
-        computeMenuSelectedChallengeIndex(state);
+        state.playlist = '';
       }
     },
 
@@ -590,11 +617,12 @@ AFRAME.registerState({
     state.leftRaycasterActive = anyMenuOpen && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = anyMenuOpen && state.activeHand === 'right' && state.inVR;
 
-    state.searchResultsActive =
+    state.mainMenuActive =
       state.menuActive &&
       !state.genreMenuOpen &&
       !state.difficultyFilterMenuOpen &&
-      !state.playlistMenuOpen;
+      !state.playlistMenuOpen &&
+      !state.isSearching;
 
     state.score.active =
       state.gameMode !== 'ride' &&
