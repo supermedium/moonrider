@@ -363,8 +363,14 @@ AFRAME.registerState({
       }
       state.menuDifficulties.sort(difficultyComparator);
 
-      // Default to easiest difficulty.
-      state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
+      if (state.difficultyFilter &&
+          state.menuDifficulties.indexOf(state.difficultyFilter) !== -1) {
+        // Default to difficulty if filter active.
+        state.menuSelectedChallenge.difficulty = state.difficultyFilter;
+      } else {
+        // Default to easiest difficulty.
+        state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
+      }
 
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
       updateMenuSongInfo(state, challenge);
