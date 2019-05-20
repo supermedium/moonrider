@@ -241,6 +241,7 @@ AFRAME.registerState({
     difficultyfilter: (state, difficulty) => {
       state.difficultyFilter = difficulty;
       state.difficultyFilterMenuOpen = false;
+      state.menuSelectedChallenge.id = '';
     },
 
     difficultyfiltermenuclose: state => {

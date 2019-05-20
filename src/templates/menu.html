@@ -77,7 +77,7 @@
         bind-item__active-item="active: menuSelectedChallenge.id === item.id"
         bind-item__animation__mouseenter="enabled: menuSelectedChallenge.id !== item.id"
         bind-item__animation__mouseleave="enabled: menuSelectedChallenge.id !== item.id"
-        bind-toggle__raycastable="menuActive"
+        bind-toggle__raycastable="menuActive && !introActive"
         animation__mouseenter="property: components.material.material.opacity; to: 0.4; startEvents: mouseenter; pauseEvents: mouseleave; dur: 75; delay: 1"
         animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 75"
         geometry="primitive: plane; width: 1.1; height: 0.2"
@@ -215,9 +215,9 @@
           id="menuSelectedChallengeInfo"
           bind__text="value: menuSelectedChallenge.songInfoText"
           mixin="font"
-          position="0 -0.346 0"
+          position="0 -0.42 0"
           render-order="menutext"
-          text="align: center; color: #848484; wrapCount: 30; lineHeight: 60; width: 0.8; baseline: bottom"></a-entity>
+          text="align: center; color: #989898; wrapCount: 30; lineHeight: 72; width: 0.9; baseline: bottom"></a-entity>
       </a-entity>
 
       <a-entity
@@ -344,7 +344,7 @@
     id="searchText"
     mixin="font"
     bind__text-uppercase="value: search.query"
-    bind__visible="!!search.query && !isSearching && !genreMenuOpen"
+    bind__visible="!!search.query && !isSearching && !genreMenuOpen && !difficultyFilterMenuOpen"
     text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
     position="0 0.1 0.035"></a-entity>
 </a-entity>
