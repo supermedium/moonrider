@@ -376,7 +376,7 @@
     id="difficultyFilterText"
     mixin="font"
     bind__difficulty-text="difficulty: difficultyFilter"
-    bind__visible="difficultyFilter !== 'All' && !genreMenuOpen && !difficultyFilterMenuOpen"
+    bind__visible="menuActive && difficultyFilter !== 'All' && !genreMenuOpen && !difficultyFilterMenuOpen"
     text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
     position="0 0.1 0.035"></a-entity>
 </a-entity>
