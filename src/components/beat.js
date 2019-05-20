@@ -530,11 +530,11 @@ AFRAME.registerComponent('beat', {
    * More points scored if punching straight down the curve.
    */
   calculateScorePunch: function (punchEl) {
-    // Get 50% of the score just by hitting the beat.
-    let score = 50;
-    const SUPER_SCORE_SPEED = 2.5;
+    // Get 60% of the score just by hitting the beat.
+    let score = 60;
+    const SUPER_SCORE_SPEED = 6;
     const speed = punchEl.closest('[hand-velocity]').components['hand-velocity'].speed;
-    score += Math.min((speed / SUPER_SCORE_SPEED), 1) * 50;
+    score += Math.min((speed / SUPER_SCORE_SPEED), 1) * 40;
     this.score(score);
   },
 
