@@ -10,11 +10,22 @@ const topSearch = require('../lib/search.json');
  * Attached to super-keyboard.
  */
 AFRAME.registerComponent('search', {
+  schema: {
+    difficultyFilter: {default: 'All'},
+    query: {default: ''}
+  },
+
   init: function () {
     this.eventDetail = {query: '', results: topSearch};
     this.popularHits = null;
     this.queryObject = {hitsPerPage: 0, query: ''};
     this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
+  },
+
+  update: function (oldData) {
+    if (this.popularHits && oldData.difficultyFilter !== this.data.difficultyFilter) {
+      this.search(this.data.query);
+    }
   },
 
   play: function () {
@@ -34,7 +45,7 @@ AFRAME.registerComponent('search', {
 
   search: function (query) {
     // Use cached for popular hits.
-    if (!query && this.popularHits) {
+    if (!query && this.data.difficultyFilter === 'All' && this.popularHits) {
       this.eventDetail.results = this.popularHits;
       this.eventDetail.query = '';
       this.el.sceneEl.emit('searchresults', this.eventDetail);
@@ -44,6 +55,13 @@ AFRAME.registerComponent('search', {
     this.eventDetail.query = query;
     this.queryObject.query = query;
     this.queryObject.hitsPerPage = query ? 30 : 150;
+
+    if (this.data.difficultyFilter && this.data.difficultyFilter !== 'All') {
+      this.queryObject.filters = `difficulties:"${this.data.difficultyFilter}"`;
+    } else {
+      delete this.queryObject.filters;
+    }
+
     algolia.search(this.queryObject, (err, content) => {
       // Cache popular hits.
       if (err) {
@@ -52,7 +70,7 @@ AFRAME.registerComponent('search', {
         return;
       }
 
-      if (!query) {
+      if (!query && this.data.difficultyFilter === 'All') {
         this.popularHits = topSearch.concat(content.hits);
         this.eventDetail.results = this.popularHits;
       } else {

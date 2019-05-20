@@ -11,6 +11,7 @@
   bind__gameover="isGameOver: isGameOver"
   bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
   bind__leaderboard="gameMode: gameMode; inVR: inVR; isVictory: isVictory; menuSelectedChallengeId: menuSelectedChallenge.id; challengeId: challenge.id"
+  bind__search="difficultyFilter: difficultyFilter; query: search.query"
   bind__song="audio: challenge.audio; challengeId: challenge.id; isLoading: isLoading; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver; isVictory: isVictory"
   bind__song-preview-system="challengeId: challenge.id; isSearching: isSearching; isLoading: isLoading; selectedChallengeId: menuSelectedChallenge.id"
   bind__tunnels="isPlaying: isPlaying; songDuration: challenge.songDuration"
@@ -66,11 +67,11 @@
   proxy-event__hidediffpanel2="event: keyboardopen; as: hideDifficultySection; to: #menuBackground"
   proxy-event__hidediffpanel3="event: playbuttonclick; to: #menuBackground"
   proxy-event__hidediffpanel4="event: difficultyfiltermenuclose; as: hideDifficultySection; to: #menuBackground"
+  proxy-event__hidediffpanel5="event: difficultyfilter; as: hideDifficultySection; to: #menuBackground"
   proxy-event__pausegame="event: pausegame; as: textglowoff; to: a-scene"
   proxy-event__resumegame="event: gamemenuresume; as: textglownormal; to: a-scene"
   play-sound__crescendo="sound: #crescendo; event: victory; volume: 0.75"
   render-order="stage, aurora, sideglow, tunnel, curve, curveshadow, beatShadow, score, beats, menu, menuitem, menubutton, menutext, menugenre, cursor, particles, weapon, victory, stepback"
-  search
   stage-colors
   stats-param
   tunnels

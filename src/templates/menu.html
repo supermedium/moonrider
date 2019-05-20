@@ -159,7 +159,7 @@
                 bind-item__active-item="active: menuSelectedChallenge.difficulty === item"
                 bind-item__animation__mouseenter="enabled: menuSelectedChallenge.difficulty !== item"
                 bind-item__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== item"
-                bind-item__difficulty-background="enabled: menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
+                bind-item__difficulty-background="enabled: menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item && !difficultyFilterMenuOpen"
                 geometry="primitive: plane; width: 0.4; height: 0.2"
                 material="shader: flat; color: #7b3764; transparent: true; opacity: 0.0; src: #difficultyImg"
                 position="0 -0.005 0"
@@ -367,8 +367,8 @@
   <a-entity
     id="difficultyFilterText"
     mixin="font"
-    bind__text-uppercase="value: difficultyFilter"
-    bind__visible="!!genre && !isSearching"
+    bind__difficulty-text="difficulty: difficultyFilter"
+    bind__visible="difficultyFilter !== 'All' && !genreMenuOpen && !difficultyFilterMenuOpen"
     text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
     position="0 0.1 0.035"></a-entity>
 </a-entity>

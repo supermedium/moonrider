@@ -240,6 +240,7 @@ AFRAME.registerState({
 
     difficultyfilter: (state, difficulty) => {
       state.difficultyFilter = difficulty;
+      state.difficultyFilterMenuOpen = false;
     },
 
     difficultyfiltermenuclose: state => {
