@@ -141,7 +141,7 @@
       <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls></a-entity>
       <a-entity
         id="cameraWallCollider"
-        bind__raycaster__wall="enabled: isPlaying"
+        bind__raycaster__wall="enabled: gameMode !== 'ride'"
         proxy-event__wallhitstart="event: raycaster-intersection; to: a-scene; as: wallhitstart"
         proxy-event__wallhitend="event: raycaster-intersection-cleared; to: a-scene; as: wallhitend"
         follow-position="target: #camera"
