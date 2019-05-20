@@ -354,7 +354,7 @@
     id="searchText"
     mixin="font"
     bind__text-uppercase="value: search.query"
-    bind__visible="!!search.query && !isSearching && !genreMenuOpen && !difficultyFilterMenuOpen"
+    bind__visible="menuActive && !!search.query && !isSearching && !genreMenuOpen && !difficultyFilterMenuOpen"
     text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
     position="0 0.1 0.035"></a-entity>
 </a-entity>
@@ -367,7 +367,7 @@
   <a-entity id="difficultyButton"
     mixin="bigMenuTopButton"
     material="opacity: 0"
-    bind__visible-raycastable="menuActive && !genreMenuOpen && !isSearching && !difficultyFilterMenuOpen"
+    bind__visible-raycastable="menuActive && !genreMenuOpen && !isSearching && !difficultyFilterMenuOpen && !isLoading"
     animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
     play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
     proxy-event="event: click; to: a-scene; as: difficultyfiltermenuopen">
@@ -378,7 +378,7 @@
     id="difficultyFilterText"
     mixin="font"
     bind__difficulty-text="difficulty: difficultyFilter"
-    bind__visible="menuActive && difficultyFilter !== 'All' && !genreMenuOpen && !difficultyFilterMenuOpen"
+    bind__visible="menuActive && difficultyFilter !== 'All' && !genreMenuOpen && !difficultyFilterMenuOpen && !isLoading"
     text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
     position="0 0.1 0.035"></a-entity>
 </a-entity>
