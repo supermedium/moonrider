@@ -77,7 +77,7 @@
         bind-item__active-item="active: menuSelectedChallenge.id === item.id"
         bind-item__animation__mouseenter="enabled: menuSelectedChallenge.id !== item.id"
         bind-item__animation__mouseleave="enabled: menuSelectedChallenge.id !== item.id"
-        bind-toggle__raycastable="menuActive && !introActive"
+        bind-toggle__raycastable="menuActive && !introActive && !genreMenuOpen && !difficultyFilterMenuOpen"
         animation__mouseenter="property: components.material.material.opacity; to: 0.4; startEvents: mouseenter; pauseEvents: mouseleave; dur: 75; delay: 1"
         animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 75"
         geometry="primitive: plane; width: 1.1; height: 0.2"
@@ -411,7 +411,7 @@
     id="genreText"
     mixin="font"
     bind__text-uppercase="value: genre"
-    bind__visible="!!genre && !isSearching"
+    bind__visible="!!genre && !isSearching && !difficultyFilterMenuOpen"
     text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
     position="0 0.1 0.035"></a-entity>
 </a-entity>
