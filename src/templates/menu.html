@@ -314,7 +314,7 @@
 
 <a-entity
   id="backButton"
-  mixin="bigMenuButton"
+  mixin="bigMenuTopButton"
   bind__visible-raycastable="genreMenuOpen || isSearching || difficultyFilterMenuOpen"
   position="0 2.35 -1.96"
   play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
@@ -324,13 +324,15 @@
   <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 20; value: BACK" position="0 -0.07 0.01"></a-entity>
 </a-entity>
 
+<a-mixin id="bigMenuTopButton" mixin="bigMenuButton" geometry="width: 0.9"></a-mixin>
+
 <a-entity
   id="searchButtons"
   position="-0.85 2.35 -1.96"
   animation__position="property: object3D.position.z; to: -1.9; dur: 1500; easing: easeInOutCubic; delay: 300; startEvents: startgame"
   proxy-event="event: startgame; to: #searchButton">
   <a-entity id="searchButton"
-    mixin="bigMenuButton"
+    mixin="bigMenuTopButton"
     bind__visible-raycastable="menuActive && !genreMenuOpen && !isSearching && !search.query && !difficultyFilterMenuOpen"
     material="opacity: 0"
     animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
@@ -340,7 +342,7 @@
   </a-entity>
 
   <a-entity id="searchClearButton"
-    mixin="bigMenuButton"
+    mixin="bigMenuTopButton"
     bind__visible-raycastable="menuActive && !!search.query && !isSearching && !genreMenuOpen && !difficultyFilterMenuOpen"
     play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
     play-sound__click="event: click; sound: #clearSound"
@@ -363,7 +365,7 @@
   animation__position="property: object3D.position.z; to: -1.9; dur: 1500; easing: easeInOutCubic; delay: 300; startEvents: startgame"
   proxy-event="event: startgame; to: #difficultyButton">
   <a-entity id="difficultyButton"
-    mixin="bigMenuButton"
+    mixin="bigMenuTopButton"
     material="opacity: 0"
     bind__visible-raycastable="menuActive && !genreMenuOpen && !isSearching && !difficultyFilterMenuOpen"
     animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
@@ -387,7 +389,7 @@
   animation__position="property: object3D.position.z; to: -1.9; dur: 1500; easing: easeInOutCubic; delay: 300; startEvents: startgame"
   proxy-event="event: startgame; to: #genreButton">
   <a-entity id="genreButton"
-    mixin="bigMenuButton"
+    mixin="bigMenuTopButton"
     bind__visible-raycastable="menuActive && !genreMenuOpen && !isSearching && !genre && !difficultyFilterMenuOpen"
     material="opacity: 0"
     animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
@@ -397,7 +399,7 @@
   </a-entity>
 
   <a-entity id="clearGenreButton"
-    mixin="bigMenuButton"
+    mixin="bigMenuTopButton"
     bind__visible-raycastable="menuActive && !!genre && !isSearching && !difficultyFilterMenuOpen"
     play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
     play-sound__click="event: click; sound: #clearSound"
