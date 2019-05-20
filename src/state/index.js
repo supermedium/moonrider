@@ -54,6 +54,8 @@ AFRAME.registerState({
     },
     controllerType: '',
     damage: 0,
+    difficultyFilter: 'All',
+    difficultyFilterMenuOpen: false,
     gameMode: 'ride',
     genre: '',
     genres: require('../constants/genres'),
@@ -234,6 +236,18 @@ AFRAME.registerState({
       state.score.score = 9001;
       state.introActive = false;
       computeBeatsText(state);
+    },
+
+    difficultyfilter: (state, difficulty) => {
+      state.difficultyFilter = difficulty;
+    },
+
+    difficultyfiltermenuclose: state => {
+      state.difficultyFilterMenuOpen = false;
+    },
+
+    difficultyfiltermenuopen: state => {
+      state.difficultyFilterMenuOpen = true;
     },
 
     displayconnected: state => {
@@ -449,6 +463,7 @@ AFRAME.registerState({
       if (payload.isGenreSearch) {
         state.genreMenuOpen = false;
         state.genre = payload.genre;
+        state.search.query = '';
         state.menuSelectedChallenge.id = '';
       } else {
         state.genre = '';

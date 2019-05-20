@@ -7,6 +7,10 @@ AFRAME.registerComponent('difficulty-text', {
   update: function () {
     let text = '';
     switch (this.data.difficulty) {
+      case 'All': {
+        text = 'ALL';
+        break;
+      }
       case 'Easy': {
         text = 'EASY';
         break;
