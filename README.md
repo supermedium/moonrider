@@ -23,6 +23,8 @@ for the developer community.
 
 [**Try the site out now in your browser!**](https://supermedium.com/moonrider/)
 
+![](https://user-images.githubusercontent.com/674727/58050969-b8621780-7b05-11e9-9494-1db7cee9f69b.jpeg)
+
 Featuring various modes:
 
 - **Ride Mode** - Just sit back and enjoy the ride.
