@@ -29,6 +29,7 @@ AFRAME.registerComponent('search', {
 
   update: function (oldData) {
     if (!this.popularHits) { return; }  // First load.
+
     this.search(this.data.query);
 
     // Clear keyboard.
@@ -100,7 +101,8 @@ AFRAME.registerComponent('search', {
         return;
       }
 
-      if (!query && this.data.difficultyFilter === 'All') {
+      if (!query && this.data.difficultyFilter === 'All' &&
+          !this.data.genre && !this.data.playlist) {
         this.popularHits = topSearch.concat(content.hits);
         this.eventDetail.results = this.popularHits;
       } else {

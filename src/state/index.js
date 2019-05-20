@@ -101,6 +101,7 @@ AFRAME.registerState({
     playlist: '',
     playlists: require('../constants/playlists'),
     playlistMenuOpen: false,
+    playlistTitle: '',
     score: {
       accuracy: 100,  // Out of 100.
       accuracyInt: 100,  // Out of 100.
@@ -454,7 +455,8 @@ AFRAME.registerState({
     playlistselect: (state, playlist) => {
       state.genre = '';
       state.menuSelectedChallenge.id = '';
-      state.playlist = playlist;
+      state.playlist = playlist.id;
+      state.playlistTitle = playlist.title;
       state.playlistMenuOpen = false;
       state.search.query = '';
     },
@@ -502,7 +504,7 @@ AFRAME.registerState({
         challengeDataStore[result.id] = result;
       }
       computeSearchPagination(state);
-      state.menuSelectedChallenge.id = '';
+      state.menuSelectedChallenge.id = '';  // Clear any selected on new results.
       if (state.isSearching) {
         state.genre = '';
         state.playlist = '';
