@@ -245,6 +245,14 @@
       render-order="menuText"
       text="align: center; value: Sorry, there was an issue fetching search results. Please try again."
       position="0 0 0.01"></a-entity>
+
+    <a-entity
+      id="searchNoResults"
+      mixin="font"
+      bind__visible="!isSearching && search.results.length === 0"
+      render-order="menuText"
+      text="align: center; value: No search results found. Please try again with another query."
+      position="0 0 0.01"></a-entity>
   </a-entity>
 
   <a-entity
@@ -294,7 +302,7 @@
 <a-entity
   id="keyboard"
   bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: isSearching"
-  super-keyboard="label: Search From Over 15000 Songs; inputColor: #fff; labelColor: {{ COLORS.WHITE }}; width: 1.5; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Viga-Regular.json; align: center; model: superkeyboard; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
+  super-keyboard="label: Search 15000 Community Songs; inputColor: #fff; labelColor: {{ COLORS.WHITE }}; width: 1.5; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Viga-Regular.json; align: center; model: superkeyboard; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
   position="0.58 1.2 -1.95"
   keyboard-raycastable="condition: isSearching"
   search
