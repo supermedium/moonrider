@@ -97,6 +97,8 @@ AFRAME.registerState({
       songSubName: '',
       version: ''
     },
+    playlist: '',
+    playlistMenuOpen: false,
     score: {
       accuracy: 100,  // Out of 100.
       accuracyInt: 100,  // Out of 100.
@@ -587,6 +589,12 @@ AFRAME.registerState({
                         state.isGameOver || state.isLoading || state.introActive;
     state.leftRaycasterActive = anyMenuOpen && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = anyMenuOpen && state.activeHand === 'right' && state.inVR;
+
+    state.searchResultsActive =
+      state.menuActive &&
+      !state.genreMenuOpen &&
+      !state.difficultyFilterMenuOpen &&
+      !state.playlistMenuOpen;
 
     state.score.active =
       state.gameMode !== 'ride' &&
