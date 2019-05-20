@@ -161,7 +161,7 @@
           bind__menu-controls="page: search.page; selectedChallengeId: menuSelectedChallenge.id"
           bind__pauser="enabled: isPlaying"
           bind__raycaster="enabled: {{ hand }}RaycasterActive"
-          bind__raycaster-game="enabled: isPlaying"
+          bind__raycaster__game="enabled: isPlaying && (gameMode === 'classic' || gameMode === 'punch')"
           bind__blade="enabled: isPlaying && gameMode === 'classic'"
           bind__weapon-particles="enabled: isPlaying"
           bind__trail="enabled: isPlaying && gameMode === 'classic'"
