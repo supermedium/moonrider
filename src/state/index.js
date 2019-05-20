@@ -105,6 +105,7 @@ AFRAME.registerState({
       beatsMissed: 0,
       beatsText: '',
       combo: 0,
+      finalAccuracy: 100,  // Out of 100.
       maxCombo: 0,
       rank: '',  // Grade (S to F).
       score: 0
@@ -487,6 +488,7 @@ AFRAME.registerState({
 
       state.score.score = isNaN(state.score.score) ? 0 : state.score.score;
       updateScoreAccuracy(state);
+      state.score.finalAccuracy = state.score.accuracy;
 
       const accuracy = parseFloat(state.score.accuracy);
       if (accuracy >= 90) {

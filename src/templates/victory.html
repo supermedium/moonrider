@@ -6,7 +6,7 @@
 
   <a-entity
     id="victoryAccuracyRing"
-    bind__victory-accuracy-ring="accuracy: score.accuracy"
+    bind__victory-accuracy-ring="accuracy: score.finalAccuracy"
     animation="property: components.material.material.uniforms.progress.value; from: 0; easing: easeOutQuad; delay: 500; dur: 2500; autoplay: false"
     geometry="primitive: plane; width: 0.7; height: 0.7"
     material="shader: ring; transparent: true; color: {{ COLORS.RED }}; radiusInner: 0.8; blending: additive; depthWrite: false"
@@ -50,7 +50,7 @@
     id="victoryInfoAccuracy"
     mixin="font"
     text="value: 0; align: center; color: {{ COLORS.YELLOW }}; wrapCount: 15; baseline: top; width: 2.25"
-    bind__text-counter="enabled: isVictory; value: score.accuracy"
+    bind__text-counter="enabled: isVictory; value: score.finalAccuracy"
     text-counter="suffix: %"
     position="0 -0.47 0"
     render-order="menuitemtext"></a-entity>
