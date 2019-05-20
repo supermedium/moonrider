@@ -55,7 +55,7 @@
     class="modeInstructions"
     mixin="font"
     render-order="menutext"
-    text="value: {{ description }}; color: {{ COLORS.DARKRED }}; width: 1.6; lineHeight: 42"
+    text="value: {{ description }}; color: {{ COLORS.DARKRED }}; width: 1.6; lineHeight: 45"
     position="1.1 -0.05 0"></a-entity>
 </a-entity>
 {% endmacro %}
@@ -81,8 +81,8 @@
   </a-entity>
 
   <a-entity id="modeVR" bind__visible="has6DOFVR">
-    {{ mode(0, 'ride', 'ride', '#modeRideImg', 'Relax and enjoy the ride.\n\nTake a quick breather.', true) }}
-    {{ mode(1, 'punch', 'punch', '#modePunchImg', 'Punch the beats, mind\ncolor.\n\nAvoid all things yellow.\n\nStronger punches, \n more points.', true) }}
-    {{ mode(2, 'classic', 'classic', '#modeClassicImg', 'Cut the beats, mind\ncolor and direction.\n\nAvoid all things yellow.\n\nFaster swings,\n more points.', true) }}
+    {{ mode(0, 'ride', 'ride', '#modeRideImg', 'Relax and enjoy the ride.\n\nTake a quick breather.\n\nNo score!', true) }}
+    {{ mode(1, 'punch', 'punch', '#modePunchImg', 'Punch the beats, mind\ncolor.\n\nAvoid all things yellow.\n\nPunch harder\n for better score.', true) }}
+    {{ mode(2, 'classic', 'classic', '#modeClassicImg', 'Cut the beats, mind\ncolor and direction.\n\nAvoid all things yellow.\n\nSwing fast and accurate\nfor better score.', true) }}
   </a-entity>
 </a-entity>
