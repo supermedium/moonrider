@@ -145,6 +145,9 @@ AFRAME.registerComponent('beat', {
     this.blockEl.setAttribute('mixin', 'beatBlock');
     this.el.appendChild(this.blockEl);
     this.initMesh();
+
+    this.setBeatsHeight = this.setBeatsHeight.bind(this);
+    this.el.sceneEl.addEventListener('songprocessfinish', this.setBeatsHeight);
   },
 
   update: function () {
@@ -544,6 +547,16 @@ AFRAME.registerComponent('beat', {
   tockDestroyed: function (timeDelta) {
     this.returnToPoolTimer -= timeDelta;
     if (this.returnToPoolTimer <= 0) { this.returnToPool(); }
+  },
+
+  setBeatsHeight: function () {
+    var cameraHeight;
+    var cameraWorldPosition = new THREE.Vector3();
+    this.el.sceneEl.camera.localToWorld(cameraWorldPosition);
+    cameraHeight = cameraWorldPosition.y;
+    this.verticalPositions.bottom = cameraHeight * 3 / 8;
+    this.verticalPositions.middle = cameraHeight * 4 / 8;
+    this.verticalPositions.top = cameraHeight * 5 / 8;
   }
 });
 
