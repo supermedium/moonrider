@@ -22,7 +22,7 @@
 
 <a-entity
   id="gameMenu"
-  bind__visible="isGameOver || isPaused || isVictory"
+  bind__visible="isPaused || isVictory"
   position="0 1.5 -2"
   play-sound="event: mouseenter; sound: #hoverSound; volume: 0.1"
   play-sound__click="event: click; sound: #confirmSound; volume: 0.25">
@@ -64,6 +64,7 @@
     song-info-positioner
     bind__song-info-positioner="victory: isVictory">
     <a-entity id="gameMenuSongBackground"
+      bind-toggle__raycastable="isPaused || isVictory"
       render-order="menu"
       geometry="primitive: plane; width: 1.6; height: 0.3"
       material="shader: panelShader; transparent: true; ratio: 4; borderRadius: 0.5; borderWidth: 0.02"
