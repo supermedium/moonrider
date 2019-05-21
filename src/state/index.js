@@ -122,6 +122,7 @@ AFRAME.registerState({
       hasNext: false,
       hasPrev: false,
       query: '',
+      queryText: '',
       results: [],
       songNameTexts: '',  // All names in search results merged together.
       songSubNameTexts: ''  // All sub names in search results merged together.
@@ -179,6 +180,7 @@ AFRAME.registerState({
         'vive-controls',
         'windows-motion-controls'
       ].indexOf(state.controllerType) !== -1;
+      gtag('event', 'entervr', {event_label: state.controllerType});
     },
 
     /**
@@ -495,6 +497,7 @@ AFRAME.registerState({
       state.search.hasError = false;
       state.search.page = 0;
       state.search.query = payload.query;
+      state.search.queryText = truncate(payload.query, 10);
       state.search.results = payload.results;
       for (i = 0; i < payload.results.length; i++) {
         let result = payload.results[i];
@@ -512,6 +515,8 @@ AFRAME.registerState({
     },
 
     songcomplete: state => {
+      gtag('event', 'songcomplete', {event_label: state.gameMode});
+
       // Move back to menu in Ride or Viewer Mode.
       if (state.gameMode === 'ride' || !state.inVR) {
         state.challenge.isBeatsPreloaded = false;

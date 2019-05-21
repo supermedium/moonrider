@@ -4,7 +4,7 @@
 
 Surf the musical road among the moon, stars, and northern lights.
 
-**[Read more about it at bsaber.com](https://bsaber.com/moonrider/)**
+**[Read more about it with elliottate at bsaber.com](https://bsaber.com/moonrider/)**
 
 A free and open source music visualization and rhythm game website. From the
 creators of the [Beat Saver Viewer](https://supermedium.com/beatsaver-viewer)
@@ -13,7 +13,7 @@ used by the community to preview maps.
 ![gif](https://user-images.githubusercontent.com/674727/58050249-ab442900-7b03-11e9-8763-913d42a26708.gif)
 
 Song maps are sourced from beatsaver.com with expressed support from the Beat
-Saver community admins.  Supports all browsers and headsets (incl. Quest). If
+Saver community admins. Supports all browsers and headsets (incl. Quest). If
 there are any issues, file requests using the form at beatsaver.com or leave a
 message in the BSMG Discord!
 
@@ -31,6 +31,8 @@ Featuring various modes:
 - **Punch Mode** - Crush the stars.
 - **Viewer Mode** - Watch the beatmap within your browser.
 - **Classic Mode** - Surf and slice along the musical road.
+
+Big thanks to @elliottate for helping out with this!
 
 ## Development
 
