@@ -180,7 +180,6 @@ AFRAME.registerState({
         'vive-controls',
         'windows-motion-controls'
       ].indexOf(state.controllerType) !== -1;
-      gtag('event', 'entervr', {event_label: state.controllerType});
     },
 
     /**
@@ -263,6 +262,15 @@ AFRAME.registerState({
     displayconnected: state => {
       state.gameMode = 'ride';
       state.hasVR = true;
+
+      try {
+        if ('getVRDisplays' in navigator) {
+          navigator.getVRDisplays().then(displays => {
+            if (!displays.length) { return; }
+            gtag('event', 'entervr', {event_label: displays[0].displayName});
+          });
+        }
+      } catch (e) { }
     },
 
     gamemenuresume: state => {
