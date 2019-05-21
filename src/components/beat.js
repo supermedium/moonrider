@@ -51,10 +51,9 @@ AFRAME.registerComponent('beat-system', {
     return function () {
       this.el.sceneEl.camera.localToWorld(cameraWorldPosition);
       let cameraHeight = cameraWorldPosition.y;
-      this.verticalPositions.bottom = Math.max(0.8, cameraHeight * 3 / 8);
-      this.verticalPositions.middle = Math.max(1.25, cameraHeight * 4 / 8);
-      this.verticalPositions.top = Math.max(1.65, cameraHeight * 5 / 8);
-      console.log(this.verticalPositions);
+      this.verticalPositions.bottom = Math.max(0.4, cameraHeight * 3 / 8);
+      this.verticalPositions.middle = Math.max(0.85, cameraHeight * 4 / 8);
+      this.verticalPositions.top = Math.max(1.25, cameraHeight * 5 / 8);
     };
   })()
 });
