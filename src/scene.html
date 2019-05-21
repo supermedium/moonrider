@@ -167,9 +167,9 @@
           bind__trail="enabled: isPlaying && gameMode === 'classic'"
           controller="hand: {{ hand }}"
           haptics="events: mouseenter; dur: 35; force: 0.075"
-          haptics__beat="eventsFrom: #beatContainer; events: beatcollide{{ hand }}; dur: 80; force: 0.2"
+          haptics__beat="eventsFrom: #beatContainer; events: beatcollide{{ hand }}; dur: 80; force: 0.5"
           haptics__draw="events: drawblade; dur: 750; force: 0.025"
-          haptics__plume="events: plumepulse; dur: 35; force: 0.025"
+          haptics__plume="events: plumepulse; dur: 35; force: 0.1"
           haptics-wall
           raycaster="objects: [raycastable]; far: 5; showLine: false"
           raycaster__game="objects: [raycastable-game]:not(.blade{{ hand }}); far: 1; interval: 50; showLine: false"
