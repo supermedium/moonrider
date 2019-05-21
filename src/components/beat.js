@@ -54,6 +54,7 @@ AFRAME.registerComponent('beat-system', {
       this.verticalPositions.bottom = Math.max(0.8, cameraHeight * 3 / 8);
       this.verticalPositions.middle = Math.max(1.25, cameraHeight * 4 / 8);
       this.verticalPositions.top = Math.max(1.65, cameraHeight * 5 / 8);
+      console.log(this.verticalPositions);
     };
   })()
 });
@@ -166,9 +167,6 @@ AFRAME.registerComponent('beat', {
     this.blockEl.setAttribute('mixin', 'beatBlock');
     this.el.appendChild(this.blockEl);
     this.initMesh();
-
-    this.setBeatsHeight = this.setBeatsHeight.bind(this);
-    this.el.sceneEl.addEventListener('songprocessfinish', this.setBeatsHeight);
   },
 
   update: function () {
