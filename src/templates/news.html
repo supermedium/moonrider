@@ -12,6 +12,7 @@
 
   <a-entity
     id="newsBackground"
+    bind-toggle__raycastable="menuActive && !menuSelectedChallenge.id && !isMenuOpening"
     geometry="primitive: plane; width: 2.1; height: 1.9"
     material="shader: panelShader; ratio: 1.14; brightness: 0.2"></a-entity>
 
