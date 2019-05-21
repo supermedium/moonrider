@@ -11,7 +11,7 @@ export const BEAT_PRELOAD_TIME = 1.1;
 export const SWORD_OFFSET = 1.5;
 
 // How far out to load beats (ms).
-const isMobile = AFRAME.utils.isMobile();
+const isMobile = AFRAME.utils.device.isMobile();
 const BEAT_FORWARD_TIME = isMobile ? 2000 : 4000;
 const WALL_FORWARD_TIME = isMobile ? 7500 : 10000;
 
