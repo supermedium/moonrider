@@ -47,7 +47,6 @@ AFRAME.registerComponent('super-keyboard', {
   init: function () {
     this.el.addEventListener('click', this.click.bind(this));
     this.changeEventDetail = {};
-    this.textInputObject = {};
 
     this.keys = null;
     this.focused = false;
@@ -559,7 +558,7 @@ AFRAME.registerComponent('super-keyboard', {
     var pos = 0;
     var fontFactor = FontFactors[this.textInput.components.text.data.font];
     if (fontFactor === undefined) { fontFactor = 20; }
-    for (var i = 0; i < this.data.value.length; i++) {
+    for (var i = 0; i < Math.min(11, this.data.value.length); i++) {
       var char = findFontChar(font.chars, this.data.value.charCodeAt(i));
       pos += char.width + char.xadvance * (char.id === 32 ? 2 : 1);
     }
@@ -577,10 +576,17 @@ AFRAME.registerComponent('super-keyboard', {
   },
 
   updateTextInput: function (value) {
-    this.textInputObject.value = value || this.data.value;
-    this.textInput.setAttribute('text', this.textInputObject);
+    this.textInput.setAttribute('text', 'value', backTruncate(value || this.data.value, 12));
   }
 });
+
+function backTruncate (str, length) {
+  if (!str) { return ''; }
+  if (str.length >= length) {
+    return '...' + str.substring(str.length - length, str.length);
+  }
+  return str;
+}
 
 function findFontChar (chars, code) {
   for (var i = 0; i < chars.length; i++) {
