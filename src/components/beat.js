@@ -29,8 +29,33 @@ const DOT = 'dot';
 AFRAME.registerComponent('beat-system', {
   schema: {
     gameMode: {default: 'classic'},
-    hasVR: {default: false}
-  }
+    hasVR: {default: false},
+    isLoading: {default: false}
+  },
+
+  verticalPositions: {
+    bottom: 0.8,
+    middle: 1.25,
+    top: 1.65
+  },
+
+  update: function (oldData) {
+    if (oldData.isLoading && !this.data.isLoading) {
+      this.updateVerticalPositions();
+    }
+  },
+
+  updateVerticalPositions: (function () {
+    const cameraWorldPosition = new THREE.Vector3();
+
+    return function () {
+      this.el.sceneEl.camera.localToWorld(cameraWorldPosition);
+      let cameraHeight = cameraWorldPosition.y;
+      this.verticalPositions.bottom = cameraHeight * 3 / 8;
+      this.verticalPositions.middle = cameraHeight * 4 / 8;
+      this.verticalPositions.top = cameraHeight * 5 / 8;
+    };
+  })()
 });
 
 /**
@@ -87,12 +112,6 @@ AFRAME.registerComponent('beat', {
     right: 0.5
   },
 
-  verticalPositions: {
-    bottom: 0.8,
-    middle: 1.25,
-    top: 1.65
-  },
-
   cutDirectionVectors: {
     up: new THREE.Vector3(0, 1, 0),
     down: new THREE.Vector3(0, -1, 0),
@@ -128,6 +147,8 @@ AFRAME.registerComponent('beat', {
     this.mineParticles = document.getElementById('mineParticles');
     this.rigContainer = document.getElementById('rigContainer');
     this.superCuts = document.querySelectorAll('.superCutFx');
+
+    this.verticalPositions = this.beatSystem.verticalPositions;
 
     this.explodeEventDetail = {
       beatDirection: '',
@@ -547,16 +568,6 @@ AFRAME.registerComponent('beat', {
   tockDestroyed: function (timeDelta) {
     this.returnToPoolTimer -= timeDelta;
     if (this.returnToPoolTimer <= 0) { this.returnToPool(); }
-  },
-
-  setBeatsHeight: function () {
-    var cameraHeight;
-    var cameraWorldPosition = new THREE.Vector3();
-    this.el.sceneEl.camera.localToWorld(cameraWorldPosition);
-    cameraHeight = cameraWorldPosition.y;
-    this.verticalPositions.bottom = cameraHeight * 3 / 8;
-    this.verticalPositions.middle = cameraHeight * 4 / 8;
-    this.verticalPositions.top = cameraHeight * 5 / 8;
   }
 });
 

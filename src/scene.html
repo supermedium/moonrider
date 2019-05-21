@@ -7,7 +7,7 @@
 <a-scene
   mixin="bgColorAnimation leftSideGlowAnimations rightSideGlowAnimations"
   bind__beat-generator="challengeId: challenge.id; difficulty: challenge.difficulty; gameMode: gameMode; isPlaying: isPlaying; isZipFetching: isZipFetching; menuSelectedChallengeId: menuSelectedChallenge.id; songDuration: challenge.songDuration; speed: speed"
-  bind__beat-system="gameMode: gameMode; hasVR: hasVR"
+  bind__beat-system="gameMode: gameMode; hasVR: hasVR; isLoading: isLoading"
   bind__gameover="isGameOver: isGameOver"
   bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
   bind__leaderboard="gameMode: gameMode; inVR: inVR; isVictory: isVictory; menuSelectedChallengeId: menuSelectedChallenge.id; challengeId: challenge.id"
