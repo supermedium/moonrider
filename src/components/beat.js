@@ -39,23 +39,16 @@ AFRAME.registerComponent('beat-system', {
     top: 1.65
   },
 
-  update: function (oldData) {
-    if (oldData.isLoading && !this.data.isLoading) {
-      this.updateVerticalPositions();
-    }
+  update: function () {
+    this.updateVerticalPositions();
   },
 
-  updateVerticalPositions: (function () {
-    const cameraWorldPosition = new THREE.Vector3();
-
-    return function () {
-      this.el.sceneEl.camera.getWorldPosition(cameraWorldPosition);
-      const cameraHeight = Math.min(cameraWorldPosition.y, 2.1);
-      this.verticalPositions.bottom = Math.max(0.4, cameraHeight * 3 / 8);
-      this.verticalPositions.middle = Math.max(0.85, cameraHeight * 4 / 8);
-      this.verticalPositions.top = Math.max(1.25, cameraHeight * 5 / 8);
-    };
-  })()
+  updateVerticalPositions: function () {
+    const offset = this.el.sceneEl.camera.parent.position.y - 1.6;
+    this.verticalPositions.bottom = 0.8 + offset;
+    this.verticalPositions.middle = 1.25 + offset;
+    this.verticalPositions.top = 1.65 + offset;
+  },
 });
 
 /**
