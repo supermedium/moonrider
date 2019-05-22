@@ -222,7 +222,7 @@
 
       <a-entity
         id="playButton"
-        bind__visible-raycastable="menuActive && !!menuSelectedChallenge.id && !genreMenuOpen && !difficultyFilterMenuOpen"
+        bind__visible-raycastable="menuActive && !!menuSelectedChallenge.id && !genreMenuOpen && !difficultyFilterMenuOpen && !isIOS"
         geometry="primitive: plane; width: 0.7; height: 0.25"
         play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
         play-sound__click="event: click; sound: #confirmSound; volume: 0.25"
@@ -235,7 +235,14 @@
         animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 100"
         animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 100">
           <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 15; value: PLAY" position="0 -0.085 0.01"></a-entity>
-        </a-entity>
+      </a-entity>
+
+      <a-entity
+        id="iOSNotice"
+        bind__visible-raycastable="mainMenuActive && isIOS"
+        mixin="font"
+        position="0 -0.5 0.01"
+        text="align: center; baseline: top; color: #FFF; wrapCount: 32; value: Sorry, iOS is currently not playable but support is coming soon!"></a-entity>
     </a-entity>
 
     <a-entity

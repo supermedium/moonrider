@@ -64,6 +64,7 @@ AFRAME.registerState({
     hasVR: AFRAME.utils.device.checkHeadsetConnected(),
     introActive: !SKIP_INTRO,  // Just started game, main menu not opened yet.
     inVR: false,
+    isIOS: AFRAME.utils.device.isIOS(),
     isGameOver: false,  // Game over screen.
     isLoading: false,  // Entire song loading process after selected (ZIP + process).
     isMenuOpening: !SKIP_INTRO,
