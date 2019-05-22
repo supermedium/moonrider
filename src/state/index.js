@@ -716,8 +716,11 @@ function checkGameOver (state) {
 
 function resetScore (state) {
   state.damage = 0;
+  state.score.accuracy = 100;
+  state.score.accuracyInt = 100;
   state.score.beatsHit = 0;
   state.score.beatsMissed = 0;
+  state.score.finalAccuracy = 100;
   state.score.combo = 0;
   state.score.maxCombo = 0;
   state.score.score = 0;
