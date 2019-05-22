@@ -455,6 +455,7 @@ AFRAME.registerState({
 
       state.isSearching = false;
       state.isLoading = true;
+      state.loadingText = 'Loading...'
     },
 
     playlistclear: (state, playlist) => {
@@ -579,6 +580,7 @@ AFRAME.registerState({
 
     songprocessstart: state => {
       state.isSongProcessing = true;
+      state.loadingText = 'Wrapping up...';
     },
 
     'enter-vr': state => {
@@ -643,13 +645,6 @@ AFRAME.registerState({
       state.gameMode !== 'ride' &&
       state.inVR &&
       (state.isPlaying || state.isPaused);
-
-    // Song is decoding if it is loading, but not fetching.
-    if (state.isLoading) {
-      state.loadingText = state.isZipFetching ? 'Loading...' : 'Wrapping up...';
-    } else {
-      state.loadingText = '';
-    }
   }
 });
 
