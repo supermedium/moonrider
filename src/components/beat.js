@@ -35,9 +35,9 @@ AFRAME.registerComponent('beat-system', {
 
   // Will be overridden.
   verticalPositions: {
-    bottom: 0.8,
-    middle: 1.25,
-    top: 1.65
+    bottom: 0.95,
+    middle: 1.35,
+    top: 1.75
   },
 
   update: function (oldData) {
@@ -48,7 +48,7 @@ AFRAME.registerComponent('beat-system', {
 
   updateVerticalPositions: function () {
     const MIN_BOTTOM_HEIGHT = 0.4;
-    const BOTTOM_HEIGHT = 1;
+    const BOTTOM_HEIGHT = 0.95;
     const MARGIN = 0.4;
 
     const offset = this.el.sceneEl.camera.el.object3D.position.y - 1.6;
