@@ -36,7 +36,7 @@ AFRAME.registerComponent('beat-system', {
   // Will be overridden.
   verticalPositions: {
     bottom: 0.8,
-    middle: 1.25,
+    middle: 1.2,
     top: 1.65
   },
 
@@ -48,7 +48,7 @@ AFRAME.registerComponent('beat-system', {
 
   updateVerticalPositions: function () {
     const MIN_BOTTOM_HEIGHT = 0.4;
-    const BOTTOM_HEIGHT = 1;
+    const BOTTOM_HEIGHT = 0.9;
     const MARGIN = 0.4;
 
     const offset = this.el.sceneEl.camera.el.object3D.position.y - 1.6;
@@ -71,7 +71,7 @@ AFRAME.registerComponent('beat', {
     cutDirection: {default: 'down'},
     debug: {default: false},
     horizontalPosition: {default: 'middleleft', oneOf: ['left', 'middleleft', 'middleright', 'right']},
-    size: {default: 0.35},
+    size: {default: 0.40},
     songPosition: {default: 0},
     type: {default: 'arrow', oneOf: ['arrow', DOT, MINE]},
     verticalPosition: {default: 'middle', oneOf: ['bottom', 'middle', 'top']}
@@ -110,8 +110,8 @@ AFRAME.registerComponent('beat', {
 
   horizontalPositions: {
     left: -0.5,
-    middleleft: -0.18,
-    middleright: 0.18,
+    middleleft: -0.2,
+    middleright: 0.2,
     right: 0.5
   },
 
