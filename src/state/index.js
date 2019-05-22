@@ -377,6 +377,7 @@ AFRAME.registerState({
     menuchallengeselect: (state, id) => {
       // Copy from challenge store populated from search results.
       let challenge = challengeDataStore[id];
+      if (!challenge) { return; }
       Object.assign(state.menuSelectedChallenge, challenge);
       state.menuSelectedChallenge.songName = truncate(challenge.songName, 24);
 
