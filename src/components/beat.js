@@ -47,10 +47,17 @@ AFRAME.registerComponent('beat-system', {
   },
 
   updateVerticalPositions: function () {
-    const offset = this.el.sceneEl.camera.parent.position.y - 1.6;
-    this.verticalPositions.bottom = Math.max(0.4, 0.8 + offset);
-    this.verticalPositions.middle = Math.max(0.85, 1.25 + offset);
-    this.verticalPositions.top = Math.max(1.25, 1.65 + offset);
+    const MIN_BOTTOM_HEIGHT = 0.4;
+    const BOTTOM_HEIGHT = 1;
+    const MARGIN = 0.4;
+
+    const offset = this.el.sceneEl.camera.el.object3D.position.y - 1.6;
+    this.verticalPositions.bottom = Math.max(MIN_BOTTOM_HEIGHT,
+                                             BOTTOM_HEIGHT + offset);
+    this.verticalPositions.middle = Math.max(MIN_BOTTOM_HEIGHT + MARGIN,
+                                             BOTTOM_HEIGHT + MARGIN + offset);
+    this.verticalPositions.top = Math.max(MIN_BOTTOM_HEIGHT + MARGIN * 2,
+                                          BOTTOM_HEIGHT + (MARGIN * 2) + offset);
   }
 });
 
