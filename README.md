@@ -14,8 +14,8 @@ used by the community to preview maps.
 
 Song maps are sourced from beatsaver.com with expressed support from the Beat
 Saver community admins. Supports all browsers and headsets (incl. Quest). If
-there are any issues, file requests using the form at beatsaver.com or leave a
-message in the BSMG Discord!
+there are any issues, file an issue here on GitHub or leave a
+message in the [Supermedium Discord](https://supermedium.com/discord).
 
 Built with JavaScript and [A-Frame](https://aframe.io) to demonstrate the Web
 is capable of high-quality VR experiences and to provide a learning resource
