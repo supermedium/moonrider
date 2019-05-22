@@ -15,17 +15,12 @@ AFRAME.registerComponent('plume', {
     right: 0.95
   },
 
-  verticalPositions: {
-    bottom: 1.3,
-    middle: 1.55,
-    top: 1.7
-  },
-
   init: function () {
     this.curveEl = document.getElementById('curve');
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.handsEls = this.el.sceneEl.querySelectorAll('.handStar');
     this.handPos = new THREE.Vector3();
+    this.verticalPositions = this.el.sceneEl.components['beat-system'].verticalPositions;
 
     this.el.sceneEl.addEventListener('cleargame', this.returnToPool.bind(this));
   },
