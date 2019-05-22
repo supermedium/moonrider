@@ -22,12 +22,14 @@
 
   <a-entity id="loadingSongInfo">
     <a-entity position="0 -0.05 0" mixin="font"
-      bind__text="value: challenge.songSubName"
+      bind__text-truncate="value: challenge.songSubName + ' - ' + challenge.author"
       text="wrapCount: 40; align: center; color: {{ COLORS.BLUE }}"
+      text-truncate="length: 35"
       render-order="menutext"></a-entity>
 
     <a-entity position="0 -0.13 0"
-      mixin="font" text="align: center; color: #FFF; wrapCount: 21; baseline: top; lineHeight: 36; width: 0.81"
+      mixin="font"
+      text="align: center; color: #FFF; wrapCount: 21; baseline: top; lineHeight: 36; width: 0.81"
       bind__text="value: challenge.songNameShort"
       render-order="menutext"></a-entity>
 
