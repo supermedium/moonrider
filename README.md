@@ -35,6 +35,7 @@ Featuring various modes:
 Big thanks to @elliottate for helping out with this!
 
 ## Development
+
 ```
 npm install
 npm run start
