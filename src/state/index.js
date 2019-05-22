@@ -665,13 +665,15 @@ function computeSearchPagination (state) {
   state.searchResultsPage.__dirty = true;
   for (let i = state.search.page * SEARCH_PER_PAGE;
        i < state.search.page * SEARCH_PER_PAGE + SEARCH_PER_PAGE; i++) {
-    if (!state.search.results[i]) { break; }
-    state.searchResultsPage.push(state.search.results[i]);
+    const result = state.search.results[i];
+    if (!result) { break; }
+    state.searchResultsPage.push(result);
 
     state.search.songNameTexts +=
-      truncate(state.search.results[i].songName, SONG_NAME_TRUNCATE).toUpperCase() + '\n';
+      truncate(result.songName, SONG_NAME_TRUNCATE).toUpperCase() + '\n';
     state.search.songSubNameTexts +=
-      truncate(state.search.results[i].songSubName, SONG_SUB_NAME_RESULT_TRUNCATE) + '\n';
+      truncate(result.songSubName !== 'Unknown Artist' ? result.songSubName : result.author,
+               SONG_SUB_NAME_RESULT_TRUNCATE) + '\n';
   }
 
   for (let i = 0; i < state.searchResultsPage.length; i++) {
