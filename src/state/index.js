@@ -260,7 +260,6 @@ AFRAME.registerState({
     },
 
     displayconnected: state => {
-      state.gameMode = 'ride';
       state.hasVR = true;
 
       try {
@@ -585,9 +584,6 @@ AFRAME.registerState({
 
     'enter-vr': state => {
       state.inVR = AFRAME.utils.device.checkHeadsetConnected();
-      if (state.gameMode === 'viewer') {
-        state.gameMode = 'ride';
-      }
     },
 
     'exit-vr': state => {

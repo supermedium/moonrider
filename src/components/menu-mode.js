@@ -8,6 +8,14 @@ const iconPositions = {
   viewer2d: 0.15
 };
 
+const modeMap = {
+  classicvr: 'classic',
+  punchvr: 'punch',
+  ride2d: 'ride',
+  ridevr: 'ride',
+  viewer2d: 'viewer'
+};
+
 AFRAME.registerComponent('menu-mode', {
   schema: {
     has6DOFVR: {default: false}
@@ -18,14 +26,18 @@ AFRAME.registerComponent('menu-mode', {
       const item = evt.target.closest('[data-mode]');
       const mode = item.dataset.mode;
       const name = item.dataset.name;
-      this.el.sceneEl.emit('gamemode', mode);
+      this.el.sceneEl.emit('gamemode', mode, false);
+      if (this.data.has6DOFVR) {
+        localStorage.setItem('gameMode', name);
+      }
       this.setModeOption(name);
     });
   },
 
   update: function () {
     if (this.data.has6DOFVR) {
-      this.setModeOption('ridevr');
+      this.setModeOption(localStorage.getItem('gameMode') || 'ridevr');
+      this.el.sceneEl.emit('gamemode', modeMap[localStorage.getItem('gameMode') || 'ridevr']);
     } else {
       this.setModeOption('ride2d');
     }
