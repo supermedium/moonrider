@@ -33,22 +33,25 @@ AFRAME.registerComponent('beat-system', {
     isLoading: {default: false}
   },
 
+  // Will be overridden.
   verticalPositions: {
     bottom: 0.8,
     middle: 1.25,
     top: 1.65
   },
 
-  update: function () {
-    this.updateVerticalPositions();
+  update: function (oldData) {
+    if (oldData.isLoading && !this.data.isLoading) {
+      this.updateVerticalPositions();
+    }
   },
 
   updateVerticalPositions: function () {
     const offset = this.el.sceneEl.camera.parent.position.y - 1.6;
-    this.verticalPositions.bottom = 0.8 + offset;
-    this.verticalPositions.middle = 1.25 + offset;
-    this.verticalPositions.top = 1.65 + offset;
-  },
+    this.verticalPositions.bottom = Math.max(0.4, 0.8 + offset);
+    this.verticalPositions.middle = Math.max(0.85, 1.25 + offset);
+    this.verticalPositions.top = Math.max(1.25, 1.65 + offset);
+  }
 });
 
 /**
