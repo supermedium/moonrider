@@ -35,7 +35,7 @@ Featuring various modes:
 Big thanks to @elliottate for helping out with this!
 
 ## Development
-
+**Prerequisites: Node v11.15.0**
 ```
 npm install
 npm run start
