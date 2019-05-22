@@ -49,8 +49,8 @@ AFRAME.registerComponent('beat-system', {
     const cameraWorldPosition = new THREE.Vector3();
 
     return function () {
-      this.el.sceneEl.camera.localToWorld(cameraWorldPosition);
-      let cameraHeight = cameraWorldPosition.y;
+      this.el.sceneEl.camera.getWorldPosition(cameraWorldPosition);
+      const cameraHeight = Math.min(cameraWorldPosition.y, 2.1);
       this.verticalPositions.bottom = Math.max(0.4, cameraHeight * 3 / 8);
       this.verticalPositions.middle = Math.max(0.85, cameraHeight * 4 / 8);
       this.verticalPositions.top = Math.max(1.25, cameraHeight * 5 / 8);
