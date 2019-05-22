@@ -81,7 +81,10 @@
         mixin="font" text="align: center; color: #fff; wrapCount: 30; baseline: top; lineHeight: 36; width: 1.2"
         bind__text="value: challenge.songName"></a-entity>
       <a-entity id="gameMenuSongSubName" position="0 -0.08 0"
-        mixin="font" text="wrapCount: 40; align: center; color: {{ COLORS.BLUE }}; width: 1.2" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
+        mixin="font"
+        bind__text-truncate="value: challenge.songSubName + ' - ' + challenge.author"
+        text-truncate="length: 80"
+        text="wrapCount: 40; align: center; color: {{ COLORS.BLUE }}; width: 1.2" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
     </a-entity>
   </a-entity>
 </a-entity>
