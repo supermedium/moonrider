@@ -47,7 +47,7 @@ AFRAME.registerComponent('beat-system', {
   },
 
   updateVerticalPositions: function () {
-    const offset = this.el.sceneEl.camera.parent.position.y - 1.6;
+    const offset = this.el.sceneEl.camera.parent.position.y - 1.55;
     this.verticalPositions.bottom = Math.max(0.4, 0.8 + offset);
     this.verticalPositions.middle = Math.max(0.85, 1.25 + offset);
     this.verticalPositions.top = Math.max(1.25, 1.65 + offset);
