@@ -2,6 +2,7 @@
 var utils = require('../utils');
 
 const challengeDataStore = {};
+const HAS_LOGGED_VR = false;
 const NUM_LEADERBOARD_DISPLAY = 10;
 const SEARCH_PER_PAGE = 6;
 const SONG_NAME_TRUNCATE = 22;
@@ -263,11 +264,13 @@ AFRAME.registerState({
     displayconnected: state => {
       state.hasVR = true;
 
+      if (HAS_LOGGED_VR) { return; }
       try {
         if ('getVRDisplays' in navigator) {
           navigator.getVRDisplays().then(displays => {
             if (!displays.length) { return; }
             gtag('event', 'entervr', {event_label: displays[0].displayName});
+            HAS_LOGGED_VR = true;
           });
         }
       } catch (e) { }
