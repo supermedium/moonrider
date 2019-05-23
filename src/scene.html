@@ -4,6 +4,7 @@
 {% set firestore = IS_PRODUCTION and 'moonrider-prod' or 'moonrider-dev' %}
 {% set firekey = IS_PRODUCTION and 'AIzaSyAilakXLvMgwPcBcHs3oys51eLp4yrfz0w' or 'AIzaSyALCaDKg0b7aD3nOyRv_f5RTZ1vedrGyWw' %}
 
+<!-- pool__beat-shadow="mixin: beatShadow; size: 100; container: #beatContainer; dynamic: true" -->
 <a-scene
   mixin="bgColorAnimation leftSideGlowAnimations rightSideGlowAnimations"
   bind__beat-generator="challengeId: challenge.id; difficulty: challenge.difficulty; gameMode: gameMode; isPlaying: isPlaying; isZipFetching: isZipFetching; menuSelectedChallengeId: menuSelectedChallenge.id; songDuration: challenge.songDuration; speed: speed"
@@ -40,7 +41,6 @@
   pool__plume-dot-blue="mixin: dotBluePlume; size: 30; container: #beatContainer; dynamic: true"
   pool__plume-dot-red="mixin: dotRedPlume; size: 30; container: #beatContainer; dynamic: true"
   pool__plume-mine="mixin: minePlume; size: 12; container: #beatContainer; dynamic: true"
-  pool__beat-shadow="mixin: beatShadow; size: 100; container: #beatContainer; dynamic: true"
   pool__beat-broken-blue="mixin: blueBeatBroken; size: 10; container: #rigContainer; dynamic: true"
   pool__beat-broken-red="mixin: redBeatBroken; size: 10; container: #rigContainer; dynamic: true"
   pool__beat-broken-blue-dot="mixin: blueDotBroken; size: 10; container: #rigContainer; dynamic: true"

@@ -264,7 +264,7 @@ AFRAME.registerComponent('beat', {
     el.object3D.rotation.z = THREE.Math.degToRad(this.rotations[data.cutDirection]);
 
     // Shadow.
-    this.shadow = this.el.sceneEl.components['pool__beat-shadow'].requestEntity();
+    // this.shadow = this.el.sceneEl.components['pool__beat-shadow'].requestEntity();
     if (this.shadow) {
       this.shadow.object3D.visible = true;
       this.shadow.object3D.position.copy(el.object3D.position);
