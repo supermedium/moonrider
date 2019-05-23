@@ -25,6 +25,7 @@ AFRAME.registerComponent('beat-generator', {
     challengeId: {type: 'string'},  // If clicked play.
     gameMode: {type: 'string'},  // classic, punch, ride.
     difficulty: {type: 'string'},
+    has3DOFVR: {default: false},
     isPlaying: {default: false},
     isZipFetching: {default: false},
     menuSelectedChallengeId: {type: 'string'},
@@ -247,6 +248,13 @@ AFRAME.registerComponent('beat-generator', {
         color = undefined;
       }
 
+      if (data.has3DOFVR &&
+          data.gameMode !== 'viewer' &&
+          data.gameMode !== 'ride' &&
+          color === 'red') {
+        return;
+      }
+
       if (data.gameMode === 'punch') { type = 'dot'; }
 
       const beatEl = this.requestBeat(type, color);
@@ -289,6 +297,8 @@ AFRAME.registerComponent('beat-generator', {
       const wallEl = this.el.sceneEl.components.pool__wall.requestEntity();
 
       if (!wallEl) { return; }
+
+      if (data.has3DOFVR && this.data.gameMode !== 'viewer') { return; }
 
       const durationSeconds = 60 * (wallInfo._duration / this.bpm);
       wallObj.horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];

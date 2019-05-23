@@ -60,6 +60,7 @@ AFRAME.registerState({
     genre: '',
     genres: require('../constants/genres'),
     genreMenuOpen: false,
+    has3DOFVR: false,
     has6DOFVR: false,
     hasVR: AFRAME.utils.device.checkHeadsetConnected(),
     introActive: !SKIP_INTRO,  // Just started game, main menu not opened yet.
@@ -180,6 +181,11 @@ AFRAME.registerState({
         'oculus-touch-controls',
         'vive-controls',
         'windows-motion-controls'
+      ].indexOf(state.controllerType) !== -1;
+
+      state.has3DOFVR = [
+        'oculus-go-controls',
+        'daydream-controls'
       ].indexOf(state.controllerType) !== -1;
     },
 
@@ -350,6 +356,7 @@ AFRAME.registerState({
     },
 
     leaderboardqualify: state => {
+      if (!state.has6DOFVR) { return; }
       state.leaderboardQualified = true;
     },
 
