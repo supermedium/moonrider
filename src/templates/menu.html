@@ -99,7 +99,7 @@
 
   <a-entity
     id="menuBackground"
-    bind__menu-midsection="active: !!menuSelectedChallenge.id && (mainMenuActive || difficultyFilterMenuOpen); selectedChallenge: menuSelectedChallenge.id"
+    bind__menu-midsection="active: !!menuSelectedChallenge.id && (mainMenuActive || difficultyFilterMenuOpen) || difficultyFilterMenuOpen; selectedChallenge: menuSelectedChallenge.id"
     bind-toggle__raycastable="menuActive || genreMenuOpen || isSearching || difficultyFilterMenuOpen"
     geometry="primitive: plane; width: 3.4; height: 1.82"
     material="shader: panelShader; ratio: 1.86; opacity: 0"
