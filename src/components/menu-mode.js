@@ -18,7 +18,7 @@ const modeMap = {
 
 AFRAME.registerComponent('menu-mode', {
   schema: {
-    has6DOFVR: {default: false}
+    hasVR: {default: false}
   },
 
   init: function () {
@@ -27,7 +27,7 @@ AFRAME.registerComponent('menu-mode', {
       const mode = item.dataset.mode;
       const name = item.dataset.name;
       this.el.sceneEl.emit('gamemode', mode, false);
-      if (this.data.has6DOFVR) {
+      if (this.data.hasVR) {
         localStorage.setItem('gameMode', name);
       }
       this.setModeOption(name);
@@ -35,7 +35,7 @@ AFRAME.registerComponent('menu-mode', {
   },
 
   update: function () {
-    if (this.data.has6DOFVR) {
+    if (this.data.hasVR) {
       this.setModeOption(localStorage.getItem('gameMode') || 'ridevr');
       this.el.sceneEl.emit('gamemode', modeMap[localStorage.getItem('gameMode') || 'ridevr']);
     } else {

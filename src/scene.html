@@ -7,7 +7,7 @@
 <!-- pool__beat-shadow="mixin: beatShadow; size: 100; container: #beatContainer; dynamic: true" -->
 <a-scene
   mixin="bgColorAnimation leftSideGlowAnimations rightSideGlowAnimations"
-  bind__beat-generator="challengeId: challenge.id; difficulty: challenge.difficulty; gameMode: gameMode; isPlaying: isPlaying; isZipFetching: isZipFetching; menuSelectedChallengeId: menuSelectedChallenge.id; songDuration: challenge.songDuration; speed: speed"
+  bind__beat-generator="challengeId: challenge.id; difficulty: challenge.difficulty; gameMode: gameMode; has3DOFVR: has3DOFVR; isPlaying: isPlaying; isZipFetching: isZipFetching; menuSelectedChallengeId: menuSelectedChallenge.id; songDuration: challenge.songDuration; speed: speed"
   bind__beat-system="gameMode: gameMode; hasVR: hasVR; isLoading: isLoading"
   bind__gameover="isGameOver: isGameOver"
   bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
@@ -170,14 +170,17 @@
           thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
           render-order="weapon"
           trail="color: {{ bladeColor }}; hand: {{ hand }}">
-          <a-entity
-            id="{{ hand }}Laser"
-            bind__cursor-laser="enabled: activeHand === '{{ hand }}' && !isPlaying"
-            geometry="primitive: cylinder; height: 1; radius: 0.005"
-            material="color: {{ beamColor }}; shader: flat"
-            rotation="-90 0 0"></a-entity>
+          <a-entity bind__position="has3DOFVR && '0 0 -0.5' || '0 0 0'">
+            <a-entity
+              id="{{ hand }}Laser"
+              bind__cursor-laser="enabled: activeHand === '{{ hand }}' && !isPlaying"
+              geometry="primitive: cylinder; height: 1; radius: 0.005"
+              material="color: {{ beamColor }}; shader: flat"
+              rotation="-90 0 0"></a-entity>
+          </a-entity>
 
-          <a-entity rotation="90 0 0">
+          <a-entity bind__position="has3DOFVR && '0 0 -0.5' || '0 0 0'"
+                    rotation="90 0 0">
             <a-entity
               class="bladeContainer"
               bind__visible="isPlaying && gameMode === 'classic'"
@@ -208,7 +211,8 @@
           <a-entity
             id="{{ hand }}punch"
             render-order="weapon"
-            bind__visible="isPlaying && gameMode === 'punch'">
+            bind__visible="isPlaying && gameMode === 'punch'"
+            bind__position="has3DOFVR && '0 0 -0.75' || '0 0 0'">
               <a-entity
                 class="punch"
                 obj-model="obj: #{{ hand }}FistObj"

@@ -35,7 +35,7 @@
   mixin="modeAnimations">
   <a-entity
     class="modeBackground"
-    bind-toggle__raycastable="menuActive && {{ forVR and 'has6DOFVR' or '!hasVR' }}"
+    bind-toggle__raycastable="menuActive && {{ forVR and 'hasVR' or '!hasVR' }}"
     position="0 0 -0.01"
     geometry="primitive: plane; width: 3; height: 0.8"
     material="shader: panelShader; brightness: 0.1; ratio: 4; borderWidth: 0.002"
@@ -62,8 +62,8 @@
 
 <a-entity
   id="modes"
-  bind__menu-mode="has6DOFVR: has6DOFVR"
-  bind__position="has6DOFVR && '-2.56 1.3 -0.7' || '-2.56 1 -0.7'"
+  bind__menu-mode="hasVR: hasVR"
+  bind__position="hasVR && '-2.56 1.3 -0.7' || '-2.56 1 -0.7'"
   bind__visible="menuActive && !isMenuOpening"
   rotation="0 60 0"
   render-order="menuitem">
@@ -75,12 +75,12 @@
     materials="name: merkaba"
     animation="property: object3D.position.x; from: -1.275; to: -1.3; dir: alternate; easing: easeOutQuad; loop: true; dur: 900"></a-entity>
 
-  <a-entity id="mode2d" bind__visible="!has6DOFVR">
+  <a-entity id="mode2d" bind__visible="!hasVR">
     {{ mode(0, 'ride', 'ride', '#modeRideImg', 'Relax and enjoy the ride.', false) }}
     {{ mode(1, 'viewer', 'classic', '#modeViewerImg', 'View the beat map.\n\nConnect a VR headset\nwith controlllers\nto experience\nadditional modes!', false) }}
   </a-entity>
 
-  <a-entity id="modeVR" bind__visible="has6DOFVR">
+  <a-entity id="modeVR" bind__visible="hasVR">
     {{ mode(0, 'ride', 'ride', '#modeRideImg', 'Relax and enjoy the ride.\n\nTake a quick breather.\n\nNo score!', true) }}
     {{ mode(1, 'punch', 'punch', '#modePunchImg', 'Punch the beats, mind\ncolor.\n\nAvoid all things yellow.\n\nPunch harder\n for better score.', true) }}
     {{ mode(2, 'classic', 'classic', '#modeClassicImg', 'Cut the beats, mind\ncolor and direction.\n\nAvoid all things yellow.\n\nSwing fast and accurate\nfor better score.', true) }}

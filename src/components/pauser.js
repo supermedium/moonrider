@@ -14,6 +14,7 @@ AFRAME.registerComponent('pauser', {
         this.el.addEventListener('menudown', this.pauseGame);
       } else {
         this.el.addEventListener('thumbstickdown', this.pauseGame);
+        this.el.addEventListener('trackpaddown', this.pauseGame);
       }
     });
 
