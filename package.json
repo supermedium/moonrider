@@ -2,7 +2,6 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "preinstall": "npx ensure-node-env",
     "build": "cross-env NODE_ENV=production webpack",
     "deploy": "npm run predeploy && ghpages git@github.com:supermedium/moonrider.git -p .ghpages && rm -rf .ghpages",
     "lint": "semistandard -v | snazzy",
@@ -54,7 +53,6 @@
     "babel-preset-minify": "^0.5.0",
     "css-loader": "^0.28.7",
     "debug": "^4.1.0",
-    "ensure-node-env": "^1.2.3",
     "firebase": "^5.9.2",
     "html-require-loader": "^1.0.1",
     "ip": "1.1.5",
