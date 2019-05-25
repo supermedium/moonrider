@@ -44,3 +44,14 @@ npm run start
 ```
 
 Then head to `localhost:3000` in your browser.
+
+### Deploying to GitHub
+
+Showing off some crazy customizations? Enable GitHub Pages deployment to deploy
+`gh-pages` branch, and then:
+
+```
+npm run deploy
+```
+
+The website will be available on `https://yourusername.github.io/moonrider/`.
