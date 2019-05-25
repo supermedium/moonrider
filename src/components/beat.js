@@ -405,17 +405,14 @@ AFRAME.registerComponent('beat', {
     const weaponEls = this.beatSystem.data.gameMode === 'classic'? this.bladeEls : this.punchEls;
     for (let i = 0; i < weaponEls.length; i++) {
       const weaponEl = weaponEls[i];
-      let swinging;
       let weaponBbox;
 
       if (this.beatSystem.data.gameMode === 'punch') {
         bbox.setFromObject(weaponEl.getObject3D('mesh')).expandByScalar(0.1);
         weaponBbox = bbox;
-        swinging = true;
       } else {
         const blade = weaponEl.components.blade;
         weaponBbox = blade.boundingBox;
-        swinging = blade.swinging;
       }
 
       if (!weaponBbox) { continue; }
@@ -437,7 +434,7 @@ AFRAME.registerComponent('beat', {
 
       // Wrong color hit.
       let goodCut = true;
-      if (swinging && this.data.color !== weaponColors[hand]) {
+      if (this.data.color !== weaponColors[hand]) {
         const otherWeapon = i === 0 ? weaponEls[1] : weaponEls[0];
         if (!this.checkOtherWeaponCollision(otherWeapon, beatBbox)) {
           this.wrongHit(hand);
@@ -471,8 +468,7 @@ AFRAME.registerComponent('beat', {
       // Check that other blade isn't also colliding.
       if (this.beatSystem.data.gameMode === 'classic') {
         const otherBlade = otherWeapon.components.blade;
-        const otherSwinging = otherBlade.swinging;
-        return otherSwinging && otherBlade.boundingBox.intersectsBox(beatBbox);
+        return otherBlade.boundingBox.intersectsBox(beatBbox);
       }
 
       // Check that other hand isn't also colliding.
