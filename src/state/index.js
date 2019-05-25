@@ -453,6 +453,12 @@ AFRAME.registerState({
      * Transfer staged challenge to the active challenge.
      */
     playbuttonclick: state => {
+      let source = 'frontpage';
+      if (state.playlist) { source = 'playlist'; }
+      if (state.search.query) { source = 'search'; }
+      if (state.genre) { source = 'genre'; }
+      gtag('event', 'songsource', {event_label: source});
+
       resetScore(state);
 
       // Set challenge.
