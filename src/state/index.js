@@ -464,6 +464,7 @@ AFRAME.registerState({
       // Set challenge.
       Object.assign(state.challenge, state.menuSelectedChallenge);
       state.challenge.songNameShort = truncate(state.challenge.songName, 20);
+      gtag('event', 'difficulty', {event_label: state.challenge.difficulty});
 
       // Reset menu.
       state.menuActive = false;
