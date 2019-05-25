@@ -163,7 +163,7 @@
           haptics__plume="events: plumepulse; dur: 35; force: 0.1"
           haptics-wall
           raycaster="objects: [raycastable]; far: 5; showLine: false"
-          raycaster__game="objects: [raycastable-game]:not(.blade{{ hand }}); far: 1; interval: 50; showLine: false"
+          raycaster__game="objects: [raycastable-game]; far: 1; interval: 50; showLine: false"
           weapon="hand: {{ hand }}"
           weapon-particles="hand: {{ hand }}"
           thumb-controls
@@ -188,10 +188,8 @@
               scale="0.001 0.001 0.001">
               <a-entity
                 class="blade blade{{ hand }}"
-                {% if hand === 'right' %}data-weapon-particles{% endif %}
                 obj-model="obj: #weaponObj"
                 materials="name: {{ hand }}Weapon"
-                raycastable-game
                 render-order="weapon"
                 position="0 -0.43 0">
                 <a-entity
