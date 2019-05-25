@@ -136,7 +136,7 @@
         proxy-event__wallhitstart="event: raycaster-intersection; to: a-scene; as: wallhitstart"
         proxy-event__wallhitend="event: raycaster-intersection-cleared; to: a-scene; as: wallhitend"
         follow-position="target: #camera"
-        raycaster__wall="objects: [data-wall-active]; interval: 100; direction: 0 -1 0; far: 5"
+        raycaster__wall="objects: [data-wall-active]; interval: 150; direction: 0 -1 0; far: 5"
         visible="false"></a-entity>
     </a-entity>
 
@@ -163,7 +163,7 @@
           haptics__plume="events: plumepulse; dur: 35; force: 0.1"
           haptics-wall
           raycaster="objects: [raycastable]; far: 5; showLine: false"
-          raycaster__game="objects: [raycastable-game]; far: 1; interval: 50; showLine: false"
+          raycaster__game="objects: [raycastable-game]; far: 1; interval: 75; showLine: false"
           weapon="hand: {{ hand }}"
           weapon-particles="hand: {{ hand }}"
           thumb-controls
