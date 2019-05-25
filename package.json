@@ -35,7 +35,7 @@
     "aframe-event-decorators": "^1.0.2",
     "aframe-event-set-component": "^4.2.1",
     "aframe-geometry-merger-component": "^2.0.0-beta1",
-    "aframe-haptics-component": "^1.4.2",
+    "aframe-haptics-component": "^1.5.1",
     "aframe-layout-component": "^5.3.0",
     "aframe-orbit-controls": "^1.2.0",
     "aframe-proxy-event-component": "^2.1.0",
