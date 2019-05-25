@@ -1,3 +1,5 @@
+const SAMPLE_TIME = 40;
+
 /**
  * Blade, swing, strokes.
  */
@@ -14,8 +16,8 @@ AFRAME.registerComponent('blade', {
     this.bladePosition = new THREE.Vector3();
     this.bladeTipPosition = new THREE.Vector3();
     this.bladeTipPreviousPosition = new THREE.Vector3();
-    this.bladeVector = new THREE.Vector3();
     this.boundingBox = new THREE.Box3();
+    this.lastSampleTime = 0;
     this.rigEl = document.getElementById('curveFollowRig');
     this.strokeDirectionVector = new THREE.Vector3();
     this.strokeSpeed = 0;
@@ -32,10 +34,10 @@ AFRAME.registerComponent('blade', {
   tick: function (time, delta) {
     if (!this.data.enabled) { return; }
     this.boundingBox.setFromObject(this.bboxEl.getObject3D('mesh'));
-    this.detectStroke(delta);
+    this.calculateVelocity(time ,delta);
   },
 
-  detectStroke: function (delta) {
+  calculateVelocity: function (time, delta) {
     const data = this.data;
     const rig = this.rigEl.object3D;
 
@@ -50,15 +52,15 @@ AFRAME.registerComponent('blade', {
     rig.worldToLocal(this.bladeTipPosition);
     rig.worldToLocal(this.bladePosition);
 
-    // Angles between blade and major planes.
-    this.bladeVector.copy(this.bladeTipPosition).sub(this.bladePosition).normalize();
-
     // Distance covered but the blade tip in one frame.
     this.strokeDirectionVector.copy(this.bladeTipPosition).sub(this.bladeTipPreviousPosition);
     const distance = this.strokeDirectionVector.length();
     this.strokeDirectionVector.z = 0;
     this.strokeDirectionVector.normalize();
     this.strokeSpeed = distance / (delta / 1000);
-    this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
+
+    if (!this.lastSampleTime || time > (this.lastSampleTime + SAMPLE_TIME)) {
+      this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
+    }
   }
 });
