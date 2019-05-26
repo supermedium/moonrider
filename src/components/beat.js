@@ -68,13 +68,9 @@ AFRAME.registerComponent('beat-system', {
 AFRAME.registerComponent('beat', {
   schema: {
     color: {default: 'red', oneOf: ['red', 'blue']},
-    cutDirection: {default: 'down'},
     debug: {default: false},
-    horizontalPosition: {default: 'middleleft', oneOf: ['left', 'middleleft', 'middleright', 'right']},
     size: {default: 0.35},
-    songPosition: {default: 0},
-    type: {default: 'arrow', oneOf: ['arrow', DOT, MINE]},
-    verticalPosition: {default: 'middle', oneOf: ['bottom', 'middle', 'top']}
+    type: {default: 'arrow', oneOf: ['arrow', DOT, MINE]}
   },
 
   materialColor: {
@@ -169,21 +165,11 @@ AFRAME.registerComponent('beat', {
     this.blockEl.setAttribute('mixin', 'beatBlock');
     this.el.appendChild(this.blockEl);
     this.initMesh();
-  },
 
-  update: function () {
     if (this.data.type === MINE) {
       this.poolName = 'pool__beat-mine';
-      this.brokenPoolName = 'pool__beat-broken-mine';
     } else {
-      const mode = this.beatSystem.data.gameMode === 'classic' ? 'beat' : 'punch';
-
       this.poolName = `pool__beat-${this.data.type}-${this.data.color}`;
-
-      this.brokenPoolName = `pool__${mode}-broken-${this.data.color}`;
-      if (this.data.type === DOT) {
-        this.brokenPoolName += '-dot';
-      }
     }
   },
 
@@ -206,7 +192,7 @@ AFRAME.registerComponent('beat', {
       this.curveFollowRig.components['supercurve-follow'].curveProgress);
 
     // Only check collisions when close.
-    const beatHit = data.songPosition - (SWORD_OFFSET / curve.getLength());
+    const beatHit = this.songPosition - (SWORD_OFFSET / curve.getLength());
     if (progress > beatHit) {
       this.checkCollisions();
       if (this.destroyed) { return; }
@@ -214,7 +200,7 @@ AFRAME.registerComponent('beat', {
       // If ?synctest=true, auto-explode beat and play sound to easily test sync.
       if ((SYNC_TEST || !this.beatSystem.data.hasVR) && data.type !== MINE) {
         this.destroyBeat(this.bladeEls[0], Math.random() < 0.7);
-        el.parentNode.components['beat-hit-sound'].playSound(el, data.cutDirection);
+        el.parentNode.components['beat-hit-sound'].playSound(el, this.cutDirection);
         const hitEventDetail = this.hitEventDetail;
         hitEventDetail.score = 100;
         el.emit('beathit', hitEventDetail, true);
@@ -241,9 +227,12 @@ AFRAME.registerComponent('beat', {
    * Called when summoned by beat-generator.
    * Called after updatePosition.
    */
-  onGenerate: function () {
+  onGenerate: function (songPosition, horizontalPosition, verticalPosition, cutDirection) {
     const data = this.data;
     const el = this.el;
+
+    this.cutDirection = cutDirection || 'down';
+    this.songPosition = songPosition;
 
     if (!this.blockEl) {
       console.warn('Unable to generate beat. blockEl was undefined.');
@@ -258,10 +247,10 @@ AFRAME.registerComponent('beat', {
 
     // Set position.
     const supercurve = this.curveEl.components.supercurve;
-    supercurve.getPointAt(data.songPosition, el.object3D.position);
-    supercurve.alignToCurve(data.songPosition, el.object3D);
-    el.object3D.position.x += this.horizontalPositions[data.horizontalPosition],
-    el.object3D.rotation.z = THREE.Math.degToRad(this.rotations[data.cutDirection]);
+    supercurve.getPointAt(songPosition, el.object3D.position);
+    supercurve.alignToCurve(songPosition, el.object3D);
+    el.object3D.position.x += this.horizontalPositions[horizontalPosition],
+    el.object3D.rotation.z = THREE.Math.degToRad(this.rotations[cutDirection]);
 
     // Shadow.
     // this.shadow = this.el.sceneEl.components['pool__beat-shadow'].requestEntity();
@@ -270,8 +259,6 @@ AFRAME.registerComponent('beat', {
       this.shadow.object3D.position.copy(el.object3D.position);
       this.shadow.object3D.position.y += 0.05;
     }
-
-    // Set up opacity warmup.
 
     // Set up rotation warmup.
     this.rotationStart = el.object3D.rotation.y;
@@ -282,7 +269,7 @@ AFRAME.registerComponent('beat', {
     const offset = 0.5;
     el.object3D.position.y -= offset;
     this.positionStart = el.object3D.position.y;
-    this.positionChange = this.verticalPositions[data.verticalPosition] + offset;
+    this.positionChange = this.verticalPositions[verticalPosition] + offset;
   },
 
   /**
@@ -351,17 +338,28 @@ AFRAME.registerComponent('beat', {
         auxObj3D.up.copy(cutPlane.normal).multiplyScalar(-1);
         auxObj3D.lookAt(cutDirection);
         explodeEventDetail.rotation = auxObj3D.rotation;
-        explodeEventDetail.beatDirection = data.cutDirection;
         explodeEventDetail.direction.copy(cutDirection);
       }
 
+      explodeEventDetail.beatDirection = this.cutDirection;
       explodeEventDetail.color = this.data.color;
       explodeEventDetail.goodCut = goodCut;
       explodeEventDetail.gameMode = this.beatSystem.data.gameMode;
       explodeEventDetail.position.copy(this.el.object3D.position);
       rig.worldToLocal(explodeEventDetail.position);
 
-      this.broken = this.el.sceneEl.components[this.brokenPoolName].requestEntity();
+      let brokenPoolName;
+      if (this.data.type === MINE) {
+        brokenPoolName = 'pool__beat-broken-mine';
+      } else {
+        const mode = this.beatSystem.data.gameMode === 'classic' ? 'beat' : 'punch';
+        brokenPoolName = `pool__${mode}-broken-${this.data.color}`;
+        if (this.data.type === DOT) {
+          brokenPoolName += '-dot';
+        }
+      }
+
+      this.broken = this.el.sceneEl.components[brokenPoolName].requestEntity();
       if (this.broken) {
         this.broken.emit('explode', this.explodeEventDetail, false);
       }
@@ -424,7 +422,7 @@ AFRAME.registerComponent('beat', {
 
       // Sound.
       this.el.parentNode.components['beat-hit-sound'].playSound(
-        this.el, this.data.cutDirection);
+        this.el, this.cutDirection);
 
       if (this.data.type === MINE) {
         this.el.emit('minehit', null, true);
@@ -482,7 +480,7 @@ AFRAME.registerComponent('beat', {
    */
   checkCollisionBlade: function (bladeEl) {
     const data = this.data;
-    const cutDirection = this.data.cutDirection;
+    const cutDirection = this.cutDirection;
     const blade = bladeEl.components.blade;
     const hand = bladeEl.getAttribute('blade').hand;
 
@@ -490,7 +488,7 @@ AFRAME.registerComponent('beat', {
     if (data.type === 'arrow') {
       // Wrong angle.
       const strokeBeatAngle = blade.strokeDirectionVector.angleTo(
-        this.cutDirectionVectors[data.cutDirection]);
+        this.cutDirectionVectors[this.cutDirection]);
       if (strokeBeatAngle > ANGLE_THRESHOLD) {
         this.wrongHit(hand);
         return false;
@@ -529,7 +527,7 @@ AFRAME.registerComponent('beat', {
   calculateScoreBlade: function (bladeEl, angle) {
     // 80% score on speed.
     let SUPER_SCORE_SPEED = 10;
-    if (this.data.cutDirection === 'down') {
+    if (this.cutDirection === 'down') {
       SUPER_SCORE_SPEED = 22;
     }
     const speed = bladeEl.closest('[blade]').components.blade.strokeSpeed;

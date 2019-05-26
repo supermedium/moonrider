@@ -33,16 +33,18 @@ AFRAME.registerComponent('plume', {
     }
   },
 
-  onGenerate: function () {
+  onGenerate: function (songPosition, horizontalPosition, verticalPosition) {
     const data = this.data;
     const el = this.el;
     // Set position.
     const supercurve = this.curveEl.components.supercurve;
-    supercurve.getPointAt(data.songPosition, el.object3D.position);
-    supercurve.alignToCurve(data.songPosition, el.object3D);
-    el.object3D.position.x += this.horizontalPositions[data.horizontalPosition];
-    el.object3D.position.y += this.verticalPositions[data.verticalPosition];
+    supercurve.getPointAt(songPosition, el.object3D.position);
+    supercurve.alignToCurve(songPosition, el.object3D);
+    el.object3D.position.x += this.horizontalPositions[horizontalPosition];
+    el.object3D.position.y += this.verticalPositions[verticalPosition];
     el.object3D.rotation.z = Math.random() * Math.PI * 2;
+
+    this.songPosition = songPosition;
   },
 
   tock: function () {

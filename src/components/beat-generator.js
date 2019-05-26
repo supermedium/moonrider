@@ -229,65 +229,73 @@ AFRAME.registerComponent('beat-generator', {
     }
   },
 
-  generateBeat: (function () {
-    const beatObj = {};
+  generateBeat: function (noteInfo, index) {
+    const data = this.data;
 
-    return function (noteInfo, index) {
-      const data = this.data;
+    if (DEBUG_MINES) { noteInfo._type = 3; }
 
-      if (DEBUG_MINES) { noteInfo._type = 3; }
+    let color;
+    let type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
+    if (noteInfo._type === 0) {
+      color = 'red';
+    } else if (noteInfo._type === 1) {
+      color = 'blue';
+    } else {
+      type = 'mine';
+      color = undefined;
+    }
 
-      let color;
-      let type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
-      if (noteInfo._type === 0) {
-        color = 'red';
-      } else if (noteInfo._type === 1) {
-        color = 'blue';
-      } else {
-        type = 'mine';
-        color = undefined;
-      }
+    if (data.has3DOFVR &&
+        data.gameMode !== 'viewer' &&
+        data.gameMode !== 'ride' &&
+        color === 'red') {
+      return;
+    }
 
-      if (data.has3DOFVR &&
-          data.gameMode !== 'viewer' &&
-          data.gameMode !== 'ride' &&
-          color === 'red') {
-        return;
-      }
+    if (data.gameMode === 'punch') { type = 'dot'; }
 
-      if (data.gameMode === 'punch') { type = 'dot'; }
+    const beatEl = this.requestBeat(type, color);
+    if (!beatEl) { return; }
 
-      const beatEl = this.requestBeat(type, color);
-      if (!beatEl) { return; }
+    // Entity was just created.
+    if (!beatEl.components.beat && !beatEl.components.plume) {
+      setTimeout(() => { this.setupBeat(beatEl, noteInfo); });
+    } else {
+      this.setupBeat(beatEl, noteInfo);
+    }
+  },
 
-      // Apply sword offset. Blocks arrive on beat in front of the user.
-      beatObj.color = color;
-      beatObj.cutDirection = this.orientationsHumanized[noteInfo._cutDirection];
-      beatObj.horizontalPosition = this.horizontalPositionsHumanized[noteInfo._lineIndex];
-      beatObj.type = type;
-      beatObj.verticalPosition = this.verticalPositionsHumanized[noteInfo._lineLayer];
+  setupBeat: function (beatEl, noteInfo) {
+    const data = this.data;
 
-      // Factor in sword offset and beat anticipation time (percentage).
-      const positionOffset =
-        ((SWORD_OFFSET / data.speed) + BEAT_ANTICIPATION_TIME) /
-        data.songDuration;
+    // Apply sword offset. Blocks arrive on beat in front of the user.
+    const cutDirection = this.orientationsHumanized[noteInfo._cutDirection];
+    const horizontalPosition = this.horizontalPositionsHumanized[noteInfo._lineIndex];
+    const verticalPosition = this.verticalPositionsHumanized[noteInfo._lineLayer];
 
-      // Song position is from 0 to 1 along the curve (percentage).
-      const durationMs = data.songDuration * 1000;
-      const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
-      beatObj.songPosition = ((noteInfo._time * msPerBeat) / durationMs) + positionOffset;
+    // Factor in sword offset and beat anticipation time (percentage).
+    const positionOffset =
+      ((SWORD_OFFSET / data.speed) + BEAT_ANTICIPATION_TIME) /
+      data.songDuration;
 
-      const compName = data.gameMode === 'ride' ? 'plume' : 'beat';
-      beatEl.setAttribute(compName, beatObj);
-      beatEl.play();
-      beatEl.components[compName].onGenerate.call(beatEl.components[compName]);
+    // Song position is from 0 to 1 along the curve (percentage).
+    const durationMs = data.songDuration * 1000;
+    const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
+    const songPosition = ((noteInfo._time * msPerBeat) / durationMs) + positionOffset;
 
-      // Set render order (back to front so decreasing render order as index increases).
-      beatEl.setAttribute(
-        'render-order',
-        this.el.systems['render-order'].order.beats + 1 - beatObj.songPosition);
-    };
-  })(),
+    if (data.gameMode === 'ride') {
+      beatEl.components.plume.onGenerate(songPosition, horizontalPosition, verticalPosition);
+    } else {
+      beatEl.components.beat.onGenerate(songPosition, horizontalPosition, verticalPosition,
+                                        cutDirection);
+    }
+    beatEl.play();
+
+    // Set render order (back to front so decreasing render order as index increases).
+    beatEl.setAttribute(
+      'render-order',
+      this.el.systems['render-order'].order.beats + 1 - beatObj.songPosition);
+  },
 
   generateWall: (function () {
     const wallObj = {};
@@ -362,13 +370,12 @@ AFRAME.registerComponent('beat-generator', {
   },
 
   requestBeat: function (type, color) {
-    var beatPoolName = 'pool__beat-' + type;
-    var pool;
+    let beatPoolName = 'pool__beat-' + type;
     if (this.data.gameMode === 'ride') {
       beatPoolName = 'pool__plume-' + type;
     }
     if (color) { beatPoolName += '-' + color; }
-    pool = this.el.sceneEl.components[beatPoolName];
+    const pool = this.el.sceneEl.components[beatPoolName];
     if (!pool) {
       console.warn('Pool ' + beatPoolName + ' unavailable');
       return;

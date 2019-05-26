@@ -100,7 +100,7 @@ AFRAME.registerComponent('beat-cut-fx', {
 
     if (gameMode === 'classic' && this.data.type !== 'mine') {
       const isDot = this.data.type === 'dot';
-      if (isDot && beatDirection.length <= 5) {
+      if (isDot) {
         beatDirection = Math.abs(direction.x) > Math.abs(direction.y) ? 'right' : 'down';
       }
       // Minimize direction.z.
