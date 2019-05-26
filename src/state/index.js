@@ -2,7 +2,7 @@
 var utils = require('../utils');
 
 const challengeDataStore = {};
-const HAS_LOGGED_VR = false;
+let HAS_LOGGED_VR = false;
 const NUM_LEADERBOARD_DISPLAY = 10;
 const SEARCH_PER_PAGE = 6;
 const SONG_NAME_TRUNCATE = 22;
