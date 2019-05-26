@@ -20,6 +20,7 @@ require('aframe-render-order-component');
 require('aframe-ring-shader');
 require('aframe-state-component');
 require('aframe-slice9-component');
+require('aframe-super-shooter-kit');
 require('aframe-thumb-controls-component');
 
 requireAll(require.context('./components/', true, /\.js$/));

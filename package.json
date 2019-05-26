@@ -46,6 +46,7 @@
     "aframe-state-component": "^6.7.0",
     "aframe-super-hot-html-loader": "^1.2.0",
     "aframe-super-hot-loader": "^1.5.0",
+    "aframe-super-shooter-kit": "^1.1.7",
     "aframe-thumb-controls-component": "^1.1.0",
     "algoliasearch": "^3.29.0",
     "ansi-html": "0.0.7",
