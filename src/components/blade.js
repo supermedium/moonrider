@@ -32,10 +32,10 @@ AFRAME.registerComponent('blade', {
   tick: function (time, delta) {
     if (!this.data.enabled) { return; }
     this.boundingBox.setFromObject(this.bboxEl.getObject3D('mesh'));
-    this.detectStroke(delta);
+    this.updateVelocity(delta);
   },
 
-  detectStroke: function (delta) {
+  updateVelocity: function (delta) {
     const data = this.data;
     const rig = this.rigEl.object3D;
 
@@ -44,13 +44,12 @@ AFRAME.registerComponent('blade', {
     this.bladePosition.set(0, 0, 0);
 
     const bladeObj = this.el.object3D;
-    bladeObj.parent.updateMatrixWorld();
     bladeObj.localToWorld(this.bladeTipPosition);
     bladeObj.localToWorld(this.bladePosition);
     rig.worldToLocal(this.bladeTipPosition);
     rig.worldToLocal(this.bladePosition);
 
-    // Angles between blade and major planes.
+    // Direction of blade in world position.
     this.bladeVector.copy(this.bladeTipPosition).sub(this.bladePosition).normalize();
 
     // Distance covered but the blade tip in one frame.
