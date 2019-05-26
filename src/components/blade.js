@@ -14,7 +14,6 @@ AFRAME.registerComponent('blade', {
     this.bladePosition = new THREE.Vector3();
     this.bladeTipPosition = new THREE.Vector3();
     this.bladeTipPreviousPosition = new THREE.Vector3();
-    this.bladeVector = new THREE.Vector3();
     this.boundingBox = new THREE.Box3();
     this.rigEl = document.getElementById('curveFollowRig');
     this.strokeDirectionVector = new THREE.Vector3();
@@ -48,9 +47,6 @@ AFRAME.registerComponent('blade', {
     bladeObj.localToWorld(this.bladePosition);
     rig.worldToLocal(this.bladeTipPosition);
     rig.worldToLocal(this.bladePosition);
-
-    // Direction of blade in world position.
-    this.bladeVector.copy(this.bladeTipPosition).sub(this.bladePosition).normalize();
 
     // Distance covered but the blade tip in one frame.
     this.strokeDirectionVector.copy(this.bladeTipPosition).sub(this.bladeTipPreviousPosition);
