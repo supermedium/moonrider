@@ -34,16 +34,16 @@
     mixin="font"
     bind__text="value: leaderboardNames"
     bind__visible="!leaderboardQualified && !leaderboardEmpty"
-    text="baseline: center; width: 1.2; anchor: left; color: {{ COLORS.UI_ACCENT }}; wrapCount: 28; lineHeight: 53;"
-    position="-0.7 0.14 0.001"></a-entity>
+    text="baseline: top; width: 1.2; anchor: left; color: {{ COLORS.UI_ACCENT }}; wrapCount: 28; lineHeight: 53;"
+    position="-0.7 0.3 0.001"></a-entity>
 
   <a-entity
     id="leaderboardScores"
     mixin="font"
     bind__text="value: leaderboardScores"
     bind__visible="!leaderboardQualified && !leaderboardEmpty"
-    text="baseline: center; align: right; width: 1.2; anchor: right; color: #fff; wrapCount: 28; lineHeight: 53;"
-    position="0.7 0.14 0.001"></a-entity>
+    text="baseline: top; align: right; width: 1.2; anchor: right; color: #fff; wrapCount: 28; lineHeight: 53;"
+    position="0.7 0.3 0.001"></a-entity>
 
   <a-entity
     id="leaderboardEmpty"
