@@ -55,7 +55,7 @@
   <a-entity
     id="leaderboardKeyboard"
     bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: leaderboardQualified"
-    super-keyboard="inputColor: #fff; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Viga-Regular.json; align: center; model: superkeyboard; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff; maxLength: 15; width: 1.5; label: NEW HIGH SCORE!\nENTER THE LEADERBOARD; labelColor: #FAFAFA"
+    super-keyboard="inputColor: #fff; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard; font: assets/fonts/Viga-Regular.json; align: center; model: superkeyboard; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff; maxLength: 15; width: 1.5; label: NEW HIGH SCORE!\nENTER THE LEADERBOARD; labelColor: #FAFAFA"
     position="0 -0.08 0.02"
     proxy-event__change="event: superkeyboardchange; to: a-scene; as: leaderboardusername"
     keyboard-raycastable="condition: leaderboardQualified"
