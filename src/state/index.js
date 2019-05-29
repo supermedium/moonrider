@@ -607,6 +607,9 @@ AFRAME.registerState({
 
     'exit-vr': state => {
       state.inVR = false;
+      if (state.isPlaying) {
+        state.isPaused = true;
+      }
     },
 
     startgame: state => {
