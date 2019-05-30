@@ -355,7 +355,6 @@ AFRAME.registerComponent('trail', {
     }
 
     const bladeObject = this.bladeEl.object3D;
-    bladeObject.parent.updateMatrixWorld();
     bladeObject.localToWorld(sample.top);
     bladeObject.localToWorld(sample.center);
     bladeObject.localToWorld(sample.bottom);
