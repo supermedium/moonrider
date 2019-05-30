@@ -1,4 +1,5 @@
-const DESTROY_TIME = 1000;
+const AUX_VECTOR = new THREE.Vector3();
+const DESTROY_TIME = 500;
 const MAX_VELOCITY = 0.01;
 
 /**
@@ -12,12 +13,12 @@ AFRAME.registerComponent('beat-cut-fx', {
 
   init: function () {
     this.breaking = false;
-    this.pool = null;
     this.fx = null;
     this.fxpool = null;
-    this.pieces = [];
-    this.returnToPoolTimer = DESTROY_TIME;
     this.goodCut = true;
+    this.pieces = [];
+    this.pool = null;
+    this.returnToPoolTimer = DESTROY_TIME;
 
     this.el.addEventListener('model-loaded', this.setupModel.bind(this));
     this.el.addEventListener('explode', this.explode.bind(this), false);
@@ -58,8 +59,6 @@ AFRAME.registerComponent('beat-cut-fx', {
       piece.material = this.material;
     }
   },
-
-  auxVector: new THREE.Vector3(),
 
   rotations: {
     right: 0,
@@ -105,13 +104,13 @@ AFRAME.registerComponent('beat-cut-fx', {
       }
       // Minimize direction.z.
       direction.z *= 0.01;
-      this.auxVector.copy(direction).multiplyScalar(-0.0025).clampLength(0, MAX_VELOCITY);
+      AUX_VECTOR.copy(direction).multiplyScalar(-0.0025).clampLength(0, MAX_VELOCITY);
       for (let i = 0; i < this.pieces.length; i++) {
         let piece = this.pieces[i];
-        piece.posVelocity.copy(this.auxVector);
+        piece.posVelocity.copy(AUX_VECTOR);
         piece.rotation.z = THREE.Math.degToRad(this.rotations[beatDirection]);
         if (goodCut) {
-          // dir is a hardcoded value, based on the position of meshes in .OBJ files :P
+          // Dir is a hardcoded value, based on the position of meshes in .OBJ files.
           let dir = i % 2 == 0 ? -0.001 : 0.001;
           piece.posVelocity.x += this.separations[beatDirection].x * dir;
           piece.posVelocity.y += this.separations[beatDirection].y * dir;
@@ -119,12 +118,12 @@ AFRAME.registerComponent('beat-cut-fx', {
             randomizeVector(piece.posVelocity, 0.002);
             randomizeVector(piece.rotVelocity, 0.004);
           } else {
-            // in dot, copy velocity and rotation from the "glued" chunk
-            piece.posVelocity.copy(this.pieces[i-2].posVelocity);
-            piece.rotVelocity.copy(this.pieces[i-2].rotVelocity);
+            // In dot, copy velocity and rotation from the "glued" chunk.
+            piece.posVelocity.copy(this.pieces[i - 2].posVelocity);
+            piece.rotVelocity.copy(this.pieces[i - 2].rotVelocity);
           }
         } else {
-          piece.posVelocity.y += 0.002;
+          piece.posVelocity.y += 0.001;
           piece.rotVelocity.z += 0.01;
         }
       }
