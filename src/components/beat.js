@@ -544,10 +544,14 @@ AFRAME.registerComponent('beat', {
     let score = (Math.min((speed / SUPER_SCORE_SPEED) * 100, 100) / 100) * 80;
 
     // 20% score on direction.
-    if (angle < ANGLE_MAX_SUPER) {
+    if (this.data.type === DOT) {
       score += 20;
     } else {
-      score += ((ANGLE_THRESHOLD - angle) / ANGLE_THRESHOLD) * 20;
+      if (angle < ANGLE_MAX_SUPER) {
+        score += 20;
+      } else {
+        score += ((ANGLE_THRESHOLD - angle) / ANGLE_THRESHOLD) * 20;
+      }
     }
 
     this.score(Math.round(score));
