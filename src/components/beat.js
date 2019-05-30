@@ -262,8 +262,11 @@ AFRAME.registerComponent('beat', {
     const supercurve = this.curveEl.components.supercurve;
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
-    el.object3D.position.x += this.horizontalPositions[horizontalPosition],
-    el.object3D.rotation.z = THREE.Math.degToRad(this.rotations[cutDirection]);
+    el.object3D.position.x += this.horizontalPositions[horizontalPosition];
+
+    if (data.type !== DOT) {
+      el.object3D.rotation.z = THREE.Math.degToRad(this.rotations[cutDirection]);
+    }
 
     // Shadow.
     // this.shadow = this.el.sceneEl.components['pool__beat-shadow'].requestEntity();
