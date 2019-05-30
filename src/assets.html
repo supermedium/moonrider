@@ -1,4 +1,3 @@
-
 <a-asset-item id="VigaRegularThree" src="assets/fonts/Viga-Regular-Three.json"></a-asset-item>
 
 <a-asset-item id="arrowredObj" src="assets/models/arrowred.obj"></a-asset-item>
@@ -93,7 +92,7 @@
 <a-mixin id="superKeyboardTextInput" mixin="font"></a-mixin>
 
 <a-mixin id="gameoverAnimation" animation__gameover="dur: 1000; easing: easeOutQuad"></a-mixin>
-<a-mixin id="beat" mixin="gameoverAnimation" animation__gameover="property: components.material.material.opacity; from: 1; to: 0; startEvents: gameover"></a-mixin>
+<a-mixin id="beat" mixin="gameoverAnimation" animation__gameover="property: components.material.material.opacity; from: 1; to: 0; startEvents: gameover" render-order></a-mixin>
 <a-mixin id="beatBlock" mixin="gameoverAnimation" animation__gameover="property: components.material.material.opacity; from: 1; to: 0; startEvents: gameover"></a-mixin>
 <a-mixin id="beatSign" mixin="gameoverAnimation" animation__gameover="property: components.material.material.opacity; from: 1; to: 0; startEvents: gameover"></a-mixin>
 <a-mixin id="arrowBlueBeat" mixin="beat" beat="color: blue; type: arrow"></a-mixin>
@@ -200,7 +199,7 @@
   material="shader: wallShader; transparent: true; side: double; opacity: 0"
   animation__fadein="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; easing: easeInCubic; autoplay: false; dur: 1500"
   animation__scalein="property: object3D.position.y; from: -5; to: 0; easing: easeInOutElastic; autoplay: false; dur: 1500"
-  render-order="beats"
+  render-order
   wall></a-mixin>
 
 <a-mixin
