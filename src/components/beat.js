@@ -179,6 +179,18 @@ AFRAME.registerComponent('beat', {
     const position = el.object3D.position;
     const rotation = el.object3D.rotation;
 
+    // Delay these events into next frame to spread out the workload.
+    if (this.queueBeatHitEvent) {
+      el.sceneEl.emit('beathit', this.queueBeatHitEvent, true);
+      this.queueBeatHitEvent = null;
+    } else if (this.queueBeatWrongEvent) {
+      el.sceneEl.emit('beatwrong', null, true);
+      this.queueBeatWrongEvent = null;
+    } else if (this.queueBeatMissEvent) {
+      el.sceneEl.emit('beatmiss', null, true);
+      this.queueBeatMissEvent = null;
+    }
+
     if (this.beatSystem.data.gameMode === 'ride') { return; }
 
     if (this.destroyed) {
@@ -203,7 +215,7 @@ AFRAME.registerComponent('beat', {
         el.parentNode.components['beat-hit-sound'].playSound(el, this.cutDirection);
         const hitEventDetail = this.hitEventDetail;
         hitEventDetail.score = 100;
-        el.emit('beathit', hitEventDetail, true);
+        this.queueBeatHitEvent = hitEventDetail;
         return;
       }
     }
@@ -292,17 +304,14 @@ AFRAME.registerComponent('beat', {
   },
 
   wrongHit: function (hand) {
-    this.el.sceneEl.emit('beatwrong', null, true);
     this.destroyed = true;
+    this.queueBeatWrongEvent = true;
   },
 
   missHit: function (hand) {
     const data = this.data;
     if (data.type === MINE) { return; }
-    this.el.sceneEl.emit('beatmiss', null, true);
-    if (AFRAME.utils.getUrlParameter('synctest')) {
-      console.log(this.el.sceneEl.components.song.getCurrentTime());
-    }
+    this.queueBeatMissEvent = true;
   },
 
   destroyBeat: (function () {
@@ -510,7 +519,7 @@ AFRAME.registerComponent('beat', {
 
     const hitEventDetail = this.hitEventDetail;
     hitEventDetail.score = score;
-    el.emit('beathit', hitEventDetail, true);
+    this.queueBeatHitEvent = hitEventDetail;
     el.sceneEl.emit('textglowbold', null, false);
 
     // Super FX.
