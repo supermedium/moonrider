@@ -294,7 +294,7 @@ AFRAME.registerComponent('beat-generator', {
     // Set render order (back to front so decreasing render order as index increases).
     beatEl.setAttribute(
       'render-order',
-      this.el.systems['render-order'].order.beats + 1 - beatObj.songPosition);
+      this.el.systems['render-order'].order.beats + 1 - songPosition);
   },
 
   generateWall: (function () {
