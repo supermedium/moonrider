@@ -1,0 +1,27 @@
+{% set colors = ['purple', 'orange', 'yellow', 'green', 'blue'] %}
+
+<a-entity
+  id="optionsMenu"
+  bind__visible="optionsMenuOpen"
+  position="0 0.5 0.01"
+  render-order="menutext">
+
+  <a-entity id="optionsTitle" mixin="font" text="align: center; value: OPTIONS; width: 2"></a-entity>
+
+  <a-entity id="colorOptionsContainer" position="0 -0.25 0">
+    <a-entity id="colorTitle" mixin="font" text="align: center; value: Colors; width: 2"></a-entity>
+
+    <a-entity id="colorOptions" position="-0.3 -0.1 0.00" layout="type: box; columns: 5; margin: 0.15" materials-color-menu>
+      {% for color in colors %}
+        <a-entity
+          class="colorOption"
+          data-color-scheme="{{ color }}"
+          animation__mouseenter="property: scale; to: 1.2 1.2 1.2; dur: 150; easing: easeInOutCubic; startEvents: mouseenter"
+          animation__mouseleave="property: scale; to: 1 1 1; dur: 125; easing: easeInOutCubic; startEvents: mouseleave"
+          geometry="primitive: plane; width: 0.1; height: 0.1"
+          material="color: {{ color }}; shader: flat"
+          bind-toggle__raycastable="optionsMenuOpen"></a-entity>
+      {% endfor %}
+    </a-entity>
+  </a-entity>
+</a-entity>

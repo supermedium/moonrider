@@ -264,9 +264,11 @@
 
   <require path="templates/genreMenu.html"></require>
   <require path="templates/difficultyMenu.html"></require>
+  <require path="templates/optionsMenu.html"></require>
   <require path="templates/playlistMenu.html"></require>
 </a-entity>
 
+<!-- Search. -->
 <a-entity
   id="keyboard"
   bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: isSearching"
@@ -283,25 +285,23 @@
 <a-entity
   id="backButton"
   mixin="bigMenuTopButton"
-  bind__visible-raycastable="genreMenuOpen || isSearching || difficultyFilterMenuOpen || playlistMenuOpen"
+  bind__visible-raycastable="genreMenuOpen || isSearching || difficultyFilterMenuOpen || playlistMenuOpen || optionsMenuOpen"
   position="0 2.32 -1.96"
   play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
-  proxy-event__difficulty="event: click; to: a-scene; as: difficultyfiltermenuclose"
-  proxy-event__genre="event: click; to: a-scene; as: playlistmenuclose"
-  proxy-event__playlist="event: click; to: a-scene; as: genremenuclose"
-  proxy-event__search="event: click; to: a-scene; as: keyboardclose">
+  proxy-event="event: click; to: a-scene; as: menuback">
   <a-entity mixin="font" text="align: center; color: #FFF; wrapCount: 20; value: BACK" position="0 -0.07 0.01"></a-entity>
 </a-entity>
 
+<!-- Top menu buttons. -->
 <a-mixin id="bigMenuTopButton" mixin="bigMenuButton" geometry="height: 0.17; width: 0.7"></a-mixin>
 <a-mixin id="bigMenuTopButtonFont" mixin="font" text="width: 0.75" position="0 -0.05 0.01"></a-mixin>
-
 <a-entity
   id="menuTopButtons"
   animation__position="property: object3D.position.z; to: -1.9; dur: 1500; easing: easeInOutCubic; delay: 300; startEvents: startgame"
   layout="type: line; margin: 0.65"
   position="-0.95 2.30 -1.96"
-  proxy-event="event: startgame; to: #searchButton, #difficultyButton, #genreButton, #playlistButton">
+  proxy-event="event: startgame; to: #searchButton, #difficultyButton, #genreButton, #playlistButton, #optionButton">
+
   <!-- Playlist menu toggle. -->
   <a-entity id="playlistButtons">
     <a-entity id="playlistButton"
@@ -412,5 +412,19 @@
       bind__visible="mainMenuActive && !!genre"
       text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
       position="0 0.1 0.035"></a-entity>
+  </a-entity>
+</a-entity>
+
+<!-- Options menu toggle. -->
+<a-entity id="optionsButtons" position="0 0.45 -1.96">
+  <a-entity id="optionButton"
+    mixin="bigMenuButton"
+    bind__visible-raycastable="mainMenuActive"
+    material="opacity: 0"
+    animation__opacity="property: components.material.material.uniforms.opacity.value; from: 0; to: 1; dur: 1000; delay: 300; startEvents: startgame"
+    play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"
+    proxy-event="event: click; to: a-scene; as: optionsmenuopen">
+    <a-entity mixin="bigMenuTopButtonFont" text="align: center; color: #FFF; wrapCount: 20; value: OPTIONS" bind__visible="!isMenuOpening"></a-entity>
+
   </a-entity>
 </a-entity>

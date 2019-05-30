@@ -101,6 +101,7 @@ AFRAME.registerState({
       songSubName: '',
       version: ''
     },
+    optionsMenuOpen: false,
     playlist: '',
     playlists: require('../constants/playlists'),
     playlistMenuOpen: false,
@@ -381,6 +382,14 @@ AFRAME.registerState({
       state.leaderboardQualified = false;
     },
 
+    menuback: state => {
+      state.difficultyFilterMenuOpen = false;
+      state.genreMenuOpen = false;
+      state.isSearching = false;
+      state.optionsMenuOpen = false;
+      state.playlistMenuOpen = false;
+    },
+
     /**
      * Song clicked from menu.
      */
@@ -441,6 +450,10 @@ AFRAME.registerState({
 
     minehit: state => {
       takeDamage(state);
+    },
+
+    optionsmenuopen: state => {
+      state.optionsMenuOpen = true;
     },
 
     pausegame: state => {
@@ -657,6 +670,7 @@ AFRAME.registerState({
       !state.genreMenuOpen &&
       !state.difficultyFilterMenuOpen &&
       !state.playlistMenuOpen &&
+      !state.optionsMenuOpen &&
       !state.isSearching;
 
     state.score.active =

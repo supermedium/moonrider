@@ -345,6 +345,16 @@ AFRAME.registerSystem('materials', {
     });
   },
 
+  /**
+   * Change color scheme as commanded by the optionsMenu.html
+   * (materials-color-menu component).
+   *
+   * @param {string} color - ID or name of the color scheme.
+   */
+  setColorScheme: function (colorSchemeName) {
+    console.log(colorSchemeName);
+  },
+
   tick: function (t, dt) {
     this.rings.uniforms.time.value = t;
     this.aurora.uniforms.time.value = t;
@@ -397,6 +407,14 @@ AFRAME.registerComponent('materials', {
       });
     } else {
       obj.material = this.material;
+    }
+  }
+});
+
+AFRAME.registerComponent('materials-color-menu', {
+  events: {
+    click: function (evt) {
+      this.el.sceneEl.systems.materials.setColorScheme(evt.target.dataset.colorScheme);
     }
   }
 });
