@@ -1,8 +1,7 @@
 <a-entity id="stage">
   <a-entity
     id="audioAnalyser"
-    bind__audioanalyser="beatDetectionThrottle: menuActive && 5000 || 1000"
-    audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000; unique: true"></a-entity>
+    audioanalyser="fftSize: 32; enableBeatDetection: false; enableLevels: false; enableWaveform: false; enableVolume: false"></a-entity>
 
   <a-entity
     id="backglow"
