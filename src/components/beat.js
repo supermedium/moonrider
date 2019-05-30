@@ -243,7 +243,8 @@ AFRAME.registerComponent('beat', {
     const data = this.data;
     const el = this.el;
 
-    this.cutDirection = cutDirection || 'down';
+    cutDirection = cutDirection || 'down';
+    this.cutDirection = cutDirection;
     this.songPosition = songPosition;
 
     if (!this.blockEl) {
