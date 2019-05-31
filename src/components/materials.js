@@ -186,7 +186,7 @@ AFRAME.registerSystem('materials', {
       envMap: weaponHandleEnvTexture
     });
 
-    const fistTexture = new THREE.TextureLoader().load(document.getElementById('fistsImg').src);
+    const fistTexture = this.getFistsTexture();
     var fistEnvTexture = new THREE.TextureLoader().load(document.getElementById('weapon2Img').src);
     fistEnvTexture.mapping = THREE.SphericalReflectionMapping;
 
@@ -205,11 +205,7 @@ AFRAME.registerSystem('materials', {
       transparent: true
     });
 
-    const beatTexture = new THREE.TextureLoader().load(
-      document.getElementById('beatsImg').src);
-    beatTexture.generateMipmaps = false;
-    beatTexture.magFilter = THREE.LinearFilter;
-    beatTexture.minFilter = THREE.LinearFilter;
+    const beatTexture = this.getBeatsTexture();
     this.textureList.push(beatTexture);
 
     this.beat = new THREE.MeshLambertMaterial({map: beatTexture, transparent: true});
@@ -429,6 +425,86 @@ AFRAME.registerSystem('materials', {
       set(el.getObject3D('mesh').material, 'colorTertiary', scheme.tertiary);
     });
   },
+
+  canvasFill: function (ctx, col, x, y, width, height) {
+    ctx.fillStyle = col;
+    ctx.fillRect(x, y, width, height);
+  },
+
+  canvasGradient: function (ctx, col1, col2, x, y, width, height) {
+    var gradient;
+    if (width > height) {
+      gradient = ctx.createLinearGradient(0, 0, width, 0);
+    } else {
+      gradient = ctx.createLinearGradient(0, 0, 0, height);
+    }
+    gradient.addColorStop(0, col1);
+    gradient.addColorStop(1, col2);
+    ctx.fillStyle = gradient;
+    ctx.fillRect(x, y, width, height);
+  },
+
+  getBeatsTexture: function () {
+    const scheme = this.scheme;
+    var canvas, ctx;
+    const primary = new THREE.Color(scheme.primary);
+    const secondary = new THREE.Color(scheme.secondary);
+    const tertiary = new THREE.Color(scheme.tertiary);
+
+    canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 32;
+    ctx = canvas.getContext('2d');
+
+    this.canvasFill(ctx, tertiary.getStyle(), 0, 0, 128, 6);
+    this.canvasFill(ctx, '#000', 128, 0, 128, 6);
+    this.canvasFill(ctx, secondary.getStyle(), 256, 0, 128, 6);
+    this.canvasFill(ctx, primary.getStyle(), 384, 0, 105, 6);
+    this.canvasFill(ctx, '#FFF', 489, 0, 23, 6);
+
+    this.canvasGradient(ctx, '#000000', secondary.getStyle(), 0, 6, 512, 4);
+    this.canvasGradient(ctx, '#000', primary.getStyle(), 0, 10, 512, 5);
+    this.canvasGradient(ctx, '#000', tertiary.getStyle(), 0, 15, 512, 4);
+
+    this.canvasGradient(ctx,
+                `rgba(${secondary.r}, ${secondary.g}, ${secondary.b}, 0)`,
+                secondary.getStyle(), 0, 19, 512, 5);
+    this.canvasGradient(ctx,
+                `rgba(${primary.r}, ${primary.g}, ${primary.b}, 0)`,
+                primary.getStyle(), 0, 24, 512, 4);
+    this.canvasGradient(ctx,
+                `rgba(${tertiary.r}, ${tertiary.g}, ${tertiary.b}, 0)`,
+                tertiary.getStyle(), 0, 28, 512, 4);
+
+    var texture = new THREE.CanvasTexture(canvas);
+    texture.generateMipmaps = false;
+    texture.magFilter = THREE.LinearFilter;
+    texture.minFilter = THREE.LinearFilter;
+
+    return texture;
+  },
+
+  getFistsTexture: function () {
+    const scheme = this.scheme;
+    var canvas, ctx;
+    const primary = new THREE.Color(scheme.primary);
+    const secondary = new THREE.Color(scheme.secondary);
+
+    canvas = document.createElement('canvas');
+    canvas.width = 8;
+    canvas.height = 128;
+    ctx = canvas.getContext('2d');
+
+    this.canvasGradient(ctx, primary.getStyle(),
+                `rgba(${primary.r}, ${primary.g}, ${primary.b}, 0)`,
+                0, 0, 4, 128);
+    this.canvasGradient(ctx, secondary.getStyle(),
+                `rgba(${secondary.r}, ${secondary.g}, ${secondary.b}, 0)`,
+                4, 0, 4, 128);
+
+    return new THREE.CanvasTexture(canvas);
+  },
+
 
   tick: function (t, dt) {
     this.aurora.uniforms.time.value = t;
