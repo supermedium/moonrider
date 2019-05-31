@@ -41,6 +41,7 @@ AFRAME.registerSystem('materials', {
     });
     this.textureList.push(this.backglow.map);
 
+    // TODO: Move colors to uniform.
     this.aurora = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/aurora.vert.glsl'),
       fragmentShader: require('./shaders/aurora.frag.glsl'),
@@ -50,6 +51,7 @@ AFRAME.registerSystem('materials', {
       transparent: true
     });
 
+    // TODO: Move colors to uniform.
     this.rings = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/rings.vert.glsl'),
       fragmentShader: require('./shaders/rings.frag.glsl'),
@@ -357,7 +359,8 @@ AFRAME.registerSystem('materials', {
   setColorScheme: function (colorSchemeName) {
     const scheme = this.scheme = COLORS.schemes[colorSchemeName] || COLORS.schemes.default;
 
-    this.tunnel.uniforms.color1.set(scheme.primary);
+    const tunnel = this.tunnel.uniforms;
+    tunnel.uniforms.color1.set(scheme.primary);
     this.tunnel.uniforms.color2.set(scheme.secondary);
     this.tunnel.uniforms.color2.set(scheme.tertiary);
   },
