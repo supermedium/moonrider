@@ -360,9 +360,35 @@ AFRAME.registerSystem('materials', {
     const scheme = this.scheme = COLORS.schemes[colorSchemeName] || COLORS.schemes.default;
 
     const tunnel = this.tunnel.uniforms;
-    tunnel.uniforms.color1.set(scheme.primary);
-    this.tunnel.uniforms.color2.set(scheme.secondary);
-    this.tunnel.uniforms.color2.set(scheme.tertiary);
+    tunnel.color1.set(scheme.primary);
+    tunnel.color2.set(scheme.secondary);
+    tunnel.color3.set(scheme.tertiary);
+
+    this.merkaba.uniforms.color.set(scheme.primary);
+
+    this.backglow.uniforms.color.set(scheme.primary);
+
+    this.moon.uniforms.tint.set(scheme.secondaryBright);
+
+    const home = this.home.uniforms;
+    home.color1.set(scheme.primary);
+    home.color2.set(scheme.secondary);
+    home.color3.set(scheme.tertiary);
+
+    this.leftWeapon.uniforms.color.set(scheme.primary);
+    this.rightWeapon.uniforms.color.set(scheme.secondary);
+    this.leftWeaponHandle.uniforms.color.set(scheme.primary);
+    this.rightWeaponHandle.uniforms.color.set(scheme.secondary);
+
+    this.leftFist.uniforms.color.set(scheme.primary);
+    this.rightFist.uniforms.color.set(scheme.secondary);
+
+    this.redBeatPieces.uniforms.color.set(scheme.primary);
+    this.redBeatPieces.uniforms.emissive.set(scheme.primary);
+    this.blueBeatPieces.uniforms.color.set(scheme.secondary);
+    this.blueBeatPieces.uniforms.emissive.set(scheme.secondary);
+    this.minePieces.uniforms.color.set(scheme.tertiary);
+    this.minePieces.uniforms.emissive.set(scheme.tertiary);
   },
 
   tick: function (t, dt) {
