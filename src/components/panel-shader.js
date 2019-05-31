@@ -16,5 +16,11 @@ AFRAME.registerShader('panelShader', {
 
   vertexShader: require('./shaders/panel.vert.glsl'),
 
-  fragmentShader: require('./shaders/panel.frag.glsl')
+  fragmentShader: require('./shaders/panel.frag.glsl'),
+
+  update: function (data) {
+    this.updateVariables(data, 'attribute');
+    this.updateVariables(data, 'uniform');
+    this.el.sceneEl.systems.materials.registerPanel(this.material);
+  }
 });

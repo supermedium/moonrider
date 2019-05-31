@@ -17,8 +17,8 @@ AFRAME.registerSystem('materials', {
   schema: {},
 
   init: function () {
+    this.panelMaterials = [];
     this.scheme = COLORS.schemes.default;
-
     // Collect references to textures for gpu-preloader.
     this.textureList = [];
 
@@ -27,6 +27,17 @@ AFRAME.registerSystem('materials', {
     } else {
       this.createMaterials();
     }
+  },
+
+  tick: function (t, dt) {
+    this.aurora.uniforms.time.value = t;
+    if (this.home.animate) { this.home.uniforms.time.value = t; }
+    this.leftFistWeapon.uniforms.time.value = t;
+    this.leftWeapon.uniforms.time.value = t;
+    this.rightFistWeapon.uniforms.time.value = t;
+    this.rightWeapon.uniforms.time.value = t;
+    this.rings.uniforms.time.value = t;
+    this.tube.uniforms.time.value = t;
   },
 
   createMaterials: function () {
@@ -424,6 +435,11 @@ AFRAME.registerSystem('materials', {
     document.querySelectorAll('a-entity[wall]').forEach(el => {
       set(el.getObject3D('mesh').material, 'colorTertiary', scheme.tertiary);
     });
+
+    this.panelMaterials.forEach(material => {
+      set(material, 'colorPrimary', scheme.primary);
+      set(material, 'colorSecondary', scheme.secondary);
+    });
   },
 
   canvasFill: function (ctx, col, x, y, width, height) {
@@ -505,16 +521,8 @@ AFRAME.registerSystem('materials', {
     return new THREE.CanvasTexture(canvas);
   },
 
-
-  tick: function (t, dt) {
-    this.aurora.uniforms.time.value = t;
-    if (this.home.animate) { this.home.uniforms.time.value = t; }
-    this.leftFistWeapon.uniforms.time.value = t;
-    this.leftWeapon.uniforms.time.value = t;
-    this.rightFistWeapon.uniforms.time.value = t;
-    this.rightWeapon.uniforms.time.value = t;
-    this.rings.uniforms.time.value = t;
-    this.tube.uniforms.time.value = t;
+  registerPanel: function (material) {
+    this.panelMaterials.push(material);
   }
 });
 
