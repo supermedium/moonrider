@@ -2,6 +2,8 @@ const COLORS = require('../constants/colors');
 
 AFRAME.registerSystem('materials', {
   init: function () {
+    this.scheme = COLORS.schemes.default;
+
     // Collect references to textures for gpu-preloader.
     this.textureList = [];
 
@@ -13,27 +15,29 @@ AFRAME.registerSystem('materials', {
   },
 
   createMaterials: function () {
+    const scheme = this.scheme;
+
     this.tunnel = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/tunnel.vert.glsl'),
       fragmentShader: require('./shaders/tunnel.frag.glsl'),
       uniforms: {
-        fogColor: {value: new THREE.Color(COLORS.RED)},
-        color1: {value: new THREE.Color(COLORS.RED)},
-        color2: {value: new THREE.Color(COLORS.BLUE)},
-        color3: {value: new THREE.Color(COLORS.YELLOW)},
+        fogColor: {value: new THREE.Color(scheme.primary)},
+        color1: {value: new THREE.Color(scheme.primary)},
+        color2: {value: new THREE.Color(scheme.secondary)},
+        color3: {value: new THREE.Color(scheme.tertiary)},
         scale: {value: 1.0}
       },
       transparent: true
     });
 
     this.merkaba = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(COLORS.RED)
+      color: new THREE.Color(scheme.primary)
     });
 
     this.backglow = new THREE.MeshBasicMaterial({
       transparent: true,
       map: new THREE.TextureLoader().load(document.getElementById('backGlowImg').src),
-      color: new THREE.Color(COLORS.RED)
+      color: new THREE.Color(scheme.primary)
     });
     this.textureList.push(this.backglow.map);
 
@@ -61,7 +65,7 @@ AFRAME.registerSystem('materials', {
       fragmentShader: require('./shaders/moon.frag.glsl'),
       uniforms: {
         map: {value: new THREE.TextureLoader().load(document.getElementById('moonImg').src)},
-        tint: {value: new THREE.Color(COLORS.BRIGHTBLUE)}
+        tint: {value: new THREE.Color(scheme.secondaryBright)}
       },
       transparent: true
     });
@@ -71,9 +75,9 @@ AFRAME.registerSystem('materials', {
       vertexShader: require('./shaders/home.vert.glsl'),
       fragmentShader: require('./shaders/home.frag.glsl'),
       uniforms: {
-        color1: {value: new THREE.Color(COLORS.RED)},
-        color2: {value: new THREE.Color(COLORS.BLUE)},
-        color3: {value: new THREE.Color(COLORS.YELLOW)},
+        color1: {value: new THREE.Color(scheme.primary)},
+        color2: {value: new THREE.Color(scheme.secondary)},
+        color3: {value: new THREE.Color(scheme.tertiary)},
         src: {value: new THREE.TextureLoader().load(document.getElementById('homeShadowImg').src)},
         time: {value: 0}
       },
@@ -94,7 +98,7 @@ AFRAME.registerSystem('materials', {
       fragmentShader: require('./shaders/weapon.frag.glsl'),
       uniforms: {
         src: {value: weaponTexture},
-        color: {value: new THREE.Color(COLORS.BLUE)},
+        color: {value: new THREE.Color(scheme.secondary)},
         thickness: {value: 1.6},
         time: {value: 0}
       },
@@ -107,7 +111,7 @@ AFRAME.registerSystem('materials', {
       fragmentShader: require('./shaders/weapon.frag.glsl'),
       uniforms: {
         src: {value: weaponTexture},
-        color: {value: new THREE.Color(COLORS.RED)},
+        color: {value: new THREE.Color(scheme.primary)},
         thickness: {value: 1.6},
         time: {value: 0}
       },
@@ -120,7 +124,7 @@ AFRAME.registerSystem('materials', {
       fragmentShader: require('./shaders/fistWeapon.frag.glsl'),
       uniforms: {
         src: {value: weaponTexture},
-        color: {value: new THREE.Color(COLORS.RED)},
+        color: {value: new THREE.Color(scheme.primary)},
         time: {value: 0}
       },
       transparent: true,
@@ -132,7 +136,7 @@ AFRAME.registerSystem('materials', {
       fragmentShader: require('./shaders/fistWeapon.frag.glsl'),
       uniforms: {
         src: {value: weaponTexture},
-        color: {value: new THREE.Color(COLORS.BLUE)},
+        color: {value: new THREE.Color(scheme.secondary)},
         time: {value: 0}
       },
       transparent: true,
@@ -150,14 +154,14 @@ AFRAME.registerSystem('materials', {
     this.leftWeaponHandle = new THREE.MeshStandardMaterial({
       roughness: 0.4,
       metalness: 0.5,
-      color: new THREE.Color(COLORS.RED),
+      color: new THREE.Color(scheme.primary),
       map: weaponHandleTexture,
       envMap: weaponHandleEnvTexture
     });
     this.rightWeaponHandle = new THREE.MeshStandardMaterial({
       roughness: 0.4,
       metalness: 0.5,
-      color: new THREE.Color(COLORS.BLUE),
+      color: new THREE.Color(scheme.secondary),
       map: weaponHandleTexture,
       envMap: weaponHandleEnvTexture
     });
@@ -191,32 +195,32 @@ AFRAME.registerSystem('materials', {
     this.beat = new THREE.MeshLambertMaterial({map: beatTexture, transparent: true});
     this.blueBeatPieces = new THREE.MeshLambertMaterial({
       map: beatTexture,
-      color: COLORS.BLUE,
-      emissive: COLORS.BLUE,
+      color: scheme.secondary,
+      emissive: scheme.secondary,
       emissiveIntensity: 0.2
     });
     this.redBeatPieces = new THREE.MeshLambertMaterial({
       map: beatTexture,
-      color: COLORS.RED,
-      emissive: COLORS.RED,
+      color: scheme.primary,
+      emissive: scheme.primary,
       emissiveIntensity: 0.2
     });
     this.minePieces = new THREE.MeshLambertMaterial({
-      color: COLORS.YELLOW,
-      emissive: COLORS.YELLOW,
+      color: scheme.tertiary,
+      emissive: scheme.tertiary,
       emissiveIntensity: 0.2
     });
 
     const glowTexture = new THREE.TextureLoader().load(
       document.getElementById('backGlowImg').src);
     this.redBeatGlow = new THREE.MeshBasicMaterial({
-      color: COLORS.RED,
+      color: scheme.primary,
       map: glowTexture,
       blending: THREE.AdditiveBlending,
       transparent: true
     });
     this.blueBeatGlow = new THREE.MeshBasicMaterial({
-      color: COLORS.BLUE,
+      color: scheme.secondary,
       map: glowTexture,
       blending: THREE.AdditiveBlending,
       transparent: true
@@ -228,7 +232,7 @@ AFRAME.registerSystem('materials', {
       map: new THREE.TextureLoader().load(document.getElementById('starImg').src),
       blending: THREE.AdditiveBlending,
       transparent: true,
-      color: new THREE.Color(COLORS.BLUE)
+      color: new THREE.Color(scheme.secondary)
     });
     this.textureList.push(this.stars.map);
 
@@ -251,14 +255,13 @@ AFRAME.registerSystem('materials', {
       color: new THREE.Color(COLORS.OFF)
     });
 
-
     const plumeTexture = new THREE.TextureLoader().load(document.getElementById('plumeImg').src);
     plumeTexture.minFilter = THREE.LinearFilter;
     this.arrowBluePlume = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
       uniforms : {
-        color: {value: new THREE.Color(COLORS.BLUE)},
+        color: {value: new THREE.Color(scheme.secondary)},
         src: {value: plumeTexture}
       },
       transparent: true,
@@ -268,7 +271,7 @@ AFRAME.registerSystem('materials', {
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
       uniforms : {
-        color: {value: new THREE.Color(COLORS.RED)},
+        color: {value: new THREE.Color(scheme.primary)},
         src: {value: plumeTexture}
       },
       transparent: true,
@@ -279,7 +282,7 @@ AFRAME.registerSystem('materials', {
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
       uniforms : {
-        color: {value: new THREE.Color(COLORS.BLUE)},
+        color: {value: new THREE.Color(scheme.secondary)},
         src: {value: plumeTexture}
       },
       transparent: true,
@@ -290,7 +293,7 @@ AFRAME.registerSystem('materials', {
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
       uniforms : {
-        color: {value: new THREE.Color(COLORS.RED)},
+        color: {value: new THREE.Color(scheme.primary)},
         src: {value: plumeTexture}
       },
       transparent: true,
@@ -301,7 +304,7 @@ AFRAME.registerSystem('materials', {
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
       uniforms: {
-        color: {value: new THREE.Color(COLORS.YELLOW)},
+        color: {value: new THREE.Color(scheme.tertiary)},
         src: {value: plumeTexture}
       },
       transparent: true,
@@ -352,7 +355,11 @@ AFRAME.registerSystem('materials', {
    * @param {string} color - ID or name of the color scheme.
    */
   setColorScheme: function (colorSchemeName) {
-    console.log(colorSchemeName);
+    const scheme = this.scheme = COLORS.schemes[colorSchemeName] || COLORS.schemes.default;
+
+    this.tunnel.uniforms.color1.set(scheme.primary);
+    this.tunnel.uniforms.color2.set(scheme.secondary);
+    this.tunnel.uniforms.color2.set(scheme.tertiary);
   },
 
   tick: function (t, dt) {

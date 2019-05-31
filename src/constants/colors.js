@@ -1,4 +1,4 @@
-module.exports = {
+const COLORS = {
   OFF: '#111',
   WHITE: '#f0f0f0',
   RED: '#f971c3',
@@ -16,3 +16,15 @@ module.exports = {
   UI_ACCENT: '#08bfa2',
   UI_ACCENT2: '#f01978'
 };
+
+COLORS.schemes = {
+  default: {
+    primary: COLORS.RED,
+    primaryBright: COLORS.BRIGHTRED,
+    secondary: COLORS.BLUE,
+    secondaryBright: COLORS.BRIGHTBLUE,
+    tertiary: COLORS.YELLOW
+  }
+}
+
+module.exports = COLORS;
