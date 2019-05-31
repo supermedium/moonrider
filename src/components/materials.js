@@ -379,72 +379,66 @@ AFRAME.registerSystem('materials', {
    */
   setColorScheme: function (colorSchemeName) {
     const scheme = this.scheme = COLORS.schemes[colorSchemeName] || COLORS.schemes.default;
-
+    set(this.arrowBluePlume, 'color', scheme.secondary);
+    set(this.arrowRedPlume, 'color', scheme.primary);
     set(this.aurora, 'colorPrimary', scheme.primary);
     set(this.aurora, 'colorSecondary', scheme.secondary);
-
-    set(this.rings, 'colorPrimary', scheme.primary);
-    set(this.rings, 'colorSecondary', scheme.secondary);
-    set(this.rings, 'colorTertiary', scheme.tertiary);
-
+    set(this.backglow, 'color', scheme.primary);
+    set(this.blueBeatGlow, 'color', scheme.secondary);
+    set(this.blueBeatGlow, 'color', scheme.secondary);
+    set(this.blueBeatPieces, 'color', scheme.secondary);
+    set(this.blueBeatPieces, 'emissive', scheme.secondary);
+    set(this.dotBluePlume, 'color', scheme.secondary);
+    set(this.dotRedPlume, 'color', scheme.primary);
     set(this.handStarTrail, 'colorPrimary', scheme.primary);
     set(this.handStarTrail, 'colorSecondary', scheme.secondary);
     set(this.handStarTrail, 'colorTertiary', scheme.tertiary);
-
+    set(this.home, 'color1', scheme.primary);
+    set(this.home, 'color2', scheme.secondary);
+    set(this.home, 'color3', scheme.tertiary);
+    set(this.leftFist, 'color', scheme.primary);
+    set(this.leftWeapon, 'color', scheme.primary);
+    set(this.leftWeaponHandle, 'color', scheme.primary);
+    set(this.merkaba, 'color', scheme.primary);
+    set(this.minePieces, 'color', scheme.tertiary);
+    set(this.minePieces, 'emissive', scheme.tertiary);
+    set(this.minePlume, 'color', scheme.tertiary);
+    set(this.moon, 'tint', scheme.secondaryBright);
+    set(this.redBeatGlow, 'color', scheme.primary);
+    set(this.redBeatGlow, 'color', scheme.primary);
+    set(this.redBeatPieces, 'color', scheme.primary);
+    set(this.redBeatPieces, 'emissive', scheme.primary);
+    set(this.rightFist, 'color', scheme.secondary);
+    set(this.rightWeapon, 'color', scheme.secondary);
+    set(this.rightWeaponHandle, 'color', scheme.secondary);
+    set(this.rings, 'colorPrimary', scheme.primary);
+    set(this.rings, 'colorSecondary', scheme.secondary);
+    set(this.rings, 'colorTertiary', scheme.tertiary);
+    set(this.stars, 'color', scheme.secondary);
     set(this.tunnel, 'color1', scheme.primary);
     set(this.tunnel, 'color2', scheme.secondary);
     set(this.tunnel, 'color3', scheme.tertiary);
 
-    set(this.merkaba, 'color', scheme.primary);
+    document.querySelectorAll('.handStar').forEach(el => {
+      set(el.components.material.material, 'colorPrimary', scheme.tertiary);
+      set(el.components.material.material, 'colorSecondary', scheme.tertiary);
+      set(el.components.material.material, 'colorTertiary', scheme.tertiary);
+    });
 
-    set(this.backglow, 'color', scheme.primary);
-
-    set(this.moon, 'tint', scheme.secondaryBright);
-
-    set(this.home, 'color1', scheme.primary);
-    set(this.home, 'color2', scheme.secondary);
-    set(this.home, 'color3', scheme.tertiary);
-
-    set(this.leftWeapon, 'color', scheme.primary);
-    set(this.rightWeapon, 'color', scheme.secondary);
-    set(this.leftWeaponHandle, 'color', scheme.primary);
-    set(this.rightWeaponHandle, 'color', scheme.secondary);
-
-    set(this.leftFist, 'color', scheme.primary);
-    set(this.rightFist, 'color', scheme.secondary);
-
-    set(this.redBeatPieces, 'color', scheme.primary);
-    set(this.redBeatPieces, 'emissive', scheme.primary);
-    set(this.blueBeatPieces, 'color', scheme.secondary);
-    set(this.blueBeatPieces, 'emissive', scheme.secondary);
-    set(this.minePieces, 'color', scheme.tertiary);
-    set(this.minePieces, 'emissive', scheme.tertiary);
-
-    set(this.redBeatGlow, 'color', scheme.primary);
-    set(this.blueBeatGlow, 'color', scheme.secondary);
-
-    set(this.redBeatGlow, 'color', scheme.primary);
-    set(this.blueBeatGlow, 'color', scheme.secondary);
-    set(this.stars, 'color', scheme.secondary);
-
-    set(this.arrowRedPlume, 'color', scheme.primary);
-    set(this.arrowBluePlume, 'color', scheme.secondary);
-
-    set(this.dotRedPlume, 'color', scheme.primary);
-    set(this.dotBluePlume, 'color', scheme.secondary);
-
-    set(this.minePlume, 'color', scheme.tertiary);
+    document.querySelectorAll('a-entity[wall]').forEach(el => {
+      set(el.components.material.material, 'colorTertiary', scheme.tertiary);
+    });
   },
 
   tick: function (t, dt) {
-    this.rings.uniforms.time.value = t;
     this.aurora.uniforms.time.value = t;
-    this.leftWeapon.uniforms.time.value = t;
-    this.rightWeapon.uniforms.time.value = t;
-    this.leftFistWeapon.uniforms.time.value = t;
-    this.rightFistWeapon.uniforms.time.value = t;
-    this.tube.uniforms.time.value = t;
     if (this.home.animate) { this.home.uniforms.time.value = t; }
+    this.leftFistWeapon.uniforms.time.value = t;
+    this.leftWeapon.uniforms.time.value = t;
+    this.rightFistWeapon.uniforms.time.value = t;
+    this.rightWeapon.uniforms.time.value = t;
+    this.rings.uniforms.time.value = t;
+    this.tube.uniforms.time.value = t;
   }
 });
 
