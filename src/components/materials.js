@@ -5,15 +5,17 @@ const auxColor = new THREE.Color();
 function set (mat, name, color) {
   auxColor.set(color);
   if (mat.uniforms) {
-    mat.uniforms[name].r = auxColor.r;
-    mat.uniforms[name].g = auxColor.g;
-    mat.uniforms[name].b = auxColor.b;
+    mat.uniforms[name].value.r = auxColor.r;
+    mat.uniforms[name].value.g = auxColor.g;
+    mat.uniforms[name].value.b = auxColor.b;
   } else {
     mat[name].set(color);
   }
 }
 
 AFRAME.registerSystem('materials', {
+  schema: {},
+
   init: function () {
     this.scheme = COLORS.schemes.default;
 
@@ -54,21 +56,24 @@ AFRAME.registerSystem('materials', {
     });
     this.textureList.push(this.backglow.map);
 
-    // TODO: Move colors to uniform.
     this.aurora = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/aurora.vert.glsl'),
       fragmentShader: require('./shaders/aurora.frag.glsl'),
       uniforms: {
+        colorPrimary: {value: new THREE.Color(scheme.primary)},
+        colorSecondary: {value: new THREE.Color(scheme.secondary)},
         time: {value: 0}
       },
       transparent: true
     });
 
-    // TODO: Move colors to uniform.
     this.rings = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/rings.vert.glsl'),
       fragmentShader: require('./shaders/rings.frag.glsl'),
       uniforms: {
+        colorPrimary: {value: new THREE.Color(scheme.primary)},
+        colorSecondary: {value: new THREE.Color(scheme.secondary)},
+        colorTertiary: {value: new THREE.Color(scheme.tertiary)},
         time: {value: 0}
       },
       transparent: true,
@@ -353,6 +358,9 @@ AFRAME.registerSystem('materials', {
       vertexShader: require('./shaders/handstartrail.vert.glsl'),
       fragmentShader: require('./shaders/handstartrail.frag.glsl'),
       uniforms: {
+        colorPrimary: {value: new THREE.Color(scheme.primary)},
+        colorSecondary: {value: new THREE.Color(scheme.secondary)},
+        colorTertiary: {value: new THREE.Color(scheme.tertiary)},
         pulse: {value: 0},
         src: {value: trailTexture}
       },
@@ -371,6 +379,17 @@ AFRAME.registerSystem('materials', {
    */
   setColorScheme: function (colorSchemeName) {
     const scheme = this.scheme = COLORS.schemes[colorSchemeName] || COLORS.schemes.default;
+
+    set(this.aurora, 'colorPrimary', scheme.primary);
+    set(this.aurora, 'colorSecondary', scheme.secondary);
+
+    set(this.rings, 'colorPrimary', scheme.primary);
+    set(this.rings, 'colorSecondary', scheme.secondary);
+    set(this.rings, 'colorTertiary', scheme.tertiary);
+
+    set(this.handStarTrail, 'colorPrimary', scheme.primary);
+    set(this.handStarTrail, 'colorSecondary', scheme.secondary);
+    set(this.handStarTrail, 'colorTertiary', scheme.tertiary);
 
     set(this.tunnel, 'color1', scheme.primary);
     set(this.tunnel, 'color2', scheme.secondary);

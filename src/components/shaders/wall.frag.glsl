@@ -1,4 +1,4 @@
-@import ../../constants/colors;
+uniform vec3 colorTertiary;
 
 varying vec2 uvs;
 varying vec3 nrml;
@@ -38,8 +38,8 @@ void main() {
 
   // weapon collision
   vec4 hit;
-  hit = drawHit(worldPos, hitRight, COLOR_YELLOW);
-  hit += drawHit(worldPos, hitLeft, COLOR_YELLOW);
+  hit = drawHit(worldPos, hitRight, colorTertiary);
+  hit += drawHit(worldPos, hitLeft, colorTertiary);
 
   // reflection
   vec3 ray = reflect(normalize(cameraPosition - worldPos + sin(worldPos.z) * 0.1 + cos(worldPos.z * 0.3) * 0.3), nrml);

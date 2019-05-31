@@ -1,6 +1,6 @@
-@import ../../constants/colors;
-
 uniform float time;
+uniform vec3 colorPrimary;
+uniform vec3 colorSecondary;
 varying vec2 uvs;
 
 void main() {
@@ -24,6 +24,6 @@ void main() {
   alpha *= sin(uvs.x * 3.141592);
 
   // colorize
-  col = col * mix(COLOR_RED, COLOR_BLUE, uvs.y);
+  col = col * mix(colorPrimary, colorSecondary, uvs.y);
   gl_FragColor = vec4(col, alpha);
 }

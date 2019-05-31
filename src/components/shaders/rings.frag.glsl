@@ -1,6 +1,7 @@
-@import ../../constants/colors;
-
 uniform float time;
+uniform vec3 colorPrimary;
+uniform vec3 colorSecondary;
+uniform vec3 colorTertiary;
 varying vec2 uvs;
 #define PI 3.14159265358979
 
@@ -28,9 +29,9 @@ void main() {
   float sparks = pulse(angalpha, 0.4, 0.17) * (pulse(d, 0.435, 0.035) + pulse(d, 0.205, 0.026)) * 0.14;
   sparks += pulse(angalpha, 0.4, 0.2) * (pulse(d, 0.44, 0.002) + pulse(d, 0.2, 0.0018)) * 0.4;
   sparks *= sin(ang * 14.0 + t) * 0.5 + 0.5;
-  vec3 col = mix(COLOR_RED, COLOR_BLUE, ang);
-  col = mix (col, COLOR_RED, g3);
-  col = mix (col, COLOR_BLUE, g1);
-  col = mix (col, COLOR_YELLOW, sparks * 2.4);
+  vec3 col = mix(colorPrimary, colorSecondary, ang);
+  col = mix (col, colorPrimary, g3);
+  col = mix (col, colorSecondary, g1);
+  col = mix (col, colorTertiary, sparks * 2.4);
    gl_FragColor = vec4(col, ((f + g + g2) * 0.1 + (f2 + g1 + g3) * 0.4) * angalpha + sparks);
 }
