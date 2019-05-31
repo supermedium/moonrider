@@ -24,6 +24,14 @@ COLORS.schemes = {
     secondary: COLORS.BLUE,
     secondaryBright: COLORS.BRIGHTBLUE,
     tertiary: COLORS.YELLOW
+  },
+
+  blue: {
+    primary: COLORS.BLUE,
+    primaryBright: COLORS.BRIGHTBLUE,
+    secondary: COLORS.RED,
+    secondaryBright: COLORS.BRIGHTRED,
+    tertiary: COLORS.YELLOW
   }
 }
 

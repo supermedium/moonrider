@@ -1,5 +1,18 @@
 const COLORS = require('../constants/colors');
 
+const auxColor = new THREE.Color();
+
+function set (mat, name, color) {
+  auxColor.set(color);
+  if (mat.uniforms) {
+    mat.uniforms[name].r = auxColor.r;
+    mat.uniforms[name].g = auxColor.g;
+    mat.uniforms[name].b = auxColor.b;
+  } else {
+    mat[name].set(color);
+  }
+}
+
 AFRAME.registerSystem('materials', {
   init: function () {
     this.scheme = COLORS.schemes.default;
@@ -359,36 +372,49 @@ AFRAME.registerSystem('materials', {
   setColorScheme: function (colorSchemeName) {
     const scheme = this.scheme = COLORS.schemes[colorSchemeName] || COLORS.schemes.default;
 
-    const tunnel = this.tunnel.uniforms;
-    tunnel.color1.set(scheme.primary);
-    tunnel.color2.set(scheme.secondary);
-    tunnel.color3.set(scheme.tertiary);
+    set(this.tunnel, 'color1', scheme.primary);
+    set(this.tunnel, 'color2', scheme.secondary);
+    set(this.tunnel, 'color3', scheme.tertiary);
 
-    this.merkaba.uniforms.color.set(scheme.primary);
+    set(this.merkaba, 'color', scheme.primary);
 
-    this.backglow.uniforms.color.set(scheme.primary);
+    set(this.backglow, 'color', scheme.primary);
 
-    this.moon.uniforms.tint.set(scheme.secondaryBright);
+    set(this.moon, 'tint', scheme.secondaryBright);
 
-    const home = this.home.uniforms;
-    home.color1.set(scheme.primary);
-    home.color2.set(scheme.secondary);
-    home.color3.set(scheme.tertiary);
+    set(this.home, 'color1', scheme.primary);
+    set(this.home, 'color2', scheme.secondary);
+    set(this.home, 'color3', scheme.tertiary);
 
-    this.leftWeapon.uniforms.color.set(scheme.primary);
-    this.rightWeapon.uniforms.color.set(scheme.secondary);
-    this.leftWeaponHandle.uniforms.color.set(scheme.primary);
-    this.rightWeaponHandle.uniforms.color.set(scheme.secondary);
+    set(this.leftWeapon, 'color', scheme.primary);
+    set(this.rightWeapon, 'color', scheme.secondary);
+    set(this.leftWeaponHandle, 'color', scheme.primary);
+    set(this.rightWeaponHandle, 'color', scheme.secondary);
 
-    this.leftFist.uniforms.color.set(scheme.primary);
-    this.rightFist.uniforms.color.set(scheme.secondary);
+    set(this.leftFist, 'color', scheme.primary);
+    set(this.rightFist, 'color', scheme.secondary);
 
-    this.redBeatPieces.uniforms.color.set(scheme.primary);
-    this.redBeatPieces.uniforms.emissive.set(scheme.primary);
-    this.blueBeatPieces.uniforms.color.set(scheme.secondary);
-    this.blueBeatPieces.uniforms.emissive.set(scheme.secondary);
-    this.minePieces.uniforms.color.set(scheme.tertiary);
-    this.minePieces.uniforms.emissive.set(scheme.tertiary);
+    set(this.redBeatPieces, 'color', scheme.primary);
+    set(this.redBeatPieces, 'emissive', scheme.primary);
+    set(this.blueBeatPieces, 'color', scheme.secondary);
+    set(this.blueBeatPieces, 'emissive', scheme.secondary);
+    set(this.minePieces, 'color', scheme.tertiary);
+    set(this.minePieces, 'emissive', scheme.tertiary);
+
+    set(this.redBeatGlow, 'color', scheme.primary);
+    set(this.blueBeatGlow, 'color', scheme.secondary);
+
+    set(this.redBeatGlow, 'color', scheme.primary);
+    set(this.blueBeatGlow, 'color', scheme.secondary);
+    set(this.stars, 'color', scheme.secondary);
+
+    set(this.arrowRedPlume, 'color', scheme.primary);
+    set(this.arrowBluePlume, 'color', scheme.secondary);
+
+    set(this.dotRedPlume, 'color', scheme.primary);
+    set(this.dotBluePlume, 'color', scheme.secondary);
+
+    set(this.minePlume, 'color', scheme.tertiary);
   },
 
   tick: function (t, dt) {
