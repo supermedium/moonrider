@@ -44,17 +44,3 @@ html {
   50% { opacity: 0.8; }
   100% { opacity: 1; }
 }
-
-#tutorial2d {
-  position: absolute;
-  width: 60%;
-  left: 20%;
-  top: 35%;
-}
-
-@media (max-width: 1280px) {
-  #tutorial2d {
-    width: 80%;
-    left: 10%;
-  }
-}
