@@ -1,14 +1,12 @@
+uniform float iTime;
+uniform float opacity;
+uniform sampler2D environment;
 uniform vec3 colorTertiary;
-
+uniform vec3 hitLeft;
+uniform vec3 hitRight;
 varying vec2 uvs;
 varying vec3 nrml;
 varying vec3 worldPos;
-uniform float iTime;
-uniform float opacity;
-uniform vec3 hitRight;
-uniform vec3 hitLeft;
-uniform vec3 wallColor;
-uniform sampler2D environment;
 
 #define SEED 19.1252
 #define time (3.0 + iTime) / 1000.0
@@ -47,5 +45,5 @@ void main() {
   vec2 uv = ray.xy / m + 0.5;
   vec3 col = texture2D(environment, uv).rgb * 0.3;
 
-  gl_FragColor = vec4(mix(col, wallColor, alpha) + hit.rgb, (alpha * 0.2 + 0.8) * opacity + hit.a);
+  gl_FragColor = vec4(mix(col, colorTertiary, alpha) + hit.rgb, (alpha * 0.2 + 0.8) * opacity + hit.a);
 }

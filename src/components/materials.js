@@ -5,9 +5,9 @@ const auxColor = new THREE.Color();
 function set (mat, name, color) {
   auxColor.set(color);
   if (mat.uniforms) {
-    mat.uniforms[name].value.r = auxColor.r;
-    mat.uniforms[name].value.g = auxColor.g;
-    mat.uniforms[name].value.b = auxColor.b;
+    mat.uniforms[name].value.x = auxColor.r;
+    mat.uniforms[name].value.y = auxColor.g;
+    mat.uniforms[name].value.z = auxColor.b;
   } else {
     mat[name].set(color);
   }
@@ -420,13 +420,13 @@ AFRAME.registerSystem('materials', {
     set(this.tunnel, 'color3', scheme.tertiary);
 
     document.querySelectorAll('.handStar').forEach(el => {
-      set(el.components.material.material, 'colorPrimary', scheme.tertiary);
-      set(el.components.material.material, 'colorSecondary', scheme.tertiary);
-      set(el.components.material.material, 'colorTertiary', scheme.tertiary);
+      set(el.getObject3D('mesh').material, 'colorPrimary', scheme.tertiary);
+      set(el.getObject3D('mesh').material, 'colorSecondary', scheme.tertiary);
+      set(el.getObject3D('mesh').material, 'colorTertiary', scheme.tertiary);
     });
 
     document.querySelectorAll('a-entity[wall]').forEach(el => {
-      set(el.components.material.material, 'colorTertiary', scheme.tertiary);
+      set(el.getObject3D('mesh').material, 'colorTertiary', scheme.tertiary);
     });
   },
 
