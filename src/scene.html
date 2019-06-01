@@ -6,7 +6,6 @@
 
 <!-- pool__beat-shadow="mixin: beatShadow; size: 100; container: #beatContainer; dynamic: true" -->
 <a-scene
-  mixin="bgColorAnimation leftSideGlowAnimations rightSideGlowAnimations"
   bind__beat-generator="challengeId: challenge.id; difficulty: challenge.difficulty; gameMode: gameMode; has3DOFVR: has3DOFVR; isPlaying: isPlaying; isZipFetching: isZipFetching; menuSelectedChallengeId: menuSelectedChallenge.id; songDuration: challenge.songDuration; speed: speed"
   bind__beat-system="gameMode: gameMode; hasVR: hasVR; isLoading: isLoading"
   bind__gameover="isGameOver: isGameOver"
@@ -15,6 +14,7 @@
   bind__search="difficultyFilter: difficultyFilter; genre: genre; playlist: playlist; query: search.query"
   bind__song="audio: challenge.audio; challengeId: challenge.id; isLoading: isLoading; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver; isVictory: isVictory"
   bind__song-preview-system="challengeId: challenge.id; isSearching: isSearching; isLoading: isLoading; selectedChallengeId: menuSelectedChallenge.id"
+  bind__stage-colors="colorScheme: colorScheme"
   bind__tunnels="isPlaying: isPlaying; songDuration: challenge.songDuration"
   bind__zip-loader="isLoading: isLoading; version: menuSelectedChallenge.version"
   animation__gameover="property: object3D.background; type: color; to: #750000; startEvents: gameover"
@@ -63,7 +63,6 @@
   proxy-event__resumegame="event: gamemenuresume; as: textglownormal; to: a-scene"
   play-sound__crescendo="sound: #crescendo; event: victory; volume: 0.75"
   render-order="stage, aurora, sideglow, tunnel, curve, curveshadow, beatShadow, score, beats, menu, menuitem, menubutton, menutext, menugenre, cursor, particles, weapon, victory, stepback"
-  stage-colors
   stats-param
   tunnels
   vr-mode-ui="enterVRButton: #vrButton"

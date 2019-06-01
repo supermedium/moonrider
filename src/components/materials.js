@@ -2,35 +2,6 @@ const COLORS = require('../constants/colors');
 
 const auxColor = new THREE.Color();
 
-function set (mat, name, color) {
-  auxColor.set(color);
-  if (mat.uniforms) {
-    mat.uniforms[name].value.x = auxColor.r;
-    mat.uniforms[name].value.y = auxColor.g;
-    mat.uniforms[name].value.z = auxColor.b;
-  } else {
-    mat[name].set(color);
-  }
-}
-
-function canvasFill (ctx, col, x, y, width, height) {
-  ctx.fillStyle = col;
-  ctx.fillRect(x, y, width, height);
-}
-
-function canvasGradient (ctx, col1, col2, x, y, width, height) {
-  let gradient;
-  if (width > height) {
-    gradient = ctx.createLinearGradient(0, 0, width, 0);
-  } else {
-    gradient = ctx.createLinearGradient(0, 0, 0, height);
-  }
-  gradient.addColorStop(0, col1);
-  gradient.addColorStop(1, col2);
-  ctx.fillStyle = gradient;
-  ctx.fillRect(x, y, width, height);
-}
-
 AFRAME.registerSystem('materials', {
   schema: {},
 
@@ -131,7 +102,7 @@ AFRAME.registerSystem('materials', {
       fragmentShader: require('./shaders/moon.frag.glsl'),
       uniforms: {
         map: {value: new THREE.TextureLoader().load(document.getElementById('moonImg').src)},
-        tint: {value: new THREE.Color(scheme.secondaryBright)}
+        tint: {value: new THREE.Color(scheme.secondarybright)}
       },
       transparent: true
     });
@@ -417,6 +388,7 @@ AFRAME.registerSystem('materials', {
    * @param {string} color - ID or name of the color scheme.
    */
   setColorScheme: function (colorSchemeName) {
+    const scene = this.el.sceneEl;
     const scheme = this.scheme = COLORS.schemes[colorSchemeName] || COLORS.schemes.default;
 
     set(this.arrowBluePlume, 'color', scheme.secondary);
@@ -443,7 +415,7 @@ AFRAME.registerSystem('materials', {
     set(this.minePieces, 'color', scheme.tertiary);
     set(this.minePieces, 'emissive', scheme.tertiary);
     set(this.minePlume, 'color', scheme.tertiary);
-    set(this.moon, 'tint', scheme.secondaryBright);
+    set(this.moon, 'tint', scheme.secondarybright);
     set(this.redBeatGlow, 'color', scheme.primary);
     set(this.redBeatGlow, 'color', scheme.primary);
     set(this.redBeatPieces, 'color', scheme.primary);
@@ -480,6 +452,22 @@ AFRAME.registerSystem('materials', {
     set(this.curve, 'fogColor', scheme.primary);
     set(this.curve, 'color1', scheme.primary);
     set(this.curve, 'color2', scheme.secondary);
+
+    // Stage animation mixins.
+    const bgAnim = document.getElementById('bgColorAnimations');
+    setAnimation(scene, 'bgcoloroff', null, scheme.off);
+    setAnimation(scene, 'bgcolorsecondary', null, scheme.secondary);
+    setAnimation(scene, 'bgcolorsecondarybright', null, scheme.secondarybright);
+    setAnimation(scene, 'bgcolorprimary', null, scheme.primary);
+    setAnimation(scene, 'bgcolorprimarybright', null, scheme.primarybright);
+    setAnimation(scene, 'bgcolorgameover', null, scheme.off);
+    setAnimation(scene, 'merkabacoloroff', null, scheme.off);
+    setAnimation(scene, 'merkabacolorsecondary', null, scheme.secodnary);
+    setAnimation(scene, 'merkabacolorbright', null, scheme.secodnary);
+
+    const leftGlowAnim = document.getElementById('leftGlowAnimations');
+
+    const rightGlowAnim = document.getElementById('rightGlowAnimations');
   },
 
   generateBeatsTexture: function () {
@@ -552,21 +540,21 @@ AFRAME.registerSystem('materials', {
     const primary = new THREE.Color(scheme.primary);
     const secondary = new THREE.Color(scheme.secondary);
 
-    var img = document.getElementById('envmapTemplateImg');
+    const img = document.getElementById('envmapTemplateImg');
     img.addEventListener('load', () => {
       const w = img.width;
       const h = img.height;
-      var canvas, ctx, im, imdata;
-      canvas = document.createElement('canvas');
+      const canvas = document.createElement('canvas');
       canvas.width = w;
       canvas.height = h;
-      ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
-      im = ctx.getImageData(0, 0, w, h);
-      imdata = im.data;
+      const im = ctx.getImageData(0, 0, w, h);
+      const imdata = im.data;
 
-      var primaryWeight, secondaryWeight;
-      for (var i = 0; i < imdata.length; i+=4) {
+      let primaryWeight;
+      let secondaryWeight;
+      for (let i = 0; i < imdata.length; i+=4) {
         primaryWeight = imdata[i];
         secondaryWeight = imdata[i + 1];
         primaryWeight *= 1 - secondaryWeight / 255.0;
@@ -646,3 +634,37 @@ AFRAME.registerComponent('materials-color-menu', {
     }
   }
 });
+
+function set (mat, name, color) {
+  auxColor.set(color);
+  if (mat.uniforms) {
+    mat.uniforms[name].value.x = auxColor.r;
+    mat.uniforms[name].value.y = auxColor.g;
+    mat.uniforms[name].value.z = auxColor.b;
+  } else {
+    mat[name].set(color);
+  }
+}
+
+function canvasFill (ctx, col, x, y, width, height) {
+  ctx.fillStyle = col;
+  ctx.fillRect(x, y, width, height);
+}
+
+function canvasGradient (ctx, col1, col2, x, y, width, height) {
+  let gradient;
+  if (width > height) {
+    gradient = ctx.createLinearGradient(0, 0, width, 0);
+  } else {
+    gradient = ctx.createLinearGradient(0, 0, 0, height);
+  }
+  gradient.addColorStop(0, col1);
+  gradient.addColorStop(1, col2);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(x, y, width, height);
+}
+
+function setAnimation (scene, name, from, to) {
+  if (from) { scene.setAttribute(`animation__${name}`, 'from', from); }
+  if (to) { scene.setAttribute(`animation__${name}`, 'to', to); }
+}

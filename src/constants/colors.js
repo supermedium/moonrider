@@ -20,45 +20,45 @@ COLORS.schemes = {
   default: {
     off: '#111',
     primary: COLORS.RED,
-    primaryBright: COLORS.BRIGHTRED,
+    primarybright: COLORS.BRIGHTRED,
     secondary: COLORS.BLUE,
-    secondaryBright: COLORS.BRIGHTBLUE,
+    secondarybright: COLORS.BRIGHTBLUE,
     tertiary: COLORS.YELLOW
   },
 
   blue: {
     off: '#111',
     primary: '#0B4BB3',
-    primaryBright: '#4A90FF',
+    primarybright: '#4A90FF',
     secondary: '#FFD840',
-    secondaryBright: '#FF882B',
+    secondarybright: '#FF882B',
     tertiary: '#ADCC54',
   },
 
   purple: {
     off: '#111',
     primary: '#6A39B3',
-    primaryBright: '#B685FF',
+    primarybright: '#B685FF',
     secondary: '#FAF239',
-    secondaryBright: '#FFFC9E',
+    secondarybright: '#FFFC9E',
     tertiary: '#50FFF2'
   },
 
   red: {
     off: '#111',
     primary: '#E03A3E',
-    primaryBright: '#FA7578',
+    primarybright: '#FA7578',
     secondary: '#CCC',
-    secondaryBright: '#EFEFEF',
+    secondarybright: '#EFEFEF',
     tertiary: '#666',
   },
 
   black: {
     off: '#111',
     primary: '#666',
-    primaryBright: '#808080',
+    primarybright: '#808080',
     secondary: '#EFEFEF',
-    secondaryBright: '#FAFAFA',
+    secondarybright: '#FAFAFA',
     tertiary: '#B8B8B8',
   }
 }

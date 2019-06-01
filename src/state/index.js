@@ -53,6 +53,7 @@ AFRAME.registerState({
       songNameShort: '',
       songSubName: ''
     },
+    colorScheme: 'default',
     controllerType: '',
     damage: 0,
     difficultyFilter: 'All',
@@ -174,6 +175,10 @@ AFRAME.registerState({
     beatloaderpreloadfinish: state => {
       if (state.menuActive) { return; }  // Cancelled.
       state.challenge.isBeatsPreloaded = true;
+    },
+
+    colorschemechange: (state, payload) => {
+      state.colorScheme = payload;
     },
 
     controllerconnected: (state, payload) => {
