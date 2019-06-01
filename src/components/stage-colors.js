@@ -5,9 +5,6 @@ import COLORS from '../constants/colors';
 // Stage animations have a consistent pattern so animations generated via loop.
 const animatables = [
   {name: 'bgcolor', property: 'backglow.color'},
-  {name: 'merkabacolor', property: 'merkaba.color'},
-  {name: 'mooncolor', property: 'moon.uniforms.tint.value'},
-  {name: 'starcolor', property: 'stars.color'},
   {name: 'leftglow', property: 'leftsideglow.color'},
   {name: 'rightglow', property: 'rightsideglow.color'}
 ];
@@ -45,7 +42,8 @@ AFRAME.registerComponent('stage-colors', {
   },
 
   update: function (oldData) {
-    if (oldData.colorScheme && this.data.colorScheme !== oldData.colorScheme) {
+    if (oldData.colorScheme &&
+        this.data.colorScheme !== oldData.colorScheme) {
       updateAnimations(this.el.sceneEl, this.data.colorScheme);
     }
   },
@@ -56,6 +54,22 @@ AFRAME.registerComponent('stage-colors', {
       this.el.emit(`${target}stageeventcolor`, colorCodes[code].replace('bright', ''), false);
     } else {
       this.el.emit(`${target}color${colorCodes[code]}`, null, false);
+    }
+  },
+
+  /**
+   * Set synchronously, no animation for performance.
+   */
+  setColorInstant: function (target, code) {
+    const color = COLORS.schemes[this.data.colorScheme][colorCodes[code]];
+    const materials = this.el.sceneEl.systems.materials;
+
+    if (target === 'merkaba') {
+      set(materials.merkaba, 'color', color);
+    } else if (target === 'moon') {
+      set(materials.moon, 'tint', color);
+    } else if (target === 'stars') {
+      set(materials.stars, 'color', color);
     }
   },
 
@@ -101,5 +115,17 @@ function updateAnimations (scene, scheme) {
       }
       scene.setAttribute(attr, 'to', COLORS.schemes[scheme][animation.to]);
     }
+  }
+}
+
+const auxColor = new THREE.Color();
+function set (mat, name, color) {
+  auxColor.set(color);
+  if (mat.uniforms) {
+    mat.uniforms[name].value.x = auxColor.r;
+    mat.uniforms[name].value.y = auxColor.g;
+    mat.uniforms[name].value.z = auxColor.b;
+  } else {
+    mat[name].set(color);
   }
 }

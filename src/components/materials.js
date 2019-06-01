@@ -9,6 +9,7 @@ AFRAME.registerSystem('materials', {
     this.curve = null;
     this.panelMaterials = [];
     this.scheme = COLORS.schemes.default;
+
     // Collect references to textures for gpu-preloader.
     this.textureList = [];
 
@@ -16,6 +17,11 @@ AFRAME.registerSystem('materials', {
     this.beatsCanvas = document.createElement('canvas');
     this.beatsTexture = new THREE.CanvasTexture(this.beatsCanvas);
     this.textureList.push(this.beatsTexture);
+
+    this.envmapCanvas = document.createElement('canvas');
+    this.envmapTexture = new THREE.CanvasTexture(this.envmapCanvas);
+    this.textureList.push(this.envmapTexture);
+
     this.fistsCanvas = document.createElement('canvas');
     this.fistsTexture = new THREE.CanvasTexture(this.fistsCanvas);
     this.textureList.push(this.fistsTexture);
@@ -46,8 +52,6 @@ AFRAME.registerSystem('materials', {
 
   createMaterials: function () {
     const scheme = this.scheme;
-
-    this.createEnvmapTexture();
 
     this.tunnel = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/tunnel.vert.glsl'),
@@ -432,6 +436,7 @@ AFRAME.registerSystem('materials', {
     set(this.tunnel, 'color3', scheme.tertiary);
 
     this.generateBeatsTexture();
+    this.generateEnvmapTexture();
     this.generateFistsTexture();
 
     document.querySelectorAll('.handStar').forEach(el => {
@@ -452,22 +457,6 @@ AFRAME.registerSystem('materials', {
     set(this.curve, 'fogColor', scheme.primary);
     set(this.curve, 'color1', scheme.primary);
     set(this.curve, 'color2', scheme.secondary);
-
-    // Stage animation mixins.
-    const bgAnim = document.getElementById('bgColorAnimations');
-    setAnimation(scene, 'bgcoloroff', null, scheme.off);
-    setAnimation(scene, 'bgcolorsecondary', null, scheme.secondary);
-    setAnimation(scene, 'bgcolorsecondarybright', null, scheme.secondarybright);
-    setAnimation(scene, 'bgcolorprimary', null, scheme.primary);
-    setAnimation(scene, 'bgcolorprimarybright', null, scheme.primarybright);
-    setAnimation(scene, 'bgcolorgameover', null, scheme.off);
-    setAnimation(scene, 'merkabacoloroff', null, scheme.off);
-    setAnimation(scene, 'merkabacolorsecondary', null, scheme.secodnary);
-    setAnimation(scene, 'merkabacolorbright', null, scheme.secodnary);
-
-    const leftGlowAnim = document.getElementById('leftGlowAnimations');
-
-    const rightGlowAnim = document.getElementById('rightGlowAnimations');
   },
 
   generateBeatsTexture: function () {
@@ -535,7 +524,7 @@ AFRAME.registerSystem('materials', {
     return this.fistsTexture;
   },
 
-  createEnvmapTexture: function () {
+  generateEnvmapTexture: function () {
     const scheme = this.scheme;
     const primary = new THREE.Color(scheme.primary);
     const secondary = new THREE.Color(scheme.secondary);
@@ -544,9 +533,11 @@ AFRAME.registerSystem('materials', {
     img.addEventListener('load', () => {
       const w = img.width;
       const h = img.height;
-      const canvas = document.createElement('canvas');
+
+      const canvas = this.envmapCanvas;
       canvas.width = w;
       canvas.height = h;
+
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
       const im = ctx.getImageData(0, 0, w, h);
@@ -554,7 +545,7 @@ AFRAME.registerSystem('materials', {
 
       let primaryWeight;
       let secondaryWeight;
-      for (let i = 0; i < imdata.length; i+=4) {
+      for (let i = 0; i < imdata.length; i += 4) {
         primaryWeight = imdata[i];
         secondaryWeight = imdata[i + 1];
         primaryWeight *= 1 - secondaryWeight / 255.0;
@@ -569,7 +560,6 @@ AFRAME.registerSystem('materials', {
       };
 
       ctx.putImageData(im, 0, 0);
-
       document.getElementById('envmapImg').src = canvas.toDataURL('image/png');
     });
   },
@@ -631,6 +621,7 @@ AFRAME.registerComponent('materials-color-menu', {
   events: {
     click: function (evt) {
       this.el.sceneEl.systems.materials.setColorScheme(evt.target.dataset.colorScheme);
+      this.el.sceneEl.emit('colorschemechange', evt.target.dataset.colorScheme, false);
     }
   }
 });
@@ -662,9 +653,4 @@ function canvasGradient (ctx, col1, col2, x, y, width, height) {
   gradient.addColorStop(1, col2);
   ctx.fillStyle = gradient;
   ctx.fillRect(x, y, width, height);
-}
-
-function setAnimation (scene, name, from, to) {
-  if (from) { scene.setAttribute(`animation__${name}`, 'from', from); }
-  if (to) { scene.setAttribute(`animation__${name}`, 'to', to); }
 }

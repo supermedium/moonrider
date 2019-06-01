@@ -341,20 +341,20 @@ AFRAME.registerComponent('beat-generator', {
     switch (event._type) {
       case 0:
         this.stageColors.setColor('bg', event._value);
+        this.stageColors.setColorInstant('moon', event._value);
+        this.stageColors.setColorInstant('stars', event._value);
         break;
       case 1:
-        //this.stageColors.setColor('tunnel', event._value);
+        this.stageColors.setColorInstant('merkaba', event._value);
         break;
       case 2:
-        //this.stageColors.setColor('leftlaser', event._value);
         this.stageColors.setColor('curveeven', event._value);
         break;
       case 3:
-        //this.stageColors.setColor('rightlaser', event._value);
         this.stageColors.setColor('curveodd', event._value);
         break;
       case 4:
-        //this.stageColors.setColor('floor', event._value);
+        this.stageColors.setColor('floor', event._value);
         break;
       case 8:
         this.tube.emit('pulse', null, false);
