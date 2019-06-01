@@ -42,9 +42,25 @@ COLORS.schemes = {
   purple: {
     primary: '#B32DB3',
     primaryBright: '#FF5AFE',
-    secondary: '#FFE173',
-    secondaryBright: '#FFE93E',
-    tertiary: '#33CCB5'
+    secondary: '#FAF239',
+    secondaryBright: '#FFFC9E',
+    tertiary: '#50FFF2'
+  },
+
+  red: {
+    primary: '#E03A3E',
+    primaryBright: '#FA7578',
+    secondary: '#333',
+    secondaryBright: '#CCCCCC',
+    tertiary: '#EEE',
+  },
+
+  black: {
+    primary: '#333',
+    primaryBright: '#808080',
+    secondary: '#EEE',
+    secondaryBright: '#EBEBEB',
+    tertiary: '#B8B8B8',
   }
 }
 

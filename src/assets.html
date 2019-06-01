@@ -259,3 +259,7 @@
   animation__rightglowcolorred="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.RED }}; to: {{ COLORS.OFF }}; dur: 2000; easing: linear; startEvents: rightglowcolorred"
   animation__rightglowcolorredfade="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_OFF }}; dur: 500; easing: linear; startEvents: rightglowcolorredfade"
   animation__rightglowcolorgameover="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: rightglowcolorgameover"></a-mixin>
+
+<a-mixin id="cancelSoundUI" play-sound__cancel="event: click; sound: #clearSound; volume: 0.5"></a-mixin>
+<a-mixin id="clickSoundUI" play-sound__click="event: click; sound: #confirmSound; volume: 0.25"></a-mixin>
+<a-mixin id="hoverSoundUI" play-sound__hover="event: mouseenter; sound: #hoverSound; volume: 0.1"></a-mixin>
