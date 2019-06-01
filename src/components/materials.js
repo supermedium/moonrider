@@ -13,6 +13,24 @@ function set (mat, name, color) {
   }
 }
 
+function canvasFill (ctx, col, x, y, width, height) {
+  ctx.fillStyle = col;
+  ctx.fillRect(x, y, width, height);
+}
+
+function canvasGradient (ctx, col1, col2, x, y, width, height) {
+  let gradient;
+  if (width > height) {
+    gradient = ctx.createLinearGradient(0, 0, width, 0);
+  } else {
+    gradient = ctx.createLinearGradient(0, 0, 0, height);
+  }
+  gradient.addColorStop(0, col1);
+  gradient.addColorStop(1, col2);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(x, y, width, height);
+}
+
 AFRAME.registerSystem('materials', {
   schema: {},
 
@@ -22,11 +40,25 @@ AFRAME.registerSystem('materials', {
     // Collect references to textures for gpu-preloader.
     this.textureList = [];
 
+    // Generated textures.
+    this.beatsCanvas = document.createElement('canvas');
+    this.beatsTexture = new THREE.CanvasTexture(this.beatsCanvas);
+    this.textureList.push(this.beatsTexture);
+    this.fistsCanvas = document.createElement('canvas');
+    this.fistsTexture = new THREE.CanvasTexture(this.fistsCanvas);
+    this.textureList.push(this.fistsTexture);
+
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', this.createMaterials.bind(this));
+      document.addEventListener('DOMContentLoaded', () => {
+        this.createMaterials();
+      });
     } else {
       this.createMaterials();
     }
+  },
+
+  play: function () {
+    this.setColorScheme();
   },
 
   tick: function (t, dt) {
@@ -197,37 +229,32 @@ AFRAME.registerSystem('materials', {
       envMap: weaponHandleEnvTexture
     });
 
-    const fistTexture = this.getFistsTexture();
-    var fistEnvTexture = new THREE.TextureLoader().load(document.getElementById('weapon2Img').src);
+    const fistEnvTexture = new THREE.TextureLoader().load(document.getElementById('weapon2Img').src);
     fistEnvTexture.mapping = THREE.SphericalReflectionMapping;
-
     this.leftFist = new THREE.MeshStandardMaterial({
       roughness: 0.3,
       metalness: 0.8,
-      map: fistTexture,
+      map: this.fistsTexture,
       envMap: fistEnvTexture,
       transparent: true
     });
     this.rightFist = new THREE.MeshStandardMaterial({
       roughness: 0.3,
       metalness: 0.8,
-      map: fistTexture,
+      map: this.fistsTexture,
       envMap: fistEnvTexture,
       transparent: true
     });
 
-    const beatTexture = this.getBeatsTexture();
-    this.textureList.push(beatTexture);
-
-    this.beat = new THREE.MeshLambertMaterial({map: beatTexture, transparent: true});
+    this.beat = new THREE.MeshLambertMaterial({map: this.beatsTexture, transparent: true});
     this.blueBeatPieces = new THREE.MeshLambertMaterial({
-      map: beatTexture,
+      map: this.beatsTexture,
       color: scheme.secondary,
       emissive: scheme.secondary,
       emissiveIntensity: 0.2
     });
     this.redBeatPieces = new THREE.MeshLambertMaterial({
-      map: beatTexture,
+      map: this.beatsTexture,
       color: scheme.primary,
       emissive: scheme.primary,
       emissiveIntensity: 0.2
@@ -274,6 +301,7 @@ AFRAME.registerSystem('materials', {
       side: THREE.BackSide,
       color: new THREE.Color(COLORS.OFF)
     });
+
     this.rightsideglow = new THREE.MeshBasicMaterial({
       map: sideglowTexture,
       transparent: true,
@@ -294,6 +322,7 @@ AFRAME.registerSystem('materials', {
       transparent: true,
       depthTest: false,
     });
+
     this.arrowRedPlume = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
@@ -426,6 +455,9 @@ AFRAME.registerSystem('materials', {
     set(this.tunnel, 'color2', scheme.secondary);
     set(this.tunnel, 'color3', scheme.tertiary);
 
+    this.generateBeatsTexture();
+    this.generateFistsTexture();
+
     document.querySelectorAll('.handStar').forEach(el => {
       set(el.getObject3D('mesh').material, 'colorPrimary', scheme.tertiary);
       set(el.getObject3D('mesh').material, 'colorSecondary', scheme.tertiary);
@@ -442,83 +474,69 @@ AFRAME.registerSystem('materials', {
     });
   },
 
-  canvasFill: function (ctx, col, x, y, width, height) {
-    ctx.fillStyle = col;
-    ctx.fillRect(x, y, width, height);
-  },
-
-  canvasGradient: function (ctx, col1, col2, x, y, width, height) {
-    var gradient;
-    if (width > height) {
-      gradient = ctx.createLinearGradient(0, 0, width, 0);
-    } else {
-      gradient = ctx.createLinearGradient(0, 0, 0, height);
-    }
-    gradient.addColorStop(0, col1);
-    gradient.addColorStop(1, col2);
-    ctx.fillStyle = gradient;
-    ctx.fillRect(x, y, width, height);
-  },
-
-  getBeatsTexture: function () {
+  generateBeatsTexture: function () {
     const scheme = this.scheme;
-    var canvas, ctx;
     const primary = new THREE.Color(scheme.primary);
     const secondary = new THREE.Color(scheme.secondary);
     const tertiary = new THREE.Color(scheme.tertiary);
 
-    canvas = document.createElement('canvas');
+    const canvas = this.beatsCanvas;
+    const ctx = canvas.getContext('2d');
     canvas.width = 512;
     canvas.height = 32;
-    ctx = canvas.getContext('2d');
 
-    this.canvasFill(ctx, tertiary.getStyle(), 0, 0, 128, 6);
-    this.canvasFill(ctx, '#000', 128, 0, 128, 6);
-    this.canvasFill(ctx, secondary.getStyle(), 256, 0, 128, 6);
-    this.canvasFill(ctx, primary.getStyle(), 384, 0, 105, 6);
-    this.canvasFill(ctx, '#FFF', 489, 0, 23, 6);
+    canvasFill(ctx, tertiary.getStyle(), 0, 0, 128, 6);
+    canvasFill(ctx, '#000', 128, 0, 128, 6);
+    canvasFill(ctx, secondary.getStyle(), 256, 0, 128, 6);
+    canvasFill(ctx, primary.getStyle(), 384, 0, 105, 6);
+    canvasFill(ctx, '#FFF', 489, 0, 23, 6);
 
-    this.canvasGradient(ctx, '#000000', secondary.getStyle(), 0, 6, 512, 4);
-    this.canvasGradient(ctx, '#000', primary.getStyle(), 0, 10, 512, 5);
-    this.canvasGradient(ctx, '#000', tertiary.getStyle(), 0, 15, 512, 4);
+    canvasGradient(ctx, '#000000', secondary.getStyle(), 0, 6, 512, 4);
+    canvasGradient(ctx, '#000', primary.getStyle(), 0, 10, 512, 5);
+    canvasGradient(ctx, '#000', tertiary.getStyle(), 0, 15, 512, 4);
 
-    this.canvasGradient(ctx,
-                `rgba(${secondary.r}, ${secondary.g}, ${secondary.b}, 0)`,
-                secondary.getStyle(), 0, 19, 512, 5);
-    this.canvasGradient(ctx,
-                `rgba(${primary.r}, ${primary.g}, ${primary.b}, 0)`,
-                primary.getStyle(), 0, 24, 512, 4);
-    this.canvasGradient(ctx,
-                `rgba(${tertiary.r}, ${tertiary.g}, ${tertiary.b}, 0)`,
-                tertiary.getStyle(), 0, 28, 512, 4);
+    canvasGradient(
+      ctx,
+      `rgba(${secondary.r}, ${secondary.g}, ${secondary.b}, 0)`,
+      secondary.getStyle(), 0, 19, 512, 5);
+    canvasGradient(
+      ctx,
+      `rgba(${primary.r}, ${primary.g}, ${primary.b}, 0)`,
+      primary.getStyle(), 0, 24, 512, 4);
+    canvasGradient(
+      ctx,
+      `rgba(${tertiary.r}, ${tertiary.g}, ${tertiary.b}, 0)`,
+      tertiary.getStyle(), 0, 28, 512, 4);
 
-    var texture = new THREE.CanvasTexture(canvas);
+    const texture = this.beatsTexture;
     texture.generateMipmaps = false;
     texture.magFilter = THREE.LinearFilter;
     texture.minFilter = THREE.LinearFilter;
-
+    texture.needsUpdate = true;
     return texture;
   },
 
-  getFistsTexture: function () {
+  generateFistsTexture: function () {
     const scheme = this.scheme;
-    var canvas, ctx;
     const primary = new THREE.Color(scheme.primary);
     const secondary = new THREE.Color(scheme.secondary);
 
-    canvas = document.createElement('canvas');
+    const canvas = this.fistsCanvas;
+    const ctx = canvas.getContext('2d');
     canvas.width = 8;
     canvas.height = 128;
-    ctx = canvas.getContext('2d');
 
-    this.canvasGradient(ctx, primary.getStyle(),
-                `rgba(${primary.r}, ${primary.g}, ${primary.b}, 0)`,
-                0, 0, 4, 128);
-    this.canvasGradient(ctx, secondary.getStyle(),
-                `rgba(${secondary.r}, ${secondary.g}, ${secondary.b}, 0)`,
-                4, 0, 4, 128);
+    canvasGradient(
+      ctx, primary.getStyle(),
+      `rgba(${primary.r}, ${primary.g}, ${primary.b}, 0)`,
+      0, 0, 4, 128);
+    canvasGradient(
+      ctx, secondary.getStyle(),
+      `rgba(${secondary.r}, ${secondary.g}, ${secondary.b}, 0)`,
+      4, 0, 4, 128);
 
-    return new THREE.CanvasTexture(canvas);
+    this.fistsTexture.needsUpdate = true;
+    return this.fistsTexture;
   },
 
   registerPanel: function (material) {
@@ -528,9 +546,9 @@ AFRAME.registerSystem('materials', {
 
 AFRAME.registerComponent('materials', {
   schema: {
+    animate: {default: true},
     name: {default: ''},
-    recursive: {default: true},
-    animate: {default: true}
+    recursive: {default: true}
   },
 
   update: function () {
