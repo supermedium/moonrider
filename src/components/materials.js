@@ -75,6 +75,8 @@ AFRAME.registerSystem('materials', {
   createMaterials: function () {
     const scheme = this.scheme;
 
+    this.createEnvmapTexture();
+
     this.tunnel = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/tunnel.vert.glsl'),
       fragmentShader: require('./shaders/tunnel.frag.glsl'),
@@ -539,8 +541,58 @@ AFRAME.registerSystem('materials', {
     return this.fistsTexture;
   },
 
+  createEnvmapTexture: function () {
+    const scheme = this.scheme;
+    const primary = new THREE.Color(scheme.primary);
+    const secondary = new THREE.Color(scheme.secondary);
+
+    var img = document.getElementById('envmapTemplateImg');
+    img.addEventListener('load', () => {
+      const w = img.width;
+      const h = img.height;
+      var canvas, ctx, im, imdata;
+      canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      im = ctx.getImageData(0, 0, w, h);
+      imdata = im.data;
+
+      var primaryWeight, secondaryWeight;
+      for (var i = 0; i < imdata.length; i+=4) {
+        primaryWeight = imdata[i];
+        secondaryWeight = imdata[i + 1];
+        primaryWeight *= 1 - secondaryWeight / 255.0;
+
+        imdata[i + 0] = Math.floor(
+          primary.r * primaryWeight + secondary.r * secondaryWeight);
+        imdata[i + 1] = Math.floor(
+          primary.g * primaryWeight + secondary.g * secondaryWeight);
+        imdata[i + 2] = Math.floor(
+          primary.b * primaryWeight + secondary.b * secondaryWeight);
+        imdata[i + 3] = 255;
+      };
+
+      ctx.putImageData(im, 0, 0);
+
+      document.getElementById('envmapImg').src = canvas.toDataURL('image/png');
+    });
+  },
+
   registerPanel: function (material) {
     this.panelMaterials.push(material);
+  },
+
+  tick: function (t, dt) {
+    this.aurora.uniforms.time.value = t;
+    if (this.home.animate) { this.home.uniforms.time.value = t; }
+    this.leftFistWeapon.uniforms.time.value = t;
+    this.leftWeapon.uniforms.time.value = t;
+    this.rightFistWeapon.uniforms.time.value = t;
+    this.rightWeapon.uniforms.time.value = t;
+    this.rings.uniforms.time.value = t;
+    this.tube.uniforms.time.value = t;
   }
 });
 
