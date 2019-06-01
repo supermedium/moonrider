@@ -35,6 +35,7 @@ AFRAME.registerSystem('materials', {
   schema: {},
 
   init: function () {
+    this.curve = null;
     this.panelMaterials = [];
     this.scheme = COLORS.schemes.default;
     // Collect references to textures for gpu-preloader.
@@ -474,6 +475,10 @@ AFRAME.registerSystem('materials', {
       set(material, 'colorPrimary', scheme.primary);
       set(material, 'colorSecondary', scheme.secondary);
     });
+
+    set(this.curve, 'fogColor', scheme.primary);
+    set(this.curve, 'color1', scheme.primary);
+    set(this.curve, 'color2', scheme.secondary);
   },
 
   generateBeatsTexture: function () {
@@ -580,19 +585,12 @@ AFRAME.registerSystem('materials', {
     });
   },
 
-  registerPanel: function (material) {
-    this.panelMaterials.push(material);
+  registerCurve: function (material) {
+    this.curve = material;
   },
 
-  tick: function (t, dt) {
-    this.aurora.uniforms.time.value = t;
-    if (this.home.animate) { this.home.uniforms.time.value = t; }
-    this.leftFistWeapon.uniforms.time.value = t;
-    this.leftWeapon.uniforms.time.value = t;
-    this.rightFistWeapon.uniforms.time.value = t;
-    this.rightWeapon.uniforms.time.value = t;
-    this.rings.uniforms.time.value = t;
-    this.tube.uniforms.time.value = t;
+  registerPanel: function (material) {
+    this.panelMaterials.push(material);
   }
 });
 
