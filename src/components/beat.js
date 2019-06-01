@@ -196,9 +196,6 @@ AFRAME.registerComponent('beat', {
     } else if (this.queueBeatWrongEvent) {
       el.sceneEl.emit('beatwrong', null, true);
       this.queueBeatWrongEvent = null;
-    } else if (this.queueBeatMissEvent) {
-      el.sceneEl.emit('beatmiss', null, true);
-      this.queueBeatMissEvent = null;
     }
 
     if (this.beatSystem.data.gameMode === 'ride') { return; }
@@ -328,7 +325,7 @@ AFRAME.registerComponent('beat', {
   missHit: function (hand) {
     const data = this.data;
     if (data.type === MINE) { return; }
-    this.queueBeatMissEvent = true;
+    this.el.sceneEl.emit('beatmiss', null, true);
   },
 
   destroyBeat: (function () {
