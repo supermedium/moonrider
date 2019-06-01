@@ -37,8 +37,8 @@ COLORS.schemes = {
 
   purple: {
     off: '#111',
-    primary: '#B32DB3',
-    primaryBright: '#FF5AFE',
+    primary: '#6A39B3',
+    primaryBright: '#B685FF',
     secondary: '#FAF239',
     secondaryBright: '#FFFC9E',
     tertiary: '#50FFF2'
