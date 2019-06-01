@@ -1,4 +1,4 @@
-import {SWORD_OFFSET} from './beat-generator';
+import {PUNCH_OFFSET, SWORD_OFFSET} from './beat-generator';
 const COLORS = require('../constants/colors.js');
 
 const auxObj3D = new THREE.Object3D();
@@ -56,6 +56,7 @@ AFRAME.registerComponent('beat-system', {
     if (oldData.isLoading && !this.data.isLoading) {
       this.updateVerticalPositions();
     }
+    this.weaponOffset = this.data.gameMode === 'classic' ? SWORD_OFFSET : PUNCH_OFFSET;
   },
 
   updateVerticalPositions: function () {
@@ -212,7 +213,7 @@ AFRAME.registerComponent('beat', {
       this.curveFollowRig.components['supercurve-follow'].curveProgress);
 
     // Only check collisions when close.
-    const beatHit = this.songPosition - (SWORD_OFFSET / curve.getLength());
+    const beatHit = this.songPosition - (this.beatSystem.weaponOffset / curve.getLength());
     if (progress > beatHit) {
       this.checkCollisions();
       if (this.destroyed) { return; }

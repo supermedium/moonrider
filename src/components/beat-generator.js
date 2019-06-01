@@ -8,6 +8,7 @@ const DEBUG_MINES = AFRAME.utils.getUrlParameter('debugmines');
 // Beats arrive at sword stroke distance synced with the music.
 export const BEAT_ANTICIPATION_TIME = 1.1;
 export const BEAT_PRELOAD_TIME = 1.1;
+export const PUNCH_OFFSET = 0.5;
 export const SWORD_OFFSET = 1.5;
 
 // How far out to load beats (ms).
@@ -274,8 +275,9 @@ AFRAME.registerComponent('beat-generator', {
     const verticalPosition = this.verticalPositionsHumanized[noteInfo._lineLayer];
 
     // Factor in sword offset and beat anticipation time (percentage).
+    const weaponOffset = this.data.gameMode === 'classic' ? SWORD_OFFSET : PUNCH_OFFSET;
     const positionOffset =
-      ((SWORD_OFFSET / data.speed) + BEAT_ANTICIPATION_TIME) /
+      ((weaponOffset / data.speed) + BEAT_ANTICIPATION_TIME) /
       data.songDuration;
 
     // Song position is from 0 to 1 along the curve (percentage).
