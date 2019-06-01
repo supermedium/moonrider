@@ -50,16 +50,16 @@ COLORS.schemes = {
   red: {
     primary: '#E03A3E',
     primaryBright: '#FA7578',
-    secondary: '#333',
+    secondary: '#666',
     secondaryBright: '#CCCCCC',
-    tertiary: '#EEE',
+    tertiary: '#EFEFEF',
   },
 
   black: {
-    primary: '#333',
+    primary: '#666',
     primaryBright: '#808080',
-    secondary: '#EEE',
-    secondaryBright: '#EBEBEB',
+    secondary: '#EFEFEF',
+    secondaryBright: '#FAFAFA',
     tertiary: '#B8B8B8',
   }
 }
