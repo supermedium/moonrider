@@ -4,19 +4,13 @@ const COLORS = {
 
   DARKRED: '#5A354B',
   RED: '#f971c3',
-  RED2: '#f971c3',
   BRIGHTRED: '#ffd3ee',
 
   DARKBLUE: '#2B4D4C',
   BLUE: '#6ff9ea',
-  BLUE2: '#6ff9ea',
   BRIGHTBLUE: '#d7fdf9',
 
   YELLOW: '#fff568',
-  YELLOW_BRIGHT: '#fff788',
-
-  PURPLE: 'purple',
-  PURPLE_BRIGHT: '#BB44BB',
 
   UI_ACCENT: '#08bfa2',
   UI_ACCENT2: '#f01978'
@@ -24,6 +18,7 @@ const COLORS = {
 
 COLORS.schemes = {
   default: {
+    off: '#111',
     primary: COLORS.RED,
     primaryBright: COLORS.BRIGHTRED,
     secondary: COLORS.BLUE,
@@ -32,6 +27,7 @@ COLORS.schemes = {
   },
 
   blue: {
+    off: '#111',
     primary: '#0B4BB3',
     primaryBright: '#4A90FF',
     secondary: '#FFD840',
@@ -40,6 +36,7 @@ COLORS.schemes = {
   },
 
   purple: {
+    off: '#111',
     primary: '#B32DB3',
     primaryBright: '#FF5AFE',
     secondary: '#FAF239',
@@ -48,6 +45,7 @@ COLORS.schemes = {
   },
 
   red: {
+    off: '#111',
     primary: '#E03A3E',
     primaryBright: '#FA7578',
     secondary: '#666',
@@ -56,6 +54,7 @@ COLORS.schemes = {
   },
 
   black: {
+    off: '#111',
     primary: '#666',
     primaryBright: '#808080',
     secondary: '#EFEFEF',

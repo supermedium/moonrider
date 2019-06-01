@@ -1,11 +1,4 @@
-import COLORS from '../constants/colors';
-
-const colors = {
-  blue: new THREE.Color().set(COLORS.BLUE),
-  red: new THREE.Color().set(COLORS.RED),
-  bluefade: new THREE.Color().set(COLORS.BLUE2),
-  redfade: new THREE.Color().set(COLORS.RED2)
-};
+const auxColor = new THREE.Color();
 
 /**
  * Listen to stage-events to change curve color.
@@ -16,7 +9,7 @@ AFRAME.registerComponent('supercurve-color', {
 
     el.sceneEl.addEventListener('curveevenstageeventcolor', evt => {
       if (!evt.detail || evt.detail === 'off') {
-        this.setColor('color1', 'red');
+        this.setColor('color1', 'primary');
         return;
       }
       this.setColor('color1', evt.detail);
@@ -24,7 +17,7 @@ AFRAME.registerComponent('supercurve-color', {
 
     el.sceneEl.addEventListener('curveoddstageeventcolor', evt => {
       if (!evt.detail || evt.detail === 'off') {
-        this.setColor('color2', 'blue');
+        this.setColor('color2', 'secondary');
         return;
       }
       this.setColor('color2', evt.detail);
@@ -33,9 +26,10 @@ AFRAME.registerComponent('supercurve-color', {
 
   setColor: function (uniform, colorId) {
     const colorVec = this.el.components.material.material.uniforms[uniform].value;
-    const color = colors[colorId];
-    colorVec.x = color.r;
-    colorVec.y = color.g;
-    colorVec.z = color.b;
+    const color = this.el.sceneEl.systems.materials.scheme[colorId];
+    auxColor.set(color);
+    colorVec.x = auxColor.r;
+    colorVec.y = auxColor.g;
+    colorVec.z = auxColor.b;
   }
 });

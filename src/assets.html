@@ -145,14 +145,14 @@
 <a-mixin
   id="redBeatFX"
   obj-model="obj: #cutfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.RED }}; progress: 1"
+  material="shader: cutfxShader; color: {{ COLORS.schemes.default.primary }}; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 400; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
 <a-mixin
   id="blueBeatFX"
   obj-model="obj: #cutfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.BLUE }}; progress: 1"
+  material="shader: cutfxShader; color: {{ COLORS.schemes.default.secondary }}; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 400; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
@@ -165,28 +165,28 @@
 <a-mixin
   id="mineFX"
   geometry="primitive: plane; width: 0.6; height: 0.6"
-  material="shader: flat; transparent: true; src: #minefxImg; color: {{ COLORS.YELLOW }}; depthWrite: false"
+  material="shader: flat; transparent: true; src: #minefxImg; color: {{ COLORS.schemes.default.tertiary }}; depthWrite: false"
   render-order="menu"
   animation="property: components.material.material.opacity; from:1; to:0; dur: 400; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
 <a-mixin
   id="redPunchFX"
   obj-model="obj: #punchfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.RED }}; progress: 1"
+  material="shader: cutfxShader; color: {{ COLORS.schemes.default.primary }}; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 600; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
 <a-mixin
   id="bluePunchFX"
   obj-model="obj: #punchfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.BLUE }}; progress: 1"
+  material="shader: cutfxShader; color: {{ COLORS.schemes.default.secondary }}; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 600; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
 <a-mixin
   id="yellowPunchFX"
   obj-model="obj: #punchfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.YELLOW }}; progress: 1"
+  material="shader: cutfxShader; color: {{ COLORS.schemes.default.tertiary }}; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 600; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
@@ -215,50 +215,49 @@
 
 <!-- Stage, neons, etc animations launched from beat-loader events. -->
 <a-mixin id="bgColorAnimation"
-  animation__bgcoloroff="isRawProperty: true; property: systems.materials.backglow.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: bgcoloroff"
-  animation__bgcolorblue="isRawProperty: true; property: systems.materials.backglow.color; type: color; to: {{ COLORS.BLUE }}; dur: 5; easing: linear; startEvents: bgcolorblue"
-  animation__bgcolorbluefade="isRawProperty: true; property: systems.materials.backglow.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_BLUE }}; dur: 500; easing: linear; startEvents: bgcolorbluefade"
-  animation__bgcolorred="isRawProperty: true; property: systems.materials.backglow.color; type: color; to: {{ COLORS.RED }}; dur: 5; easing: linear; startEvents: bgcolorred"
-  animation__bgcolorredfade="isRawProperty: true; property: systems.materials.backglow.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_RED }}; dur: 500; easing: linear; startEvents: bgcolorredfade"
-  animation__bgcolorgameover="isRawProperty: true; property: systems.materials.backglow.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: bgcolorgameover"
+  animation__bgcoloroff="isRawProperty: true; property: systems.materials.backglow.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: bgcoloroff"
+  animation__bgcolorsecondary="isRawProperty: true; property: systems.materials.backglow.color; type: color; to: {{ COLORS.schemes.default.secondary }}; dur: 5; easing: linear; startEvents: bgcolorsecondary"
+  animation__bgcolorsecondarybright="isRawProperty: true; property: systems.materials.backglow.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.secondaryBright }}; dur: 500; easing: linear; startEvents: bgcolorblueBright"
+  animation__bgcolorprimary="isRawProperty: true; property: systems.materials.backglow.color; type: color; to: {{ COLORS.schemes.default.primary }}; dur: 5; easing: linear; startEvents: bgcolorprimary"
+  animation__bgcolorprimarybright="isRawProperty: true; property: systems.materials.backglow.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.primaryBright }}; dur: 500; easing: linear; startEvents: bgcolorprimaryBright"
+  animation__bgcolorgameover="isRawProperty: true; property: systems.materials.backglow.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: bgcolorgameover"
 
-  animation__merkabacoloroff="isRawProperty: true; property: systems.materials.merkaba.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: bgcoloroff"
-  animation__merkabacolorblue="isRawProperty: true; property: systems.materials.merkaba.color; type: color; to: {{ COLORS.BLUE }}; dur: 5; easing: linear; startEvents: bgcolorblue"
-  animation__merkabacolorbluefade="isRawProperty: true; property: systems.materials.merkaba.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_BLUE }}; dur: 500; easing: linear; startEvents: bgcolorbluefade"
-  animation__merkabacolorred="isRawProperty: true; property: systems.materials.merkaba.color; type: color; to: {{ COLORS.RED }}; dur: 5; easing: linear; startEvents: bgcolorred"
-  animation__merkabacolorredfade="isRawProperty: true; property: systems.materials.merkaba.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_RED }}; dur: 500; easing: linear; startEvents: bgcolorredfade"
-  animation__merkabacolorgameover="isRawProperty: true; property: systems.materials.merkaba.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: bgcolorgameover"
+  animation__merkabacoloroff="isRawProperty: true; property: systems.materials.merkaba.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: bgcoloroff"
+  animation__merkabacolorsecondary="isRawProperty: true; property: systems.materials.merkaba.color; type: color; to: {{ COLORS.schemes.default.secondary }}; dur: 5; easing: linear; startEvents: bgcolorsecondary"
+  animation__merkabacolorsecondarybright="isRawProperty: true; property: systems.materials.merkaba.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.secondaryBright }}; dur: 500; easing: linear; startEvents: bgcolorblueBright"
+  animation__merkabacolorprimary="isRawProperty: true; property: systems.materials.merkaba.color; type: color; to: {{ COLORS.schemes.default.primary }}; dur: 5; easing: linear; startEvents: bgcolorprimary"
+  animation__merkabacolorprimarybright="isRawProperty: true; property: systems.materials.merkaba.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.primaryBright }}; dur: 500; easing: linear; startEvents: bgcolorprimaryBright"
+  animation__merkabacolorgameover="isRawProperty: true; property: systems.materials.merkaba.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: bgcolorgameover"
 
-  animation__mooncoloroff="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: bgcoloroff"
-  animation__mooncolorblue="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; to: {{ COLORS.BLUE }}; dur: 5; easing: linear; startEvents: bgcolorblue"
-  animation__mooncolorbluefade="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_BLUE }}; dur: 500; easing: linear; startEvents: bgcolorbluefade"
-  animation__mooncolorred="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; to: {{ COLORS.RED }}; dur: 5; easing: linear; startEvents: bgcolorred"
-  animation__mooncolorredfade="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_RED }}; dur: 500; easing: linear; startEvents: bgcolorredfade"
-  animation__mooncolorgameover="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: bgcolorgameover"
+  animation__mooncoloroff="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: bgcoloroff"
+  animation__mooncolorsecondary="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; to: {{ COLORS.schemes.default.secondary }}; dur: 5; easing: linear; startEvents: bgcolorsecondary"
+  animation__mooncolorsecondarybright="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.secondaryBright }}; dur: 500; easing: linear; startEvents: bgcolorblueBright"
+  animation__mooncolorprimary="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; to: {{ COLORS.schemes.default.primary }}; dur: 5; easing: linear; startEvents: bgcolorprimary"
+  animation__mooncolorprimarybright="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.primaryBright }}; dur: 500; easing: linear; startEvents: bgcolorprimaryBright"
+  animation__mooncolorgameover="isRawProperty: true; property: systems.materials.moon.uniforms.tint.value; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: bgcolorgameover"
 
-
-  animation__starscoloroff="isRawProperty: true; property: systems.materials.stars.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: bgcoloroff"
-  animation__starscolorblue="isRawProperty: true; property: systems.materials.stars.color; type: color; to: {{ COLORS.BLUE }}; dur: 5; easing: linear; startEvents: bgcolorblue"
-  animation__starscolorred="isRawProperty: true; property: systems.materials.stars.color; type: color; to: {{ COLORS.RED }}; dur: 5; easing: linear; startEvents: bgcolorred"
-  animation__starscolorgameover="isRawProperty: true; property: systems.materials.stars.color; type: color; to: {{ COLORS.BLUE }}; dur: 5; easing: linear; startEvents: bgcolorgameover"
-  animation__starscolorbluefade="isRawProperty: true; property: systems.materials.stars.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BLUE }}; dur: 500; easing: linear; startEvents: bgcolorbluefade"
-  animation__starscolorredfade="isRawProperty: true; property: systems.materials.stars.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.RED }}; dur: 500; easing: linear; startEvents: bgcolorredfade"></a-mixin>
+  animation__starscoloroff="isRawProperty: true; property: systems.materials.stars.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: bgcoloroff"
+  animation__starscolorsecondary="isRawProperty: true; property: systems.materials.stars.color; type: color; to: {{ COLORS.schemes.default.secondary }}; dur: 5; easing: linear; startEvents: bgcolorsecondary"
+  animation__starscolorprimary="isRawProperty: true; property: systems.materials.stars.color; type: color; to: {{ COLORS.schemes.default.primary }}; dur: 5; easing: linear; startEvents: bgcolorprimary"
+  animation__starscolorgameover="isRawProperty: true; property: systems.materials.stars.color; type: color; to: {{ COLORS.schemes.default.secondary }}; dur: 5; easing: linear; startEvents: bgcolorgameover"
+  animation__starscolorsecondarybright="isRawProperty: true; property: systems.materials.stars.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.secondary }}; dur: 500; easing: linear; startEvents: bgcolorblueBright"
+  animation__starscolorprimarybright="isRawProperty: true; property: systems.materials.stars.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.primary }}; dur: 500; easing: linear; startEvents: bgcolorprimaryBright"></a-mixin>
 
 <a-mixin id="leftSideGlowAnimations"
-  animation__leftglowcoloroff="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: leftglowcoloroff"
-  animation__leftglowcolorblue="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; to: {{ COLORS.BLUE }}; dur: 5; easing: linear; startEvents: leftglowcolorblue"
-  animation__leftglowcolorbluefade="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_BLUE }}; dur: 500; easing: linear; startEvents: leftglowcolorbluefade"
-  animation__leftglowcolorred="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; to: {{ COLORS.RED }}; dur: 5; easing: linear; startEvents: leftglowcolorred"
-  animation__leftglowcolorredfade="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_RED }}; dur: 500; easing: linear; startEvents: leftglowcolorredfade"
-  animation__leftglowcolorgameover="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: leftglowcolorgameover"></a-mixin>
+  animation__leftglowcoloroff="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: leftglowcoloroff"
+  animation__leftglowcolorsecondary="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; to: {{ COLORS.schemes.default.secondary }}; dur: 5; easing: linear; startEvents: leftglowcolorsecondary"
+  animation__leftglowcolorsecondarybright="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.secondaryBright }}; dur: 500; easing: linear; startEvents: leftglowcolorblueBright"
+  animation__leftglowcolorprimary="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; to: {{ COLORS.schemes.default.primary }}; dur: 5; easing: linear; startEvents: leftglowcolorprimary"
+  animation__leftglowcolorprimarybright="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.primaryBright }}; dur: 500; easing: linear; startEvents: leftglowcolorprimaryBright"
+  animation__leftglowcolorgameover="isRawProperty: true; property: systems.materials.leftsideglow.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: leftglowcolorgameover"></a-mixin>
 
 <a-mixin id="rightSideGlowAnimations"
-  animation__rightglowcoloroff="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: rightglowcoloroff"
-  animation__rightglowcolorblue="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.BLUE }}; to: {{ COLORS.OFF }}; dur: 2000; easing: linear; startEvents: rightglowcolorblue"
-  animation__rightglowcolorbluefade="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_OFF }}; dur: 500; easing: linear; startEvents: rightglowcolorbluefade"
-  animation__rightglowcolorred="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.RED }}; to: {{ COLORS.OFF }}; dur: 2000; easing: linear; startEvents: rightglowcolorred"
-  animation__rightglowcolorredfade="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.YELLOW }}; to: {{ COLORS.BG_OFF }}; dur: 500; easing: linear; startEvents: rightglowcolorredfade"
-  animation__rightglowcolorgameover="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; to: {{ COLORS.OFF }}; dur: 500; easing: linear; startEvents: rightglowcolorgameover"></a-mixin>
+  animation__rightglowcoloroff="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: rightglowcoloroff"
+  animation__rightglowcolorsecondary="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.schemes.default.secondary }}; to: {{ COLORS.schemes.default.off }}; dur: 2000; easing: linear; startEvents: rightglowcolorsecondary"
+  animation__rightglowcolorsecondarybright="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: rightglowcolorblueBright"
+  animation__rightglowcolorprimary="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.schemes.default.primary }}; to: {{ COLORS.schemes.default.off }}; dur: 2000; easing: linear; startEvents: rightglowcolorprimary"
+  animation__rightglowcolorprimarybright="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; from: {{ COLORS.schemes.default.tertiary }}; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: rightglowcolorprimaryBright"
+  animation__rightglowcolorgameover="isRawProperty: true; property: systems.materials.rightsideglow.color; type: color; to: {{ COLORS.schemes.default.off }}; dur: 500; easing: linear; startEvents: rightglowcolorgameover"></a-mixin>
 
 <a-mixin id="cancelSoundUI" play-sound__cancel="event: click; sound: #clearSound; volume: 0.5"></a-mixin>
 <a-mixin id="clickSoundUI" play-sound__click="event: click; sound: #confirmSound; volume: 0.25"></a-mixin>

@@ -418,6 +418,7 @@ AFRAME.registerSystem('materials', {
    */
   setColorScheme: function (colorSchemeName) {
     const scheme = this.scheme = COLORS.schemes[colorSchemeName] || COLORS.schemes.default;
+
     set(this.arrowBluePlume, 'color', scheme.secondary);
     set(this.arrowRedPlume, 'color', scheme.primary);
     set(this.aurora, 'colorPrimary', scheme.primary);
