@@ -140,6 +140,16 @@ AFRAME.registerComponent('beat', {
     this.startPositionZ = undefined;
     this.warmupTime = 0;
     this.weaponColors = {right: 'blue', left: 'red'};
+    this.bladeLocalPositions = [
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+    ];
+    this.bladeLocalTriangles = [
+      new THREE.Triangle(),
+      new THREE.Triangle(),
+    ];
 
     this.curveEl = document.getElementById('curve');
     this.curveFollowRig = document.getElementById('curveFollowRig');
@@ -305,6 +315,9 @@ AFRAME.registerComponent('beat', {
     blockEl.object3D.scale.multiplyScalar(4).multiplyScalar(this.data.size);
 
     blockEl.setAttribute('materials', 'name', 'beat');
+    if (blockEl.getObject3D('mesh').geometry) {
+      blockEl.getObject3D('mesh').geometry.computeBoundingBox();
+    }
   },
 
   wrongHit: function (hand) {
@@ -421,13 +434,25 @@ AFRAME.registerComponent('beat', {
       if (this.beatSystem.data.gameMode === 'punch') {
         bbox.setFromObject(weaponEl.getObject3D('mesh')).expandByScalar(0.1);
         weaponBbox = bbox;
+
+        if (!weaponBbox) { continue; }
+        if (!weaponBbox.intersectsBox(beatBbox)) { continue; }
       } else {
         const blade = weaponEl.components.blade;
-        weaponBbox = blade.boundingBox;
-      }
 
-      if (!weaponBbox) { continue; }
-      if (!weaponBbox.intersectsBox(beatBbox)) { continue; }
+        for (let i = 0; i < 4; i++) {
+          this.bladeLocalPositions [i].copy(blade.bladeWorldPositions [i]);
+          this.blockEl.object3D.worldToLocal(this.bladeLocalPositions [i]);
+        }
+
+        this.bladeLocalTriangles [0].set(this.bladeLocalPositions [0], this.bladeLocalPositions [1], this.bladeLocalPositions [2]);
+        this.bladeLocalTriangles [1].set(this.bladeLocalPositions [2], this.bladeLocalPositions [3], this.bladeLocalPositions [0]);
+
+        const beatBbox = this.blockEl.getObject3D('mesh').geometry.boundingBox;
+        if (!beatBbox.intersectsTriangle(this.bladeLocalTriangles [0]) && !beatBbox.intersectsTriangle(this.bladeLocalTriangles [0])) {
+          continue;
+        }
+      }
 
       // Notify for haptics.
       const hand = weaponEl.closest('[controller]').getAttribute('controller').hand;
