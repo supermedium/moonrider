@@ -32,20 +32,22 @@ COLORS.schemes = {
   },
 
   blue: {
-    primary: COLORS.BLUE,
-    primaryBright: COLORS.BRIGHTBLUE,
-    secondary: COLORS.RED,
-    secondaryBright: COLORS.BRIGHTRED,
-    tertiary: COLORS.YELLOW
+    primary: '#0B4BB3',
+    primaryBright: '#4A90FF',
+    secondary: '#FFD840',
+    secondaryBright: '#FF882B',
+    tertiary: '#ADCC54',
   },
 
   purple: {
-    primary: COLORS.PURPLE,
-    primaryBright: COLORS.PURPLE_BRIGHT,
-    secondary: COLORS.YELLOW,
-    secondaryBright: COLORS.YELLOW_BRIGHT,
-    tertiary: COLORS.BLUE
+    primary: '#B32DB3',
+    primaryBright: '#FF5AFE',
+    secondary: '#FFE173',
+    secondaryBright: '#FFE93E',
+    tertiary: '#33CCB5'
   }
 }
+
+COLORS.options = Object.keys(COLORS.schemes);
 
 module.exports = COLORS;
