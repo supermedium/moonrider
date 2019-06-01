@@ -51,10 +51,15 @@ AFRAME.registerComponent('blade', {
     const bladeObj = this.el.object3D;
     bladeObj.localToWorld(this.bladeTipPosition);
     bladeObj.localToWorld(this.bladePosition);
-    this.bladeWorldPositions [2].copy(this.bladeWorldPositions [0]);
-    this.bladeWorldPositions [3].copy(this.bladeWorldPositions [1]);
-    this.bladeWorldPositions [0].copy(this.bladeTipPosition);
-    this.bladeWorldPositions [1].copy(this.bladePosition);
+
+    // Previous frame.
+    this.bladeWorldPositions[2].copy(this.bladeWorldPositions[0]);
+    this.bladeWorldPositions[3].copy(this.bladeWorldPositions[1]);
+
+    // Current frame.
+    this.bladeWorldPositions[0].copy(this.bladeTipPosition);
+    this.bladeWorldPositions[1].copy(this.bladePosition);
+
     rig.worldToLocal(this.bladeTipPosition);
     rig.worldToLocal(this.bladePosition);
 

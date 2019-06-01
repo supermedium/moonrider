@@ -26,6 +26,18 @@ const syncTestVector3 = new THREE.Vector3();
 const MINE = 'mine';
 const DOT = 'dot';
 
+const bladeLocalPositions = [
+  new THREE.Vector3(),
+  new THREE.Vector3(),
+  new THREE.Vector3(),
+  new THREE.Vector3(),
+];
+
+const bladeLocalTriangles = [
+  new THREE.Triangle(),
+  new THREE.Triangle(),
+];
+
 AFRAME.registerComponent('beat-system', {
   schema: {
     gameMode: {default: 'classic'},
@@ -140,17 +152,6 @@ AFRAME.registerComponent('beat', {
     this.startPositionZ = undefined;
     this.warmupTime = 0;
     this.weaponColors = {right: 'blue', left: 'red'};
-    this.bladeLocalPositions = [
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-    ];
-    this.bladeLocalTriangles = [
-      new THREE.Triangle(),
-      new THREE.Triangle(),
-    ];
-
     this.curveEl = document.getElementById('curve');
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.mineParticles = document.getElementById('mineParticles');
@@ -431,22 +432,24 @@ AFRAME.registerComponent('beat', {
       if (this.beatSystem.data.gameMode === 'punch') {
         bbox.setFromObject(weaponEl.getObject3D('mesh')).expandByScalar(0.1);
         weaponBbox = bbox;
-
         if (!weaponBbox) { continue; }
         if (!weaponBbox.intersectsBox(beatBbox)) { continue; }
       } else {
         const blade = weaponEl.components.blade;
 
         for (let i = 0; i < 4; i++) {
-          this.bladeLocalPositions [i].copy(blade.bladeWorldPositions [i]);
-          this.blockEl.object3D.worldToLocal(this.bladeLocalPositions [i]);
+          bladeLocalPositions[i].copy(blade.bladeWorldPositions[i]);
+          this.blockEl.object3D.worldToLocal(bladeLocalPositions[i]);
         }
 
-        this.bladeLocalTriangles [0].set(this.bladeLocalPositions [0], this.bladeLocalPositions [1], this.bladeLocalPositions [2]);
-        this.bladeLocalTriangles [1].set(this.bladeLocalPositions [2], this.bladeLocalPositions [3], this.bladeLocalPositions [0]);
+        bladeLocalTriangles[0].set(bladeLocalPositions[0], bladeLocalPositions[1],
+                                   bladeLocalPositions[2]);
+        bladeLocalTriangles[1].set(bladeLocalPositions[2], bladeLocalPositions[3],
+                                   bladeLocalPositions[0]);
 
         const beatBbox = this.blockEl.getObject3D('mesh').geometry.boundingBox;
-        if (!beatBbox.intersectsTriangle(this.bladeLocalTriangles [0]) && !beatBbox.intersectsTriangle(this.bladeLocalTriangles [1])) {
+        if (!beatBbox.intersectsTriangle(bladeLocalTriangles[0]) &&
+            !beatBbox.intersectsTriangle(bladeLocalTriangles[1])) {
           continue;
         }
       }
