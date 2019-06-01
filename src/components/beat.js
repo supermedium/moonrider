@@ -449,7 +449,7 @@ AFRAME.registerComponent('beat', {
         this.bladeLocalTriangles [1].set(this.bladeLocalPositions [2], this.bladeLocalPositions [3], this.bladeLocalPositions [0]);
 
         const beatBbox = this.blockEl.getObject3D('mesh').geometry.boundingBox;
-        if (!beatBbox.intersectsTriangle(this.bladeLocalTriangles [0]) && !beatBbox.intersectsTriangle(this.bladeLocalTriangles [0])) {
+        if (!beatBbox.intersectsTriangle(this.bladeLocalTriangles [0]) && !beatBbox.intersectsTriangle(this.bladeLocalTriangles [1])) {
           continue;
         }
       }
