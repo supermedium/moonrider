@@ -18,6 +18,12 @@ AFRAME.registerComponent('blade', {
     this.rigEl = document.getElementById('curveFollowRig');
     this.strokeDirectionVector = new THREE.Vector3();
     this.strokeSpeed = 0;
+    this.bladeWorldPositions = [
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+    ];
 
     this.bladeEl = this.el.querySelector('.blade');
   },
@@ -45,6 +51,10 @@ AFRAME.registerComponent('blade', {
     const bladeObj = this.el.object3D;
     bladeObj.localToWorld(this.bladeTipPosition);
     bladeObj.localToWorld(this.bladePosition);
+    this.bladeWorldPositions [2].copy(this.bladeWorldPositions [0]);
+    this.bladeWorldPositions [3].copy(this.bladeWorldPositions [1]);
+    this.bladeWorldPositions [0].copy(this.bladeTipPosition);
+    this.bladeWorldPositions [1].copy(this.bladePosition);
     rig.worldToLocal(this.bladeTipPosition);
     rig.worldToLocal(this.bladePosition);
 
