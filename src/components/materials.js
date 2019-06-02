@@ -18,14 +18,17 @@ AFRAME.registerSystem('materials', {
     // Generated textures.
     this.beatsCanvas = document.createElement('canvas');
     this.beatsTexture = new THREE.CanvasTexture(this.beatsCanvas);
+    this.generateBeatsTexture();
     this.textureList.push(this.beatsTexture);
 
     this.envmapCanvas = document.createElement('canvas');
     this.envmapTexture = new THREE.CanvasTexture(this.envmapCanvas);
+    this.generateEnvmapTexture();
     this.textureList.push(this.envmapTexture);
 
     this.fistsCanvas = document.createElement('canvas');
     this.fistsTexture = new THREE.CanvasTexture(this.fistsCanvas);
+    this.generateFistsTexture();
     this.textureList.push(this.fistsTexture);
 
     if (document.readyState === 'loading') {

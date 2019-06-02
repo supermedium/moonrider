@@ -32,9 +32,9 @@
   <a-entity
     id="leaderboardNames"
     mixin="font"
-    bind__text="value: leaderboardNames"
+    bind__text="color: colorSecondary; value: leaderboardNames"
     bind__visible="!leaderboardQualified && !leaderboardEmpty"
-    text="baseline: top; width: 1.2; anchor: left; color: {{ COLORS.UI_ACCENT }}; wrapCount: 28; lineHeight: 53;"
+    text="baseline: top; width: 1.2; anchor: left; wrapCount: 28; lineHeight: 53;"
     position="-0.7 0.3 0.001"></a-entity>
 
   <a-entity
