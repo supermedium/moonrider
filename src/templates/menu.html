@@ -47,7 +47,7 @@
     id="searchPrevPage"
     mixin="searchPageButton"
     bind__slice9="color: colorPrimary"
-    bind__visible-raycastable="search.hasPrev && mainMenuActive"
+    bind__visible-raycastable="search.hasPrev && (mainMenuActive || isSearching)"
     raycaster-target="bindToggle: search.hasNext && menuActive; position: 0 0.08 0"
     position="-0 0.69 0.01"
     proxy-event="event: click; to: a-scene; as: searchprevpage; captureBubbles: true">
@@ -58,7 +58,7 @@
     id="searchNextPage"
     mixin="searchPageButton"
     bind__slice9="color: colorSecondary"
-    raycaster-target="bindToggle: search.hasNext && mainMenuActive; position: 0 -0.08 0"
+    raycaster-target="bindToggle: search.hasNext && (mainMenuActive || isSearching); position: 0 -0.08 0"
     position="-0 -0.674 0.01"
     proxy-event="event: click; to: a-scene; as: searchnextpage; captureBubbles: true"
     bind__visible="search.hasNext">
@@ -78,7 +78,7 @@
         bind-item__active-item="active: menuSelectedChallenge.id === item.id"
         bind-item__animation__mouseenter="enabled: menuSelectedChallenge.id !== item.id"
         bind-item__animation__mouseleave="enabled: menuSelectedChallenge.id !== item.id"
-        bind-toggle__raycastable="mainMenuActive"
+        bind-toggle__raycastable="mainMenuActive || isSearching"
         bind__material="color: colorPrimary"
         animation__mouseenter="property: components.material.material.opacity; to: 0.4; startEvents: mouseenter; pauseEvents: mouseleave; dur: 75; delay: 1"
         animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 75"

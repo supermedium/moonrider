@@ -687,7 +687,8 @@ AFRAME.registerState({
       !state.genreMenuOpen &&
       !state.difficultyFilterMenuOpen &&
       !state.playlistMenuOpen &&
-      !state.optionsMenuOpen;
+      !state.optionsMenuOpen &&
+      !state.isSearching;
 
     state.score.active =
       state.gameMode !== 'ride' &&
