@@ -193,12 +193,13 @@ AFRAME.registerComponent('trail', {
     const vertices = this.geometry.attributes.position.array;
     const bladeTrajectory = this.bladeTrajectory;
 
+    let alpha;
     let previousAlpha;
     let previousPoint;
 
     for (let i = 1; i < bladeTrajectory.length; i++) {
       if (i === 1) { previousAlpha = alpha; }
-      const alpha = 1.0 - ((bladeTrajectory.length - i) / bladeTrajectory.length);
+      alpha = 1.0 - ((bladeTrajectory.length - i) / bladeTrajectory.length);
 
       const currentPoint = bladeTrajectory[i];
       previousPoint = bladeTrajectory[i - 1];

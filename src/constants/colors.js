@@ -48,17 +48,17 @@ COLORS.schemes = {
     off: '#111',
     primary: '#E03A3E',
     primarybright: '#FA7578',
-    secondary: '#CCC',
+    secondary: '#DADADA',
     secondarybright: '#EFEFEF',
     tertiary: '#666',
   },
 
   black: {
     off: '#111',
-    primary: '#666',
+    primary: '#555',
     primarybright: '#808080',
-    secondary: '#EFEFEF',
-    secondarybright: '#FAFAFA',
+    secondary: '#FFF',
+    secondarybright: '#FFF',
     tertiary: '#B8B8B8',
   }
 }

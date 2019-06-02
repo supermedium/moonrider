@@ -413,6 +413,7 @@ AFRAME.registerSystem('materials', {
     set(this.home, 'color2', scheme.secondary);
     set(this.home, 'color3', scheme.tertiary);
     set(this.leftFist, 'color', scheme.primary);
+    set(this.leftFistWeapon, 'color', scheme.primary);
     set(this.leftWeapon, 'color', scheme.primary);
     set(this.leftWeaponHandle, 'color', scheme.primary);
     set(this.merkaba, 'color', scheme.primary);
@@ -426,6 +427,7 @@ AFRAME.registerSystem('materials', {
     set(this.redBeatPieces, 'emissive', scheme.primary);
     set(this.rightFist, 'color', scheme.secondary);
     set(this.rightWeapon, 'color', scheme.secondary);
+    set(this.rightFistWeapon, 'color', scheme.secondary);
     set(this.rightWeaponHandle, 'color', scheme.secondary);
     set(this.rings, 'colorPrimary', scheme.primary);
     set(this.rings, 'colorSecondary', scheme.secondary);
