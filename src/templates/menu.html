@@ -19,7 +19,7 @@
   <a-entity
     id="searchSongSubNameTexts"
     mixin="font"
-    bind__text="color: colorSecondary; value: search.songSubNameTexts"
+    bind__text="color: colorSecondaryBright; value: search.songSubNameTexts"
     render-order="menutext"
     text="baseline: top; align: left; wrapCount: 42; lineHeight: 190"
     position="0.181 0.445 0.001">
@@ -79,6 +79,7 @@
         bind-item__animation__mouseenter="enabled: menuSelectedChallenge.id !== item.id"
         bind-item__animation__mouseleave="enabled: menuSelectedChallenge.id !== item.id"
         bind-toggle__raycastable="mainMenuActive"
+        bind__material="color: colorPrimary"
         animation__mouseenter="property: components.material.material.opacity; to: 0.4; startEvents: mouseenter; pauseEvents: mouseleave; dur: 75; delay: 1"
         animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 75"
         geometry="primitive: plane; width: 1.1; height: 0.2"
@@ -161,8 +162,9 @@
                 bind-item__animation__mouseenter="enabled: menuSelectedChallenge.difficulty !== item"
                 bind-item__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== item"
                 bind-item__difficulty-background="enabled: menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item && !difficultyFilterMenuOpen"
+                bind__material="color: colorPrimary"
                 geometry="primitive: plane; width: 0.4; height: 0.2"
-                material="shader: flat; color: #7b3764; transparent: true; opacity: 0.0; src: #difficultyImg"
+                material="shader: flat; transparent: true; opacity: 0.0; src: #difficultyImg"
                 position="0 -0.005 0"
                 play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
                 animation__mouseenter="property: components.material.material.opacity; to: 0.3; startEvents: mouseenter; pauseEvents: mouseleave; dur: 75"
@@ -201,7 +203,7 @@
         <a-entity
           id="menuSelectedChallengeSongAuthor"
           mixin="font"
-          bind__text="color: colorSecondary; value: menuSelectedChallenge.songSubName"
+          bind__text="color: colorSecondaryBright; value: menuSelectedChallenge.songSubName"
           position="0 0.042 0"
           render-order="menutext"
           text="wrapCount: 40; lineHeight: 40; width: 1.185; align: center; baseline: center"></a-entity>
