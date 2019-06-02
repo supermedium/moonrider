@@ -168,7 +168,9 @@
           thumb-controls
           thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
           render-order="weapon"
-          trail="color: {{ hand === 'right' and 'secondary' or 'primary' }}; hand: {{ hand }}">
+          tracked-controls="autoHide: false"
+          trail="color: {{ hand === 'right' and 'secondary' or 'primary' }}; hand: {{ hand }}"
+          visible="false">
           <a-entity bind__position="has3DOFVR && '0 0 -0.5' || '0 0 0'">
             <a-entity
               id="{{ hand }}Laser"

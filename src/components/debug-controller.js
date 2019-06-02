@@ -11,14 +11,11 @@ AFRAME.registerComponent('debug-controller', {
 
     console.log('%c debug-controller enabled ', 'background: #111; color: red');
 
-    this.isCloning = false;
-    this.isDeleting = false;
-    this.isTriggerDown = false;
-
-    window.addEventListener('mousemove', this.onMouseMove.bind(this));
-
     primaryHand = document.getElementById('rightHand');
     secondaryHand = document.getElementById('leftHand');
+
+    primaryHand.object3D.visible = true;
+    secondaryHand.object3D.visible = true;
 
     window.addEventListener('click', evt => {
       if (!evt.isTrusted) { return; }

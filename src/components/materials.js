@@ -460,6 +460,9 @@ AFRAME.registerSystem('materials', {
 
     document.getElementById('fontPrimary').setAttribute('text', `color: ${scheme.primary}`);
     document.getElementById('fontSecondary').setAttribute('text', `color: ${scheme.secondary}`);
+
+    document.getElementById('leftLaser').getObject3D('mesh').material.color.set(scheme.primary);
+    document.getElementById('rightLaser').getObject3D('mesh').material.color.set(scheme.secondary);
   },
 
   generateBeatsTexture: function () {

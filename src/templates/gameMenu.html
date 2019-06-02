@@ -3,21 +3,20 @@
   mixin="bigMenuButton"
   animation__mouseenter="property: components.material.material.uniforms.active.value; from: 0; to: 1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 70"
   animation__mouseleave="property: components.material.material.uniforms.active.value; from: 1; to: 0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 70"
-  geometry="height: 0.28"
-  ></a-mixin>
+  geometry="height: 0.28"></a-mixin>
 
 <a-mixin
   id="gameMenuButtonText"
   mixin="font"
   position="0 -0.08 0.01"
   render-order="menutext"
-  text="align: center; wrapCount: 17; color: #FFF"></a-mixin>
+  text="align: center; wrapCount: 17"></a-mixin>
 
 <!-- Titles. -->
 <a-entity id="inGameMenuTitles" position="0 2.2 -2.3">
   <a-entity mixin="gameMenuButtonText" text="value: GAME OVER; color: {{ COLORS.UI_ACCENT2 }}; width: 3.5" bind__visible="isGameOver"></a-entity>
-  <a-entity mixin="gameMenuButtonText" text="value: SONG CLEARED; color: #fff; width: 3.5" bind__visible="isVictory" position="0 0.1 0"></a-entity>
-  <a-entity mixin="gameMenuButtonText" text="value: PAUSED; color: {{ COLORS.RED }}; width: 3.5" bind__visible="isPaused"></a-entity>
+  <a-entity mixin="gameMenuButtonText" text="value: SONG CLEARED; color: #FFF; width: 3.5" bind__visible="isVictory" position="0 0.1 0"></a-entity>
+  <a-entity mixin="fontPrimary gameMenuButtonText" text="value: PAUSED; width: 3.5" bind__visible="isPaused"></a-entity>
 </a-entity>
 
 <a-entity
@@ -81,10 +80,10 @@
         mixin="font" text="align: center; color: #fff; wrapCount: 30; baseline: top; lineHeight: 36; width: 1.2"
         bind__text="value: challenge.songName"></a-entity>
       <a-entity id="gameMenuSongSubName" position="0 -0.08 0"
-        mixin="font"
+        mixin="fontSecondary"
         bind__text-truncate="value: challenge.songSubName + ' - ' + challenge.author"
         text-truncate="length: 80"
-        text="wrapCount: 40; align: center; color: {{ COLORS.BLUE }}; width: 1.2" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
+        text="wrapCount: 40; align: center; width: 1.2" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
     </a-entity>
   </a-entity>
 </a-entity>
