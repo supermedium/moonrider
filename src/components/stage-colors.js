@@ -66,7 +66,7 @@ AFRAME.registerComponent('stage-colors', {
     if (target === 'stars') {
       let color;
       if (code === 0) {
-        color = COLORS.schemes[this.data.colorScheme].tertiary;
+        color = COLORS.schemes[this.data.colorScheme].secondarybright;
       } else {
         color = COLORS.schemes[this.data.colorScheme].secondary;
       }

@@ -3,8 +3,8 @@ const COLORS = require('../constants/colors');
 AFRAME.registerComponent('stars', {
   schema: {
     color: {type: 'color', default: COLORS.initial.secondary},
-    count: {default: 3000},
-    radius: {default: 1000}
+    count: {default: 800},
+    radius: {default: 500}
   },
 
   init: function () {
@@ -13,7 +13,7 @@ AFRAME.registerComponent('stars', {
     this.material = this.el.sceneEl.systems.materials.stars;
     const positions = [];
     for (let i = 0; i < this.data.count; i++) {
-      positions.push(rand(), rand(), rand() * 2);
+      positions.push(rand(), rand(), rand() * 4);
     }
     geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     geometry.computeBoundingSphere();
