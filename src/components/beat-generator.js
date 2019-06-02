@@ -342,10 +342,9 @@ AFRAME.registerComponent('beat-generator', {
       case 0:
         this.stageColors.setColor('bg', event._value);
         this.stageColors.setColorInstant('moon', event._value);
-        this.stageColors.setColorInstant('stars', event._value);
         break;
       case 1:
-        this.stageColors.setColorInstant('merkaba', event._value);
+        this.stageColors.setColorInstant('stars', event._value);
         break;
       case 2:
         this.stageColors.setColor('curveeven', event._value);
