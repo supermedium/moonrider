@@ -1,5 +1,6 @@
 /* global localStorage */
-var utils = require('../utils');
+import COLORS from '../constants/colors';
+const utils = require('../utils');
 
 const challengeDataStore = {};
 let HAS_LOGGED_VR = false;
@@ -24,6 +25,8 @@ const DEBUG_CHALLENGE = {
 };
 
 const SKIP_INTRO = AFRAME.utils.getUrlParameter('skipintro') === 'true';
+
+const colorScheme = localStorage.getItem('colorScheme') || 'default';
 
 /**
  * State handler.
@@ -53,7 +56,9 @@ AFRAME.registerState({
       songNameShort: '',
       songSubName: ''
     },
-    colorScheme: 'default',
+    colorPrimary: COLORS.schemes[colorScheme].primary,
+    colorScheme: colorScheme,
+    colorSecondary: COLORS.schemes[colorScheme].secondary,
     controllerType: '',
     damage: 0,
     difficultyFilter: 'All',
@@ -179,6 +184,9 @@ AFRAME.registerState({
 
     colorschemechange: (state, payload) => {
       state.colorScheme = payload;
+      state.colorPrimary = COLORS.schemes[payload].primary;
+      state.colorSecondary = COLORS.schemes[payload].secondary;
+      localStorage.setItem('colorScheme', payload);
     },
 
     controllerconnected: (state, payload) => {

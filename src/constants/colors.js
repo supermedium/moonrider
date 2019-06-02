@@ -65,4 +65,6 @@ COLORS.schemes = {
 
 COLORS.options = Object.keys(COLORS.schemes);
 
+COLORS.initial = COLORS.schemes[localStorage.getItem('colorScheme') || 'default'];
+
 module.exports = COLORS;

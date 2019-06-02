@@ -18,8 +18,8 @@
   </a-entity>
   <a-entity
     id="searchSongSubNameTexts"
-    mixin="fontSecondary"
-    bind__text="value: search.songSubNameTexts"
+    mixin="font"
+    bind__text="color: colorSecondary; value: search.songSubNameTexts"
     render-order="menutext"
     text="baseline: top; align: left; wrapCount: 42; lineHeight: 190"
     position="0.181 0.445 0.001">
@@ -46,22 +46,23 @@
   <a-entity
     id="searchPrevPage"
     mixin="searchPageButton"
-    slice9="color: {{ COLORS.RED }}"
+    bind__slice9="color: colorPrimary"
     bind__visible-raycastable="search.hasPrev && mainMenuActive"
     raycaster-target="bindToggle: search.hasNext && menuActive; position: 0 0.08 0"
     position="-0 0.69 0.01"
     proxy-event="event: click; to: a-scene; as: searchprevpage; captureBubbles: true">
-    <a-entity id="prevArrow" geometry="primitive: plane; width: 0.12; height: 0.12" material="shader: flat; src: #downIconImg; transparent: true; color: {{ COLORS.RED }}" rotation="0 0 180" position="0 0 -0.001"></a-entity>
+    <a-entity id="prevArrow" bind__material="color: colorPrimary" geometry="primitive: plane; width: 0.12; height: 0.12" material="shader: flat; src: #downIconImg; transparent: true" rotation="0 0 180" position="0 0 -0.001"></a-entity>
   </a-entity>
 
   <a-entity
     id="searchNextPage"
     mixin="searchPageButton"
+    bind__slice9="color: colorSecondary"
     raycaster-target="bindToggle: search.hasNext && mainMenuActive; position: 0 -0.08 0"
     position="-0 -0.674 0.01"
     proxy-event="event: click; to: a-scene; as: searchnextpage; captureBubbles: true"
     bind__visible="search.hasNext">
-    <a-entity id="nextArrow" geometry="primitive: plane; width: 0.12; height: 0.12" material="shader: flat; src: #downIconImg; transparent: true; color: {{ COLORS.BLUE }}" position="0 0 -0.001"></a-entity>
+    <a-entity id="nextArrow" bind__material="color: colorSecondary" geometry="primitive: plane; width: 0.12; height: 0.12" material="shader: flat; src: #downIconImg; transparent: true" position="0 0 -0.001"></a-entity>
   </a-entity>
 {% endmacro %}
 
@@ -199,20 +200,21 @@
       <a-entity id="menuSelectedChallengeInfoContainer" position="0 0.058 0">
         <a-entity
           id="menuSelectedChallengeSongAuthor"
-          mixin="fontSecondary"
-          bind__text="value: menuSelectedChallenge.songSubName"
+          mixin="font"
+          bind__text="color: colorSecondary; value: menuSelectedChallenge.songSubName"
           position="0 0.042 0"
           render-order="menutext"
           text="wrapCount: 40; lineHeight: 40; width: 1.185; align: center; baseline: center"></a-entity>
         <a-entity
           id="menuSelectedChallengeSongName"
-          mixin="fontPrimary"
-          bind__text="value: menuSelectedChallenge.songName"
+          mixin="font"
+          bind__text="color: colorPrimary; value: menuSelectedChallenge.songName"
           position="0 -0.059 0"
           render-order="menutext"
           text="align: center; wrapCount: 31; baseline: top; lineHeight: 36; width: 1.4"></a-entity>
         <a-entity
           id="menuSelectedChallengeInfo"
+          mixin="font"
           bind__text="value: menuSelectedChallenge.songInfoText"
           mixin="font"
           position="0 -0.18 0"
@@ -326,10 +328,12 @@
     <a-entity
       id="playlistText"
       mixin="font"
+      bind__text="color: colorPrimary"
       bind__text-uppercase="value: playlistTitle"
       bind__visible="mainMenuActive && !!playlist"
-      text="align: center; baseline: bottom; color: {{ COLORS.RED }}; wrapCount: 30; width: 0.7"
-      position="0 0.1 0.035"></a-entity>
+      text="align: center; baseline: bottom; wrapCount: 30; width: 0.7"
+      position="0 0.1 0.035"
+      render-order="menutext"></a-entity>
   </a-entity>
 
   <!-- Search toggle. -->
@@ -357,10 +361,12 @@
     <a-entity
       id="searchText"
       mixin="font"
+      bind__text="color: colorPrimary"
       bind__text-uppercase="value: search.queryText"
       bind__visible="mainMenuActive && !!search.query"
-      text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
-      position="0 0.1 0.035"></a-entity>
+      text="align: center; wrapCount: 20"
+      position="0 0.1 0.035"
+      render-order="menutext"></a-entity>
   </a-entity>
 
   <!-- Difficulty menu toggle. -->
@@ -379,9 +385,11 @@
       id="difficultyFilterText"
       mixin="font"
       bind__difficulty-text="difficulty: difficultyFilter"
+      bind__text="color: colorPrimary"
       bind__visible="mainMenuActive && difficultyFilter !== 'All'"
-      text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
-      position="0 0.1 0.035"></a-entity>
+      text="align: center; wrapCount: 20"
+      position="0 0.1 0.035"
+      render-order="menutext"></a-entity>
   </a-entity>
 
   <!-- Genre menu toggle. -->
@@ -408,10 +416,12 @@
     <a-entity
       id="genreText"
       mixin="font"
+      bind__text="color: colorPrimary"
       bind__text-uppercase="value: genre"
       bind__visible="mainMenuActive && !!genre"
-      text="align: center; color: {{ COLORS.RED }}; wrapCount: 20"
-      position="0 0.1 0.035"></a-entity>
+      text="align: center; wrapCount: 20"
+      position="0 0.1 0.035"
+      render-order="menutext"></a-entity>
   </a-entity>
 </a-entity>
 

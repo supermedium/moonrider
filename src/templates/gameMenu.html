@@ -16,7 +16,7 @@
 <a-entity id="inGameMenuTitles" position="0 2.2 -2.3">
   <a-entity mixin="gameMenuButtonText" text="value: GAME OVER; color: {{ COLORS.UI_ACCENT2 }}; width: 3.5" bind__visible="isGameOver"></a-entity>
   <a-entity mixin="gameMenuButtonText" text="value: SONG CLEARED; color: #FFF; width: 3.5" bind__visible="isVictory" position="0 0.1 0"></a-entity>
-  <a-entity mixin="fontPrimary gameMenuButtonText" text="value: PAUSED; width: 3.5" bind__visible="isPaused"></a-entity>
+  <a-entity mixin="gameMenuButtonText" bind__text="color: colorPrimary" text="value: PAUSED; width: 3.5" bind__visible="isPaused"></a-entity>
 </a-entity>
 
 <a-entity
@@ -76,11 +76,16 @@
       position="-0.7 0 0"></a-entity>
 
     <a-entity id="gameMenuSongInfo">
-      <a-entity id="gameMenuSongName" position="0 0.01 0"
+      <a-entity
+        id="gameMenuSongName"
+        position="0 0.01 0"
         mixin="font" text="align: center; color: #fff; wrapCount: 30; baseline: top; lineHeight: 36; width: 1.2"
         bind__text="value: challenge.songName"></a-entity>
-      <a-entity id="gameMenuSongSubName" position="0 -0.08 0"
-        mixin="fontSecondary"
+      <a-entity
+        id="gameMenuSongSubName"
+        mixin="font"
+        position="0 -0.08 0"
+        bind__text="color: colorSecondary"
         bind__text-truncate="value: challenge.songSubName + ' - ' + challenge.author"
         text-truncate="length: 80"
         text="wrapCount: 40; align: center; width: 1.2" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>

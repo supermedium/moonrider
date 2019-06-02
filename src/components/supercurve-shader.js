@@ -3,9 +3,9 @@ import COLORS from '../constants/colors';
 AFRAME.registerShader('supercurve', {
   schema: {
     cameraPercent: {type: 'number', is: 'uniform'},
-    color1: {type: 'color', is: 'uniform', default: COLORS.schemes.default.primary},
-    color2: {type: 'color', is: 'uniform', default: COLORS.schemes.default.secondary},
-    fogColor: {type: 'color', is: 'uniform', default: COLORS.schemes.default.primary},
+    color1: {type: 'color', is: 'uniform', default: COLORS.initial.primary},
+    color2: {type: 'color', is: 'uniform', default: COLORS.initial.secondary},
+    fogColor: {type: 'color', is: 'uniform', default: COLORS.initial.primary},
     side: {default: 'double'},
     transparent: {default: true},
   },

@@ -8,7 +8,9 @@ AFRAME.registerSystem('materials', {
   init: function () {
     this.curve = null;
     this.panelMaterials = [];
-    this.scheme = COLORS.schemes.default;
+
+    const scheme = localStorage.getItem('colorScheme') || 'default';
+    this.scheme = COLORS.schemes[scheme];
 
     // Collect references to textures for gpu-preloader.
     this.textureList = [];
@@ -459,9 +461,6 @@ AFRAME.registerSystem('materials', {
     set(this.curve, 'fogColor', scheme.primary);
     set(this.curve, 'color1', scheme.primary);
     set(this.curve, 'color2', scheme.secondary);
-
-    document.getElementById('fontPrimary').setAttribute('text', `color: ${scheme.primary}`);
-    document.getElementById('fontSecondary').setAttribute('text', `color: ${scheme.secondary}`);
 
     document.getElementById('leftLaser').getObject3D('mesh').material.color.set(scheme.primary);
     document.getElementById('rightLaser').getObject3D('mesh').material.color.set(scheme.secondary);

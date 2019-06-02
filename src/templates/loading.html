@@ -21,8 +21,10 @@
     render-order="menu"></a-entity>
 
   <a-entity id="loadingSongInfo">
-    <a-entity position="0 -0.05 0"
-      mixin="fontSecondary"
+    <a-entity
+      position="0 -0.05 0"
+      mixin="font"
+      bind__text="color: colorSecondary"
       bind__text-truncate="value: challenge.songSubName + ' - ' + challenge.author"
       text="wrapCount: 40; align: center"
       text-truncate="length: 35"
@@ -36,9 +38,9 @@
 
     <a-entity
       id="loadingText"
-      mixin="fontPrimary"
+      mixin="font"
       bind__animation__color="enabled: isLoading"
-      bind__text="value: loadingText"
+      bind__text="color: colorPrimary; value: loadingText"
       bind__visible="isLoading"
       text="align: center; wrapCount: 18; width: 0.65"
       render-order="menutext"
@@ -46,9 +48,10 @@
 
     <a-entity
       id="zipLoaderIndicator"
+      bind__material="color: colorPrimary"
       bind__visible="isZipFetching"
       geometry="primitive: plane; height: 0.1; width: 0.1"
-      material="shader: ring; color: {{ COLORS.RED }}; radiusInner: 0.2; radiusOuter: 0.9; progress: 0; transparent: true"
+      material="shader: ring; radiusInner: 0.2; radiusOuter: 0.9; progress: 0; transparent: true"
       render-order="menuitem"
       position="0 -0.4 0.002">
     </a-entity>
@@ -56,10 +59,11 @@
     <a-entity
       id="songProcessingIndicator"
       bind__animation__spin="enabled: isSongProcessing"
+      bind__material="color: colorPrimary"
       bind__visible="isSongProcessing"
       animation__spin="property: object3D.rotation.z; from: 0; to: -360; easing: linear; dur: 1000; loop: true"
       geometry="primitive: plane; height: 0.15; width: 0.15"
-      material="shader: ring; color: {{ COLORS.RED }}; radiusInner: 0.2; radiusOuter: 0.4; transparent: true; progress: 0.2"
+      material="shader: ring; radiusInner: 0.2; radiusOuter: 0.4; transparent: true; progress: 0.2"
       render-order="menutext"
       position="0 -0.4 0.004"
       visible="false">
