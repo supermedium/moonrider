@@ -18,6 +18,7 @@ const COLORS = {
 
 COLORS.schemes = {
   default: {
+    name: 'Super Medium',
     off: '#111',
     primary: COLORS.RED,
     primarybright: COLORS.BRIGHTRED,
@@ -27,6 +28,7 @@ COLORS.schemes = {
   },
 
   blue: {
+    name: 'Star Warrior',
     off: '#111',
     primary: '#0B4BB3',
     primarybright: '#4A90FF',
@@ -36,6 +38,7 @@ COLORS.schemes = {
   },
 
   purple: {
+    name: 'Galactic Royal',
     off: '#111',
     primary: '#6A39B3',
     primarybright: '#B685FF',
@@ -45,6 +48,7 @@ COLORS.schemes = {
   },
 
   green: {
+    name: 'Space Joker',
     off: '#111',
     primary: '#779E37',
     primarybright: '#C0FF59',
@@ -54,6 +58,7 @@ COLORS.schemes = {
   },
 
   yellow: {
+    name: 'Solar Flare',
     off: '#111',
     primary: '#C2C04C',
     primarybright: '#FAF761',
@@ -63,6 +68,7 @@ COLORS.schemes = {
   },
 
   red: {
+    name: 'Trail Blazer',
     off: '#111',
     primary: '#E03A3E',
     primarybright: '#FA7578',
@@ -72,6 +78,7 @@ COLORS.schemes = {
   },
 
   black: {
+    name: 'Ash Nova',
     off: '#111',
     primary: '#555',
     primarybright: '#808080',

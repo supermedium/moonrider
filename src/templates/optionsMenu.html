@@ -7,12 +7,13 @@
   <a-entity id="optionsTitle" mixin="font" text="align: center; value: OPTIONS; width: 2.5"></a-entity>
 
   <a-entity id="colorOptionsContainer" position="0 -0.25 0">
-    <a-entity id="colorTitle" mixin="font" text="align: center; value: Color Scheme; width: 2"></a-entity>
+    <a-entity id="colorTitle" mixin="font" text="align: center; value: Color Schemes (Beta); width: 2"></a-entity>
 
     <a-entity id="colorOptions" position="-0.6 -0.15 0.00" layout="type: box; columns: 10; margin: 0.2" materials-color-menu>
       {% for color in COLORS.options %}
         <a-entity
           class="colorOption"
+          data-color-name="{{ COLORS.schemes[color].name }}"
           data-color-scheme="{{ color }}"
           mixin="clickSoundUI hoverSoundUI"
           animation__mouseenter="property: scale; to: 1.2 1.2 1.2; dur: 150; easing: easeInOutCubic; startEvents: mouseenter"
@@ -24,5 +25,12 @@
         </a-entity>
       {% endfor %}
     </a-entity>
+
+    <a-entity
+      id="colorName"
+      mixin="font"
+      text="align: center; color: #CCC; width: 1"
+      position="0 -0.35 0.1"
+      render-order="menutext"></a-entity>
   </a-entity>
 </a-entity>

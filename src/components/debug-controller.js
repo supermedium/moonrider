@@ -14,8 +14,10 @@ AFRAME.registerComponent('debug-controller', {
     primaryHand = document.getElementById('rightHand');
     secondaryHand = document.getElementById('leftHand');
 
+    primaryHand.setAttribute('tracked-controls', 'autoHide', false);
     primaryHand.object3D.visible = true;
     secondaryHand.object3D.visible = true;
+    secondaryHand.setAttribute('tracked-controls', 'autoHide', false);
 
     window.addEventListener('click', evt => {
       if (!evt.isTrusted) { return; }

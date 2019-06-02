@@ -669,7 +669,19 @@ AFRAME.registerComponent('materials', {
 });
 
 AFRAME.registerComponent('materials-color-menu', {
+  play: function () {
+    this.text = document.getElementById('colorName');
+  },
+
   events: {
+    mouseenter: function (evt) {
+      this.text.setAttribute('text', 'value', evt.target.dataset.colorName);
+    },
+
+    mouseleave: function (evt) {
+      this.text.setAttribute('text', 'value', '');
+    },
+
     click: function (evt) {
       this.el.sceneEl.systems.materials.setColorScheme(evt.target.dataset.colorScheme);
       this.el.sceneEl.emit('colorschemechange', evt.target.dataset.colorScheme, false);
