@@ -44,6 +44,24 @@ COLORS.schemes = {
     tertiary: '#50FFF2'
   },
 
+  green: {
+    off: '#111',
+    primary: '#779E37',
+    primarybright: '#C0FF59',
+    secondary: '#6A39B3',
+    secondarybright: '#B685FF',
+    tertiary: '#FF844A'
+  },
+
+  yellow: {
+    off: '#111',
+    primary: '#C2C04C',
+    primarybright: '#FAF761',
+    secondary: '#E03A3E',
+    secondarybright: '#FA7578',
+    tertiary: '#278ECC',
+  },
+
   red: {
     off: '#111',
     primary: '#E03A3E',
@@ -65,6 +83,10 @@ COLORS.schemes = {
 
 COLORS.options = Object.keys(COLORS.schemes);
 
-COLORS.initial = COLORS.schemes[localStorage.getItem('colorScheme') || 'default'];
+if (typeof localStorage === 'undefined') {
+  COLORS.initial = 'default';
+} else {
+  COLORS.initial = COLORS.schemes[localStorage.getItem('colorScheme') || 'default'];
+}
 
 module.exports = COLORS;

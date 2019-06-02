@@ -7,9 +7,9 @@
   <a-entity id="optionsTitle" mixin="font" text="align: center; value: OPTIONS; width: 2.5"></a-entity>
 
   <a-entity id="colorOptionsContainer" position="0 -0.25 0">
-    <a-entity id="colorTitle" mixin="font" text="align: center; value: Colors; width: 2"></a-entity>
+    <a-entity id="colorTitle" mixin="font" text="align: center; value: Color Scheme; width: 2"></a-entity>
 
-    <a-entity id="colorOptions" position="-0.4 -0.15 0.00" layout="type: box; columns: 5; margin: 0.2" materials-color-menu>
+    <a-entity id="colorOptions" position="-0.6 -0.15 0.00" layout="type: box; columns: 10; margin: 0.2" materials-color-menu>
       {% for color in COLORS.options %}
         <a-entity
           class="colorOption"
