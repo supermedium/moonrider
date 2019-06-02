@@ -424,7 +424,7 @@ AFRAME.registerSystem('materials', {
     set(this.home, 'color1', scheme.primary);
     set(this.home, 'color2', scheme.secondary);
     set(this.home, 'color3', scheme.tertiary);
-    set(this.leftFist, 'color', scheme.primary);
+    set(this.leftFist, 'color', scheme.primarybright);
     set(this.leftFistWeapon, 'color', scheme.primary);
     set(this.leftWeapon, 'color', scheme.primary);
     set(this.leftWeaponHandle, 'color', scheme.primary);
@@ -437,7 +437,7 @@ AFRAME.registerSystem('materials', {
     set(this.redBeatGlow, 'color', scheme.primary);
     set(this.redBeatPieces, 'color', scheme.primary);
     set(this.redBeatPieces, 'emissive', scheme.primary);
-    set(this.rightFist, 'color', scheme.secondary);
+    set(this.rightFist, 'color', scheme.secondarybright);
     set(this.rightWeapon, 'color', scheme.secondary);
     set(this.rightFistWeapon, 'color', scheme.secondary);
     set(this.rightWeaponHandle, 'color', scheme.secondary);
@@ -513,8 +513,8 @@ AFRAME.registerSystem('materials', {
 
   generateFistsTexture: function () {
     const scheme = this.scheme;
-    const primary = new THREE.Color(scheme.primary);
-    const secondary = new THREE.Color(scheme.secondary);
+    const primary = new THREE.Color(scheme.primarybright);
+    const secondary = new THREE.Color(scheme.secondarybright);
 
     const canvas = this.fistsCanvas;
     const ctx = canvas.getContext('2d');
