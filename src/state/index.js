@@ -59,6 +59,7 @@ AFRAME.registerState({
     colorPrimary: COLORS.schemes[colorScheme].primary,
     colorScheme: colorScheme,
     colorSecondary: COLORS.schemes[colorScheme].secondary,
+    colorTertiary: COLORS.schemes[colorScheme].tertiary,
     controllerType: '',
     damage: 0,
     difficultyFilter: 'All',
@@ -186,6 +187,7 @@ AFRAME.registerState({
       state.colorScheme = payload;
       state.colorPrimary = COLORS.schemes[payload].primary;
       state.colorSecondary = COLORS.schemes[payload].secondary;
+      state.colorTertiary = COLORS.schemes[payload].tertiary;
       localStorage.setItem('colorScheme', payload);
     },
 

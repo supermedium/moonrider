@@ -56,14 +56,15 @@
     class="modeInstructions"
     mixin="font"
     render-order="menutext"
-    text="value: {{ description }}; color: {{ COLORS.DARKRED }}; width: 1.6; lineHeight: 47"
+    bind__text="color: colorPrimary"
+    text="value: {{ description }}; width: 1.6; lineHeight: 47"
     position="1.1 -0.05 0"></a-entity>
 </a-entity>
 {% endmacro %}
 
 <a-entity
   id="modes"
-  bind__menu-mode="hasVR: hasVR"
+  bind__menu-mode="colorScheme: colorScheme; hasVR: hasVR"
   bind__position="hasVR && '-2.56 1.3 -0.7' || '-2.56 1 -0.7'"
   bind__visible="menuActive && !isMenuOpening"
   rotation="0 60 0"

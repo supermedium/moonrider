@@ -6,10 +6,11 @@
 
   <a-entity
     id="victoryAccuracyRing"
+    bind__material="color: colorPrimary"k
     bind__victory-accuracy-ring="accuracy: score.finalAccuracy"
     animation="property: components.material.material.uniforms.progress.value; from: 0; easing: easeOutQuad; delay: 500; dur: 2500; autoplay: false"
     geometry="primitive: plane; width: 0.7; height: 0.7"
-    material="shader: ring; transparent: true; color: {{ COLORS.RED }}; radiusInner: 0.8; blending: additive; depthWrite: false"
+    material="shader: ring; transparent: true; radiusInner: 0.8; blending: additive; depthWrite: false"
     position="0 0.18 0"
     render-order="victory"></a-entity>
 
@@ -30,9 +31,9 @@
     id="victoryInfoAccuracy"
     class="accuracyTextCounterSubscribe"
     mixin="font"
-    bind__text="opacity: isVictory && 0 || 0; value: score.score + ' POINTS'"
+    bind__text="color: colorSecondary; opacity: isVictory && 0 || 0; value: score.score + ' POINTS'"
     animation="property: components.text.material.uniforms.opacity.value; from: 0; to: 1; startEvents: textcounterdone"
-    text="align: left; color: {{ COLORS.BLUE }}; wrapCount: 22; baseline: top; width: 0.81"
+    text="align: left; wrapCount: 22; baseline: top; width: 0.81"
     position="0.85 0.2 0"
     render-order="menuitemtext"></a-entity>
 
@@ -40,16 +41,17 @@
     id="victoryInfoBeatsHit"
     class="accuracyTextCounterSubscribe"
     mixin="font"
-    bind__text="opacity: isVictory && 0 || 0; value: score.beatsText"
+    bind__text="color: colorSecondary; opacity: isVictory && 0 || 0; value: score.beatsText"
     animation="property: components.text.material.uniforms.opacity.value; from: 0; to: 1; startEvents: textcounterdone"
-    text="align: left; color: {{ COLORS.BLUE }}; wrapCount: 22; baseline: top; width: 0.81"
+    text="align: left; wrapCount: 22; baseline: top; width: 0.81"
     position="0.85 0.1 0"
     render-order="menuitemtext"></a-entity>
 
   <a-entity
     id="victoryInfoAccuracy"
     mixin="font"
-    text="value: 0; align: center; color: {{ COLORS.YELLOW }}; wrapCount: 15; baseline: top; width: 2.25"
+    bind__text="color: colorTertiary"
+    text="value: 0; align: center; wrapCount: 15; baseline: top; width: 2.25"
     bind__text-counter="enabled: isVictory; value: score.finalAccuracy"
     text-counter="suffix: %"
     position="0 -0.47 0"
@@ -58,8 +60,9 @@
   <a-entity
     id="victoryInfoMaxCombo"
     mixin="font"
+    bind__text="color: colorSecondary"
     bind__text-counter="enabled: isVictory; value: score.maxCombo"
-    text="align: center; color: {{ COLORS.BLUE }}; wrapCount: 22; baseline: top; width: 1"
+    text="align: center; wrapCount: 22; baseline: top; width: 1"
     text-counter="prefix: MAX STREAK: ; emit: true"
     proxy-event="event: textcounterdone; to: .accuracyTextCounterSubscribe"
     position="0 -0.58 0"

@@ -41,9 +41,10 @@
     render-order="stage"></a-entity>
   <a-entity
     class="merkababloom"
+    bind__material="color: colorTertiary"
     geometry="primitive: plane; width: 250; height: 250"
     animation="property: object3D.rotation.z; from: 0; to: 360; loop: true; easing: linear; dur: 30000"
-    material="shader: flat; src: #merkabaBloomImg; blending: additive; depthTest: false; color: {{ COLORS.YELLOW }}"
+    material="shader: flat; src: #merkabaBloomImg; blending: additive; depthTest: false"
     follow-z="target: #curveFollowRig; offset: 0 46 -1380"
     render-order="stage"></a-entity>
 

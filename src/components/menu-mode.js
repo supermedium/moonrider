@@ -18,6 +18,7 @@ const modeMap = {
 
 AFRAME.registerComponent('menu-mode', {
   schema: {
+    colorScheme: {default: 'default'},
     hasVR: {default: false}
   },
 
@@ -63,10 +64,14 @@ AFRAME.registerComponent('menu-mode', {
       thumb.emit(selected ? 'select': 'deselect', null, false);
 
       const title = modeEl.querySelector('.modeTitle');
-      title.setAttribute('text', 'color', selected ? COLORS.WHITE : COLORS.DARKBLUE);
+      title.setAttribute(
+        'text', 'color',
+        selected ? COLORS.WHITE : COLORS.schemes[this.data.colorScheme].secondary);
 
       const instructions = modeEl.querySelector('.modeInstructions');
-      instructions.setAttribute('text', 'color', selected ? COLORS.WHITE : COLORS.DARKRED);
+      instructions.setAttribute(
+        'text', 'color',
+        selected ? COLORS.WHITE : COLORS.schemes[this.data.colorScheme].primary);
     }
   }
 });
