@@ -104,6 +104,7 @@ AFRAME.registerComponent('search', {
       if (!query && this.data.difficultyFilter === 'All' &&
           !this.data.genre && !this.data.playlist) {
         this.popularHits = topSearch.concat(content.hits);
+        shuffle(this.popularHits);
         this.eventDetail.results = this.popularHits;
       } else {
         this.eventDetail.results = content.hits;
@@ -142,3 +143,10 @@ AFRAME.registerComponent('search-result-list', {
     this.el.emit('layoutrefresh', null, false);
   }
 });
+
+function shuffle (array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
