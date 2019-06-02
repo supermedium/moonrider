@@ -15,7 +15,7 @@ const animations = [
   {id: 'primary', dur: 5, to: 'primary'},
   {id: 'primarybright', dur: 500, from: 'tertiary', to: 'primarybright'},
   {id: 'secondary', dur: 5, to: 'secondary'},
-  {id: 'secondarybright', dur: 50, from: 'tertiary', to: 'secondarybright'}
+  {id: 'secondarybright', dur: 500, from: 'tertiary', to: 'secondarybright'}
 ];
 
 // Mapping of index to our stage event IDs.
