@@ -450,7 +450,7 @@ AFRAME.registerSystem('materials', {
     set(this.tunnel, 'color3', scheme.tertiary);
 
     this.generateBeatsTexture();
-    this.generateCutFxTexture();
+    // this.generateCutFxTexture();
     this.generateEnvmapTexture();
     this.generateFistsTexture();
 
