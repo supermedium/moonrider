@@ -61,15 +61,22 @@ AFRAME.registerComponent('stage-colors', {
    * Set synchronously, no animation for performance.
    */
   setColorInstant: function (target, code) {
-    const color = COLORS.schemes[this.data.colorScheme][colorCodes[code]];
     const materials = this.el.sceneEl.systems.materials;
 
-    if (target === 'merkaba') {
-      set(materials.merkaba, 'color', color);
-    } else if (target === 'moon') {
-      set(materials.moon, 'tint', color);
-    } else if (target === 'stars') {
+    if (target === 'stars') {
+      let color;
+      if (code === 0) {
+        color = COLORS.schemes[this.data.colorScheme].tertiary;
+      } else {
+        color = COLORS.schemes[this.data.colorScheme].secondary;
+      }
       set(materials.stars, 'color', color);
+      return;
+    }
+
+    const color = COLORS.schemes[this.data.colorScheme][colorCodes[code]];
+    if (target === 'moon') {
+      set(materials.moon, 'tint', color);
     }
   },
 
