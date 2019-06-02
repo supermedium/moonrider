@@ -34,7 +34,7 @@ COLORS.schemes = {
     primarybright: '#4A90FF',
     secondary: '#FFD840',
     secondarybright: '#FF882B',
-    tertiary: '#ADCC54',
+    tertiary: '#d7fdf9'
   },
 
   purple: {
@@ -54,7 +54,7 @@ COLORS.schemes = {
     primarybright: '#C0FF59',
     secondary: '#6A39B3',
     secondarybright: '#B685FF',
-    tertiary: '#FF844A'
+    tertiary: '#FAFAFA'
   },
 
   yellow: {
