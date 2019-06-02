@@ -2,9 +2,9 @@ import COLORS from '../constants/colors';
 
 AFRAME.registerShader('handStar', {
   schema: {
-    colorPrimary: {type: 'color', is: 'uniform', default: COLORS.schemes.default.primary},
-    colorSecondary: {type: 'color', is: 'uniform', default: COLORS.schemes.default.secondary},
-    colorTertiary: {type: 'color', is: 'uniform', default: COLORS.schemes.default.tertiary},
+    colorPrimary: {type: 'color', is: 'uniform', default: COLORS.initial.primary},
+    colorSecondary: {type: 'color', is: 'uniform', default: COLORS.initial.secondary},
+    colorTertiary: {type: 'color', is: 'uniform', default: COLORS.initial.tertiary},
     pulse: {type: 'number', is: 'uniform', default: 0},
     transparent: {default: true},
     side: {default: 'back'},

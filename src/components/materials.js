@@ -445,6 +445,7 @@ AFRAME.registerSystem('materials', {
     set(this.rings, 'colorSecondary', scheme.secondary);
     set(this.rings, 'colorTertiary', scheme.tertiary);
     set(this.stars, 'color', scheme.secondary);
+    set(this.tunnel, 'fogColor', scheme.primary);
     set(this.tunnel, 'color1', scheme.primary);
     set(this.tunnel, 'color2', scheme.secondary);
     set(this.tunnel, 'color3', scheme.tertiary);

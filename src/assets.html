@@ -175,22 +175,25 @@
 
 <a-mixin
   id="redPunchFX"
+  bind__material="color: colorPrimary"
   obj-model="obj: #punchfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.schemes.default.primary }}; progress: 1"
+  material="shader: cutfxShader; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 600; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
 <a-mixin
   id="bluePunchFX"
+  bind__material="color: colorSecondary"
   obj-model="obj: #punchfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.schemes.default.secondary }}; progress: 1"
+  material="shader: cutfxShader; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 600; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
 <a-mixin
+  bind__material="color: colorTertiary"
   id="yellowPunchFX"
   obj-model="obj: #punchfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.schemes.default.tertiary }}; progress: 1"
+  material="shader: cutfxShader; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 600; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
