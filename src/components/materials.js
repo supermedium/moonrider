@@ -26,6 +26,13 @@ AFRAME.registerSystem('materials', {
     this.generateEnvmapTexture();
     this.textureList.push(this.envmapTexture);
 
+    /*
+    this.cutFxCanvas = document.createElement('canvas');
+    this.cutFxTexture = new THREE.CanvasTexture(this.cutFxCanvas);
+    this.generateCutFxTexture();
+    this.textureList.push(this.cutFxTexture);
+    */
+
     this.fistsCanvas = document.createElement('canvas');
     this.fistsTexture = new THREE.CanvasTexture(this.fistsCanvas);
     this.generateFistsTexture();
@@ -443,14 +450,9 @@ AFRAME.registerSystem('materials', {
     set(this.tunnel, 'color3', scheme.tertiary);
 
     this.generateBeatsTexture();
+    this.generateCutFxTexture();
     this.generateEnvmapTexture();
     this.generateFistsTexture();
-
-    document.querySelectorAll('.handStar').forEach(el => {
-      set(el.getObject3D('mesh').material, 'colorPrimary', scheme.tertiary);
-      set(el.getObject3D('mesh').material, 'colorSecondary', scheme.tertiary);
-      set(el.getObject3D('mesh').material, 'colorTertiary', scheme.tertiary);
-    });
 
     document.querySelectorAll('a-entity[wall]').forEach(el => {
       set(el.getObject3D('mesh').material, 'colorTertiary', scheme.tertiary);
@@ -464,9 +466,6 @@ AFRAME.registerSystem('materials', {
     set(this.curve, 'fogColor', scheme.primary);
     set(this.curve, 'color1', scheme.primary);
     set(this.curve, 'color2', scheme.secondary);
-
-    document.getElementById('leftLaser').getObject3D('mesh').material.color.set(scheme.primary);
-    document.getElementById('rightLaser').getObject3D('mesh').material.color.set(scheme.secondary);
   },
 
   generateBeatsTexture: function () {
@@ -573,6 +572,48 @@ AFRAME.registerSystem('materials', {
       document.getElementById('envmapImg').src = canvas.toDataURL('image/png');
     });
   },
+
+  /*
+  generateCutFxTexture: function () {
+    const scheme = this.scheme;
+    const primary = new THREE.Color(scheme.primary);
+    const secondary = new THREE.Color(scheme.secondary);
+
+    const img = document.getElementById('cutFxTemplateImg');
+    img.addEventListener('load', () => {
+      const w = img.width;
+      const h = img.height;
+
+      const canvas = this.cutFxCanvas;
+      canvas.width = w;
+      canvas.height = h;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const im = ctx.getImageData(0, 0, w, h);
+      const imdata = im.data;
+
+      let primaryWeight;
+      let secondaryWeight;
+      for (let i = 0; i < imdata.length; i += 4) {
+        primaryWeight = imdata[i];
+        secondaryWeight = imdata[i + 1];
+        primaryWeight *= 1 - secondaryWeight / 255.0;
+
+        imdata[i + 0] = Math.floor(
+          primary.r * primaryWeight + secondary.r * secondaryWeight);
+        imdata[i + 1] = Math.floor(
+          primary.g * primaryWeight + secondary.g * secondaryWeight);
+        imdata[i + 2] = Math.floor(
+          primary.b * primaryWeight + secondary.b * secondaryWeight);
+        imdata[i + 3] = 255;
+      };
+
+      ctx.putImageData(im, 0, 0);
+      document.getElementById('cutFxImg').src = canvas.toDataURL('image/png');
+    });
+  },
+  */
 
   registerCurve: function (material) {
     this.curve = material;

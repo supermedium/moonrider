@@ -93,11 +93,12 @@
     material="shader: flat; transparent: true; src: #cursorMeshImg; depthTest: false"
     sub-object="from: #cursorLaser; name: glow"></a-mixin>
 
-  <a-entity id="curve"
-            material="shader: supercurve"
-            supercurve
-            supercurve-color
-            render-order="curve"></a-entity>
+  <a-entity
+    id="curve"
+    material="shader: supercurve"
+    supercurve
+    supercurve-color
+    render-order="curve"></a-entity>
 
   <a-entity
     id="tunnelsContainer"
@@ -228,6 +229,7 @@
             bind__visible="isPlaying && gameMode === 'ride'">
               <a-entity
                 class="handStar"
+                bind__material="colorPrimary: colorPrimary; colorSecondary: colorSecondary; colorTertiary: colorTertiary"
                 geometry="primitive: sphere; radius: 0.1"
                 material="shader: handStar"
                 animation__pulse="property: components.material.material.uniforms.pulse.value; from: 2; to: 0; dur: 300; startEvents: plumepulse; easing: easeInOutQuad"
