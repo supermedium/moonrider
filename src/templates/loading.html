@@ -21,9 +21,10 @@
     render-order="menu"></a-entity>
 
   <a-entity id="loadingSongInfo">
-    <a-entity position="0 -0.05 0" mixin="font"
+    <a-entity position="0 -0.05 0"
+      mixin="fontSecondary"
       bind__text-truncate="value: challenge.songSubName + ' - ' + challenge.author"
-      text="wrapCount: 40; align: center; color: {{ COLORS.BLUE }}"
+      text="wrapCount: 40; align: center"
       text-truncate="length: 35"
       render-order="menutext"></a-entity>
 
@@ -35,11 +36,11 @@
 
     <a-entity
       id="loadingText"
-      mixin="font"
+      mixin="fontPrimary"
       bind__animation__color="enabled: isLoading"
       bind__text="value: loadingText"
       bind__visible="isLoading"
-      text="align: center; color: {{ COLORS.RED }}; wrapCount: 18; width: 0.65"
+      text="align: center; wrapCount: 18; width: 0.65"
       render-order="menutext"
       position="0 -0.32 0.001"></a-entity>
 

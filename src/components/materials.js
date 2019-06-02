@@ -457,6 +457,9 @@ AFRAME.registerSystem('materials', {
     set(this.curve, 'fogColor', scheme.primary);
     set(this.curve, 'color1', scheme.primary);
     set(this.curve, 'color2', scheme.secondary);
+
+    document.getElementById('fontPrimary').setAttribute('text', `color: ${scheme.primary}`);
+    document.getElementById('fontSecondary').setAttribute('text', `color: ${scheme.secondary}`);
   },
 
   generateBeatsTexture: function () {

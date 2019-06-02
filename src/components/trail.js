@@ -1,9 +1,12 @@
+import COLORS from '../constants/colors';
+
 /**
  * Trail effect via geometry.
  */
 AFRAME.registerComponent('trail', {
   schema: {
-    color: {type: 'color'},
+    color: {default: 'primary'},
+    colorScheme: {default: 'default'},
     enabled: {default: false},
     hand: {type: 'string'}
   },
@@ -13,16 +16,10 @@ AFRAME.registerComponent('trail', {
     const maxPoints = this.maxPoints = 12;
     const vertices = this.vertices = new Float32Array(36 * maxPoints);
     const colors = this.colors = new Float32Array(48 * maxPoints);
-    const bladeColor = this.bladeColor = new THREE.Color(this.data.color);
 
+    this.bladeColor = {alpha: 1.0};
     this.rigContainer = document.getElementById('rigContainer');
 
-    this.bladeColor = {
-      red: bladeColor.r,
-      green: bladeColor.g,
-      blue: bladeColor.b,
-      alpha: 1.0
-    };
     this.bladeEl = this.el.querySelector('.blade');
 
     this.layers = 0;
@@ -87,10 +84,16 @@ AFRAME.registerComponent('trail', {
     if (!oldData.enabled && this.data.enabled) {
       this.enabledTime = this.el.sceneEl.time;
     }
-  },
 
-  pulse: function () {
-    this.mesh.material.uniforms.pulse.value = 1;
+    // Update color scheme.
+    if (oldData.colorScheme !== this.data.colorScheme) {
+      const bladeColor = this.bladeColor =
+        new THREE.Color(COLORS.schemes[this.data.colorScheme][this.data.color]);
+
+      this.bladeColor.red = this.bladeColor.r;
+      this.bladeColor.green = this.bladeColor.g;
+      this.bladeColor.blue = this.bladeColor.b;
+    }
   },
 
   tock: function (time, delta) {
@@ -102,14 +105,18 @@ AFRAME.registerComponent('trail', {
     this.sampleBladePosition();
   },
 
+  pulse: function () {
+    this.mesh.material.uniforms.pulse.value = 1;
+  },
+
   addLayer: function (length) {
-    var color = this.bladeColor;
-    var colors = this.colors;
-    var segments = this.segments;
-    var startX = -1.0;
-    var vertices = this.vertices;
+    const color = this.bladeColor;
+    const colors = this.colors;
+    const segments = this.segments;
+    const vertices = this.vertices;
 
     let dx = 2 / segments;
+    let startX = -1.0;
 
     if (this.layers >= this.maxLayers) { this.layers = 0; }
 
@@ -123,7 +130,6 @@ AFRAME.registerComponent('trail', {
       vertices[indexOffset + 18 * i + 1] = bottomLayer;
       vertices[indexOffset + 18 * i + 2] = 0.0;
 
-      // Color.
       colors[colorOffset + 24 * i] = color.red;
       colors[colorOffset + 24 * i + 1] = color.green;
       colors[colorOffset + 24 * i + 2] = color.blue;
@@ -133,7 +139,6 @@ AFRAME.registerComponent('trail', {
       vertices[indexOffset + 18 * i + 4] = length;
       vertices[indexOffset + 18 * i + 5] = 0.0;
 
-      // Color.
       colors[colorOffset + 24 * i + 4] = color.red;
       colors[colorOffset + 24 * i + 5] = color.green;
       colors[colorOffset + 24 * i + 6] = color.blue;
@@ -143,7 +148,6 @@ AFRAME.registerComponent('trail', {
       vertices[indexOffset + 18 * i + 7] = length;
       vertices[indexOffset + 18 * i + 8] = 0.0;
 
-      // Color.
       colors[colorOffset + 24 * i + 8] = color.red;
       colors[colorOffset + 24 * i + 9] = color.green;
       colors[colorOffset + 24 * i + 10] = color.blue;
@@ -153,7 +157,6 @@ AFRAME.registerComponent('trail', {
       vertices[indexOffset + 18 * i + 10] = bottomLayer;
       vertices[indexOffset + 18 * i + 11] = 0.0;
 
-      // Color.
       colors[colorOffset + 24 * i + 12] = color.red;
       colors[colorOffset + 24 * i + 13] = color.green;
       colors[colorOffset + 24 * i + 14] = color.blue;
@@ -163,7 +166,6 @@ AFRAME.registerComponent('trail', {
       vertices[indexOffset + 18 * i + 13] = bottomLayer;
       vertices[indexOffset + 18 * i + 14] = 0.0;
 
-      // Color.
       colors[colorOffset + 24 * i + 16] = color.red;
       colors[colorOffset + 24 * i + 17] = color.green;
       colors[colorOffset + 24 * i + 18] = color.blue;
@@ -173,7 +175,6 @@ AFRAME.registerComponent('trail', {
       vertices[indexOffset + 18 * i + 16] = length;
       vertices[indexOffset + 18 * i + 17] = 0.0;
 
-      // Color.
       colors[colorOffset + 24 * i + 20] = color.red;
       colors[colorOffset + 24 * i + 21] = color.green;
       colors[colorOffset + 24 * i + 22] = color.blue;
@@ -187,27 +188,25 @@ AFRAME.registerComponent('trail', {
   },
 
   initGeometry: function () {
-    var alpha;
-    var color = this.bladeColor;
-    var colors = this.geometry.attributes.vertexColor.array;
-    var currentPoint;
-    var previousAlpha;
-    var previousPoint;
-    var vertices = this.geometry.attributes.position.array;
-    var bladeTrajectory = this.bladeTrajectory;
+    const color = this.bladeColor;
+    const colors = this.geometry.attributes.vertexColor.array;
+    const vertices = this.geometry.attributes.position.array;
+    const bladeTrajectory = this.bladeTrajectory;
+
+    let previousAlpha;
+    let previousPoint;
 
     for (let i = 1; i < bladeTrajectory.length; i++) {
       if (i === 1) { previousAlpha = alpha; }
-      alpha = 1.0 - ((bladeTrajectory.length - i) / bladeTrajectory.length);
+      const alpha = 1.0 - ((bladeTrajectory.length - i) / bladeTrajectory.length);
 
-      currentPoint = bladeTrajectory[i];
+      const currentPoint = bladeTrajectory[i];
       previousPoint = bladeTrajectory[i - 1];
 
       vertices[36 * i] = previousPoint.center.x;
       vertices[36 * i + 1] = previousPoint.center.y;
       vertices[36 * i + 2] = previousPoint.center.z;
 
-      // Color.
       colors[48 * i] = color.red;
       colors[48 * i + 1] = color.green;
       colors[48 * i + 2] = color.blue;
@@ -217,7 +216,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 4] = currentPoint.top.y;
       vertices[36 * i + 5] = currentPoint.top.z;
 
-      // Color.
       colors[48 * i + 4] = color.red;
       colors[48 * i + 5] = color.green;
       colors[48 * i + 6] = color.blue;
@@ -227,7 +225,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 7] = previousPoint.top.y;
       vertices[36 * i + 8] = previousPoint.top.z;
 
-      // Color.
       colors[48 * i + 8] = color.red;
       colors[48 * i + 9] = color.green;
       colors[48 * i + 10] = color.blue;
@@ -237,7 +234,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 10] = previousPoint.center.y;
       vertices[36 * i + 11] = previousPoint.center.z;
 
-      // Color.
       colors[48 * i + 12] = color.red;
       colors[48 * i + 13] = color.green;
       colors[48 * i + 14] = color.blue;
@@ -247,7 +243,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 13] = currentPoint.center.y;
       vertices[36 * i + 14] = currentPoint.center.z;
 
-      // Color.
       colors[48 * i + 16] = color.red;
       colors[48 * i + 17] = color.green;
       colors[48 * i + 18] = color.blue;
@@ -257,7 +252,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 16] = currentPoint.top.y;
       vertices[36 * i + 17] = currentPoint.top.z;
 
-      // Color.
       colors[48 * i + 20] = color.red;
       colors[48 * i + 21] = color.green;
       colors[48 * i + 22] = color.blue;
@@ -267,7 +261,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 19] = previousPoint.bottom.y;
       vertices[36 * i + 20] = previousPoint.bottom.z;
 
-      // Color.
       colors[48 * i + 24] = color.red;
       colors[48 * i + 25] = color.green;
       colors[48 * i + 26] = color.blue;
@@ -277,7 +270,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 22] = currentPoint.center.y;
       vertices[36 * i + 23] = currentPoint.center.z;
 
-      // Color.
       colors[48 * i + 28] = color.red;
       colors[48 * i + 29] = color.green;
       colors[48 * i + 30] = color.blue;
@@ -287,7 +279,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 25] = previousPoint.center.y;
       vertices[36 * i + 26] = previousPoint.center.z;
 
-      // Color.
       colors[48 * i + 32] = color.red;
       colors[48 * i + 33] = color.green;
       colors[48 * i + 34] = color.blue;
@@ -297,7 +288,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 28] = previousPoint.bottom.y;
       vertices[36 * i + 29] = previousPoint.bottom.z;
 
-      // Color.
       colors[48 * i + 36] = color.red;
       colors[48 * i + 37] = color.green;
       colors[48 * i + 38] = color.blue;
@@ -307,7 +297,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 31] = currentPoint.bottom.y;
       vertices[36 * i + 32] = currentPoint.bottom.z;
 
-      // Color.
       colors[48 * i + 40] = color.red;
       colors[48 * i + 41] = color.green;
       colors[48 * i + 42] = color.blue;
@@ -317,7 +306,6 @@ AFRAME.registerComponent('trail', {
       vertices[36 * i + 34] = currentPoint.center.y;
       vertices[36 * i + 35] = currentPoint.center.z;
 
-      // Color.
       colors[48 * i + 44] = color.red;
       colors[48 * i + 45] = color.green;
       colors[48 * i + 46] = color.blue;
@@ -331,7 +319,7 @@ AFRAME.registerComponent('trail', {
   },
 
   sampleBladePosition: function () {
-    var sample;
+    let sample;
 
     if (this.bladeTrajectory.length === this.maxPoints) {
       // Dump oldest point.

@@ -18,10 +18,10 @@
   </a-entity>
   <a-entity
     id="searchSongSubNameTexts"
-    mixin="font"
+    mixin="fontSecondary"
     bind__text="value: search.songSubNameTexts"
     render-order="menutext"
-    text="baseline: top; align: left; color: {{ COLORS.BLUE }}; wrapCount: 42; lineHeight: 190"
+    text="baseline: top; align: left; wrapCount: 42; lineHeight: 190"
     position="0.181 0.445 0.001">
   </a-entity>
 
@@ -199,18 +199,18 @@
       <a-entity id="menuSelectedChallengeInfoContainer" position="0 0.058 0">
         <a-entity
           id="menuSelectedChallengeSongAuthor"
-          mixin="font"
+          mixin="fontSecondary"
           bind__text="value: menuSelectedChallenge.songSubName"
           position="0 0.042 0"
           render-order="menutext"
-          text="wrapCount: 40; lineHeight: 40; width: 1.185; align: center; baseline: center; color: {{ COLORS.BLUE }}"></a-entity>
+          text="wrapCount: 40; lineHeight: 40; width: 1.185; align: center; baseline: center"></a-entity>
         <a-entity
           id="menuSelectedChallengeSongName"
-          mixin="font"
+          mixin="fontPrimary"
           bind__text="value: menuSelectedChallenge.songName"
           position="0 -0.059 0"
           render-order="menutext"
-          text="align: center; color: {{ COLORS.RED }}; wrapCount: 31; baseline: top; lineHeight: 36; width: 1.4"></a-entity>
+          text="align: center; wrapCount: 31; baseline: top; lineHeight: 36; width: 1.4"></a-entity>
         <a-entity
           id="menuSelectedChallengeInfo"
           bind__text="value: menuSelectedChallenge.songInfoText"
