@@ -504,6 +504,8 @@ AFRAME.registerState({
       state.isSearching = false;
       state.isLoading = true;
       state.loadingText = 'Loading...'
+
+      gtag('event', 'colorscheme', {event_label: state.colorScheme});
     },
 
     playlistclear: (state, playlist) => {
