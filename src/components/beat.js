@@ -70,7 +70,7 @@ const HORIZONTAL_POSITIONS = {
 
 AFRAME.registerComponent('beat-system', {
   schema: {
-    gameMode: {default: 'classic'},
+    gameMode: {default: 'classic', oneOf: ['classic', 'punch', 'ride']},
     hasVR: {default: false},
     inVR: {default: false},
     isLoading: {default: false},
@@ -125,8 +125,8 @@ AFRAME.registerComponent('beat-system', {
 
   updateVerticalPositions: function () {
     const MIN_BOTTOM_HEIGHT = 0.4;
-    const BOTTOM_HEIGHT = 0.95;
-    const MARGIN = 0.4;
+    const BOTTOM_HEIGHT = 0.90;
+    const MARGIN = this.data.gameMode === 'punch' ? 0.4 : 0.5;
 
     const offset = this.el.sceneEl.camera.el.object3D.position.y - 1.6;
     this.verticalPositions.bottom = Math.max(MIN_BOTTOM_HEIGHT,
@@ -228,7 +228,7 @@ AFRAME.registerComponent('beat', {
   schema: {
     color: {default: 'red', oneOf: ['red', 'blue']},
     debug: {default: false},
-    size: {default: 0.35},
+    size: {default: 0.45},
     type: {default: 'arrow', oneOf: ['arrow', DOT, MINE]}
   },
 
