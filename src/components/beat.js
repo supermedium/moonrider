@@ -24,39 +24,103 @@ const syncTestObject3D = new THREE.Object3D();
 const syncTestVector3 = new THREE.Vector3();
 
 const MINE = 'mine';
+const CLASSIC = 'classic';
 const DOT = 'dot';
+const PUNCH = 'punch';
+const RIDE = 'ride';
 
-const bladeLocalPositions = [
-  new THREE.Vector3(),
-  new THREE.Vector3(),
-  new THREE.Vector3(),
-  new THREE.Vector3(),
-];
+const CUT_DIRECTION_VECTORS = {
+  up: new THREE.Vector3(0, 1, 0),
+  down: new THREE.Vector3(0, -1, 0),
+  left: new THREE.Vector3(-1, 0, 0),
+  right: new THREE.Vector3(1, 0, 0),
+  upleft: new THREE.Vector3(-1, 1, 0).normalize(),
+  upright: new THREE.Vector3(1, 1, 0).normalize(),
+  downleft: new THREE.Vector3(-1, -1, 0).normalize(),
+  downright: new THREE.Vector3(1, -1, 0).normalize()
+};
 
-const bladeLocalTriangles = [
-  new THREE.Triangle(),
-  new THREE.Triangle(),
-];
+const MODELS = {
+  arrowblue: 'blueBeatObjTemplate',
+  arrowred: 'redBeatObjTemplate',
+  dotblue: 'dotBlueObjTemplate',
+  dotred: 'dotRedObjTemplate',
+  mine: 'mineObjTemplate'
+};
+
+const WEAPON_COLORS = {right: 'blue', left: 'red'};
+
+const ROTATIONS = {
+  right: 0,
+  upright: 45,
+  up: 90,
+  upleft: 135,
+  left: 180,
+  downleft: 225,
+  down: 270,
+  downright: 315
+};
+
+const HORIZONTAL_POSITIONS = {
+  left: -0.5,
+  middleleft: -0.18,
+  middleright: 0.18,
+  right: 0.5
+};
 
 AFRAME.registerComponent('beat-system', {
   schema: {
     gameMode: {default: 'classic'},
     hasVR: {default: false},
-    isLoading: {default: false}
+    inVR: {default: false},
+    isLoading: {default: false},
+    isPlaying: {default: false}
   },
 
-  // Will be overridden.
-  verticalPositions: {
-    bottom: 0.95,
-    middle: 1.35,
-    top: 1.75
+  init: function () {
+    this.beats = [];
+    this.beatsToCheck = [];
+    this.blades = [];
+    this.fists = [];
+    this.weapons = null;
+
+    this.bladeEls = this.el.sceneEl.querySelectorAll('a-entity[blade]');
+    this.curveFollowRig = document.getElementById('curveFollowRig');
+    this.punchEls = this.el.sceneEl.querySelectorAll('a-entity[punch]');
+    this.curveEl = document.getElementById('curve');
+    this.supercurveFollow = null;
+  },
+
+  play: function () {
+    for (let i = 0; i < 2; i++) {
+      this.blades.push(this.bladeEls[i].components.blade);
+      this.fists.push(this.punchEls[i].components.punch);
+    }
+
+    this.supercurve = this.curveEl.components.supercurve;
+    this.supercurveFollow = this.curveFollowRig.components['supercurve-follow'];
   },
 
   update: function (oldData) {
     if (oldData.isLoading && !this.data.isLoading) {
       this.updateVerticalPositions();
+      this.weaponOffset = this.data.gameMode === CLASSIC ? SWORD_OFFSET : PUNCH_OFFSET;
+      this.weaponOffset = this.weaponOffset / this.supercurve.curve.getLength();
     }
-    this.weaponOffset = this.data.gameMode === 'classic' ? SWORD_OFFSET : PUNCH_OFFSET;
+
+    if (oldData.gameMode !== this.data.gameMode) {
+      this.weapons = this.data.gameMode === CLASSIC ? this.blades : this.fists;
+    }
+  },
+
+  verticalPositions: {},
+
+  registerBeat: function (beatComponent) {
+    this.beats.push(beatComponent);
+  },
+
+  unregisterBeat: function (beatComponent) {
+    this.beats.splice(this.beats.indexOf(beatComponent), 1);
   },
 
   updateVerticalPositions: function () {
@@ -71,6 +135,85 @@ AFRAME.registerComponent('beat-system', {
                                              BOTTOM_HEIGHT + MARGIN + offset);
     this.verticalPositions.top = Math.max(MIN_BOTTOM_HEIGHT + MARGIN * 2,
                                           BOTTOM_HEIGHT + (MARGIN * 2) + offset);
+  },
+
+  tick: function () {
+    if (!this.data.isPlaying || this.data.gameMode === RIDE) { return; }
+
+    const beatsToCheck = this.beatsToCheck;
+    const curve = this.supercurve.curve;
+    const progress = this.supercurve.curveProgressToSongProgress(
+      this.supercurveFollow.curveProgress);
+
+    // Filter for beats that should be checked for collisions.
+    beatsToCheck.length = 0;
+    for (let i = 0; i < this.beats.length; i++) {
+      const beat = this.beats[i];
+
+      // Check beat is not already destroyed.
+      if (beat.destroyed) { continue; }
+
+      // Check if beat is close enough to be hit.
+      const beatProgress = beat.songPosition - this.weaponOffset;
+      if (progress < beatProgress) { continue; }
+
+      // Check if beat should be filtered out due to not being in front.
+      let inFront = true;
+      for (let i = 0; i < beatsToCheck.length; i++) {
+        if (beat.horizontalPosition === beatsToCheck[i].horizontalPosition &&
+            beat.verticalPosition === beatsToCheck[i].verticalPosition &&
+            beat.songPosition > beatsToCheck[i].songPosition) {
+          inFront = false;
+        }
+        if (!inFront) { break; }
+      }
+      if (inFront) { beatsToCheck.push(beat); }
+    }
+
+    // Update bounding boxes and velocities.
+    this.weapons[0].tickBeatSystem();
+    this.weapons[1].tickBeatSystem();
+
+    // Check hits.
+    for (let i = 0; i < beatsToCheck.length; i++) {
+      // If ?synctest=true, auto-explode beat and play sound to easily test sync.
+      if ((SYNC_TEST || !this.data.hasVR) && beat.type !== MINE) {
+        beatsToCheck[i].autoHit(this.weapons[0].el);
+        continue;
+      }
+      this.checkCollision(beatsToCheck[i], this.weapons[0], this.weapons[1]);
+    }
+  },
+
+  checkCollision: function (beat, weapon1, weapon2) {
+    // Mine.
+    if (beat.data.type === MINE) {
+      if (weapon1.checkCollision(beat)) {
+        beat.onHit(weapon1.el);
+        return;
+      }
+      if (weapon2.checkCollision(beat)) {
+        beat.onHit(weapon2.el);
+      }
+      return;
+    }
+
+    const correctWeapon = WEAPON_COLORS[weapon1.el.dataset.hand] === beat.data.color
+      ? weapon1
+      : weapon2;
+
+    // Successful hit, let the beat handle further processing.
+    if (correctWeapon.checkCollision(beat)) {
+      beat.onHit(correctWeapon.el);
+      return;
+    }
+
+    // If not successful hit, check if mismatched hit.
+    const wrongWeapon = correctWeapon === weapon1 ? weapon2 : weapon1;
+    if (wrongWeapon.checkCollision(beat)) {
+      beat.wrongHit();
+      beat.destroyBeat(wrongWeapon.el, false);
+    }
   }
 });
 
@@ -86,66 +229,14 @@ AFRAME.registerComponent('beat', {
     type: {default: 'arrow', oneOf: ['arrow', DOT, MINE]}
   },
 
-  materialColor: {
-    blue: COLORS.BLUE,
-    red: COLORS.RED
-  },
-
-  cutColor: {
-    blue: '#fff',
-    red: '#fff'
-  },
-
-  models: {
-    arrowblue: 'blueBeatObjTemplate',
-    arrowred: 'redBeatObjTemplate',
-    dotblue: 'dotBlueObjTemplate',
-    dotred: 'dotRedObjTemplate',
-    mine: 'mineObjTemplate'
-  },
-
-  orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
-
-  rotations: {
-    right: 0,
-    upright: 45,
-    up: 90,
-    upleft: 135,
-    left: 180,
-    downleft: 225,
-    down: 270,
-    downright: 315
-  },
-
-  horizontalPositions: {
-    left: -0.5,
-    middleleft: -0.18,
-    middleright: 0.18,
-    right: 0.5
-  },
-
-  cutDirectionVectors: {
-    up: new THREE.Vector3(0, 1, 0),
-    down: new THREE.Vector3(0, -1, 0),
-    left: new THREE.Vector3(-1, 0, 0),
-    right: new THREE.Vector3(1, 0, 0),
-    upleft: new THREE.Vector3(-1, 1, 0).normalize(),
-    upright: new THREE.Vector3(1, 1, 0).normalize(),
-    downleft: new THREE.Vector3(-1, -1, 0).normalize(),
-    downright: new THREE.Vector3(1, -1, 0).normalize()
-  },
-
   init: function () {
-    this.beatBbox = new THREE.Box3();
+    this.bbox = null;
     this.beatSystem = this.el.sceneEl.components['beat-system'];
-    this.bladeEls = this.el.sceneEl.querySelectorAll('a-entity[blade]');
     this.broken = null;
     this.brokenPoolName = undefined;
     this.destroyed = false;
-    this.gravityVelocity = 0;
     this.hitEventDetail = {};
     this.poolName = undefined;
-    this.punchEls = this.el.sceneEl.querySelectorAll('a-entity.punch');
     this.returnToPoolTimer = DESTROY_TIME;
     this.rotationAxis = new THREE.Vector3();
     this.shadow = null;
@@ -171,8 +262,6 @@ AFRAME.registerComponent('beat', {
       rotation: new THREE.Euler()
     };
 
-    this.calculateScoreBlade = this.calculateScoreBlade.bind(this);
-
     this.blockEl = document.createElement('a-entity');
     this.blockEl.setAttribute('mixin', 'beatBlock');
     this.el.appendChild(this.blockEl);
@@ -185,11 +274,9 @@ AFRAME.registerComponent('beat', {
     }
   },
 
-  tock: function (time, timeDelta) {
+  tick: function (time, timeDelta) {
     const el = this.el;
     const data = this.data;
-    const position = el.object3D.position;
-    const rotation = el.object3D.rotation;
 
     // Delay these events into next frame to spread out the workload.
     if (this.queueBeatHitEvent) {
@@ -200,33 +287,10 @@ AFRAME.registerComponent('beat', {
       this.queueBeatWrongEvent = null;
     }
 
-    if (this.beatSystem.data.gameMode === 'ride') { return; }
-
     if (this.destroyed) {
-      this.tockDestroyed(timeDelta);
+      this.returnToPoolTimer -= timeDelta;
+      if (this.returnToPoolTimer <= 0) { this.returnToPool(); }
       return;
-    }
-
-    const supercurve = this.curveEl.components.supercurve;
-    const curve = supercurve.curve;
-    const progress = supercurve.curveProgressToSongProgress(
-      this.curveFollowRig.components['supercurve-follow'].curveProgress);
-
-    // Only check collisions when close.
-    const beatHit = this.songPosition - (this.beatSystem.weaponOffset / curve.getLength());
-    if (progress > beatHit) {
-      this.checkCollisions();
-      if (this.destroyed) { return; }
-
-      // If ?synctest=true, auto-explode beat and play sound to easily test sync.
-      if ((SYNC_TEST || !this.beatSystem.data.hasVR) && data.type !== MINE) {
-        this.destroyBeat(this.bladeEls[0], Math.random() < 0.7);
-        el.parentNode.components['beat-hit-sound'].playSound(el, this.cutDirection);
-        const hitEventDetail = this.hitEventDetail;
-        hitEventDetail.score = 100;
-        this.queueBeatHitEvent = hitEventDetail;
-        return;
-      }
     }
 
     // Warmup animation.
@@ -238,7 +302,7 @@ AFRAME.registerComponent('beat', {
     }
 
     // Check if past the camera to return to pool.
-    if (position.z > this.curveFollowRig.object3D.position.z) {
+    if (el.object3D.position.z > this.curveFollowRig.object3D.position.z) {
       this.returnToPool();
       this.missHit();
     }
@@ -252,8 +316,12 @@ AFRAME.registerComponent('beat', {
     const data = this.data;
     const el = this.el;
 
+    this.beatSystem.registerBeat(this);
+
     cutDirection = cutDirection || 'down';
     this.cutDirection = cutDirection;
+    this.horizontalPosition = horizontalPosition;
+    this.verticalPosition = verticalPosition;
     this.songPosition = songPosition;
 
     if (!this.blockEl) {
@@ -271,10 +339,10 @@ AFRAME.registerComponent('beat', {
     const supercurve = this.curveEl.components.supercurve;
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
-    el.object3D.position.x += this.horizontalPositions[horizontalPosition];
+    el.object3D.position.x += HORIZONTAL_POSITIONS[horizontalPosition];
 
     if (data.type !== DOT) {
-      el.object3D.rotation.z = THREE.Math.degToRad(this.rotations[cutDirection]);
+      el.object3D.rotation.z = THREE.Math.degToRad(ROTATIONS[cutDirection]);
     }
 
     // Shadow.
@@ -307,19 +375,19 @@ AFRAME.registerComponent('beat', {
 
     setObjModelFromTemplate(
       blockEl,
-      this.models[type !== 'mine' ? `${type}${this.data.color}` : type]);
+      MODELS[type !== 'mine' ? `${type}${this.data.color}` : type]);
 
     // Model is 0.29 size. We make it 1.0 so we can easily scale based on 1m size.
     blockEl.object3D.scale.set(1, 1, 1);
     blockEl.object3D.scale.multiplyScalar(4).multiplyScalar(this.data.size);
 
     blockEl.setAttribute('materials', 'name', 'beat');
-    if (blockEl.getObject3D('mesh').geometry) {
-      blockEl.getObject3D('mesh').geometry.computeBoundingBox();
-    }
+    const mesh = blockEl.getObject3D('mesh');
+    mesh.geometry.computeBoundingBox();
+    this.bbox = mesh.geometry.boundingBox;
   },
 
-  wrongHit: function (hand) {
+  wrongHit: function () {
     this.destroyed = true;
     this.queueBeatWrongEvent = true;
   },
@@ -330,80 +398,55 @@ AFRAME.registerComponent('beat', {
     this.el.sceneEl.emit('beatmiss', null, true);
   },
 
-  destroyBeat: (function () {
-    const cutDirection = new THREE.Vector3();
-    const cutPlane = new THREE.Plane();
-    const point1 = new THREE.Vector3();
-    const point2 = new THREE.Vector3();
-    const point3 = new THREE.Vector3();
+  destroyBeat: function (weaponEl, goodCut) {
+    const data = this.data;
+    const explodeEventDetail = this.explodeEventDetail;
+    const rig = this.rigContainer.object3D;
 
-    return function (bladeEl, goodCut) {
-      const data = this.data;
-      const explodeEventDetail = this.explodeEventDetail;
-      const rig = this.rigContainer.object3D;
+    this.blockEl.object3D.visible = false;
 
-      if (data.debug) { this.debugDestroyBeat(); }
+    this.destroyed = true;
+    this.returnToPoolTimer = DESTROY_TIME;
 
-      this.blockEl.object3D.visible = false;
+    explodeEventDetail.beatDirection = this.cutDirection;
+    explodeEventDetail.color = this.data.color;
+    explodeEventDetail.goodCut = goodCut;
+    explodeEventDetail.gameMode = this.beatSystem.data.gameMode;
+    explodeEventDetail.position.copy(this.el.object3D.position);
+    rig.worldToLocal(explodeEventDetail.position);
 
-      this.destroyed = true;
-      this.gravityVelocity = 0.1;
-      this.returnToPoolTimer = DESTROY_TIME;
-
-      // Blade cut direction effect.
-      if (this.beatSystem.data.gameMode === 'classic') {
-        const trailPoints = bladeEl.components.trail.bladeTrajectory;
-        point1.copy(trailPoints[0].top);
-        point2.copy(trailPoints[0].center);
-        point3.copy(trailPoints[trailPoints.length - 1].top);
-
-        cutDirection.copy(point1).sub(point3);
-        cutPlane.setFromCoplanarPoints(point1, point2, point3);
-
-        auxObj3D.up.copy(cutPlane.normal).multiplyScalar(-1);
-        auxObj3D.lookAt(cutDirection);
-        explodeEventDetail.rotation = auxObj3D.rotation;
-        explodeEventDetail.direction.copy(cutDirection);
+    let brokenPoolName;
+    if (this.data.type === MINE) {
+      brokenPoolName = 'pool__beat-broken-mine';
+    } else {
+      const mode = this.beatSystem.data.gameMode === 'classic' ? 'beat' : 'punch';
+      brokenPoolName = `pool__${mode}-broken-${this.data.color}`;
+      if (this.data.type === DOT) {
+        brokenPoolName += '-dot';
       }
+    }
 
-      explodeEventDetail.beatDirection = this.cutDirection;
-      explodeEventDetail.color = this.data.color;
-      explodeEventDetail.goodCut = goodCut;
-      explodeEventDetail.gameMode = this.beatSystem.data.gameMode;
-      explodeEventDetail.position.copy(this.el.object3D.position);
-      rig.worldToLocal(explodeEventDetail.position);
+    this.broken = this.el.sceneEl.components[brokenPoolName].requestEntity();
+    if (this.broken) {
+      this.broken.emit('explode', this.explodeEventDetail, false);
+    }
 
-      let brokenPoolName;
-      if (this.data.type === MINE) {
-        brokenPoolName = 'pool__beat-broken-mine';
-      } else {
-        const mode = this.beatSystem.data.gameMode === 'classic' ? 'beat' : 'punch';
-        brokenPoolName = `pool__${mode}-broken-${this.data.color}`;
-        if (this.data.type === DOT) {
-          brokenPoolName += '-dot';
-        }
-      }
+    if (this.shadow) {
+      this.el.sceneEl.components['pool__beat-shadow'].returnEntity(this.shadow);
+      this.shadow.object3D.visible = false;
+      this.shadow = null;
+    }
 
-      this.broken = this.el.sceneEl.components[brokenPoolName].requestEntity();
-      if (this.broken) {
-        this.broken.emit('explode', this.explodeEventDetail, false);
-      }
-      if (this.shadow) {
-        this.el.sceneEl.components['pool__beat-shadow'].returnEntity(this.shadow);
-        this.shadow.object3D.visible = false;
-        this.shadow = null;
-      }
-
-      if (this.beatSystem.data.gameMode === 'classic' && goodCut) {
-        bladeEl.components.trail.pulse();
-      }
-    };
-  })(),
+    if (this.beatSystem.data.gameMode === CLASSIC && goodCut) {
+      weaponEl.components.trail.pulse();
+    }
+  },
 
   /**
    * Check if need to return to pool.
    */
   returnToPool: function () {
+    this.beatSystem.unregisterBeat(this);
     this.el.object3D.position.set(0, 0, -9999);
     this.el.object3D.visible = false;
     if (this.el.isPlaying) {
@@ -416,128 +459,43 @@ AFRAME.registerComponent('beat', {
     }
   },
 
-  checkCollisions: function () {
+  onHit: function (weaponEl) {
     const data = this.data;
-    const weaponColors = this.weaponColors;
 
-    if (!this.blockEl.getObject3D('mesh')) { return; }
+    // Haptics.
+    weaponEl.components.haptics__beat.pulse();
 
-    const beatBbox = this.beatBbox.setFromObject(this.blockEl.getObject3D('mesh'));
-    beatBbox.expandByScalar(-0.1);
+    // Sound.
+    this.el.parentNode.components['beat-hit-sound'].playSound(this.el, this.cutDirection);
 
-    const weaponEls = this.beatSystem.data.gameMode === 'classic'? this.bladeEls : this.punchEls;
-    for (let i = 0; i < weaponEls.length; i++) {
-      const weaponEl = weaponEls[i];
-      let weaponBbox;
+    if (data.type === MINE) {
+      beat.destroyBeat(correctWeapon.el, false);
+      this.el.sceneEl.emit('minehit', null, true);
+      return;
+    }
 
-      if (this.beatSystem.data.gameMode === 'punch') {
-        bbox.setFromObject(weaponEl.getObject3D('mesh')).expandByScalar(0.1);
-        weaponBbox = bbox;
-        if (!weaponBbox) { continue; }
-        if (!weaponBbox.intersectsBox(beatBbox)) { continue; }
-      } else {
+    // Do blade-related checks.
+    if (this.beatSystem.data.gameMode === CLASSIC) {
+      let angle = 0;
+      if (data.type === 'arrow') {
         const blade = weaponEl.components.blade;
-
-        for (let i = 0; i < 4; i++) {
-          bladeLocalPositions[i].copy(blade.bladeWorldPositions[i]);
-          this.blockEl.object3D.worldToLocal(bladeLocalPositions[i]);
-        }
-
-        bladeLocalTriangles[0].set(bladeLocalPositions[0], bladeLocalPositions[1],
-                                   bladeLocalPositions[2]);
-        bladeLocalTriangles[1].set(bladeLocalPositions[2], bladeLocalPositions[3],
-                                   bladeLocalPositions[0]);
-
-        const beatBbox = this.blockEl.getObject3D('mesh').geometry.boundingBox;
-        if (!beatBbox.intersectsTriangle(bladeLocalTriangles[0]) &&
-            !beatBbox.intersectsTriangle(bladeLocalTriangles[1])) {
-          continue;
+        angle = blade.strokeDirectionVector.angleTo(CUT_DIRECTION_VECTORS[this.cutDirection]);
+        if (angle > ANGLE_THRESHOLD) {
+          this.destroyBeat(weaponEl, false);
+          this.wrongHit();
+          return;
         }
       }
-
-      // Notify for haptics.
-      const hand = weaponEl.closest('[controller]').getAttribute('controller').hand;
-      this.el.emit(`beatcollide${hand}`, null, true);
-
-      // Sound.
-      this.el.parentNode.components['beat-hit-sound'].playSound(
-        this.el, this.cutDirection);
-
-      if (this.data.type === MINE) {
-        this.el.emit('minehit', null, true);
-        this.destroyBeat(weaponEl);
-        break;
-      }
-
-      // Wrong color hit.
-      let goodCut = true;
-      if (this.data.color !== weaponColors[hand]) {
-        const otherWeapon = i === 0 ? weaponEls[1] : weaponEls[0];
-        if (!this.checkOtherWeaponCollision(otherWeapon, beatBbox)) {
-          this.wrongHit(hand);
-          goodCut = false;
-        }
-      }
-
-      // Do blade-related checks.
-      if (this.beatSystem.data.gameMode === 'classic' && goodCut) {
-        goodCut = this.checkCollisionBlade(weaponEl);
-      }
-
-      this.destroyBeat(weaponEl, goodCut);
-
-      // Do punch-related checks.
-      if (this.beatSystem.data.gameMode === 'punch') {
-        this.calculateScorePunch(weaponEl.parentNode);
-      }
-    }
-  },
-
-  /**
-   * Check false positive for wrong color hits on nearby beats on double hits.
-   */
-  checkOtherWeaponCollision: (function () {
-    const otherBbox = new THREE.Box3();
-
-    return function (otherWeapon, beatBbox) {
-      if (!otherWeapon) { return false; }
-
-      // Check that other blade isn't also colliding.
-      if (this.beatSystem.data.gameMode === 'classic') {
-        const otherBlade = otherWeapon.components.blade;
-        return otherBlade.boundingBox.intersectsBox(beatBbox);
-      }
-
-      // Check that other hand isn't also colliding.
-      otherBbox.setFromObject(otherWeapon.getObject3D('mesh')).expandByScalar(0.1);
-      return otherBbox.intersectsBox(beatBbox);
-    }
-  })(),
-
-  /**
-   * Angle-related stuff.
-   */
-  checkCollisionBlade: function (bladeEl) {
-    const data = this.data;
-    const cutDirection = this.cutDirection;
-    const blade = bladeEl.components.blade;
-    const hand = bladeEl.getAttribute('blade').hand;
-
-    // Dot.
-    if (data.type === 'arrow') {
-      // Wrong angle.
-      const strokeBeatAngle = blade.strokeDirectionVector.angleTo(
-        this.cutDirectionVectors[this.cutDirection]);
-      if (strokeBeatAngle > ANGLE_THRESHOLD) {
-        this.wrongHit(hand);
-        return false;
-      }
-      this.calculateScoreBlade(bladeEl, strokeBeatAngle);
-    } else {
-      this.calculateScoreBlade(bladeEl, 0);
+      this.destroyBeat(weaponEl, true);
+      this.calculateScoreBlade(weaponEl, angle);
+      return;
     }
 
-    return true;
+    // Do punch-related checks.
+    if (this.beatSystem.data.gameMode === PUNCH) {
+      this.destroyBeat(weaponEl, true);
+      this.calculateScorePunch(weaponEl);
+    }
   },
 
   /**
@@ -569,7 +527,7 @@ AFRAME.registerComponent('beat', {
     if (this.cutDirection === 'down') {
       SUPER_SCORE_SPEED = 22;
     }
-    const speed = bladeEl.closest('[blade]').components.blade.strokeSpeed;
+    const speed = bladeEl.components.blade.strokeSpeed;
     let score = (Math.min((speed / SUPER_SCORE_SPEED) * 100, 100) / 100) * 80;
 
     // 20% score on direction.
@@ -594,17 +552,21 @@ AFRAME.registerComponent('beat', {
     // Get 60% of the score just by hitting the beat.
     let score = 60;
     const SUPER_SCORE_SPEED = 6;
-    const speed = punchEl.closest('[hand-velocity]').components['hand-velocity'].speed;
+    const speed = punchEl.components.punch.speed;
     score += Math.min((speed / SUPER_SCORE_SPEED), 1) * 40;
     this.score(score);
   },
 
   /**
-   * Destroyed animation.
+   * Play hit if SYNC_TEST or 2D viewer mode.
    */
-  tockDestroyed: function (timeDelta) {
-    this.returnToPoolTimer -= timeDelta;
-    if (this.returnToPoolTimer <= 0) { this.returnToPool(); }
+  autoHit: function (weaponEl) {
+    const el = this.el;
+    this.destroyBeat(weaponEl, Math.random() < 0.9);
+    el.parentNode.components['beat-hit-sound'].playSound(el, this.cutDirection);
+    const hitEventDetail = this.hitEventDetail;
+    hitEventDetail.score = 100;
+    this.queueBeatHitEvent = hitEventDetail;
   }
 });
 
@@ -634,14 +596,6 @@ function setObjModelFromTemplate (el, templateId) {
     if (!el.getObject3D('mesh')) { el.setObject3D('mesh', new THREE.Mesh()); }
     el.getObject3D('mesh').geometry = geometries[templateId];
   }
-}
-
-/**
- * Get velocity given current velocity using gravity acceleration.
- */
-function getGravityVelocity (velocity, timeDelta) {
-  const GRAVITY = -9.8;
-  return velocity + (GRAVITY * (timeDelta / 1000));
 }
 
 function getElasticEasing (a, p) {

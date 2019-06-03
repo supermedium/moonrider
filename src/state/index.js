@@ -71,9 +71,10 @@ AFRAME.registerState({
     genreMenuOpen: false,
     has3DOFVR: false,
     has6DOFVR: false,
-    hasVR: AFRAME.utils.device.checkHeadsetConnected(),
+    hasVR: AFRAME.utils.device.checkHeadsetConnected() ||
+           AFRAME.utils.getUrlParameter('debugvr') === 'true',
     introActive: !SKIP_INTRO,  // Just started game, main menu not opened yet.
-    inVR: false,
+    inVR: AFRAME.utils.getUrlParameter('debugvr') === 'true',
     isIOS: AFRAME.utils.device.isIOS(),
     isGameOver: false,  // Game over screen.
     isLoading: false,  // Entire song loading process after selected (ZIP + process).

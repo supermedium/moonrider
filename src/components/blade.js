@@ -34,7 +34,7 @@ AFRAME.registerComponent('blade', {
     }
   },
 
-  tick: function (time, delta) {
+  tickBeatSystem: function (time, delta) {
     if (!this.data.enabled) { return; }
     this.boundingBox.setFromObject(this.bboxEl.getObject3D('mesh'));
     this.updateVelocity(delta);
@@ -70,5 +70,33 @@ AFRAME.registerComponent('blade', {
     this.strokeDirectionVector.normalize();
     this.strokeSpeed = distance / (delta / 1000);
     this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
-  }
+  },
+
+  checkCollision: (function () {
+    const bladeLocalPositions = [new THREE.Vector3(), new THREE.Vector3(),
+                                 new THREE.Vector3(), new THREE.Vector3()];
+    const bladeLocalTriangle = new THREE.Triangle();
+
+    return function (beat) {
+      for (let i = 0; i < 3; i++) {
+        bladeLocalPositions[i].copy(this.bladeWorldPositions[i]);
+        beat.blockEl.object3D.worldToLocal(bladeLocalPositions[i]);
+      }
+
+      // Current frame triangle.
+      bladeLocalTriangle.set(bladeLocalPositions[0], bladeLocalPositions[1],
+                             bladeLocalPositions[2]);
+      if (beat.bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
+
+      // Previous frame triangle.
+      // Only checked if the current frame triangle does not intersect.
+      bladeLocalPositions[3].copy(this.bladeWorldPositions[3]);
+      beat.blockEl.object3D.worldToLocal(bladeLocalPositions[3]);
+      bladeLocalTriangle.set(bladeLocalPositions[2], bladeLocalPositions[3],
+                             bladeLocalPositions[0]);
+      if (beat.bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
+
+      return false;
+    };
+  })()
 });

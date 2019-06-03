@@ -7,7 +7,7 @@
 <!-- pool__beat-shadow="mixin: beatShadow; size: 100; container: #beatContainer; dynamic: true" -->
 <a-scene
   bind__beat-generator="challengeId: challenge.id; difficulty: challenge.difficulty; gameMode: gameMode; has3DOFVR: has3DOFVR; isPlaying: isPlaying; isZipFetching: isZipFetching; menuSelectedChallengeId: menuSelectedChallenge.id; songDuration: challenge.songDuration; speed: speed"
-  bind__beat-system="gameMode: gameMode; hasVR: hasVR; isLoading: isLoading"
+  bind__beat-system="gameMode: gameMode; hasVR: hasVR; isLoading: isLoading; isPlaying: isPlaying"
   bind__gameover="isGameOver: isGameOver"
   bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
   bind__leaderboard="gameMode: gameMode; inVR: inVR; isVictory: isVictory; menuSelectedChallengeId: menuSelectedChallenge.id; challengeId: challenge.id"
@@ -65,8 +65,7 @@
   render-order="stage, aurora, sideglow, tunnel, curve, curveshadow, beatShadow, score, beats, menu, menuitem, menubutton, menutext, menugenre, cursor, particles, weapon, victory, stepback"
   stats-param
   tunnels
-  vr-mode-ui="enterVRButton: #vrButton"
-  >
+  vr-mode-ui="enterVRButton: #vrButton">
 
   <a-assets timeout="3000">
     <require path="assets.html"></require>
@@ -147,18 +146,19 @@
         <a-entity id="{{ hand }}Hand"
           class="weapon"
           bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
-          bind__hand-velocity="enabled: isPlaying && gameMode !== 'ride'"
           bind__haptics-weapon="enabled: isPlaying && gameMode === 'classic'"
           bind__menu-controls="enabled: mainMenuActive"
           bind__pauser="enabled: isPlaying"
+          bind__punch="enabled: isPlaying && gameMode === 'punch'"
           bind__raycaster="enabled: {{ hand }}RaycasterActive"
           bind__raycaster__game="enabled: isPlaying && (gameMode === 'classic' || gameMode === 'punch')"
           bind__blade="enabled: isPlaying && gameMode === 'classic'"
           bind__weapon-particles="enabled: isPlaying"
           bind__trail="colorScheme: colorScheme; enabled: isPlaying && gameMode === 'classic'"
           controller="hand: {{ hand }}"
+          data-hand="{{ hand }}"
           haptics="events: mouseenter; dur: 35; force: 0.075"
-          haptics__beat="eventsFrom: #beatContainer; events: beatcollide{{ hand }}; dur: 80; force: 0.5"
+          haptics__beat="events: beathaptic; dur: 80; force: 0.5"
           haptics__draw="events: drawblade; dur: 750; force: 0.025"
           haptics__plume="events: plumepulse; dur: 35; force: 0.1"
           haptics-wall
@@ -173,6 +173,7 @@
           <a-entity bind__position="has3DOFVR && '0 0 -0.5' || '0 0 0'">
             <a-entity
               id="{{ hand }}Laser"
+              class="laser"
               bind__material="color: {{ hand === 'left' and 'colorPrimary' or 'colorSecondary' }}"
               bind__cursor-laser="enabled: activeHand === '{{ hand }}' && !isPlaying"
               geometry="primitive: cylinder; height: 1; radius: 0.005"
@@ -180,6 +181,7 @@
               rotation="-90 0 0"></a-entity>
           </a-entity>
 
+          <!-- Blade. -->
           <a-entity bind__position="has3DOFVR && '0 0 -0.5' || '0 0 0'"
                     rotation="90 0 0">
             <a-entity
@@ -208,21 +210,33 @@
               materials="name: {{ hand }}WeaponHandle"></a-entity>
           </a-entity>
 
+          <!-- Punch. -->
           <a-entity
             id="{{ hand }}punch"
+            class="punch"
             render-order="weapon"
             bind__visible="isPlaying && gameMode === 'punch'"
             bind__position="has3DOFVR && '0 0 -0.75' || '0 0 0'">
               <a-entity
-                class="punch"
+                class="punchFist"
                 obj-model="obj: #{{ hand }}FistObj"
                 materials="name: {{ hand }}Fist"></a-entity>
+              <a-entity
+                class="punchBbox"
+                geometry="primitive: box; width: 0.2; height: 0.23; depth: 0.15"
+                material="shader: flat; opacity: 0.5"
+                position="0 0.05 0.1"
+                rotation="30 0 0"
+                visible="false"></a-entity>
               <a-entity
                 obj-model="obj: #{{ hand }}FistWeaponObj"
                 materials="name: {{ hand }}FistWeapon"></a-entity>
           </a-entity>
+
+          <!-- Ride. -->
           <a-entity
             id="{{ hand }}star"
+            class="handStar"
             render-order="weapon"
             bind__visible="isPlaying && gameMode === 'ride'">
               <a-entity
@@ -233,7 +247,6 @@
                 animation__pulse="property: components.material.material.uniforms.pulse.value; from: 2; to: 0; dur: 300; startEvents: plumepulse; easing: easeInOutQuad"
                 animation__scale="property: scale; from: 2 2 2; to: 1 1 1; dur: 1200; startEvents: plumepulse; easing: easeInOutQuad"></a-entity>
           </a-entity>
-
         </a-entity>
 
         <a-entity

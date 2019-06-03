@@ -1,7 +1,7 @@
 /**
- * Calculate speed.
+ * Calculate punch bounding box and velocity.
  */
-AFRAME.registerComponent('hand-velocity', {
+AFRAME.registerComponent('punch', {
   schema: {
     enabled: {default: false}
   },
@@ -12,13 +12,16 @@ AFRAME.registerComponent('hand-velocity', {
     this.lastSample = new THREE.Vector3();
     this.lastSampleTime = 0;
     this.speed = 0;
+
+    this.bbox = new THREE.Box3();
+    this.bboxEl = this.el.querySelector('.punchBbox');
   },
 
   play: function () {
     this.rig = this.el.closest('#curveFollowRig');
   },
 
-  tick: function (time) {
+  tickBeatSystem: function (time) {
     if (!this.data.enabled) { return; }
 
     if ((time - this.lastSampleTime) < 50) { return; }
@@ -33,5 +36,12 @@ AFRAME.registerComponent('hand-velocity', {
 
     this.lastSample.copy(this.el.object3D.position);
     this.lastSampleTime = time;
+
+    // Bounding box.
+    this.bbox.setFromObject(this.bboxEl.getObject3D('mesh'));
+  },
+
+  checkCollision: function (beat) {
+    return this.bbox.intersectsBox(beat.bbox);
   }
 });
