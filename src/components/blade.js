@@ -14,7 +14,6 @@ AFRAME.registerComponent('blade', {
     this.bladePosition = new THREE.Vector3();
     this.bladeTipPosition = new THREE.Vector3();
     this.bladeTipPreviousPosition = new THREE.Vector3();
-    this.boundingBox = new THREE.Box3();
     this.rigEl = document.getElementById('curveFollowRig');
     this.strokeDirectionVector = new THREE.Vector3();
     this.strokeSpeed = 0;
@@ -36,7 +35,6 @@ AFRAME.registerComponent('blade', {
 
   tickBeatSystem: function (time, delta) {
     if (!this.data.enabled) { return; }
-    this.boundingBox.setFromObject(this.bboxEl.getObject3D('mesh'));
     this.updateVelocity(delta);
   },
 
