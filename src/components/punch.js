@@ -41,7 +41,12 @@ AFRAME.registerComponent('punch', {
     this.bbox.setFromObject(this.bboxEl.getObject3D('mesh'));
   },
 
-  checkCollision: function (beat) {
-    return this.bbox.intersectsBox(beat.bbox);
-  }
+  checkCollision: (function () {
+    const box = new THREE.Box3();
+
+    return function (beat) {
+      box.copy(beat.bbox).translate(beat.el.object3D.position).expandByScalar(0.15);
+      return this.bbox.intersectsBox(box);
+    };
+  })()
 });
