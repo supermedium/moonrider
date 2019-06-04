@@ -180,7 +180,7 @@ AFRAME.registerComponent('beat-system', {
     // Check hits.
     for (let i = 0; i < beatsToCheck.length; i++) {
       // If ?synctest=true, auto-explode beat and play sound to easily test sync.
-      if ((SYNC_TEST || !this.data.hasVR) && beat.data.type !== MINE) {
+      if ((SYNC_TEST || !this.data.hasVR) && beatsToCheck[i].data.type !== MINE) {
         beatsToCheck[i].autoHit(this.weapons[0].el);
         continue;
       }
