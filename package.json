@@ -31,7 +31,7 @@
     "@babel/preset-env": "^7.3.1",
     "aframe-aabb-collider-component": "^3.1.0",
     "aframe-atlas-uvs-component": "^2.1.0",
-    "aframe-audioanalyser-component": "^5.4.0",
+    "aframe-audioanalyser-component": "^6.0.0",
     "aframe-event-decorators": "^1.0.2",
     "aframe-event-set-component": "^4.2.1",
     "aframe-geometry-merger-component": "^2.0.0-beta1",
