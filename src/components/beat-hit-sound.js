@@ -1,50 +1,49 @@
-var sourceCreatedCallback;
-
 const LAYER_BOTTOM = 'bottom';
 const LAYER_MIDDLE = 'middle';
 const LAYER_TOP = 'top';
-const VOLUME = 0.15;
+
+const DIRECTIONS_TO_SOUNDS = {
+  up: '',
+  down: '',
+  upleft: 'left',
+  upright: 'right',
+  downleft: 'left',
+  downright: 'right',
+  left: 'left',
+  right: 'right'
+};
 
 /**
  * Beat hit sound using positional audio and audio buffer source.
  */
 AFRAME.registerComponent('beat-hit-sound', {
-  directionsToSounds: {
-    up: '',
-    down: '',
-    upleft: 'left',
-    upright: 'right',
-    downleft: 'left',
-    downright: 'right',
-    left: 'left',
-    right: 'right'
+  schema: {
+    enabled: {default: false}
   },
 
   init: function () {
     this.currentBeatEl = null;
     this.currentCutDirection = '';
     this.processSound = this.processSound.bind(this);
-    sourceCreatedCallback = this.sourceCreatedCallback.bind(this);
+    this.tick = AFRAME.utils.throttleTick(this.tick.bind(this), 500);
+    this.volume = 0;
 
     // Sound pools.
     for (let i = 1; i <= 10; i++) {
       this.el.setAttribute(`sound__beathit${i}`, {
         poolSize: 8,
         positional: false,
-        src: `#hitSound${i}`,
-        volume: VOLUME
+        src: `#hitSound${i}`
       });
       this.el.setAttribute(`sound__beathit${i}left`, {
         poolSize: 8,
         positional: false,
-        src: `#hitSound${i}left`,
-        volume: VOLUME
+        src: `#hitSound${i}left`
       });
       this.el.setAttribute(`sound__beathit${i}right`, {
         poolSize: 8,
         positional: false,
-        src: `#hitSound${i}right`,
-        volume: VOLUME
+        src: `#hitSound${i}right`
       });
     }
   },
@@ -65,11 +64,15 @@ AFRAME.registerComponent('beat-hit-sound', {
         this.el.setAttribute(`sound__beathit${i}right`, 'src', `#hitSound${i}right`);
       }
     }
+
+    this.analyser =
+      document.getElementById('audioAnalyser').components.audioanalyser.analyser;
+    this.levels = new Uint8Array(this.analyser.frequencyBinCount);
   },
 
   playSound: function (beatEl, position, cutDirection) {
     const rand = 1 + Math.floor(Math.random() * 10);
-    const dir = this.directionsToSounds[cutDirection || 'up'];
+    const dir = DIRECTIONS_TO_SOUNDS[cutDirection || 'up'];
     const soundPool = this.el.components[`sound__beathit${rand}${dir}`];
     soundPool.playSound(this.processSound);
   },
@@ -78,37 +81,18 @@ AFRAME.registerComponent('beat-hit-sound', {
    * Set audio stuff before playing.
    */
   processSound: function (audio) {
-    audio.detune = 0;
+    audio.setVolume(this.volume * this.volume);
   },
 
-  /**
-   * Function callback to process source buffer once created.
-   * Set detune for pitch and inflections.
-   */
-  sourceCreatedCallback: function (source) {
-    // Pitch based on layer.
-    const layer = this.getLayer(this.currentBeatEl.object3D.position.y);
-    if (layer === LAYER_BOTTOM) {
-      source.detune.setValueAtTime(-400, 0);
-    } else if (layer === LAYER_TOP) {
-      source.detune.setValueAtTime(200, 0);
-    }
+  tick: function () {
+    if (!this.data.enabled) { return; }
 
-    // Inflection on strike down or up.
-    if (this.currentCutDirection === 'down') {
-      source.detune.linearRampToValueAtTime(-400, 1);
+    // Calculate volume of audio.
+    this.analyser.getByteFrequencyData(this.levels);
+    let sum = 0;
+    for (let i = 0; i < this.levels.length; i++) {
+      sum += this.levels[i];;
     }
-    if (this.currentCutDirection === 'up') {
-      source.detune.linearRampToValueAtTime(400, 1);
-    }
-	},
-
-  /**
-   * Get whether beat is on bottom, middle, or top layer.
-   */
-  getLayer: function (y) {
-    if (y === 1) { return LAYER_BOTTOM; }
-    if (y === 1.70) { return LAYER_TOP; }
-    return LAYER_MIDDLE;
+    this.volume = sum / (this.levels.length * 256 - 1);
   }
 });

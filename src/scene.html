@@ -106,7 +106,7 @@
 
   <a-entity
     id="beatContainer"
-    beat-hit-sound
+    bind__beat-hit-sound="enabled: isPlaying && gameMode !== 'ride'"
     bind__visible="isPlaying"></a-entity>
 
   <a-entity id="curveFollowRig"
