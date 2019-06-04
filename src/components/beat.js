@@ -476,7 +476,7 @@ AFRAME.registerComponent('beat', {
     }
 
     if (data.type === MINE) {
-      beat.destroyBeat(weaponEl, false);
+      this.destroyBeat(weaponEl, false);
       this.el.sceneEl.emit('minehit', null, true);
       return;
     }
