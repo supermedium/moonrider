@@ -2,10 +2,14 @@
  * Listen to aabb-collider event for wall haptics.
  */
 AFRAME.registerComponent('haptics-wall', {
+  schema: {
+    enabled: {default: false}
+  },
+
   init: function () {
     const el = this.el;
     this.isHittingWall = false;
-    el.setAttribute('haptics__wall', {dur: 50, force: 0.075});
+    el.setAttribute('haptics__wall', {dur: 50, force: 0.15});
 
     this.checkIfHittingWall = this.checkIfHittingWall.bind(this);
     el.addEventListener('mouseenter', this.checkIfHittingWall);
@@ -29,7 +33,7 @@ AFRAME.registerComponent('haptics-wall', {
   },
 
   tick: function () {
-    if (!this.isHittingWall) { return; }
+    if (!this.data.enabled || !this.isHittingWall) { return; }
     this.el.components.haptics__wall.pulse();
   }
 });

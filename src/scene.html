@@ -146,7 +146,7 @@
         <a-entity id="{{ hand }}Hand"
           class="weapon"
           bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
-          bind__haptics-weapon="enabled: isPlaying && gameMode === 'classic'"
+          bind__haptics-wall="enabled: isPlaying && gameMode === 'classic'"
           bind__menu-controls="enabled: mainMenuActive"
           bind__pauser="enabled: isPlaying"
           bind__punch="enabled: isPlaying && gameMode === 'punch'"
@@ -161,7 +161,6 @@
           haptics__beat="events: beathaptic; dur: 80; force: 0.5"
           haptics__draw="events: drawblade; dur: 750; force: 0.025"
           haptics__plume="events: plumepulse; dur: 35; force: 0.1"
-          haptics-wall
           raycaster="objects: [raycastable]; far: 5; showLine: false"
           raycaster__game="objects: [raycastable-game]; far: 1; interval: {{ hand == 'right' and '75' or '76' }}; showLine: false"
           weapon="hand: {{ hand }}"
