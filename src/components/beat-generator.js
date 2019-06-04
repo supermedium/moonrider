@@ -373,9 +373,9 @@ AFRAME.registerComponent('beat-generator', {
   requestBeat: function (type, color) {
     let beatPoolName = 'pool__beat-' + type;
     if (this.data.gameMode === 'ride') {
-      beatPoolName = 'pool__plume-' + type;
+      beatPoolName = type === 'mine' ? 'pool__plume-mine' : 'pool__plume-' + type;
     }
-    if (color) { beatPoolName += '-' + color; }
+    if (type !== 'mine' && color) { beatPoolName += '-' + color; }
     const pool = this.el.sceneEl.components[beatPoolName];
     if (!pool) {
       console.warn('Pool ' + beatPoolName + ' unavailable');
