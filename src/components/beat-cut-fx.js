@@ -2,6 +2,28 @@ const AUX_VECTOR = new THREE.Vector3();
 const DESTROY_TIME = 500;
 const MAX_VELOCITY = 0.01;
 
+const ROTATIONS = {
+  right: 0,
+  upright: 45,
+  up: 90,
+  upleft: 135,
+  left: 180,
+  downleft: 225,
+  down: 270,
+  downright: 315
+};
+
+const SEPARATIONS = {
+  right: new THREE.Vector2(0, 1),
+  upright: new THREE.Vector2(-0.5, 0.5),
+  up: new THREE.Vector2(-1, 0),
+  upleft: new THREE.Vector2(-0.5, -0.5),
+  left: new THREE.Vector2(0, -1),
+  downleft: new THREE.Vector2(0.5, -0.5),
+  down: new THREE.Vector2(1, 0),
+  downright: new THREE.Vector2(0.5, 0.5)
+};
+
 /**
  * Handles beat cut effects: fragments of beat and fx sprites.
  */
@@ -15,7 +37,6 @@ AFRAME.registerComponent('beat-cut-fx', {
     this.breaking = false;
     this.fx = null;
     this.fxpool = null;
-    this.goodCut = true;
     this.pieces = [];
     this.pool = null;
     this.returnToPoolTimer = DESTROY_TIME;
@@ -60,32 +81,10 @@ AFRAME.registerComponent('beat-cut-fx', {
     }
   },
 
-  rotations: {
-    right: 0,
-    upright: 45,
-    up: 90,
-    upleft: 135,
-    left: 180,
-    downleft: 225,
-    down: 270,
-    downright: 315
-  },
-
-  separations: {
-    right: new THREE.Vector2(0, 1),
-    upright: new THREE.Vector2(-0.5, 0.5),
-    up: new THREE.Vector2(-1, 0),
-    upleft: new THREE.Vector2(-0.5, -0.5),
-    left: new THREE.Vector2(0, -1),
-    downleft: new THREE.Vector2(0.5, -0.5),
-    down: new THREE.Vector2(1, 0),
-    downright: new THREE.Vector2(0.5, 0.5)
-  },
-
   explode: function (evt) {
     const direction = evt.detail.direction;
     const gameMode = evt.detail.gameMode;
-    const goodCut = this.goodCut = evt.detail.goodCut;
+    const correctHit = evt.detail.correctHit;
     const position = evt.detail.position;
     const rotation = evt.detail.rotation;
 
@@ -108,12 +107,12 @@ AFRAME.registerComponent('beat-cut-fx', {
       for (let i = 0; i < this.pieces.length; i++) {
         let piece = this.pieces[i];
         piece.posVelocity.copy(AUX_VECTOR);
-        piece.rotation.z = THREE.Math.degToRad(this.rotations[beatDirection]);
-        if (goodCut) {
+        piece.rotation.z = THREE.Math.degToRad(ROTATIONS[beatDirection]);
+        if (correctHit) {
           // Dir is a hardcoded value, based on the position of meshes in .OBJ files.
           let dir = i % 2 == 0 ? -0.001 : 0.001;
-          piece.posVelocity.x += this.separations[beatDirection].x * dir;
-          piece.posVelocity.y += this.separations[beatDirection].y * dir;
+          piece.posVelocity.x += SEPARATIONS[beatDirection].x * dir;
+          piece.posVelocity.y += SEPARATIONS[beatDirection].y * dir;
           if (!isDot || i < 2) {
             randomizeVector(piece.posVelocity, 0.002);
             randomizeVector(piece.rotVelocity, 0.004);
@@ -130,7 +129,7 @@ AFRAME.registerComponent('beat-cut-fx', {
     } else {
       for (let i = 0; i < this.pieces.length; i++) {
         let piece = this.pieces[i];
-        if (goodCut) {
+        if (correctHit) {
           piece.posVelocity.copy(piece.position).normalize().multiplyScalar(0.002);
           piece.posVelocity.z = -0.004;
           randomizeVector(piece.posVelocity, 0.001);

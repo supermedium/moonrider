@@ -211,7 +211,7 @@ AFRAME.registerComponent('beat-system', {
     // If not successful hit, check if mismatched hit.
     const wrongWeapon = correctWeapon === weapon1 ? weapon2 : weapon1;
     if (wrongWeapon.checkCollision(beat)) {
-      beat.wrongHit();
+      beat.onHit(wrongWeapon, true);
       beat.destroyBeat(wrongWeapon.el, false);
     }
   }
@@ -255,9 +255,9 @@ AFRAME.registerComponent('beat', {
     this.explodeEventDetail = {
       beatDirection: '',
       color: this.data.color,
+      correctHit: false,
       direction: new THREE.Vector3(),
       gameMode: '',
-      goodCut: false,
       position: new THREE.Vector3(),
       rotation: new THREE.Euler()
     };
@@ -392,13 +392,12 @@ AFRAME.registerComponent('beat', {
     this.queueBeatWrongEvent = true;
   },
 
-  missHit: function (hand) {
-    const data = this.data;
-    if (data.type === MINE) { return; }
+  missHit: function () {
+    if (this.data.type === MINE) { return; }
     this.el.sceneEl.emit('beatmiss', null, true);
   },
 
-  destroyBeat: function (weaponEl, goodCut) {
+  destroyBeat: function (weaponEl, correctHit) {
     const data = this.data;
     const explodeEventDetail = this.explodeEventDetail;
     const rig = this.rigContainer.object3D;
@@ -410,7 +409,7 @@ AFRAME.registerComponent('beat', {
 
     explodeEventDetail.beatDirection = this.cutDirection;
     explodeEventDetail.color = this.data.color;
-    explodeEventDetail.goodCut = goodCut;
+    explodeEventDetail.correctHit = correctHit;
     explodeEventDetail.gameMode = this.beatSystem.data.gameMode;
     explodeEventDetail.position.copy(this.el.object3D.position);
     rig.worldToLocal(explodeEventDetail.position);
@@ -437,7 +436,7 @@ AFRAME.registerComponent('beat', {
       this.shadow = null;
     }
 
-    if (this.beatSystem.data.gameMode === CLASSIC && goodCut) {
+    if (this.beatSystem.data.gameMode === CLASSIC && correctHit) {
       weaponEl.components.trail.pulse();
     }
   },
@@ -459,7 +458,7 @@ AFRAME.registerComponent('beat', {
     }
   },
 
-  onHit: function (weaponEl) {
+  onHit: function (weaponEl, wrongHit) {
     const data = this.data;
 
     // Haptics.
@@ -467,6 +466,11 @@ AFRAME.registerComponent('beat', {
 
     // Sound.
     this.el.parentNode.components['beat-hit-sound'].playSound(this.el, this.cutDirection);
+
+    if (wrongHit) {
+      this.wrongHit();
+      return;
+    }
 
     if (data.type === MINE) {
       beat.destroyBeat(correctWeapon.el, false);
