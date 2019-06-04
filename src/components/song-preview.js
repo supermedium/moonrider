@@ -31,9 +31,8 @@ AFRAME.registerComponent('song-preview-system', {
       if (this.analyserEl.components.audioanalyser.volume === 0 ||
           this.audio.currentTime < 1) {
         this.stopSong();
-      } else {
-        // this.fadeDown();
       }
+      // this.fadeOut();
       return;
     }
 
@@ -81,6 +80,8 @@ AFRAME.registerComponent('song-preview-system', {
     this.audioStore[data.selectedChallengeId].addEventListener('loadeddata', () => {
       this.log(`[song-preview] Finished load of priority ${data.selectedChallengeId}`);
       this.preloadedAudioIds.push(data.selectedChallengeId);
+      this.truncateCache();
+
       this.priorityLoadingChallengeId = '';
       // Resume preloading queue.
       if (preloadQueue.length) {
@@ -124,6 +125,7 @@ AFRAME.registerComponent('song-preview-system', {
       });
     } else {
       // Empty queue, preload now.
+      console.log(audio, challengeId, src);
       this.preloadMetadata({
         audio: audio,
         challengeId: challengeId,
@@ -141,12 +143,26 @@ AFRAME.registerComponent('song-preview-system', {
    */
   preloadMetadata: function (preloadItem) {
     const audio = preloadItem.audio;
-    this.log(`[song-preview] Preloading song preview ${preloadItem.challengeId}`);
+    this.log(`[song-preview] Preloading song preview ${preloadItem.challengeId} ${preloadItem.src}`);
 
     audio.addEventListener('loadedmetadata', () => {
       // Song preloaded.
       this.log(`[song-preview] Finished preloading song preview ${preloadItem.challengeId}`);
       this.preloadedAudioIds.push(preloadItem.challengeId);
+      this.truncateCache();
+
+      this.currentLoadingId = '';
+
+      // Move on to next song in queue if any.
+      this.log(`[song-preview] ${this.preloadQueue.length} in queue`);
+      if (this.preloadQueue.length && !this.priorityLoadingChallengeId) {
+        this.preloadMetadata(this.preloadQueue.shift());
+      }
+    });
+
+    audio.addEventListener('error', () => {
+      this.log(`[song-preview] Error preloading song preview ${preloadItem.challengeId}`);
+
       this.currentLoadingId = '';
 
       // Move on to next song in queue if any.
@@ -191,7 +207,12 @@ AFRAME.registerComponent('song-preview-system', {
    */
   clearSong: function (challengeId) {
     let audio = this.audioStore[challengeId];
-    audio.preload = 'none';
+
+    if (audio) {
+      audio.src = '';
+      audio.preload = 'none';
+      delete this.audioStore[challengeId];
+    }
 
     // Remove from queue if in there.
     let index;
@@ -203,6 +224,23 @@ AFRAME.registerComponent('song-preview-system', {
     }
     if (!index) { return; }
     this.preloadQueue.splice(index, 1);
+  },
+
+  /**
+   * Only keep the most recent previews to keep memory low.
+   */
+  truncateCache: function () {
+    const ids = this.preloadedAudioIds;
+    while (this.preloadedAudioIds.length >= 6) {
+      const id = this.preloadedAudioIds.shift()
+      if (!this.audioStore[id]) { continue; }
+      this.clearSong(id);
+      delete this.audioStore[id];
+    }
+    while (this.preloadQueue.length >= 6) {
+      const id = this.preloadQueue.shift()
+      if (this.currentLoadingId === id) { this.currentLoadingId = null; }
+    }
   }
 });
 

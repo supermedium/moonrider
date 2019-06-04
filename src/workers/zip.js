@@ -13,6 +13,7 @@ addEventListener('message', function (evt) {
   // Abort.
   if (evt.data.abort && xhrs[version]) {
     xhrs[version].abort();
+    delete xhrs[version];
     return;
   }
 

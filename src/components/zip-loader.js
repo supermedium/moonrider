@@ -1,5 +1,3 @@
-const CACHE = {};
-
 AFRAME.registerComponent('zip-loader', {
   schema: {
     isLoading: {default: 'false'},
@@ -9,19 +7,24 @@ AFRAME.registerComponent('zip-loader', {
   init: function () {
     this.loadingIndicator = document.getElementById('zipLoaderIndicator');
 
+    // Cache one ZIP at a time.
+    this.cachedZip = null;
+    this.cachedVersion = null;
+
+    this.message = {};
     this.worker = new Worker('build/zip.js');
     this.worker.onmessage = this.onMessage.bind(this);
     this.worker.onerror = console.error;
-    this.message = {};
   },
 
   update: function (oldData) {
     const data = this.data;
 
     // Abort previous ZIP request if new song selected.
-    if (oldData.version &&
-        oldData.version !== data.version &&
-        !CACHE[oldData.version]) {
+    if (oldData.version && oldData.version !== data.version &&
+        this.cachedVersion !== data.version) {
+      this.cachedVersion = null;
+      this.cachedZip = null;
       this.message.abort = true;
       this.message.version = oldData.version;
       this.worker.postMessage(this.message);  // Start the worker.
@@ -34,8 +37,8 @@ AFRAME.registerComponent('zip-loader', {
 
   fetchZip: function (version) {
     this.el.emit('ziploaderstart', null, false);
-    if (CACHE[version]) {
-      this.el.emit('ziploaderend', CACHE[version], false);
+    if (this.cachedVersion === version) {
+      this.el.emit('ziploaderend', this.cachedZip, false);
       return;
     }
 
@@ -51,8 +54,11 @@ AFRAME.registerComponent('zip-loader', {
         this.loadingIndicator.setAttribute('material', 'progress', evt.data.progress);
         break;
       }
+
       case 'load': {
-        CACHE[evt.data.version] = evt.data.data;
+        this.cachedVersion = evt.data.version;
+        this.cachedZip = evt.data.data;
+
         // Check version still matches in case selected challenge changed.
         if (evt.data.version === this.data.version) {
           this.el.emit('ziploaderend', evt.data.data, false);
