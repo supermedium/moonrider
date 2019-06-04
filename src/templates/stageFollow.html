@@ -48,6 +48,6 @@
   light="type: hemisphere; color: #666"
   position="0 10 20"></a-entity>
 
-{% if not DEBUG_LOG %}
-  <a-entity log geometry="primitive: plane; width: 2; height: 1" material="color: #666" position="-2 1.4 -2" rotation="0 45 0" text="width: 2; xOffset: 0.2; baseline: top"></a-entity>
+{% if DEBUG_LOG %}
+  <a-entity log geometry="primitive: plane; max: 10; width: 2; height: 1" material="color: #666" position="-2 1.4 -2" rotation="0 45 0" text="width: 2; xOffset: 0.2; baseline: top"></a-entity>
 {% endif %}

@@ -21,7 +21,7 @@ AFRAME.registerComponent('punch', {
     this.rig = this.el.closest('#curveFollowRig');
   },
 
-  tickBeatSystem: function (time) {
+  tick: function (time, dt) {
     if (!this.data.enabled) { return; }
 
     if ((time - this.lastSampleTime) < 50) { return; }
@@ -36,7 +36,9 @@ AFRAME.registerComponent('punch', {
 
     this.lastSample.copy(this.el.object3D.position);
     this.lastSampleTime = time;
+  },
 
+  tickBeatSystem: function () {
     // Bounding box.
     this.bbox.setFromObject(this.bboxEl.getObject3D('mesh'));
   },

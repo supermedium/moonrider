@@ -137,7 +137,7 @@ AFRAME.registerComponent('beat-system', {
                                           BOTTOM_HEIGHT + (MARGIN * 2) + offset);
   },
 
-  tick: function () {
+  tick: function (t, dt) {
     if (!this.data.isPlaying || this.data.gameMode === RIDE) { return; }
 
     const beatsToCheck = this.beatsToCheck;
@@ -174,8 +174,8 @@ AFRAME.registerComponent('beat-system', {
     if (!beatsToCheck.length) { return; }
 
     // Update bounding boxes and velocities.
-    this.weapons[0].tickBeatSystem();
-    this.weapons[1].tickBeatSystem();
+    this.weapons[0].tickBeatSystem(t, dt);
+    this.weapons[1].tickBeatSystem(t, dt);
 
     // Check hits.
     for (let i = 0; i < beatsToCheck.length; i++) {
@@ -214,7 +214,7 @@ AFRAME.registerComponent('beat-system', {
     // If not successful hit, check if mismatched hit.
     const wrongWeapon = correctWeapon === weapon1 ? weapon2 : weapon1;
     if (wrongWeapon.checkCollision(beat)) {
-      beat.onHit(wrongWeapon, true);
+      beat.onHit(wrongWeapon.el, true);
       beat.destroyBeat(wrongWeapon.el, false);
     }
   }
@@ -486,8 +486,7 @@ AFRAME.registerComponent('beat', {
       let angle = 0;
       if (data.type === 'arrow') {
         const blade = weaponEl.components.blade;
-        angle = THREE.Math.radToDeg(
-          blade.strokeDirectionVector.angleTo(CUT_DIRECTION_VECTORS[this.cutDirection]));
+        angle = blade.strokeDirectionVector.angleTo(CUT_DIRECTION_VECTORS[this.cutDirection]);
         if (angle > ANGLE_THRESHOLD) {
           this.destroyBeat(weaponEl, false);
           this.wrongHit();
