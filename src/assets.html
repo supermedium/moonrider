@@ -110,28 +110,29 @@
 
 <a-mixin
   id="superCut"
+  bind__supercutfx="colorPrimary: colorPrimary; colorSecondary: colorSecondary"
   supercutfx
   geometry="primitive: plane; width: 3; height: 3"
   material="shader: superCutFxShader; transparent: true; depthWrite: false"></a-mixin>
 
 <a-mixin
   id="redBeatBroken"
-  obj-model="obj:#beatBrokenObj"
+  obj-model="obj: #beatBrokenObj"
   beat-cut-fx="color: red"
   render-order="beats"></a-mixin>
 <a-mixin
   id="blueBeatBroken"
-  obj-model="obj:#beatBrokenObj"
+  obj-model="obj: #beatBrokenObj"
   beat-cut-fx="color: blue"
   render-order="beats"></a-mixin>
 <a-mixin
   id="redDotBroken"
-  obj-model="obj:#dotBrokenObj"
+  obj-model="obj: #dotBrokenObj"
   beat-cut-fx="color: red; type: dot"
   render-order="beats"></a-mixin>
 <a-mixin
   id="blueDotBroken"
-  obj-model="obj:#dotBrokenObj"
+  obj-model="obj: #dotBrokenObj"
   beat-cut-fx="color: blue; type: dot"
   render-order="beats"></a-mixin>
 
@@ -148,15 +149,17 @@
 
 <a-mixin
   id="redBeatFX"
+  bind__material="color: colorPrimary"
   obj-model="obj: #cutfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.schemes.default.primary }}; progress: 1"
+  material="shader: cutfxShader; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 400; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
 <a-mixin
   id="blueBeatFX"
+  bind__material="color: colorSecondary"
   obj-model="obj: #cutfxObj"
-  material="shader: cutfxShader; color: {{ COLORS.schemes.default.secondary }}; progress: 1"
+  material="shader: cutfxShader; progress: 1"
   render-order="menu"
   animation="property: components.material.material.uniforms.progress.value; from: 0; to: 1; dur: 400; loop: false; easing: linear; startEvents: explode"></a-mixin>
 
