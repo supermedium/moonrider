@@ -9,6 +9,7 @@ require('aframe-event-set-component');
 require('aframe-geometry-merger-component');
 require('aframe-haptics-component');
 require('aframe-layout-component');
+require('aframe-log-component');
 require('aframe-orbit-controls');
 require('aframe-proxy-event-component');
 require('aframe-render-order-component');

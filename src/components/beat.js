@@ -170,6 +170,9 @@ AFRAME.registerComponent('beat-system', {
       if (inFront) { beatsToCheck.push(beat); }
     }
 
+    // No beats to check means to collision to check.
+    if (!beatsToCheck.length) { return; }
+
     // Update bounding boxes and velocities.
     this.weapons[0].tickBeatSystem();
     this.weapons[1].tickBeatSystem();
@@ -483,7 +486,8 @@ AFRAME.registerComponent('beat', {
       let angle = 0;
       if (data.type === 'arrow') {
         const blade = weaponEl.components.blade;
-        angle = blade.strokeDirectionVector.angleTo(CUT_DIRECTION_VECTORS[this.cutDirection]);
+        angle = THREE.Math.radToDeg(
+          blade.strokeDirectionVector.angleTo(CUT_DIRECTION_VECTORS[this.cutDirection]));
         if (angle > ANGLE_THRESHOLD) {
           this.destroyBeat(weaponEl, false);
           this.wrongHit();
