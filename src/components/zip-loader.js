@@ -48,12 +48,21 @@ AFRAME.registerComponent('zip-loader', {
   onMessage: function (evt) {
     switch (evt.data.message) {
       case 'progress': {
-        this.loadingIndicator.object3D.visible = true;
+        if (evt.data.version !== this.data.version) { return; }
         this.loadingIndicator.setAttribute('material', 'progress', evt.data.progress);
         break;
       }
 
       case 'load': {
+        // Check for faulty empty beats object.
+        let key;
+        const beats = evt.data.data.beats;
+        for (key in beats) { break; }
+        if (!key) {
+          this.el.emit('songloadcancel');
+          return;
+        }
+
         this.cachedVersion = evt.data.version;
         this.cachedZip = evt.data.data;
 

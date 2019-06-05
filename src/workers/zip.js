@@ -27,7 +27,7 @@ addEventListener('message', function (evt) {
   });
 
   loader.on('progress', evt => {
-    postMessage({message: 'progress', progress: evt.loaded / evt.total});
+    postMessage({message: 'progress', progress: evt.loaded / evt.total, version: version});
   });
 
   loader.on('load', () => {
