@@ -40,7 +40,7 @@
       id="loadingText"
       mixin="font"
       bind__animation__color="enabled: isLoading"
-      bind__text="color: colorPrimary; value: loadingText"
+      bind__text="color: colorPrimary; value: loadingText; wrapCount: hasSongLoadError && 24 || 18"
       bind__visible="isLoading"
       text="align: center; wrapCount: 18; width: 0.65"
       render-order="menutext"

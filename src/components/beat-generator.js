@@ -27,6 +27,7 @@ AFRAME.registerComponent('beat-generator', {
     gameMode: {type: 'string'},  // classic, punch, ride.
     difficulty: {type: 'string'},
     has3DOFVR: {default: false},
+    hasSongLoadError: {default: false},
     isPlaying: {default: false},
     isZipFetching: {default: false},
     menuSelectedChallengeId: {type: 'string'},
@@ -101,7 +102,7 @@ AFRAME.registerComponent('beat-generator', {
 
     this.el.addEventListener('ziploaderend', evt => {
       this.beats = evt.detail.beats;
-      if (!this.data.challengeId) { return; }
+      if (!this.data.challengeId || this.data.hasSongLoadError) { return; }
       this.beatData = this.beats[this.data.difficulty];
       this.processBeats();
     });
@@ -132,7 +133,7 @@ AFRAME.registerComponent('beat-generator', {
       this.index.obstacles = 0;
 
       // Process.
-      if (!this.data.isZipFetching && this.beats) {
+      if (!this.data.isZipFetching && this.beats && !this.data.hasSongLoadError) {
         this.beatData = this.beats[this.data.difficulty];
         this.processBeats();
       }
@@ -147,6 +148,8 @@ AFRAME.registerComponent('beat-generator', {
    * Load the beat data into the game.
    */
   processBeats: function () {
+    if (this.data.hasSongLoadError) { return; }
+
     // Reset variables used during playback.
     // Beats spawn ahead of the song and get to the user in sync with the music.
     this.songTime = 0;

@@ -79,7 +79,9 @@ AFRAME.registerComponent('song-preview-system', {
 
     this.audioStore[data.selectedChallengeId].addEventListener('loadeddata', () => {
       this.log(`[song-preview] Finished load of priority ${data.selectedChallengeId}`);
-      this.preloadedAudioIds.push(data.selectedChallengeId);
+      if (this.preloadedAudioIds.indexOf(data.selectedChallengeId) === -1) {
+        this.preloadedAudioIds.push(data.selectedChallengeId);
+      }
       this.truncateCache();
 
       this.priorityLoadingChallengeId = '';
@@ -147,7 +149,9 @@ AFRAME.registerComponent('song-preview-system', {
     audio.addEventListener('loadedmetadata', () => {
       // Song preloaded.
       this.log(`[song-preview] Finished preloading song preview ${preloadItem.challengeId}`);
-      this.preloadedAudioIds.push(preloadItem.challengeId);
+      if (this.preloadedAudioIds.indexOf(preloadItem.challengeId) === -1) {
+        this.preloadedAudioIds.push(preloadItem.challengeId);
+      }
       this.truncateCache();
 
       this.currentLoadingId = '';
@@ -230,14 +234,17 @@ AFRAME.registerComponent('song-preview-system', {
    */
   truncateCache: function () {
     const ids = this.preloadedAudioIds;
-    while (this.preloadedAudioIds.length >= 12) {
+    while (this.preloadedAudioIds.length > 12) {
       const id = this.preloadedAudioIds.shift()
       if (!this.audioStore[id]) { continue; }
       if (id === this.data.selectedChallengeId) { continue; }
-      if (this.audioStore[id].paused) { this.clearSong(id); }
-      delete this.audioStore[id];
+      if (this.audioStore[id].paused) {
+        this.clearSong(id);
+        delete this.audioStore[id];
+        this.log(`[song-preview-system] Clearing ${id}`);
+      }
     }
-    while (this.preloadQueue.length >= 12) {
+    while (this.preloadQueue.length > 12) {
       const id = this.preloadQueue.shift()
       if (this.currentLoadingId === id) { this.currentLoadingId = null; }
     }

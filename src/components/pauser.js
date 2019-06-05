@@ -9,6 +9,10 @@ AFRAME.registerComponent('pauser', {
   init: function () {
     this.pauseGame = this.pauseGame.bind(this);
 
+    document.addEventListener('keydown', evt => {
+      if (evt.keyCode === 27) { this.pauseGame(); }
+    });
+
     this.el.sceneEl.addEventListener('controllerconnected', evt => {
       if (evt.detail.name === 'vive-controls') {
         this.el.addEventListener('menudown', this.pauseGame);

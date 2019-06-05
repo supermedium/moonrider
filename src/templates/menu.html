@@ -226,7 +226,7 @@
 
       <a-entity
         id="playButton"
-        bind__visible-raycastable="menuActive && !!menuSelectedChallenge.id && !genreMenuOpen && !difficultyFilterMenuOpen && !isIOS"
+        bind__visible-raycastable="menuActive && !!menuSelectedChallenge.id && !genreMenuOpen && !difficultyFilterMenuOpen && !isIOS && !hasSongLoadError"
         geometry="primitive: plane; width: 0.7; height: 0.25"
         play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
         play-sound__click="event: click; sound: #confirmSound; volume: 0.25"
@@ -243,10 +243,17 @@
 
       <a-entity
         id="iOSNotice"
-        bind__visible-raycastable="mainMenuActive && isIOS"
+        bind__visible="mainMenuActive && isIOS"
         mixin="font"
         position="0 -0.5 0.01"
         text="align: center; baseline: top; color: #FFF; wrapCount: 32; value: Sorry, iOS is currently not playable but support is coming soon!"></a-entity>
+
+      <a-entity
+        id="menuLoadError"
+        bind__visible="hasSongLoadError"
+        mixin="font"
+        position="0 -0.5 0.01"
+        text="align: center; baseline: top; color: #FFF; wrapCount: 32; value: Sorry! There was an error loading this song."></a-entity>
     </a-entity>
 
     <a-entity

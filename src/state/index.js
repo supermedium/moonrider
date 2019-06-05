@@ -13,6 +13,8 @@ const SONG_SUB_NAME_DETAIL_TRUNCATE = 55;
 const DAMAGE_DECAY = 0.25;
 const DAMAGE_MAX = 10;
 
+const badSongs = {};
+
 const DEBUG_CHALLENGE = {
   author: 'Juancho Pancho',
   difficulty: 'Expert',
@@ -71,6 +73,7 @@ AFRAME.registerState({
     genreMenuOpen: false,
     has3DOFVR: false,
     has6DOFVR: false,
+    hasSongLoadError: false,
     hasVR: AFRAME.utils.device.checkHeadsetConnected() ||
            AFRAME.utils.getUrlParameter('debugvr') === 'true',
     introActive: !SKIP_INTRO,  // Just started game, main menu not opened yet.
@@ -446,6 +449,11 @@ AFRAME.registerState({
       // Clear leaderboard.
       clearLeaderboard(state);
       state.leaderboardLoading = true;
+
+      state.hasSongLoadError = false;
+      if (badSongs[id]) {
+        state.hasSongLoadError = true;
+      }
     },
 
     menuchallengeunselect: state => {
@@ -484,6 +492,8 @@ AFRAME.registerState({
      * Transfer staged challenge to the active challenge.
      */
     playbuttonclick: state => {
+      if (badSongs[state.menuSelectedChallenge.id]) { return; }
+
       let source = 'frontpage';
       if (state.playlist) { source = 'playlist'; }
       if (state.search.query) { source = 'search'; }
@@ -623,6 +633,18 @@ AFRAME.registerState({
       state.menuActive = true;
     },
 
+    songloaderror: state => {
+      badSongs[state.menuSelectedChallenge.id || state.challenge.id] = true;
+
+      state.hasSongLoadError = true;
+      state.loadingText = 'Sorry! There was an error loading this song.\nPlease select another song.';
+
+      state.challenge.id = '';
+      state.challenge.isBeatsPreloaded = false;
+      state.isSongProcessing = false;
+      state.isZipFetching = false;
+    },
+
     songprocessfinish: state => {
       state.isSongProcessing = false;
       state.isLoading = false;  // Done loading after final step!
@@ -660,6 +682,7 @@ AFRAME.registerState({
 
     ziploaderend: (state, payload) => {
       state.challenge.audio = payload.audio;
+      state.hasSongLoadError = false;
       state.menuSelectedChallenge.version = '';
       state.isZipFetching = false;
     },

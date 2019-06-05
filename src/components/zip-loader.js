@@ -29,6 +29,8 @@ AFRAME.registerComponent('zip-loader', {
     }
 
     if (data.version && oldData.version !== data.version) {
+      this.cachedVersion = null;
+      this.cachedZip = null;
       this.fetchZip(data.version);
     }
 
@@ -36,9 +38,7 @@ AFRAME.registerComponent('zip-loader', {
     if (!oldData.isLoading && this.data.isLoading &&
         this.cachedVersion === this.data.version &&
         !this.cachedZip) {
-      setTimeout(() => {
-        this.el.emit('songloadcancel');
-      });
+      this.el.emit('songloaderror');
     }
   },
 
@@ -47,7 +47,7 @@ AFRAME.registerComponent('zip-loader', {
     if (this.cachedVersion === version) {
       // Faulty ZIP.
       if (!this.cachedZip) {
-        this.el.emit('songloadcancel');
+        this.el.emit('songloaderror');
         return;
       }
 
@@ -62,6 +62,11 @@ AFRAME.registerComponent('zip-loader', {
 
   onMessage: function (evt) {
     switch (evt.data.message) {
+      case 'error': {
+        this.el.emit('songloaderror');
+        break;
+      }
+
       case 'progress': {
         if (evt.data.version !== this.data.version) { return; }
         this.loadingIndicator.setAttribute('material', 'progress', evt.data.progress);
@@ -78,7 +83,9 @@ AFRAME.registerComponent('zip-loader', {
         for (key in beats) { break; }
         if (!key) {
           this.cachedZip = null;
-          this.el.emit('songloadcancel');
+          if (evt.data.version === this.data.version) {
+            this.el.emit('songloaderror');
+          }
           return;
         }
 
@@ -93,7 +100,7 @@ AFRAME.registerComponent('zip-loader', {
 });
 
 /**
- * Beatsaver JSON sometimes have weird characters in front of JSON in utf16le encoding.
+ * Beat Saver JSON sometimes have weird characters in front of JSON in utf16le encoding.
  */
 function jsonParseClean (str) {
   try {
