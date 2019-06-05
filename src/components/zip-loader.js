@@ -23,8 +23,6 @@ AFRAME.registerComponent('zip-loader', {
     // Abort previous ZIP request if new song selected.
     if (oldData.version && oldData.version !== data.version &&
         this.cachedVersion !== data.version) {
-      this.cachedVersion = null;
-      this.cachedZip = null;
       this.message.abort = true;
       this.message.version = oldData.version;
       this.worker.postMessage(this.message);  // Start the worker.

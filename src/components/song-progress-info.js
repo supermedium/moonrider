@@ -21,7 +21,7 @@ AFRAME.registerComponent('song-progress-info', {
 
   updateInfo: function () {
     const source = this.el.sceneEl.components.song.source;
-    if (!source) { return; }
+    if (!source || !source.buffer) { return; }
 
     const progress =
       this.el.sceneEl.components.song.getCurrentTime() /

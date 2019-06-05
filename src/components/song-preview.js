@@ -233,7 +233,8 @@ AFRAME.registerComponent('song-preview-system', {
     while (this.preloadedAudioIds.length >= 12) {
       const id = this.preloadedAudioIds.shift()
       if (!this.audioStore[id]) { continue; }
-      this.clearSong(id);
+      if (id === this.data.selectedChallengeId) { continue; }
+      if (this.audioStore[id].paused) { this.clearSong(id); }
       delete this.audioStore[id];
     }
     while (this.preloadQueue.length >= 12) {
