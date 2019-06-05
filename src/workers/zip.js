@@ -63,6 +63,7 @@ addEventListener('message', function (evt) {
     });
 
     postMessage({message: 'load', data: data, version: version});
+    delete xhrs[version];
   });
 
   loader.load();
