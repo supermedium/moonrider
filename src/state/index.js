@@ -616,7 +616,6 @@ AFRAME.registerState({
       state.challenge.audio = '';
       state.challenge.id = '';
       state.challenge.version = '';
-      state.menuSelectedChallenge.version = '';
 
       state.isZipFetching = false;
       state.isLoading = false;

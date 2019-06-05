@@ -31,11 +31,26 @@ AFRAME.registerComponent('zip-loader', {
     if (data.version && oldData.version !== data.version) {
       this.fetchZip(data.version);
     }
+
+    // Faulty ZIP.
+    if (!oldData.isLoading && this.data.isLoading &&
+        this.cachedVersion === this.data.version &&
+        !this.cachedZip) {
+      setTimeout(() => {
+        this.el.emit('songloadcancel');
+      });
+    }
   },
 
   fetchZip: function (version) {
     this.el.emit('ziploaderstart', null, false);
     if (this.cachedVersion === version) {
+      // Faulty ZIP.
+      if (!this.cachedZip) {
+        this.el.emit('songloadcancel');
+        return;
+      }
+
       this.el.emit('ziploaderend', this.cachedZip, false);
       return;
     }
@@ -54,17 +69,18 @@ AFRAME.registerComponent('zip-loader', {
       }
 
       case 'load': {
+        this.cachedVersion = evt.data.version;
+        this.cachedZip = evt.data.data;
+
         // Check for faulty empty beats object.
         let key;
         const beats = evt.data.data.beats;
         for (key in beats) { break; }
         if (!key) {
+          this.cachedZip = null;
           this.el.emit('songloadcancel');
           return;
         }
-
-        this.cachedVersion = evt.data.version;
-        this.cachedZip = evt.data.data;
 
         // Check version still matches in case selected challenge changed.
         if (evt.data.version === this.data.version) {

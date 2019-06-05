@@ -72,7 +72,7 @@
     <a-entity
       id="loadingCancelButton"
       mixin="bigMenuButton"
-      bind-toggle__raycastable="isZipFetching || isSongProcessing"
+      bind-toggle__raycastable="isLoading"
       position="0 -0.67 0.01"
       proxy-event="event: click; to: a-scene; as: songloadcancel">
       <a-entity mixin="font" text="align: center; color: #FAFAFA; wrapCount: 20; value: CANCEL" position="0 -0.065 0.001"></a-entity>
