@@ -45,6 +45,35 @@ npm run start
 
 Then head to `localhost:3000` in your browser.
 
+### Remixing and Forking
+
+Make this game your own! Some easy ways to mess around:
+
+- To modify or add more color palettes, change `src/constants/colors.js`.
+- To change images, replace images in `src/assets/img/` folder. For example,
+  replace the moon at `src/assets/img/moon.png'.
+- To change models, replace models in `src/assets/models/` folder. For example,
+  replace the arrow blocks at `src/assets/models/arrowblue.obj' or
+  `arrowred.obj`.
+- To change sounds, replace sounds in `src/assets/sounds`. For example, replace
+  the hit sounds at `src/assets/sounds/`.
+- Change various values such as `speed` in `src/state/index.js` or
+  `BEAT_PRELOAD_TIME` in `src/components/beat-generator.js` to mess with how
+  fast you travel along the curve, or how much reaction time until the notes
+  arrive to the player.
+
+Other ways such as adding more modes are more involved, but with knowledge of
+A-Frame and JavaScript, is doable!
+
+### Test URL Parameters
+
+| URL Parameter                           | Description                                                   |
+|-----------------------------------------|---------------------------------------------------------------|
+| ?debugcontroller={classic, punch, ride} | Show controllers and move them with shift/ctrl + {h, j, k, l} |
+| ?debugbeatpositioning={classic, punch}  | Show all notes in possible positionings.                      |
+| ?debugstate={loading, victory}          | Show loading or victory screen.                               |
+| ?skipintro=true                         | Skip introduction screen.                                     |
+
 ### Deploying to GitHub
 
 Showing off some crazy customizations? Enable GitHub Pages deployment to deploy
