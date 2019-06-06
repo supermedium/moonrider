@@ -53,7 +53,7 @@ Make this game your own! Some easy ways to mess around:
 - To change images, replace images in `src/assets/img/` folder. For example,
   replace the moon at `src/assets/img/moon.png'.
 - To change models, replace models in `src/assets/models/` folder. For example,
-  replace the arrow blocks at `src/assets/models/arrowblue.obj' or
+  replace the arrow blocks at `src/assets/models/arrowblue.obj` or
   `arrowred.obj`.
 - To change sounds, replace sounds in `src/assets/sounds`. For example, replace
   the hit sounds at `src/assets/sounds/`.
