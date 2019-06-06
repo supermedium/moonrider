@@ -61,11 +61,9 @@ const ROTATIONS = {
   downright: 315
 };
 
-const HORIZONTAL_POSITIONS = {
-  left: -0.5,
-  middleleft: -0.18,
-  middleright: 0.18,
-  right: 0.5
+const SIZES = {
+  [CLASSIC]: 0.6,
+  [PUNCH]: 0.35
 };
 
 AFRAME.registerComponent('beat-system', {
@@ -103,7 +101,7 @@ AFRAME.registerComponent('beat-system', {
 
   update: function (oldData) {
     if (oldData.isLoading && !this.data.isLoading) {
-      this.updateVerticalPositions();
+      this.updateBeatPositioning();
       this.weaponOffset = this.data.gameMode === CLASSIC ? SWORD_OFFSET : PUNCH_OFFSET;
       this.weaponOffset = this.weaponOffset / this.supercurve.curve.getLength();
     }
@@ -111,30 +109,6 @@ AFRAME.registerComponent('beat-system', {
     if (oldData.gameMode !== this.data.gameMode) {
       this.weapons = this.data.gameMode === CLASSIC ? this.blades : this.fists;
     }
-  },
-
-  verticalPositions: {},
-
-  registerBeat: function (beatComponent) {
-    this.beats.push(beatComponent);
-  },
-
-  unregisterBeat: function (beatComponent) {
-    this.beats.splice(this.beats.indexOf(beatComponent), 1);
-  },
-
-  updateVerticalPositions: function () {
-    const MIN_BOTTOM_HEIGHT = 0.4;
-    const BOTTOM_HEIGHT = 0.90;
-    const MARGIN = this.data.gameMode === 'punch' ? 0.4 : 0.5;
-
-    const offset = this.el.sceneEl.camera.el.object3D.position.y - 1.6;
-    this.verticalPositions.bottom = Math.max(MIN_BOTTOM_HEIGHT,
-                                             BOTTOM_HEIGHT + offset);
-    this.verticalPositions.middle = Math.max(MIN_BOTTOM_HEIGHT + MARGIN,
-                                             BOTTOM_HEIGHT + MARGIN + offset);
-    this.verticalPositions.top = Math.max(MIN_BOTTOM_HEIGHT + MARGIN * 2,
-                                          BOTTOM_HEIGHT + (MARGIN * 2) + offset);
   },
 
   tick: function (t, dt) {
@@ -217,6 +191,69 @@ AFRAME.registerComponent('beat-system', {
       beat.onHit(wrongWeapon.el, true);
       beat.destroyBeat(wrongWeapon.el, false);
     }
+  },
+
+  horizontalPositions: {},
+
+  verticalPositions: {},
+
+  /**
+   * Update positioning between blocks, vertically and horizontally depending on
+   * game mode, and the height of the user.
+   *
+   * Adjustment revolves primary around SIZES, and the hMargin multiply factor.
+   */
+  updateBeatPositioning: (function () {
+    // Have punches be higher.
+    const BOTTOM_HEIGHTS = {
+      [CLASSIC]: 0.90,
+      [PUNCH]: 1.10
+    };
+
+    const BOTTOM_HEIGHT_MIN = 0.4;
+    const HORIZONTAL_STRETCH = 1.2;
+    const REFERENCE_HEIGHT = 1.6;
+
+    return function () {
+      const gameMode = this.data.gameMode;
+      const horizontalPositions = this.horizontalPositions;
+      const verticalPositions = this.verticalPositions;
+
+      const heightOffset = this.el.sceneEl.camera.el.object3D.position.y - REFERENCE_HEIGHT;
+      const size = SIZES[gameMode];
+
+      // Horizontal margin based on size of blocks so they don't overlap, which a smidge
+      // of extra margin.
+      // For punch mode, we want a wide horizontal spread in punch range, but not vertical.
+      const hMargin = size * HORIZONTAL_STRETCH;
+      horizontalPositions.left = -1.5 * hMargin;
+      horizontalPositions.middleleft = -0.5 * hMargin;
+      horizontalPositions.middleright = 0.5 * hMargin;
+      horizontalPositions.right = 1.5 * hMargin;
+
+      // Vertical margin based on size of blocks so they don't overlap.
+      // And then overall shifted up and down based on user height (camera Y).
+      // But not too low to go underneath the ground.
+      const bottomHeight = BOTTOM_HEIGHTS[gameMode];
+      const vMargin = size;
+      verticalPositions.bottom = Math.max(
+        BOTTOM_HEIGHT_MIN,
+        bottomHeight + heightOffset);
+      verticalPositions.middle = Math.max(
+        BOTTOM_HEIGHT_MIN + vMargin,
+        bottomHeight + vMargin + heightOffset);
+      verticalPositions.top = Math.max(
+        BOTTOM_HEIGHT_MIN + vMargin * 2,
+        bottomHeight + (vMargin * 2) + heightOffset);
+    };
+  })(),
+
+  registerBeat: function (beatComponent) {
+    this.beats.push(beatComponent);
+  },
+
+  unregisterBeat: function (beatComponent) {
+    this.beats.splice(this.beats.indexOf(beatComponent), 1);
   }
 });
 
@@ -228,7 +265,6 @@ AFRAME.registerComponent('beat', {
   schema: {
     color: {default: 'red', oneOf: ['red', 'blue']},
     debug: {default: false},
-    size: {default: 0.45},
     type: {default: 'arrow', oneOf: ['arrow', DOT, MINE]}
   },
 
@@ -321,6 +357,11 @@ AFRAME.registerComponent('beat', {
 
     this.beatSystem.registerBeat(this);
 
+    // Model is 0.29 size. We make it 1.0 so we can easily scale based on 1m size.
+    const FACTOR = 1 / 0.29;
+    const size = SIZES[this.beatSystem.data.gameMode] * FACTOR;
+    this.blockEl.object3D.scale.set(size, size, size);
+
     cutDirection = cutDirection || 'down';
     this.cutDirection = cutDirection;
     this.horizontalPosition = horizontalPosition;
@@ -342,7 +383,7 @@ AFRAME.registerComponent('beat', {
     const supercurve = this.curveEl.components.supercurve;
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
-    el.object3D.position.x += HORIZONTAL_POSITIONS[horizontalPosition];
+    el.object3D.position.x += this.beatSystem.horizontalPositions[horizontalPosition];
 
     if (data.type !== DOT) {
       el.object3D.rotation.z = THREE.Math.degToRad(ROTATIONS[cutDirection]);
@@ -379,10 +420,6 @@ AFRAME.registerComponent('beat', {
     setObjModelFromTemplate(
       blockEl,
       MODELS[type !== 'mine' ? `${type}${this.data.color}` : type]);
-
-    // Model is 0.29 size. We make it 1.0 so we can easily scale based on 1m size.
-    blockEl.object3D.scale.set(1, 1, 1);
-    blockEl.object3D.scale.multiplyScalar(4).multiplyScalar(this.data.size);
 
     blockEl.setAttribute('materials', 'name', 'beat');
     const mesh = blockEl.getObject3D('mesh');
@@ -421,7 +458,7 @@ AFRAME.registerComponent('beat', {
     if (this.data.type === MINE) {
       brokenPoolName = 'pool__beat-broken-mine';
     } else {
-      const mode = this.beatSystem.data.gameMode === 'classic' ? 'beat' : 'punch';
+      const mode = this.beatSystem.data.gameMode === CLASSIC ? 'beat' : PUNCH;
       brokenPoolName = `pool__${mode}-broken-${this.data.color}`;
       if (this.data.type === DOT) {
         brokenPoolName += '-dot';

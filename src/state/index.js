@@ -212,6 +212,12 @@ AFRAME.registerState({
       ].indexOf(state.controllerType) !== -1;
     },
 
+    debugbeatpositioning: state => {
+      state.gameMode = 'classic';
+      state.introActive = false;
+      state.menuActive = false;
+    },
+
     /**
      * To work on game over page.
      *
