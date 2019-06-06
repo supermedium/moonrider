@@ -207,7 +207,7 @@ AFRAME.registerComponent('beat-system', {
     // Have punches be higher.
     const BOTTOM_HEIGHTS = {
       [CLASSIC]: 0.90,
-      [PUNCH]: 1.10
+      [PUNCH]: 1.20
     };
 
     const BOTTOM_HEIGHT_MIN = 0.4;

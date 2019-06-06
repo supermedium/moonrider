@@ -47,7 +47,7 @@ AFRAME.registerComponent('punch', {
     const box = new THREE.Box3();
 
     return function (beat) {
-      box.copy(beat.bbox).translate(beat.el.object3D.position).expandByScalar(0.15);
+      box.copy(beat.bbox).translate(beat.el.object3D.position).expandByScalar(0.1);
       return this.bbox.intersectsBox(box);
     };
   })()

@@ -144,7 +144,7 @@ AFRAME.registerState({
       songSubNameTexts: ''  // All sub names in search results merged together.
     },
     searchResultsPage: [],
-    speed: 8
+    speed: 10
   },
 
   handlers: {
