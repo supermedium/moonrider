@@ -3,14 +3,6 @@ const CEILING_THICKNESS = 1.5;
 const CEILING_HEIGHT = 1.3;
 const CEILING_WIDTH = 4;
 
-// Currently reversed left / right because curve is upside down / mirrored.
-const HORIZONTAL_POSITIONS = {
-  left: 0.75,
-  middleleft: 0.25,
-  middleright: -0.25,
-  right: -0.75
-};
-
 /**
  * Wall to dodge.
  */
@@ -57,6 +49,7 @@ AFRAME.registerComponent('wall', {
     const right = new THREE.Vector3();
 
     return function (isCeiling) {
+      const beatSystem = this.el.sceneEl.components['beat-system'];
       const data = this.data;
       const supercurve = this.curveEl.components.supercurve;
 
@@ -70,7 +63,7 @@ AFRAME.registerComponent('wall', {
       // Offset vectors to get the left / right vertex points to pass into curve helper.
       // Note that curve is upside down so the positions are reversed...normally, this would
       // read as `+ (width / 2) - 0.25`.
-      const centerPosition = HORIZONTAL_POSITIONS[data.horizontalPosition] -
+      const centerPosition = (-1 * beatSystem.horizontalPositions[data.horizontalPosition]) -
                              (width / 2) + 0.25;
       left.x = data.isCeiling
         ? - 1 * width / 2

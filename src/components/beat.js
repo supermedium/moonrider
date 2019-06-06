@@ -62,7 +62,7 @@ const ROTATIONS = {
 };
 
 const SIZES = {
-  [CLASSIC]: 0.6,
+  [CLASSIC]: 0.55,
   [PUNCH]: 0.35
 };
 
@@ -211,7 +211,6 @@ AFRAME.registerComponent('beat-system', {
     };
 
     const BOTTOM_HEIGHT_MIN = 0.4;
-    const HORIZONTAL_STRETCH = 1.2;
     const REFERENCE_HEIGHT = 1.6;
 
     return function () {
@@ -224,8 +223,8 @@ AFRAME.registerComponent('beat-system', {
 
       // Horizontal margin based on size of blocks so they don't overlap, which a smidge
       // of extra margin.
-      // For punch mode, we want a wide horizontal spread in punch range, but not vertical.
-      const hMargin = size * HORIZONTAL_STRETCH;
+      // For punch mode, we want a wider horizontal spread in punch range, but not vertical.
+      const hMargin = gameMode === CLASSIC ? size : size * 1.2;
       horizontalPositions.left = -1.5 * hMargin;
       horizontalPositions.middleleft = -0.5 * hMargin;
       horizontalPositions.middleright = 0.5 * hMargin;
