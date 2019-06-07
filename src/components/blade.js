@@ -42,8 +42,8 @@ AFRAME.registerComponent('blade', {
     const rig = this.rigEl.object3D;
 
     // Tip of the blade position in world coordinates.
-    this.bladeTipPosition.set(0, 0, -0.8);
-    this.bladePosition.set(0, 0, 0);
+    this.bladeTipPosition.set(0, 0, -0.89);
+    this.bladePosition.set(0, 0, 0.22);
 
     const bladeObj = this.el.object3D;
     bladeObj.localToWorld(this.bladeTipPosition);
