@@ -288,17 +288,18 @@ AFRAME.registerComponent('beat-generator', {
     const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     const songPosition = ((noteInfo._time * msPerBeat) / durationMs) + positionOffset;
 
+    // Set render order (back to front so decreasing render order as index increases).
+    const renderOrder = this.el.systems['render-order'].order.beats + 1 - songPosition;
+
     if (data.gameMode === 'ride') {
       beatEl.components.plume.onGenerate(songPosition, horizontalPosition, verticalPosition);
+      beatEl.object3D.renderOrder = renderOrder;
     } else {
       beatEl.components.beat.onGenerate(songPosition, horizontalPosition, verticalPosition,
                                         cutDirection);
+      beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
     }
     beatEl.play();
-
-    // Set render order (back to front so decreasing render order as index increases).
-    const renderOrder = this.el.systems['render-order'].order.beats + 1 - songPosition;
-    beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
   },
 
   generateWall: function (wallInfo) {
