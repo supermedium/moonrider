@@ -38,6 +38,7 @@ AFRAME.registerComponent('stage-colors', {
 
   init: function () {
     this.el.addEventListener('cleargame', this.resetColors.bind(this));
+    this.el.sceneEl.addEventListener('playbuttonclick', this.resetColors.bind(this));
     setAnimations(this.el.sceneEl, this.data.colorScheme);
   },
 
@@ -46,6 +47,10 @@ AFRAME.registerComponent('stage-colors', {
         this.data.colorScheme !== oldData.colorScheme) {
       updateAnimations(this.el.sceneEl, this.data.colorScheme);
     }
+  },
+
+  play: function () {
+    this.el.emit('bgcolorsecondary', null, false);
   },
 
   setColor: function (target, code) {
