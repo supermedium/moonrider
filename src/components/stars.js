@@ -3,7 +3,7 @@ const COLORS = require('../constants/colors');
 AFRAME.registerComponent('stars', {
   schema: {
     color: {type: 'color', default: COLORS.initial.secondary},
-    count: {default: 800},
+    count: {default: 500},
     radius: {default: 500}
   },
 
