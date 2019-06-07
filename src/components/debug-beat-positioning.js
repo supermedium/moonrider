@@ -34,6 +34,10 @@ AFRAME.registerComponent('debug-beat-positioning', {
         });
       });
 
+      const wallEl = scene.components.pool__wall.requestEntity();
+      wallEl.components.wall.onGenerate(0.0015, 'left', 4, 4, true);
+      wallEl.play();
+
       document.getElementById('beatContainer').removeAttribute('bind__visible');
       document.getElementById('beatContainer').object3D.visible = true;
     }, 500);

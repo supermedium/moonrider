@@ -1,6 +1,7 @@
+import {SIZES} from './beat';
+
 const HEIGHT = 2.5;
 const CEILING_THICKNESS = 1.5;
-const CEILING_HEIGHT = 1.3;
 const CEILING_WIDTH = 4;
 
 /**
@@ -92,8 +93,9 @@ AFRAME.registerComponent('wall', {
         positions[i + 2] = modifiedVertexPos.z;
       }
 
+      const ceilingHeight = beatSystem.verticalPositions.middle + beatSystem.size / 2;
       this.el.getObject3D('mesh').geometry = this.geometry;
-      this.el.getObject3D('mesh').position.y = isCeiling ? CEILING_HEIGHT : 0.1;
+      this.el.getObject3D('mesh').position.y = isCeiling ? ceilingHeight : 0.1;
     };
   })(),
 

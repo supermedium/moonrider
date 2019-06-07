@@ -87,6 +87,7 @@ AFRAME.registerComponent('beat-system', {
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.punchEls = this.el.sceneEl.querySelectorAll('a-entity[punch]');
     this.curveEl = document.getElementById('curve');
+    this.size = SIZES[this.data.gameMode];
     this.supercurveFollow = null;
   },
 
@@ -101,6 +102,8 @@ AFRAME.registerComponent('beat-system', {
   },
 
   update: function (oldData) {
+    this.size = SIZES[this.data.gameMode];
+
     if (oldData.isLoading && !this.data.isLoading) {
       this.updateBeatPositioning();
       this.weaponOffset = this.data.gameMode === CLASSIC ? SWORD_OFFSET : PUNCH_OFFSET;
