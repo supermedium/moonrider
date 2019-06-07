@@ -62,8 +62,9 @@ const ROTATIONS = {
 };
 
 const SIZES = {
-  [CLASSIC]: 0.55,
-  [PUNCH]: 0.35
+  [CLASSIC]: 0.52,
+  [PUNCH]: 0.35,
+  [RIDE]: 0.4
 };
 
 AFRAME.registerComponent('beat-system', {
@@ -207,6 +208,7 @@ AFRAME.registerComponent('beat-system', {
     // Have punches be higher.
     const BOTTOM_HEIGHTS = {
       [CLASSIC]: 0.90,
+      [RIDE]: 0.90,
       [PUNCH]: 1.20
     };
 
