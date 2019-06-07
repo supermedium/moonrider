@@ -10,7 +10,6 @@ AFRAME.registerComponent('blade', {
     const el = this.el;
     const data = this.data;
 
-    this.bboxEl = this.el.querySelector('.bladeBbox');
     this.bladePosition = new THREE.Vector3();
     this.bladeTipPosition = new THREE.Vector3();
     this.bladeTipPreviousPosition = new THREE.Vector3();
