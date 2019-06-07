@@ -62,7 +62,7 @@ const ROTATIONS = {
 };
 
 const SIZES = {
-  [CLASSIC]: 0.52,
+  [CLASSIC]: 0.48,
   [PUNCH]: 0.35,
   [RIDE]: 0.4
 };
@@ -207,8 +207,8 @@ AFRAME.registerComponent('beat-system', {
   updateBeatPositioning: (function () {
     // Have punches be higher.
     const BOTTOM_HEIGHTS = {
-      [CLASSIC]: 0.90,
-      [RIDE]: 0.90,
+      [CLASSIC]: 0.95,
+      [RIDE]: 0.95,
       [PUNCH]: 1.20
     };
 
@@ -567,22 +567,22 @@ AFRAME.registerComponent('beat', {
    * Blade scoring.
    */
   calculateScoreBlade: function (bladeEl, angle) {
-    // 80% score on speed.
+    // 70% score on speed.
     let SUPER_SCORE_SPEED = 10;
     if (this.cutDirection === 'down') {
       SUPER_SCORE_SPEED = 22;
     }
     const speed = bladeEl.components.blade.strokeSpeed;
-    let score = (Math.min((speed / SUPER_SCORE_SPEED) * 100, 100) / 100) * 80;
+    let score = (Math.min((speed / SUPER_SCORE_SPEED) * 100, 100) / 100) * 70;
 
-    // 20% score on direction.
+    // 30% score on direction.
     if (this.data.type === DOT) {
       score += 20;
     } else {
       if (angle < ANGLE_MAX_SUPER) {
         score += 20;
       } else {
-        score += ((ANGLE_THRESHOLD - angle) / ANGLE_THRESHOLD) * 20;
+        score += ((ANGLE_THRESHOLD - angle) / ANGLE_THRESHOLD) * 30;
       }
     }
 
@@ -596,7 +596,7 @@ AFRAME.registerComponent('beat', {
   calculateScorePunch: function (punchEl) {
     // Get 60% of the score just by hitting the beat.
     let score = 60;
-    const SUPER_SCORE_SPEED = 6;
+    const SUPER_SCORE_SPEED = 5;
     const speed = punchEl.components.punch.speed;
     score += Math.min((speed / SUPER_SCORE_SPEED), 1) * 40;
     this.score(score);
