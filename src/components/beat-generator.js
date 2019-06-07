@@ -307,7 +307,18 @@ AFRAME.registerComponent('beat-generator', {
 
     if (!wallEl) { return; }
 
-    if (data.has3DOFVR && this.data.gameMode !== 'viewer') { return; }
+    // Entity was just created.
+    if (!wallEl.components.wall) {
+      setTimeout(() => { this.setupWall(wallEl, wallInfo); });
+    } else {
+      this.setupWall(wallEl, wallInfo);
+    }
+  },
+
+  setupWall: function (wallEl, wallInfo) {
+    const data = this.data;
+
+    if (data.has3DOFVR && data.gameMode !== 'viewer') { return; }
 
     const durationSeconds = 60 * (wallInfo._duration / this.bpm);
     const horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];
