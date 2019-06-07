@@ -9,30 +9,34 @@ const CEILING_WIDTH = 4;
 AFRAME.registerComponent('wall', {
   dependencies: ['material'],
 
-  schema: {
-    horizontalPosition: {default: 'middleleft',
-                         oneOf: ['left', 'middleleft', 'middleright', 'right']},
-    isCeiling: {default: false},
-    length: {default: 1},
-    songPosition: {type: 'number'},  // From 0 to 1.
-    width: {type: 'number'}
-  },
-
   init: function () {
     this.curveEl = document.getElementById('curve');
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.el.setObject3D('mesh', new THREE.Mesh());
     this.geometry = null;
     this.localPosition = new THREE.Vector3();
+    this.songPosition = undefined;
     this.tick = AFRAME.utils.throttleTick(this.tick.bind(this), 1000);
   },
 
-  update: function () {
-    const data = this.data;
-    const el = this.el;
+  play: function () {
+    this.el.object3D.visible = true;
+    this.el.setAttribute('data-weapon-particles', '');
+    this.el.setAttribute('data-wall-active', '');
+    this.el.setAttribute('raycastable-game', '');
+  },
 
-    if (!data.songPosition) { return; }
-    this.setWallGeometry(data.isCeiling);
+  tick: function (time, timeDelta) {
+    const curveProgress = this.curveFollowRig.components['supercurve-follow'].curveProgress;
+    const songProgress = this.curveEl.components.supercurve.curveProgressToSongProgress(
+      curveProgress);
+    if (songProgress >= this.songPosition + 0.08) { this.returnToPool(); }
+  },
+
+  onGenerate: function (songPosition, horizontalPosition, width, length, isCeiling) {
+    const el = this.el;
+    this.songPosition = songPosition;
+    this.setWallGeometry(songPosition, horizontalPosition, width, length, isCeiling);
     el.getObject3D('mesh').material.uniforms.opacity.value = 0;
     el.object3D.position.y = -5;
     el.components.animation__fadein.beginAnimation();
@@ -48,27 +52,26 @@ AFRAME.registerComponent('wall', {
     const left = new THREE.Vector3();
     const right = new THREE.Vector3();
 
-    return function (isCeiling) {
+    return function (songPosition, horizontalPosition, width, length, isCeiling) {
       const beatSystem = this.el.sceneEl.components['beat-system'];
-      const data = this.data;
       const supercurve = this.curveEl.components.supercurve;
 
-      const lengthPercent = data.length / supercurve.length;
-      const startPercent = data.songPosition;
-      const endPercent = data.songPosition + lengthPercent;
+      const lengthPercent = length / supercurve.length;
+      const startPercent = songPosition;
+      const endPercent = songPosition + lengthPercent;
 
       const height = isCeiling ? CEILING_THICKNESS : HEIGHT;
-      const width = isCeiling ? CEILING_WIDTH : data.width;
+      width = isCeiling ? CEILING_WIDTH : width;
 
       // Offset vectors to get the left / right vertex points to pass into curve helper.
       // Note that curve is upside down so the positions are reversed...normally, this would
       // read as `+ (width / 2) - 0.25`.
-      const centerPosition = (-1 * beatSystem.horizontalPositions[data.horizontalPosition]) -
+      const centerPosition = (-1 * beatSystem.horizontalPositions[horizontalPosition]) -
                              (width / 2) + 0.25;
-      left.x = data.isCeiling
+      left.x = isCeiling
         ? - 1 * width / 2
         : centerPosition - (width / 2);
-      right.x = data.isCeiling
+      right.x = isCeiling
         ? width / 2
         : centerPosition + (width / 2);
 
@@ -93,23 +96,6 @@ AFRAME.registerComponent('wall', {
       this.el.getObject3D('mesh').position.y = isCeiling ? CEILING_HEIGHT : 0.1;
     };
   })(),
-
-  play: function () {
-    this.el.object3D.visible = true;
-    this.el.setAttribute('data-weapon-particles', '');
-    this.el.setAttribute('data-wall-active', '');
-    this.el.setAttribute('raycastable-game', '');
-  },
-
-  tick: function (time, timeDelta) {
-    const data = this.data;
-    const curveProgress = this.curveFollowRig.components['supercurve-follow'].curveProgress;
-    const songProgress = this.curveEl.components.supercurve.curveProgressToSongProgress(
-      curveProgress);
-    if (songProgress >= data.songPosition + 0.08) {
-      this.returnToPool();
-    }
-  },
 
   returnToPool: function () {
     this.el.object3D.visible = false;

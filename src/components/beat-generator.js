@@ -297,48 +297,42 @@ AFRAME.registerComponent('beat-generator', {
     beatEl.play();
 
     // Set render order (back to front so decreasing render order as index increases).
-    beatEl.setAttribute(
-      'render-order',
-      this.el.systems['render-order'].order.beats + 1 - songPosition);
+    const renderOrder = this.el.systems['render-order'].order.beats + 1 - songPosition;
+    beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
   },
 
-  generateWall: (function () {
-    const wallObj = {};
+  generateWall: function (wallInfo) {
+    const data = this.data;
+    const wallEl = this.el.sceneEl.components.pool__wall.requestEntity();
 
-    return function (wallInfo) {
-      const data = this.data;
-      const wallEl = this.el.sceneEl.components.pool__wall.requestEntity();
+    if (!wallEl) { return; }
 
-      if (!wallEl) { return; }
+    if (data.has3DOFVR && this.data.gameMode !== 'viewer') { return; }
 
-      if (data.has3DOFVR && this.data.gameMode !== 'viewer') { return; }
+    const durationSeconds = 60 * (wallInfo._duration / this.bpm);
+    const horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];
+    const isCeiling = wallInfo._type === 1;
+    const length = durationSeconds * data.speed;
+    const width = wallInfo._width / 2;  // We want half the reported width.
 
-      const durationSeconds = 60 * (wallInfo._duration / this.bpm);
-      wallObj.horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];
-      wallObj.isCeiling = wallInfo._type === 1;
-      wallObj.length = durationSeconds * data.speed;
-      wallObj.width = wallInfo._width / 2;  // We want half the reported width.
+    // Factor in beat anticipation time (percentage).
+    const positionOffset = (BEAT_ANTICIPATION_TIME) / data.songDuration;
 
-      // Factor in beat anticipation time (percentage).
-      const positionOffset = (BEAT_ANTICIPATION_TIME) / data.songDuration;
+    // Song position is from 0 to 1 along the curve (percentage).
+    const durationMs = data.songDuration * 1000;
+    const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
+    const songPosition = (wallInfo._time * msPerBeat) / durationMs + positionOffset;
 
-      // Song position is from 0 to 1 along the curve (percentage).
-      const durationMs = data.songDuration * 1000;
-      const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
-      wallObj.songPosition = (wallInfo._time * msPerBeat) / durationMs + positionOffset;
+    wallEl.components.wall.onGenerate(songPosition, horizontalPosition, width, length,
+                                      isCeiling);
+    wallEl.play();
 
-      wallEl.setAttribute('wall', wallObj);
-      wallEl.play();
-
-      // Set render order (back to front so decreasing render order as index increases).
-      // For walls, set as the back end of the wall.
-      const lengthPercent = wallObj.length / this.curveEl.components.supercurve.length;
-      wallEl.setAttribute(
-        'render-order',
-        this.el.systems['render-order'].order.beats + 1 -
-        (wallObj.songPosition + lengthPercent));
-    };
-  })(),
+    // Set render order (back to front so decreasing render order as index increases).
+    // For walls, set as the back end of the wall.
+    const lengthPercent = length / this.curveEl.components.supercurve.length;
+    wallEl.object3D.renderOrder = this.el.systems['render-order'].order.beats + 1 -
+                                  (songPosition + lengthPercent);
+  },
 
   generateEvent: function (event) {
     switch (event._type) {
