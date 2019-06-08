@@ -265,6 +265,7 @@ AFRAME.registerComponent('supercurve-follow', {
 
   init: function () {
     this.curveProgress = 0;
+    this.songProgress = 0;
   },
 
   update: function () {
@@ -304,8 +305,8 @@ AFRAME.registerComponent('supercurve-follow', {
 
       // Update lookAt down the tangent.
       curve.getPointAt(this.curveProgress, this.el.object3D.position);
-      supercurve.alignToCurve(supercurve.curveProgressToSongProgress(this.curveProgress),
-                              this.el.object3D);
+      this.songProgress = supercurve.curveProgressToSongProgress(this.curveProgress);
+      supercurve.alignToCurve(this.songProgress, this.el.object3D);
     };
   })()
 });

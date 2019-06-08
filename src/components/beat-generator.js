@@ -335,13 +335,13 @@ AFRAME.registerComponent('beat-generator', {
     const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     const songPosition = (wallInfo._time * msPerBeat) / durationMs + positionOffset;
 
+    const lengthPercent = length / this.curveEl.components.supercurve.length;
     wallEl.components.wall.onGenerate(songPosition, horizontalPosition, width, length,
-                                      isCeiling);
+                                      isCeiling, songPosition + lengthPercent);
     wallEl.play();
 
     // Set render order (back to front so decreasing render order as index increases).
     // For walls, set as the back end of the wall.
-    const lengthPercent = length / this.curveEl.components.supercurve.length;
     wallEl.object3D.renderOrder = this.el.systems['render-order'].order.beats + 1 -
                                   (songPosition + lengthPercent);
   },

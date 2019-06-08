@@ -15,6 +15,8 @@ AFRAME.registerComponent('wall', {
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.el.setObject3D('mesh', new THREE.Mesh());
     this.geometry = null;
+    this.isCeiling = false;
+    this.isRaycastable = false;
     this.localPosition = new THREE.Vector3();
     this.songPosition = undefined;
     this.tick = AFRAME.utils.throttleTick(this.tick.bind(this), 1000);
@@ -22,20 +24,27 @@ AFRAME.registerComponent('wall', {
 
   play: function () {
     this.el.object3D.visible = true;
-    this.el.setAttribute('data-weapon-particles', '');
-    this.el.setAttribute('data-wall-active', '');
-    this.el.setAttribute('raycastable-game', '');
   },
 
   tick: function (time, timeDelta) {
-    const curveProgress = this.curveFollowRig.components['supercurve-follow'].curveProgress;
-    const songProgress = this.curveEl.components.supercurve.curveProgressToSongProgress(
-      curveProgress);
-    if (songProgress >= this.songPosition + 0.08) { this.returnToPool(); }
+    const songProgress = this.curveFollowRig.components['supercurve-follow'].songProgress;
+
+    if (!this.isRaycastable && songProgress + 0.01 >= this.songPosition) {
+      this.isRaycastable = true;
+      this.el.setAttribute('data-wall-active', '');
+      if (!this.isCeiling) {
+        this.el.setAttribute('data-weapon-particles', '');
+        this.el.setAttribute('raycastable-game', '');
+      }
+    }
+
+    if (songProgress >= this.backPosition + 0.01) { this.returnToPool(); }
   },
 
-  onGenerate: function (songPosition, horizontalPosition, width, length, isCeiling) {
+  onGenerate: function (songPosition, horizontalPosition, width, length, isCeiling, backPosition) {
     const el = this.el;
+    this.isCeiling = isCeiling;
+    this.backPosition = backPosition;
     this.songPosition = songPosition;
     this.setWallGeometry(songPosition, horizontalPosition, width, length, isCeiling);
     el.getObject3D('mesh').material.uniforms.opacity.value = 0;
@@ -93,7 +102,10 @@ AFRAME.registerComponent('wall', {
         positions[i + 2] = modifiedVertexPos.z;
       }
 
-      const ceilingHeight = beatSystem.verticalPositions.middle + beatSystem.size / 2;
+      // Notes are higher in punch so lower a tad.
+      let ceilingHeight = beatSystem.verticalPositions.middle + beatSystem.size / 2;
+      if (beatSystem.data.gameMode === 'punch') { ceilingHeight -= 0.1; }
+
       this.el.getObject3D('mesh').geometry = this.geometry;
       this.el.getObject3D('mesh').position.y = isCeiling ? ceilingHeight : 0.1;
     };
@@ -104,6 +116,8 @@ AFRAME.registerComponent('wall', {
     this.el.removeAttribute('data-weapon-particles');
     this.el.removeAttribute('data-wall-active');
     this.el.removeAttribute('raycastable-game');
+    this.isCeiling = false;
+    this.isRaycastable = false;
     if (this.el.isPlaying) {
       this.el.sceneEl.components.pool__wall.returnEntity(this.el);
     }

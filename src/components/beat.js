@@ -120,8 +120,7 @@ AFRAME.registerComponent('beat-system', {
 
     const beatsToCheck = this.beatsToCheck;
     const curve = this.supercurve.curve;
-    const progress = this.supercurve.curveProgressToSongProgress(
-      this.supercurveFollow.curveProgress);
+    const progress = this.supercurveFollow.songProgress;
 
     // Filter for beats that should be checked for collisions.
     beatsToCheck.length = 0;
