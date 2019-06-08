@@ -550,17 +550,18 @@ AFRAME.registerComponent('beat', {
    */
   score: function (score) {
     const el = this.el;
-
     const hitEventDetail = this.hitEventDetail;
     hitEventDetail.score = score;
     this.queueBeatHitEvent = hitEventDetail;
 
+    /*
     // Super FX.
     if (score > 80) {
-      // this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
-      //  el.object3D, this.data.color);
-      // this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
+      this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
+      el.object3D, this.data.color);
+      this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
     }
+    */
   },
 
   /**
