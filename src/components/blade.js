@@ -10,12 +10,15 @@ AFRAME.registerComponent('blade', {
     const el = this.el;
     const data = this.data;
 
-    this.bladePosition = new THREE.Vector3();
-    this.bladeTipPosition = new THREE.Vector3();
-    this.bladeTipPreviousPosition = new THREE.Vector3();
+    this.bladeBottomPosition = new THREE.Vector3();
     this.rigEl = document.getElementById('curveFollowRig');
     this.strokeDirectionVector = new THREE.Vector3();
     this.strokeSpeed = 0;
+    this.bladeTipPositions = [
+      new THREE.Vector3(),  // Oldest.
+      new THREE.Vector3(),
+      new THREE.Vector3()  // Most recent.
+    ];
     this.bladeWorldPositions = [
       new THREE.Vector3(),
       new THREE.Vector3(),
@@ -38,35 +41,40 @@ AFRAME.registerComponent('blade', {
   },
 
   updateVelocity: function (delta) {
+    const bladeTipPosition = this.bladeTipPositions[2];
     const data = this.data;
     const rig = this.rigEl.object3D;
 
     // Tip of the blade position in world coordinates.
-    this.bladeTipPosition.set(0, 0, -0.89);
-    this.bladePosition.set(0, 0, 0.22);
+    bladeTipPosition.set(0, 0, -0.89);
+    this.bladeBottomPosition.set(0, 0, 0.22);
 
     const bladeObj = this.el.object3D;
-    bladeObj.localToWorld(this.bladeTipPosition);
-    bladeObj.localToWorld(this.bladePosition);
+    bladeObj.localToWorld(bladeTipPosition);
+    bladeObj.localToWorld(this.bladeBottomPosition);
 
     // Previous frame.
     this.bladeWorldPositions[2].copy(this.bladeWorldPositions[0]);
     this.bladeWorldPositions[3].copy(this.bladeWorldPositions[1]);
 
     // Current frame.
-    this.bladeWorldPositions[0].copy(this.bladeTipPosition);
-    this.bladeWorldPositions[1].copy(this.bladePosition);
+    this.bladeWorldPositions[0].copy(bladeTipPosition);
+    this.bladeWorldPositions[1].copy(this.bladeBottomPosition);
 
-    rig.worldToLocal(this.bladeTipPosition);
-    rig.worldToLocal(this.bladePosition);
+    rig.worldToLocal(bladeTipPosition);
+    rig.worldToLocal(this.bladeBottomPosition);
 
     // Distance covered but the blade tip in one frame.
-    this.strokeDirectionVector.copy(this.bladeTipPosition).sub(this.bladeTipPreviousPosition);
-    const distance = this.strokeDirectionVector.length();
+    this.strokeDirectionVector.copy(bladeTipPosition).sub(this.bladeTipPositions[0]);
     this.strokeDirectionVector.z = 0;
     this.strokeDirectionVector.normalize();
+
+    const distance = this.strokeDirectionVector.length();
     this.strokeSpeed = distance / (delta / 1000);
-    this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
+
+    // Move down the queue. Calculate direction through several frames for less noise.
+    const oldest = this.bladeTipPositions.shift();
+    this.bladeTipPositions.push(oldest);
   },
 
   checkCollision: (function () {

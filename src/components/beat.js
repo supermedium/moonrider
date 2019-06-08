@@ -148,12 +148,12 @@ AFRAME.registerComponent('beat-system', {
       if (inFront) { beatsToCheck.push(beat); }
     }
 
-    // No beats to check means to collision to check.
-    if (!beatsToCheck.length) { return; }
-
     // Update bounding boxes and velocities.
     this.weapons[0].tickBeatSystem(t, dt);
     this.weapons[1].tickBeatSystem(t, dt);
+
+    // No beats to check means to collision to check.
+    if (!beatsToCheck.length) { return; }
 
     // Check hits.
     for (let i = 0; i < beatsToCheck.length; i++) {
@@ -492,9 +492,7 @@ AFRAME.registerComponent('beat', {
     this.beatSystem.unregisterBeat(this);
     this.el.object3D.position.set(0, 0, -9999);
     this.el.object3D.visible = false;
-    if (this.el.isPlaying) {
-      this.el.sceneEl.components[this.poolName].returnEntity(this.el);
-    }
+    this.el.sceneEl.components[this.poolName].returnEntity(this.el);
     if (this.shadow) {
       this.el.sceneEl.components['pool__beat-shadow'].returnEntity(this.shadow);
       this.shadow.object3D.visible = false;
@@ -556,13 +554,12 @@ AFRAME.registerComponent('beat', {
     const hitEventDetail = this.hitEventDetail;
     hitEventDetail.score = score;
     this.queueBeatHitEvent = hitEventDetail;
-    el.sceneEl.emit('textglowbold', null, false);
 
     // Super FX.
     if (score > 80) {
-      this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
-        el.object3D, this.data.color);
-      this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
+      // this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
+      //  el.object3D, this.data.color);
+      // this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
     }
   },
 

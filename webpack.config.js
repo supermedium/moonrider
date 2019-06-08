@@ -5,7 +5,7 @@ var webpack = require('webpack');
 const COLORS = require('./src/constants/colors.js');
 
 PLUGINS = [
-  new webpack.EnvironmentPlugin(['NODE_ENV']),
+  new webpack.EnvironmentPlugin(['DEBUG_LOG', 'NODE_ENV']),
   new webpack.HotModuleReplacementPlugin(),
   // @firebase/polyfill not loading, stub it with some random module.
   new webpack.NormalModuleReplacementPlugin(
