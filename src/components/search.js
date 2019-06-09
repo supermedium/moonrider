@@ -68,6 +68,13 @@ AFRAME.registerComponent('search', {
     this.queryObject.query = query;
     this.queryObject.hitsPerPage = query ? 30 : 150;
 
+    // Favorites.
+    if (this.data.playlist === 'favorites') {
+      this.eventDetail.results = JSON.parse(localStorage.getItem('favorites'));
+      this.el.sceneEl.emit('searchresults', this.eventDetail);
+      return;
+    }
+
     if (this.data.difficultyFilter || this.data.genre || this.data.playlist) {
       filters.length = 0;
 

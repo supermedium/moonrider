@@ -193,6 +193,17 @@
       bind__visible="!!menuSelectedChallenge.id"
       position="0.8394583182784089 0 0.001">
       <a-entity
+        id="menuFavoriteButton"
+        bind__raycastable="menuActive && !!menuSelectedChallenge.id"
+        animation__mouseenter="property: components.material.material.opacity; from: 0.35; to: 1; startEvents: mouseenter; dur: 150; easing: easeInOutCubic"
+        animation__mouseleave="property: components.material.material.opacity; from: 1; to: 0.35; startEvents: mouseleave; dur: 150; easing: easeInOutCubic"
+        geometry="primitive: plane; width: 0.1; height: 0.1"
+        material="src: #favoriteImg; shader: flat; transparent: true; opacity: 0.35"
+        position="0.46 0.68 0.001"
+        proxy-event="event: click; to: a-scene; as: favorite"
+        render-order="menuitem"></a-entity>
+
+      <a-entity
         id="menuSelectedChallengeImage"
         bind__menu-selected-challenge-image="selectedChallengeId: menuSelectedChallenge.id"
         geometry="primitive: plane; height: 0.4; width: 0.4"

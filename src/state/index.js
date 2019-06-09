@@ -30,6 +30,17 @@ const SKIP_INTRO = AFRAME.utils.getUrlParameter('skipintro') === 'true';
 
 const colorScheme = localStorage.getItem('colorScheme') || 'default';
 
+let favorites = localStorage.getItem('favorites');
+if (favorites) {
+  try {
+    favorites = JSON.parse(favorites);
+  } catch (e) {
+    favorites = [];
+  }
+} else {
+  favorites = [];
+}
+
 /**
  * State handler.
  *
@@ -67,6 +78,7 @@ AFRAME.registerState({
     damage: 0,
     difficultyFilter: 'All',
     difficultyFilterMenuOpen: false,
+    favorites: favorites,
     gameMode: 'ride',
     genre: '',
     genres: require('../constants/genres'),
@@ -308,6 +320,24 @@ AFRAME.registerState({
           });
         }
       } catch (e) { }
+    },
+
+    favorite: (state, id) => {
+      const challenge = challengeDataStore[state.menuSelectedChallenge.id];
+      if (!challenge) { return; }
+      state.favorites.push(challenge)
+      localStorage.setItem('favorites', JSON.stringify(state.favorites));
+    },
+
+    favoriteremove: (state) => {
+      const id = state.menuSelectedChallenge.id;
+      for (let i = 0; i < state.favorites.length; i++) {
+        if (state.favorites[i].id === id) {
+          state.favorites.splice(i, 1);
+          localStorage.setItem('favorites', JSON.stringify(state.favorites));
+          return;
+        }
+      }
     },
 
     gamemenuresume: state => {
