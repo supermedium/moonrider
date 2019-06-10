@@ -74,6 +74,10 @@ AFRAME.registerComponent('song-preview-system', {
     const data = this.data;
     const preloadQueue = this.preloadQueue;
 
+    if (!this.audioStore[data.selectedChallengeId]) {
+      document.querySelector(`[song-preview][data-bind-for-key="${data.selectedChallengeId}"]`).components['song-preview'].queue();
+    }
+
     this.log(`[song-preview] Prioritizing loading of ${data.selectedChallengeId}`);
     this.priorityLoadingChallengeId = data.selectedChallengeId;
 
@@ -264,7 +268,10 @@ AFRAME.registerComponent('song-preview', {
 
   update: function (oldData) {
     if (!this.el.sceneEl.components['song-preview-system']) { return; }
+    this.queue();
+  },
 
+  queue: function () {
     this.el.sceneEl.components['song-preview-system'].queuePreloadSong(
       this.data.challengeId, this.data.previewStartTime
     );

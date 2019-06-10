@@ -117,6 +117,7 @@ AFRAME.registerState({
       id: '',
       index: -1,
       image: '',
+      isFavorited: false,
       numBeats: undefined,
       songDuration: 0,
       songInfoText: '',
@@ -322,21 +323,28 @@ AFRAME.registerState({
       } catch (e) { }
     },
 
-    favorite: (state, id) => {
-      const challenge = challengeDataStore[state.menuSelectedChallenge.id];
-      if (!challenge) { return; }
-      state.favorites.push(challenge)
-      localStorage.setItem('favorites', JSON.stringify(state.favorites));
-    },
-
-    favoriteremove: (state) => {
+    favoritetoggle: state => {
       const id = state.menuSelectedChallenge.id;
-      for (let i = 0; i < state.favorites.length; i++) {
-        if (state.favorites[i].id === id) {
-          state.favorites.splice(i, 1);
-          localStorage.setItem('favorites', JSON.stringify(state.favorites));
-          return;
+      const challenge = challengeDataStore[id];
+
+      if (!challenge) { return; }
+
+      if (state.menuSelectedChallenge.isFavorited) {
+        // Unfavorite.
+        state.menuSelectedChallenge.isFavorited = false;
+        for (let i = 0; i < state.favorites.length; i++) {
+          if (state.favorites[i].id === id) {
+            state.favorites.splice(i, 1);
+            localStorage.setItem('favorites', JSON.stringify(state.favorites));
+            return;
+          }
         }
+      } else {
+        // Favorite.
+        state.menuSelectedChallenge.isFavorited = true;
+        if (state.favorites.filter(favorite => favorite.id === id).length) { return; }
+        state.favorites.push(challenge)
+        localStorage.setItem('favorites', JSON.stringify(state.favorites));
       }
     },
 
@@ -481,6 +489,10 @@ AFRAME.registerState({
 
       computeMenuSelectedChallengeIndex(state);
       state.isSearching = false;
+
+      // Favorited.
+      const isFavorited = !!state.favorites.filter(favorite => favorite.id === id).length;
+      state.menuSelectedChallenge.isFavorited = isFavorited;
 
       // Clear leaderboard.
       clearLeaderboard(state);

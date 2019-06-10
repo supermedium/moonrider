@@ -1,4 +1,5 @@
 module.exports = [
+  {name: 'favorites', author: 'You!', title: 'Your Saved Favorites'},
   {name: 'maps-for-new-players', author: 'hoppaw', title: 'Maps for New Players'},
   {name: 'bsmg-anniversary-song-pack', author: 'elliotttate', title: 'BeastSaber Anniversary Pack'},
   {name: 'fantasticflowvol1', author: 'elliotttate', title: 'Songs with Fantastic Flow Vol. 1'},
