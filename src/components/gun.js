@@ -57,35 +57,12 @@ AFRAME.registerComponent('gun', {
     el.setAttribute('gun', 'activeBulletType', evt.detail);
   },
 
-  beatSystemTick: function () {
+  tickBeatSystem: function () {
 
   },
 
-  checkCollisions: function () {
+  checkCollision: function (beat) {
 
-  }
-});
-
-/**
- * Bullet template component
- */
-AFRAME.registerComponent('bullet', {
-  dependencies: ['material'],
-
-  schema: {
-    damagePoints: {default: 1.0, type: 'float'},
-    maxTime: {default: 4.0, type: 'float'},  // seconds.
-    name: {default: 'normal', type: 'string'},
-    poolSize: {default: 10, type: 'int', min: 0},
-    speed: {default: 8.0, type: 'float'}  // meters / sec.
-  },
-
-  init: function () {
-    const el = this.el;
-    el.object3D.visible = false;
-    el.addEventListener('object3dset', evt => {
-      el.sceneEl.systems.bullet.registerBullet(this);
-    });
   }
 });
 
@@ -99,8 +76,8 @@ AFRAME.registerSystem('bullet', {
     this.el.sceneEl.appendChild(bulletContainer);
 
     this.container = bulletContainer.object3D;
-    this.pool = {};
-    this.targets = [];
+    this.activeBullets = [];
+    this.bulletPool = {};
   },
 
   /**
@@ -121,21 +98,9 @@ AFRAME.registerSystem('bullet', {
       bullet.name = bulletData.name + i;
       bullet.speed = bulletData.speed;
       bullet.time = 0;
-      bullet.visible = false;
+      bullet.active = false;
       this.pool[bulletData.name].push(bullet);
     }
-  },
-
-  /**
-   * Register single target.
-   */
-  registerTarget: function (targetComponent, isStatic) {
-    this.targets.push(targetComponent.el);
-    if (!isStatic) { return; }
-
-    // Precalculate bounding box of bullet.
-    const targetObj = targetComponent.el.object3D;
-    targetObj.boundingBox = new THREE.Box3().setFromObject(targetObj);
   },
 
   shoot: function (bulletName, gun) {
@@ -160,7 +125,7 @@ AFRAME.registerSystem('bullet', {
   },
 
   shootBullet: function (bullet, gun) {
-    bullet.visible = true;
+    bullet.active = true;
     bullet.time = 0;
     gun.getWorldPosition(bullet.position);
     gun.getWorldDirection(bullet.direction);
@@ -179,7 +144,7 @@ AFRAME.registerSystem('bullet', {
 
       for (let i = 0; i < this.container.children.length; i++) {
         const bullet = this.container.children[i];
-        if (!bullet.visible) { continue; }
+        if (!bullet.active) { continue; }
         bullet.time += delta;
         if (bullet.time >= bullet.maxTime) {
           this.killBullet(bullet);
@@ -203,7 +168,7 @@ AFRAME.registerSystem('bullet', {
             isHit = targetBox.intersectsBox(bulletBox);
           }
           if (isHit) {
-            this.killBullet(bullet);
+            bullet.active = false;
             target.components.target.onBulletHit(bullet);
             target.emit('hit', null);
             break;
@@ -211,45 +176,28 @@ AFRAME.registerSystem('bullet', {
         }
       }
     };
-  })(),
-
-  killBullet: function (bullet) {
-    bullet.visible = false;
-  }
+  })()
 });
 
 /**
- * target component
+ * Bullet template component
  */
-AFRAME.registerComponent('target', {
+AFRAME.registerComponent('bullet', {
+  dependencies: ['material'],
+
   schema: {
-    active: {default: true},
-    healthPoints: {default: 1, type: 'float'},
-    static: {default: true},
+    damagePoints: {default: 1.0, type: 'float'},
+    maxTime: {default: 4.0, type: 'float'},  // seconds.
+    name: {default: 'normal', type: 'string'},
+    poolSize: {default: 10, type: 'int', min: 0},
+    speed: {default: 8.0, type: 'float'}  // meters / sec.
   },
 
   init: function () {
     const el = this.el;
+    el.object3D.visible = false;
     el.addEventListener('object3dset', evt => {
-      el.sceneEl.systems.bullet.registerTarget(this, this.data.static);
+      el.sceneEl.systems.bullet.registerBullet(this);
     });
-  },
-
-  /**
-   * `this.healthPoints` is current hit points with taken damage.
-   * `this.data.healthPoints` is total hit points.
-   */
-  update: function (oldData) {
-    this.healthPoints = this.data.healthPoints;
-  },
-
-  /**
-   * Take damage.
-   */
-  onBulletHit: function (bullet) {
-    if (!this.data.active) { return; }
-    this.lastBulletHit = bullet;
-    this.healthPoints -= bullet.damagePoints;
-    if (this.healthPoints <= 0) { this.el.emit('die'); }
   }
 });
