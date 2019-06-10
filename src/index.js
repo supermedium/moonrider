@@ -1,5 +1,8 @@
 function requireAll (req) { req.keys().forEach(req); }
 
+console.time = () => {};
+console.timeEnd = () => {};
+
 require('../vendor/BufferGeometryUtils');
 
 require('aframe-aabb-collider-component');

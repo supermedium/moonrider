@@ -166,6 +166,10 @@ AFRAME.registerComponent('debug-controller', {
         hand.querySelector('.punch').object3D.visible = true;
         hand.querySelector('.punch').object3D.visible = true;
         hand.querySelector('.bladeHandle').object3D.visible = false;
+      } else if (type === 'gun') {
+        hand.querySelector('.gun').removeAttribute('bind__visible');
+        hand.querySelector('.gun').object3D.visible = true;
+        hand.querySelector('.bladeHandle').object3D.visible = false;
       } else if (type === 'ride') {
         hand.querySelector('.handStar').removeAttribute('bind__visible');
         hand.querySelector('.handStar').object3D.visible = true;

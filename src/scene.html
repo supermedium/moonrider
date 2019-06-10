@@ -148,6 +148,7 @@
           class="weapon"
           bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
           bind__haptics-wall="enabled: isPlaying && gameMode === 'classic'"
+          bind__gun="enabled: isPlaying && gameMode === 'gun'"
           bind__menu-controls="enabled: mainMenuActive"
           bind__pauser="enabled: isPlaying"
           bind__punch="enabled: isPlaying && gameMode === 'punch'"
@@ -243,6 +244,18 @@
                 material="shader: handStar"
                 animation__pulse="property: components.material.material.uniforms.pulse.value; from: 2; to: 0; dur: 300; startEvents: plumepulse; easing: easeInOutQuad"
                 animation__scale="property: scale; from: 2 2 2; to: 1 1 1; dur: 1200; startEvents: plumepulse; easing: easeInOutQuad"></a-entity>
+          </a-entity>
+
+          <!-- Gun. -->
+          <a-entity
+            id="{{ hand }}Gun"
+            class="gun"
+            render-order="weapon"
+            bind__visible="isPlaying && gameMode === 'gun'">
+              <a-entity
+                bind__json-model="enabled: isPlaying && gameMode === 'gun'"
+                class="gunModel"
+                json-model="src: url(assets/models/gun.json)"></a-entity>
           </a-entity>
         </a-entity>
 
