@@ -72,6 +72,11 @@
     <require path="assets.html"></require>
   </a-assets>
 
+  <!-- Templates. -->
+  <a-entity id="gunModelTemplate" supercraft-loader="name: probable-representative; includeEnvironment: false" visible="false"></a-entity>
+  <a-entity id="leftBulletTemplate" bind__material="color: colorPrimary; emissive: colorPrimary" bullet="name: leftBullet; speed: 30.0; poolSize: 10; maxTime: 2" geometry="primitive: icosahedron; radius: 0.1" material="emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
+  <a-entity id="rightBulletTemplate" bind__material="color: colorSecondary; emissive: colorSecondary" bullet="name: rightBullet; speed: 30.0; poolSize: 10; maxTime: 2" geometry="primitive: icosahedron; radius: 0.1" material="emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
+
   <a-entity id="beatObjTemplate" obj-model="obj: #beatObj" visible="false"></a-entity>
   <a-entity id="redBeatObjTemplate" obj-model="obj: #redBeatObj" visible="false"></a-entity>
   <a-entity id="blueBeatObjTemplate" obj-model="obj: #blueBeatObj" visible="false"></a-entity>
@@ -253,9 +258,9 @@
             render-order="weapon"
             bind__visible="isPlaying && gameMode === 'gun'">
               <a-entity
-                bind__json-model="enabled: isPlaying && gameMode === 'gun'"
                 class="gunModel"
-                json-model="src: url(assets/models/gun.json)"></a-entity>
+                shooter="activeBulletType: {{ hand }}Bullet; bulletTypes: {{ hand }}Bullet"
+                supercraft-thing="from: #gunModelTemplate; name: thing30; resetOrigin: true; ignorePosition: true"></a-entity>
           </a-entity>
         </a-entity>
 

@@ -5,24 +5,24 @@ AFRAME.registerComponent('gun', {
   schema: {
     activeBulletType: {type: 'string', default: 'normal'},
     bulletTypes: {type: 'array', default: ['normal']},
-    cycle: {default: false}
+    cycle: {default: false},
+    enabled: {default: false}
   },
 
   init: function () {
-    this.el.addEventListener('shoot', this.onShoot.bind(this));
-    this.el.addEventListener('changebullet', this.onChangeBullet.bind(this));
     this.bulletSystem = this.el.sceneEl.systems.bullet;
   },
 
-  /**
-   * Listent to `shoot` action / event to tell bullet system to fire a bullet.
-   */
-  onShoot: function () {
-    this.bulletSystem.shoot(this.data.activeBulletType, this.el.object3D);
+  events: {
+    triggerdown: function shoot (evt) {
+      if (!this.data.enabled) { return; }
+      this.bulletSystem.shoot(this.data.activeBulletType, this.el.object3D);
+    }
   },
 
   /**
    * Listen to `changebullet` action / event telling the gun to change bullet type.
+   * Currently unused.
    */
   onChangeBullet: function (evt) {
     var data = this.data;
@@ -55,6 +55,14 @@ AFRAME.registerComponent('gun', {
 
     // Direct set bullet type.
     el.setAttribute('gun', 'activeBulletType', evt.detail);
+  },
+
+  beatSystemTick: function () {
+
+  },
+
+  checkCollisions: function () {
+
   }
 });
 
