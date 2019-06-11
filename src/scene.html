@@ -164,6 +164,7 @@
           bind__trail="colorScheme: colorScheme; enabled: isPlaying && gameMode === 'classic'"
           controller="hand: {{ hand }}"
           data-hand="{{ hand }}"
+          gun="activeBulletType: {{ hand }}Bullet"
           haptics="events: mouseenter; dur: 35; force: 0.075"
           haptics__beat="events: beathaptic; dur: 90; force: 0.55"
           haptics__draw="events: drawblade; dur: 750; force: 0.025"
@@ -259,7 +260,6 @@
             bind__visible="isPlaying && gameMode === 'gun'">
               <a-entity
                 class="gunModel"
-                shooter="activeBulletType: {{ hand }}Bullet"
                 supercraft-thing="from: #gunModelTemplate; name: thing30; resetOrigin: true; ignorePosition: true"></a-entity>
           </a-entity>
         </a-entity>

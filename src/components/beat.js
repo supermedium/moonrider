@@ -25,6 +25,7 @@ const syncTestVector3 = new THREE.Vector3();
 
 const MINE = 'mine';
 const CLASSIC = 'classic';
+const GUN = 'gun';
 const DOT = 'dot';
 const PUNCH = 'punch';
 const RIDE = 'ride';
@@ -63,13 +64,14 @@ const ROTATIONS = {
 
 const SIZES = {
   [CLASSIC]: 0.48,
+  [GUN]: 0.48,
   [PUNCH]: 0.35,
   [RIDE]: 0.4
 };
 
 AFRAME.registerComponent('beat-system', {
   schema: {
-    gameMode: {default: 'classic', oneOf: ['classic', 'punch', 'ride']},
+    gameMode: {default: 'classic', oneOf: ['classic', 'gun', 'punch', 'ride']},
     hasVR: {default: false},
     inVR: {default: false},
     isLoading: {default: false},
@@ -210,6 +212,7 @@ AFRAME.registerComponent('beat-system', {
     // Have punches be higher.
     const BOTTOM_HEIGHTS = {
       [CLASSIC]: 0.95,
+      [GUN]: 0.95,
       [RIDE]: 0.95,
       [PUNCH]: 1.20
     };

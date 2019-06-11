@@ -22,7 +22,7 @@ AFRAME.registerComponent('debug-controller', {
     window.addEventListener('click', evt => {
       if (!evt.isTrusted) { return; }
       primaryHand.emit('triggerdown');
-      primaryHand.emit('triggerup');
+      secondaryHand.emit('triggerdown');
     });
 
     if (AFRAME.utils.getUrlParameter('debug') === 'oculus') {

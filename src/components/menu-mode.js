@@ -5,11 +5,13 @@ const iconPositions = {
   punchvr: 0.87,
   ride2d: 0.87,
   ridevr: 0.15,
-  viewer2d: 0.15
+  viewer2d: 0.15,
+  gunvr: 0
 };
 
 const modeMap = {
   classicvr: 'classic',
+  gunvr: 'gun',
   punchvr: 'punch',
   ride2d: 'ride',
   ridevr: 'ride',

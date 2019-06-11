@@ -9,12 +9,14 @@ AFRAME.registerComponent('gun', {
 
   init: function () {
     this.bulletSystem = this.el.sceneEl.systems.bullet;
+    this.gunModel = this.el.querySelector('.gun');
   },
 
   events: {
     triggerdown: function shoot (evt) {
       if (!this.data.enabled) { return; }
-      this.bulletSystem.shoot(this.data.activeBulletType, this.el.object3D);
+      console.log(this.el);
+      this.bulletSystem.shoot(this.data.activeBulletType, this.gunModel.object3D);
     }
   },
 
@@ -59,7 +61,7 @@ AFRAME.registerSystem('bullet', {
     this.pool[bulletData.name] = [];
     for (let i = 0; i < bulletData.poolSize; i++) {
       const bullet = model.clone();
-      bullet.active = false;
+      bullet.visible = false;
       bullet.bbox = bbox;
       bullet.direction = new THREE.Vector3(0, 0, -1);
       bullet.maxTime = bulletData.maxTime * 1000;
@@ -71,6 +73,9 @@ AFRAME.registerSystem('bullet', {
     }
   },
 
+  /**
+   * @param {Object} gun - three.js Object3D.
+   */
   shoot: function (bulletName, gun) {
     let oldest = 0;
     let oldestTime = 0;
@@ -93,11 +98,11 @@ AFRAME.registerSystem('bullet', {
   },
 
   shootBullet: function (bullet, gun) {
-    bullet.active = true;
+    bullet.visible = true;
     bullet.time = 0;
     gun.getWorldPosition(bullet.position);
     gun.getWorldDirection(bullet.direction);
-    bullet.direction.multiplyScalar(-bullet.speed);
+    bullet.direction.multiplyScalar(bullet.speed);
     this.container.add(bullet);
     return bullet;
   },
@@ -108,7 +113,7 @@ AFRAME.registerSystem('bullet', {
     return function (time, timeDelta, type) {
       for (let i = 0; i < this.container.children.length; i++) {
         const bullet = this.container.children[i];
-        if (!bullet.active || bullet.type !== type) { continue; }
+        if (!bullet.visible || bullet.type !== type) { continue; }
 
         // Move bullet.
         bullet.time += timeDelta;
@@ -132,7 +137,7 @@ AFRAME.registerSystem('bullet', {
 
       for (let i = 0; i < this.container.children.length; i++) {
         const bullet = this.container.children[i];
-        if (!bullet.active || bullet.type !== type) { continue; }
+        if (!bullet.visible || bullet.type !== type) { continue; }
 
         // Bullet bbox is precomputed once at init and now simply translated.
         bulletBox.copy(bullet.bbox).translate(bullet.position);
@@ -146,7 +151,7 @@ AFRAME.registerSystem('bullet', {
   })(),
 
   returnToPool: function (bullet) {
-    bullet.active = false;
+    bullet.visible = false;
   }
 });
 
