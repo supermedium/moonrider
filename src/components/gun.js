@@ -38,7 +38,7 @@ AFRAME.registerSystem('bullet', {
     this.el.sceneEl.appendChild(bulletContainer);
     this.container = bulletContainer.object3D;
 
-    this.bulletPool = {};
+    this.pool = {};
   },
 
   /**
@@ -51,8 +51,9 @@ AFRAME.registerSystem('bullet', {
 
     // Precompute bbox.
     const bbox = new THREE.Box3();
-    bulletComponent.el.getObject3D('mesh').geometry.computeBoundingBox();
-    bbox.copy(bullet.geometry.boundingBox);
+    const geometry = bulletComponent.el.getObject3D('mesh').geometry;
+    geometry.computeBoundingBox();
+    bbox.copy(geometry.boundingBox);
 
     // Initialize pool and bullets.
     this.pool[bulletData.name] = [];

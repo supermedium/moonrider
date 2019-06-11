@@ -17,10 +17,14 @@ addEventListener('message', function (evt) {
     return;
   }
 
-  // Unzip.
+  let loader;
   const [short] = version.split('-');
-  const loader = new ZipLoader(
-    `https://beatsaver.com/storage/songs/${short}/${version}.zip`);
+  if (process.env.STUB_ZIP) {
+    loader = new ZipLoader(`/assets/test.zip`);
+  } else {
+    // Unzip.
+    loader = new ZipLoader(`https://beatsaver.com/storage/songs/${short}/${version}.zip`);
+  }
 
   loader.on('error', err => {
     postMessage({message: 'error'});

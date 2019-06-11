@@ -65,6 +65,16 @@ Make this game your own! Some easy ways to mess around:
 Other ways such as adding more modes are more involved, but with knowledge of
 A-Frame and JavaScript, is doable!
 
+### Test Environment Variables
+
+Run `{ENV_VAR}=true npm run start` to activate:
+
+| URL Parameter  | Description                                          |
+|----------------|------------------------------------------------------|
+| DEBUG_LOG      | Enable in-VR logs with `AFRAME.log(msg)`.            |
+| DEBUG_KEYBOARD | Allow mouse cursor for keyboard.                     |
+| STUB_ZIP       | Placeholder ZIP if offline or beatsaver.com is down. |
+
 ### Test URL Parameters
 
 | URL Parameter                           | Description                                                   |
