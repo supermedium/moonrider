@@ -1,5 +1,6 @@
 AFRAME.registerComponent('zip-loader', {
   schema: {
+    difficulties: {type: 'array'},
     isLoading: {default: 'false'},
     version: {type: 'string'}  // e.g., 811-535.
   },
@@ -24,6 +25,7 @@ AFRAME.registerComponent('zip-loader', {
     if (oldData.version && oldData.version !== data.version &&
         this.cachedVersion !== data.version) {
       this.message.abort = true;
+      this.message.difficulties = JSON.stringify(this.data.difficulties);
       this.message.version = oldData.version;
       this.worker.postMessage(this.message);  // Start the worker.
     }
@@ -56,6 +58,7 @@ AFRAME.registerComponent('zip-loader', {
     }
 
     this.message.abort = false;
+    this.message.difficulties = JSON.stringify(this.data.difficulties);
     this.message.version = version;
     this.worker.postMessage(this.message);  // Start the worker.
   },
