@@ -44,3 +44,54 @@ html {
   50% { opacity: 0.8; }
   100% { opacity: 1; }
 }
+
+#subscribeForm {
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0 1px #888;
+  bottom: 0;
+  color: #FAFAFA;
+  font-family: monospace;
+  height: 100px;
+  left: 0;
+  margin: 0;
+  padding: 5px 10px 0 10px;
+  position: fixed;
+  text-align: center;
+  z-index: 9999999;
+}
+
+#subscribeForm h2 {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+input[type="email"] {
+  background: #FAFAFA;
+  border: 0;
+  border-radius: 5px;
+  color: $gray;
+  height: 40px;
+  padding-left: 20px;
+  margin-right: 10px;
+  max-width: 480px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  width: 50%;
+}
+
+button {
+  border: 0;
+  background: #FF74b8;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #FAFAFA;
+  text-transform: uppercase;
+  transition: .1s all;
+  padding: 11px 20px;
+  vertical-align: middle;
+}
+
+button:hover {
+  background: #FF94C8;
+}
