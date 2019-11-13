@@ -89,7 +89,7 @@ function initSubscribeForm () {
   if (button) {
     input.addEventListener('keydown', () => {
       if (button.hasAttribute('disabled')) {
-        button.value = 'Subscribe';
+        button.innerHTML = 'Subscribe';
         button.removeAttribute('disabled');
       }
       if (newsletterHeader && originalHeaderText) {
