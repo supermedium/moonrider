@@ -2,7 +2,6 @@ import {SIZES} from './beat';
 
 const HEIGHT = 2.5;
 const CEILING_THICKNESS = 1.5;
-const CEILING_WIDTH = 4;
 
 /**
  * Wall to dodge.
@@ -71,19 +70,14 @@ AFRAME.registerComponent('wall', {
       const endPercent = songPosition + lengthPercent;
 
       const height = isCeiling ? CEILING_THICKNESS : HEIGHT;
-      width = isCeiling ? CEILING_WIDTH : width;
 
       // Offset vectors to get the left / right vertex points to pass into curve helper.
       // Note that curve is upside down so the positions are reversed...normally, this would
       // read as `+ (width / 2) - 0.25`.
       const centerPosition = (-1 * beatSystem.horizontalPositions[horizontalPosition]) -
                              (width / 2) + 0.25;
-      left.x = isCeiling
-        ? - 1 * width / 2
-        : centerPosition - (width / 2);
-      right.x = isCeiling
-        ? width / 2
-        : centerPosition + (width / 2);
+      left.x = centerPosition - (width / 2);
+      right.x = centerPosition + (width / 2);
 
       // TODO: Reuse box.
       const geo = this.geometry = new THREE.BoxBufferGeometry(width, height, 1, 1, 1, 30);
