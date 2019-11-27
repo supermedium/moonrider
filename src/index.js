@@ -45,6 +45,18 @@ function initSubscribeForm () {
   const form = document.querySelector('form');
   if (!form) { return; }
 
+  if (localStorage.getItem('subscribeClosed')) {
+    const formParent = form.parentNode;
+    formParent.parentNode.removeChild(formParent);
+    return;
+  }
+
+  document.getElementById('subscribeClose').addEventListener('click', () => {
+    const formParent = form.parentNode;
+    formParent.parentNode.removeChild(formParent);
+    localStorage.setItem('subscribeClosed', true);
+  });
+
   const button = form.querySelector('.submit');
   const input = form.querySelector('input[type="email"]');
   const newsletterHeader = document.querySelector('#subscribeForm > h2');

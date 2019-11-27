@@ -10,6 +10,7 @@ html {
   cursor: pointer;
   right: 20px;
   bottom: 20px;
+  text-decoration: none;
   z-index: 9999999;
   width: 84px;
   height: 47px;
@@ -25,6 +26,17 @@ html {
 
 #vrButton:hover {
   background-position: 0 -50.5px;
+}
+
+#vrButton p {
+  bottom: 45px;
+  color: #FFF;
+  font-size: 12px;
+  font-family: monospace;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
 }
 
 .a-loader-title {
@@ -55,7 +67,7 @@ html {
   left: 0;
   margin: 0;
   min-width: 400px;
-  padding: 5px 10px 0 10px;
+  padding: 5px 20px 0 5px;
   position: fixed;
   text-align: center;
   z-index: 9999999;
@@ -64,6 +76,15 @@ html {
 #subscribeForm h2 {
   font-size: 16px;
   font-weight: 300;
+}
+
+#subscribeForm #subscribeClose {
+  cursor: pointer;
+  font-size: 26px;
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+  right: 5px;
 }
 
 input[type="email"] {
