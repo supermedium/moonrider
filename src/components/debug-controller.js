@@ -19,6 +19,8 @@ AFRAME.registerComponent('debug-controller', {
     secondaryHand.object3D.visible = true;
     secondaryHand.setAttribute('tracked-controls', 'autoHide', false);
 
+    if (AFRAME.utils.getUrlParameter('headfist')) { return; }
+
     window.addEventListener('click', evt => {
       if (!evt.isTrusted) { return; }
       primaryHand.emit('triggerdown');
@@ -146,6 +148,7 @@ AFRAME.registerComponent('debug-controller', {
     this.bounds = document.body.getBoundingClientRect();
 
     if (!AFRAME.utils.getUrlParameter('debug')) { return; }
+    if (AFRAME.utils.getUrlParameter('headfist')) { return; }
 
     primaryHand = document.getElementById('rightHand');
     secondaryHand = document.getElementById('leftHand');
