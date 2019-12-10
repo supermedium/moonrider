@@ -7,13 +7,8 @@ AFRAME.registerComponent('headfist', {
   },
 
   init: function () {
+    console.log(`[headfist] ${enabled}`);
     if (!enabled) { return; }
-
-    this.el.object3D.position.set(
-      this.data.hand === 'right' ? 0.15 : -0.15,
-      0.1,
-      -0.2
-    );
 
     this.camera = document.getElementById('camera').getObject3D('camera');
     this.originalParent = this.el.object3D.parent;
@@ -26,7 +21,16 @@ AFRAME.registerComponent('headfist', {
 
     // Attach hands to head.
     if (this.data.isPlaying) {
+      console.log(`[headfist] Attach.`);
       this.camera.add(el.object3D);
+
+      this.el.object3D.rotation.set(0, 0, 0);
+      this.el.object3D.position.set(
+        this.data.hand === 'right' ? 0.15 : -0.15,
+        -1.5,
+        -0.2
+      );
+
       el.components['tracked-controls'].pause();
       if (el.components['tracked-controls-webvr']) {
         el.components['tracked-controls-webvr'].pause();
@@ -38,6 +42,7 @@ AFRAME.registerComponent('headfist', {
     }
 
     // Add hands back.
+    console.log(`[headfist] Detach.`);
     this.originalParent.add(el.object3D);
     if (el.components['tracked-controls-webvr']) {
       el.components['tracked-controls-webvr'].play();
