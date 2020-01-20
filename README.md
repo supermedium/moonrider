@@ -36,6 +36,8 @@ Big thanks to @elliottate for helping out with this!
 
 ## Development
 
+### Native
+
 Have Node (< v12, recommended v11) and npm installed.
 
 ```
@@ -44,6 +46,17 @@ npm run start
 ```
 
 Then head to `localhost:3000` in your browser.
+
+
+### Docker
+
+```
+docker build . -t moonrider
+docker run -p 3000:3000 moonrider
+```
+
+Then head to `localhost:3000` in your browser.
+
 
 ### Remixing and Forking
 
