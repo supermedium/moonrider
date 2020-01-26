@@ -476,6 +476,8 @@ AFRAME.registerState({
           state.menuDifficulties.indexOf(state.difficultyFilter) !== -1) {
         // Default to difficulty if filter active.
         state.menuSelectedChallenge.difficulty = state.difficultyFilter;
+      } else if (state.menuDifficulties.indexOf(state.menuSelectedChallenge.difficulty) !== -1) {
+        // Use difficulty if already set (ie: challenge came from favorites)
       } else {
         // Default to easiest difficulty.
         state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
