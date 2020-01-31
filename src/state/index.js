@@ -369,6 +369,8 @@ AFRAME.registerState({
       state.isPaused = false;
       state.isVictory = false;
       state.menuActive = true;
+      state.menuSelectedChallenge.id = state.challenge.id;
+      state.menuSelectedChallenge.difficulty = state.challenge.difficulty;
       state.challenge.id = '';
       state.leaderboardQualified = false;
     },
