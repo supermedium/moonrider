@@ -503,7 +503,11 @@ AFRAME.registerComponent('beat', {
     const data = this.data;
 
     // Haptics.
-    weaponEl.components.haptics__beat.pulse();
+    try{
+      weaponEl.components.haptics__beat.pulse();
+    } catch (err){
+      console.log(err);
+    }
 
     // Sound.
     this.el.parentNode.components['beat-hit-sound'].playSound(this.el, this.cutDirection);
