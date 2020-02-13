@@ -22,9 +22,12 @@ AFRAME.registerComponent('search', {
   init: function () {
     this.eventDetail = {query: '', results: topSearch};
     this.keyboardEl = document.getElementById('keyboard');
-    this.popularHits = shuffle(topSearch);
+    this.popularHits = topSearch;
+    shuffle(this.popularHits);
     this.queryObject = {hitsPerPage: 0, query: ''};
     this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
+
+    this.search = AFRAME.utils.throttle(this.search.bind(this), 2000);
   },
 
   update: function (oldData) {
