@@ -22,7 +22,7 @@ AFRAME.registerComponent('search', {
   init: function () {
     this.eventDetail = {query: '', results: topSearch};
     this.keyboardEl = document.getElementById('keyboard');
-    this.popularHits = null;
+    this.popularHits = shuffle(topSearch);
     this.queryObject = {hitsPerPage: 0, query: ''};
     this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
   },
@@ -101,21 +101,13 @@ AFRAME.registerComponent('search', {
     }
 
     algolia.search(this.queryObject, (err, content) => {
-      // Cache popular hits.
       if (err) {
         this.el.sceneEl.emit('searcherror', null, false);
         console.error(err);
         return;
       }
 
-      if (!query && this.data.difficultyFilter === 'All' &&
-          !this.data.genre && !this.data.playlist) {
-        this.popularHits = topSearch.concat(content.hits);
-        shuffle(this.popularHits);
-        this.eventDetail.results = this.popularHits;
-      } else {
-        this.eventDetail.results = content.hits;
-      }
+      this.eventDetail.results = content.hits;
 
       this.el.sceneEl.emit('searchresults', this.eventDetail);
     });
