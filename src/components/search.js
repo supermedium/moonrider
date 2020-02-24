@@ -101,7 +101,7 @@ AFRAME.registerComponent('search', {
       delete this.queryObject.filters;
     }
 
-    if (query.length < 3) { return; }
+    if (query && query.length < 3) { return; }
 
     algolia.search(this.queryObject, (err, content) => {
       if (err) {
