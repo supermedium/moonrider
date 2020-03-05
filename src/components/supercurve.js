@@ -167,7 +167,8 @@ AFRAME.registerComponent('supercurve', {
     if (el.getObject3D('mesh')) {
       el.getObject3D('mesh').geometry = geometry;
     } else {
-      const mesh = new THREE.Mesh(THREE.BufferGeometryUtils.toTrianglesDrawMode(geometry, THREE.TriangleStripDrawMode));
+      const mesh = new THREE.Mesh(geometry);
+      mesh.drawMode = THREE.TriangleStripDrawMode;
       el.setObject3D('mesh', mesh);
     }
   },
