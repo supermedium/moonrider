@@ -159,15 +159,16 @@ AFRAME.registerComponent('supercurve', {
       }
     }
 
-    geometry.setAttribute('normal', new THREE.BufferAttribute(buffers.normal, 3));
-    geometry.setAttribute('position', new THREE.BufferAttribute(buffers.position, 3));
-    geometry.setAttribute('uv', new THREE.BufferAttribute(buffers.uvs, 2));
+    geometry.addAttribute('normal', new THREE.BufferAttribute(buffers.normal, 3));
+    geometry.addAttribute('position', new THREE.BufferAttribute(buffers.position, 3));
+    geometry.addAttribute('uv', new THREE.BufferAttribute(buffers.uvs, 2));
 
     // Set mesh.
     if (el.getObject3D('mesh')) {
-      el.getObject3D('mesh').geometry = THREE.BufferGeometryUtils.toTrianglesDrawMode(geometry, THREE.TriangleStripDrawMode);
+      el.getObject3D('mesh').geometry = geometry;
     } else {
-      const mesh = new THREE.Mesh(THREE.BufferGeometryUtils.toTrianglesDrawMode(geometry, THREE.TriangleStripDrawMode));
+      const mesh = new THREE.Mesh(geometry);
+      mesh.drawMode = THREE.TriangleStripDrawMode;
       el.setObject3D('mesh', mesh);
     }
   },
