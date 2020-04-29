@@ -20,7 +20,8 @@ AFRAME.registerComponent('controller', {
     const hand = {hand: data.hand, model: false};
     el.setAttribute('daydream-controls', hand);
     el.setAttribute('oculus-go-controls', hand);
-    el.setAttribute('oculus-touch-controls', hand);
+    el.setAttribute('oculus-touch-controls',
+	{hand: data.hand, model: false, orientationOffset: {x: 0, y: 0, z: 0}});
     el.setAttribute('vive-controls', hand);
     el.setAttribute('vive-focus-controls', hand);
     el.setAttribute('windows-motion-controls', hand);
