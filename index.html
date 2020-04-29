@@ -14,7 +14,7 @@
     <meta property="twitter:image" content="https://supermedium.com/moonrider/assets/img/splash.jpg">
 
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
-    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@44212208beaa0f2d13c9721549687455886587c3/dist/aframe-master.min.js"></script>
     <script src="build/build.js?v=3"></script>
   </head>
   <body>
@@ -36,6 +36,10 @@
         <button class="submit" type="submit">Subscribe</button>
       </form>
       <span id="subscribeClose">&times;</span>
+    </div>
+
+    <div id="brokenNotice" style="position: fixed; top: 0; left: 0; right: 0; background: rgba(30, 30, 30, 0.8); padding: 10px">
+      <p style="font-family: monospace; color: #FAFAFA; text-align: center">Moon Rider may be not loading songs correctly. We fixed an issue with songs loading, but will take time for the DNS changes to take effect. Thanks for the support and sorry about that! Check back in the next day or so.</p>
     </div>
   </body>
 </html>
