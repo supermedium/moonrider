@@ -45,7 +45,6 @@ exports/
 
 dump.rdb
 .ghpages
-package-lock.json
 
 #Idea Project Files
 idea/
