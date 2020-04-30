@@ -420,7 +420,7 @@ AFRAME.registerState({
       for (let i = 0; i < payload.scores.length; i++) {
         let score = payload.scores[i];
         state.leaderboard.push(score);
-        state.leaderboardNames += `${score.username} (${score.accuracy || 0}%)\n`;
+        state.leaderboardNames += `#${i + 1} - ${score.username} (${score.accuracy || 0}%)\n`;
         state.leaderboardScores += `${score.score}\n`;
       }
       state.leaderboardLoading = false;
