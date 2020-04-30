@@ -1,7 +1,7 @@
 const BASE_URL = 'https://previews.moonrider.xyz';
 
 function getS3FileUrl (id, name) {
-  return `${BASE_URL}/${id}-${name}?v=1`;
+  return `${BASE_URL}/${id}-${name}?v=2`;
 }
 module.exports.getS3FileUrl = getS3FileUrl;
 

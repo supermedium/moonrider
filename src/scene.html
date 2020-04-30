@@ -176,7 +176,7 @@
             <a-entity
               id="{{ hand }}Laser"
               class="laser"
-              bind__material="color: {{ hand === 'left' and 'colorPrimary' or 'colorSecondary' }}"
+              bind__material="color: {{ hand === 'left' and 'colorPrimary' or 'colorSecondary' }}; opacity: 0.75"
               bind__cursor-laser="enabled: activeHand === '{{ hand }}' && !isPlaying"
               geometry="primitive: cylinder; height: 1; radius: 0.005"
               material="shader: flat"
@@ -197,6 +197,7 @@
                 materials="name: {{ hand }}Weapon"
                 render-order="weapon"
                 position="0 -0.43 0">
+                <a-entity class="bladeTipHelper" position="0 -0.43 0"></a-entity>
               </a-entity>
             </a-entity>
 
@@ -204,7 +205,9 @@
               class="bladeHandle"
               bind__visible="!isPlaying || gameMode === 'classic'"
               obj-model="obj: #weaponHandleObj"
-              materials="name: {{ hand }}WeaponHandle"></a-entity>
+              materials="name: {{ hand }}WeaponHandle">
+              <a-entity class="bladeHandleHelper" position="0 0.3 0"></a-entity>
+            </a-entity>
           </a-entity>
 
           <!-- Punch. -->
