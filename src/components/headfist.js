@@ -9,25 +9,23 @@ AFRAME.registerComponent('headfist', {
   init: function () {
     console.log(`[headfist] ${enabled}`);
     if (!enabled) { return; }
-
-    this.camera = document.getElementById('camera').getObject3D('camera');
+    this.camera = document.getElementById('camera').object3D;
     this.originalParent = this.el.object3D.parent;
   },
 
   update: function () {
     const el = this.el;
 
-    if (!enabled) { return; }
+    if (!enabled || !this.camera) { return; }
 
     // Attach hands to head.
     if (this.data.isPlaying) {
-      console.log(`[headfist] Attach.`);
       this.camera.add(el.object3D);
 
-      this.el.object3D.rotation.set(0, 0, 0);
-      this.el.object3D.position.set(
-        this.data.hand === 'right' ? 0.15 : -0.15,
-        -1.5,
+      el.object3D.rotation.set(-5, 0, 0);
+      el.object3D.position.set(
+        this.data.hand === 'right' ? 0.175 : -0.175,
+        0.15,
         -0.2
       );
 
@@ -42,13 +40,15 @@ AFRAME.registerComponent('headfist', {
     }
 
     // Add hands back.
-    console.log(`[headfist] Detach.`);
-    this.originalParent.add(el.object3D);
-    if (el.components['tracked-controls-webvr']) {
-      el.components['tracked-controls-webvr'].play();
-    }
-    if (el.components['tracked-controls-webxr']) {
-      el.components['tracked-controls-webxr'].play();
+    if (el.object3D.parent !== this.originalParent) {
+      console.log(`[headfist] Detach.`);
+      this.originalParent.add(el.object3D);
+      if (el.components['tracked-controls-webvr']) {
+        el.components['tracked-controls-webvr'].play();
+      }
+      if (el.components['tracked-controls-webxr']) {
+        el.components['tracked-controls-webxr'].play();
+      }
     }
   }
 });
