@@ -176,10 +176,10 @@
             <a-entity
               id="{{ hand }}Laser"
               class="laser"
-              bind__material="color: {{ hand === 'left' and 'colorPrimary' or 'colorSecondary' }}; opacity: 0.75"
+              bind__material="color: {{ hand === 'left' and 'colorPrimary' or 'colorSecondary' }}"
               bind__cursor-laser="enabled: activeHand === '{{ hand }}' && !isPlaying"
               geometry="primitive: cylinder; height: 1; radius: 0.005"
-              material="shader: flat"
+              material="shader: flat; opacity: 0.25; transparent: true"
               rotation="-90 0 0"></a-entity>
           </a-entity>
 
