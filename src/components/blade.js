@@ -90,11 +90,14 @@ AFRAME.registerComponent('blade', {
       for (let i = 0; i < 3; i++) {
         bladeLocalPositions[i].copy(this.bladeWorldPositions[i]);
         beat.blockEl.object3D.worldToLocal(bladeLocalPositions[i]);
+        bladeLocalPositions[i].multiplyScalar(2);
       }
 
       // Current frame triangle.
-      bladeLocalTriangle.set(bladeLocalPositions[0], bladeLocalPositions[1],
-                             bladeLocalPositions[2]);
+      bladeLocalTriangle.set(
+        bladeLocalPositions[0],
+        bladeLocalPositions[1],
+        bladeLocalPositions[2]);
 
       if (beat.bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
 

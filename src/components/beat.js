@@ -7,8 +7,7 @@ const otherBbox = new THREE.Box3();
 const collisionZThreshold = -1.65;
 
 const ANGLE_MAX_SUPER = THREE.Math.degToRad(10);
-const ANGLE_THRESHOLD = THREE.Math.degToRad(40);
-const CUT_THICKNESS = 0.02;
+const ANGLE_THRESHOLD = THREE.Math.degToRad(50);
 const WARMUP_TIME = 2000;
 const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 
