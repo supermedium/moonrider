@@ -180,6 +180,7 @@ AFRAME.registerSystem('materials', {
         color: {value: new THREE.Color(scheme.primary)},
         time: {value: 0}
       },
+      side: THREE.DoubleSide,
       transparent: true,
       blending: THREE.AdditiveBlending
     });
@@ -192,6 +193,7 @@ AFRAME.registerSystem('materials', {
         color: {value: new THREE.Color(scheme.secondary)},
         time: {value: 0}
       },
+      side: THREE.DoubleSide,
       transparent: true,
       blending: THREE.AdditiveBlending
     });
