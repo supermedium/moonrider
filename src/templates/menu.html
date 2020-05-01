@@ -118,28 +118,6 @@
       animation__menuright="property: object3D.position.x; from: -0.79; to: 0; dur: 200; easing: easeOutCubic; autoplay: false">
 
       {{ searchResults() }}
-
-      <a-entity id="soundboxingLink"
-        bind__visible="!menuSelectedChallenge.id && !isSearching && !genre"
-        position="1.075 -0.492 0.01">
-        <a-entity id="soundboxingButton"
-          link="href: https://webvr.soundboxing.co/; on: click"
-          geometry="primitive: plane; width: 0.38; height: 0.19;"
-          material="shader: flat; src: #soundboxingImg"
-          animation__mouseenter="property: object3D.position.z; from: 0.01; to: 0.03; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
-          animation__mouseleave="property: object3D.position.z; from: 0.03; to: 0.01; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
-          proxy-event__mouseenter="event: mouseenter; to: CHILDREN; as: show"
-          proxy-event__mouseleave="event: mouseleave; to: CHILDREN; as: hide"
-          bind__visible-raycastable="menuActive && !menuSelectedChallenge.id && !isSearching && !genre">
-          <a-entity id="soundboxing-popup"
-            position="0 0.12 0.015"
-            mixin="font"
-            animation__show="property: components.text.material.uniforms.opacity.value; from: 0; to: 1; startEvents: show; dur: 100"
-            animation__hide="property: components.text.material.uniforms.opacity.value; from: 1; to: 0; startEvents: hide; dur: 100"
-            render-order="menutext"
-            text="value: If you liked this game,\nyou'll love Soundboxing!\nPlay it now instantly.; letterSpacing: 2; opacity: 0; baseline: bottom; width: 0.7; wrapCount: 28; align: center; color:  #fa83d9;"></a-entity>
-        </a-entity>
-      </a-entity>
     </a-entity>
 
     <a-entity id="menuDifficultiesGroup" position="0 0.18 0">
