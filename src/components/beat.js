@@ -6,8 +6,8 @@ const bbox = new THREE.Box3();
 const otherBbox = new THREE.Box3();
 const collisionZThreshold = -1.65;
 
-const ANGLE_MAX_SUPER = 0.966;  // 15-degrees.
-const ANGLE_THRESHOLD = 0.5;  // 60-degrees.
+const ANGLE_DOT_SUPER = 0.97;  // ~15-degrees.
+const ANGLE_DOT_MIN = 0.625;  // ~50-degrees.
 const WARMUP_TIME = 2000;
 const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 
@@ -343,7 +343,8 @@ AFRAME.registerComponent('beat', {
     }
 
     // Check if past the camera to return to pool.
-    if ((el.object3D.position.z - 1.25) > this.curveFollowRig.object3D.position.z) {
+    const returnDistance = this.data.type === 'mine' ? 0.25 : 1.25;
+    if ((el.object3D.position.z - returnDistance) > this.curveFollowRig.object3D.position.z) {
       this.returnToPool();
       this.missHit();
     }
@@ -531,7 +532,7 @@ AFRAME.registerComponent('beat', {
       if (data.type === 'arrow') {
         const blade = weaponEl.components.blade;
         dot = blade.strokeDirectionVector.dot(CUT_DIRECTION_VECTORS[this.cutDirection]);
-        if (dot < ANGLE_THRESHOLD) {
+        if (dot < ANGLE_DOT_MIN) {
           this.destroyBeat(weaponEl, false);
           this.wrongHit();
           return;
@@ -559,14 +560,12 @@ AFRAME.registerComponent('beat', {
     hitEventDetail.score = score;
     this.queueBeatHitEvent = hitEventDetail;
 
-    /*
     // Super FX.
-    if (score > 80) {
+    if (score > 90) {
       this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
       el.object3D, this.data.color);
       this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
     }
-    */
   },
 
   /**
@@ -585,7 +584,7 @@ AFRAME.registerComponent('beat', {
     if (this.data.type === DOT) {
       score += 20;
     } else {
-      if (angleDot > ANGLE_MAX_SUPER) {
+      if (angleDot > ANGLE_DOT_SUPER) {
         score += 30;
       } else {
         score += angleDot * 30;
