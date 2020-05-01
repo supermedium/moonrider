@@ -77,6 +77,16 @@ COLORS.schemes = {
     tertiary: '#666',
   },
 
+  rgb: {
+    name: 'Mint Choco',
+    off: '#111',
+    primary: '#34eb89',
+    primarYBRIGht: '#40fb95',
+    secondary: '#34ebd8',
+    secondarybright: '#40fbeA',
+    tertiary: '#eb3434'
+  },
+
   black: {
     name: 'Ash Nova',
     off: '#111',
