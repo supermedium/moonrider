@@ -23,10 +23,10 @@ AFRAME.registerComponent('blade', {
       new THREE.Vector3()  // Most recent.
     ];
     this.bladeWorldPositions = [
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-      new THREE.Vector3(),
+      new THREE.Vector3(),  // Current frame tip.
+      new THREE.Vector3(),  // Current frame handle.
+      new THREE.Vector3(),  // Last frame tip.
+      new THREE.Vector3(),  // Last frame handle.
     ];
 
     this.bladeEl = this.el.querySelector('.blade');
@@ -90,7 +90,7 @@ AFRAME.registerComponent('blade', {
       for (let i = 0; i < 3; i++) {
         bladeLocalPositions[i].copy(this.bladeWorldPositions[i]);
         beat.blockEl.object3D.worldToLocal(bladeLocalPositions[i]);
-        bladeLocalPositions[i].multiplyScalar(2);
+        bladeLocalPositions[i].multiplyScalar(3);
       }
 
       // Current frame triangle.
