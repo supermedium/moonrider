@@ -90,7 +90,7 @@ AFRAME.registerComponent('blade', {
       for (let i = 0; i < 3; i++) {
         bladeLocalPositions[i].copy(this.bladeWorldPositions[i]);
         beat.blockEl.object3D.worldToLocal(bladeLocalPositions[i]);
-        bladeLocalPositions[i].multiplyScalar(3);
+        bladeLocalPositions[i].multiplyScalar(1.5);
       }
 
       // Current frame triangle.

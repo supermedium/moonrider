@@ -427,6 +427,9 @@ AFRAME.registerComponent('beat', {
     const mesh = blockEl.getObject3D('mesh');
     mesh.geometry.computeBoundingBox();
     this.bbox = mesh.geometry.boundingBox;
+    if (type !== 'mine') {
+      this.bbox.expandByScalar(0.125);
+    }
   },
 
   wrongHit: function () {
@@ -582,10 +585,10 @@ AFRAME.registerComponent('beat', {
     if (this.data.type === DOT) {
       score += 20;
     } else {
-      if (angleDot < ANGLE_MAX_SUPER) {
-        score += 20;
+      if (angleDot > ANGLE_MAX_SUPER) {
+        score += 30;
       } else {
-        score += ((ANGLE_THRESHOLD - angleDot) / ANGLE_THRESHOLD) * 30;
+        score += angleDot * 30;
       }
     }
 
