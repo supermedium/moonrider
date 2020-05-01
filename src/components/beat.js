@@ -6,8 +6,8 @@ const bbox = new THREE.Box3();
 const otherBbox = new THREE.Box3();
 const collisionZThreshold = -1.65;
 
-const ANGLE_MAX_SUPER = 0.966;  // 15-degrees.
-const ANGLE_THRESHOLD = 0.5;  // 60-degrees.
+const ANGLE_MAX_SUPER = THREE.Math.degToRad(10);
+const ANGLE_THRESHOLD = THREE.Math.degToRad(50);
 const WARMUP_TIME = 2000;
 const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 
@@ -105,7 +105,7 @@ AFRAME.registerComponent('beat-system', {
 
     if (oldData.isLoading && !this.data.isLoading) {
       this.updateBeatPositioning();
-      this.weaponOffset = this.data.gameMode === CLASSIC ? SWORD_OFFSET * 1.15 : PUNCH_OFFSET;
+      this.weaponOffset = this.data.gameMode === CLASSIC ? SWORD_OFFSET : PUNCH_OFFSET;
       this.weaponOffset = this.weaponOffset / this.supercurve.curve.getLength();
     }
 
@@ -343,7 +343,7 @@ AFRAME.registerComponent('beat', {
     }
 
     // Check if past the camera to return to pool.
-    if ((el.object3D.position.z - 1.25) > this.curveFollowRig.object3D.position.z) {
+    if (el.object3D.position.z > this.curveFollowRig.object3D.position.z) {
       this.returnToPool();
       this.missHit();
     }
@@ -524,18 +524,18 @@ AFRAME.registerComponent('beat', {
 
     // Do blade-related checks.
     if (this.beatSystem.data.gameMode === CLASSIC) {
-      let dot = 0;
+      let angle = 0;
       if (data.type === 'arrow') {
         const blade = weaponEl.components.blade;
-        dot = blade.strokeDirectionVector.dot(CUT_DIRECTION_VECTORS[this.cutDirection]);
-        if (dot < ANGLE_THRESHOLD) {
+        angle = blade.strokeDirectionVector.angleTo(CUT_DIRECTION_VECTORS[this.cutDirection]);
+        if (angle > ANGLE_THRESHOLD) {
           this.destroyBeat(weaponEl, false);
           this.wrongHit();
           return;
         }
       }
       this.destroyBeat(weaponEl, true);
-      this.calculateScoreBlade(weaponEl, dot);
+      this.calculateScoreBlade(weaponEl, angle);
       return;
     }
 
@@ -569,7 +569,7 @@ AFRAME.registerComponent('beat', {
   /**
    * Blade scoring.
    */
-  calculateScoreBlade: function (bladeEl, angleDot) {
+  calculateScoreBlade: function (bladeEl, angle) {
     // 70% score on speed.
     let SUPER_SCORE_SPEED = 10;
     if (this.cutDirection === 'down') {
@@ -582,10 +582,10 @@ AFRAME.registerComponent('beat', {
     if (this.data.type === DOT) {
       score += 20;
     } else {
-      if (angleDot < ANGLE_MAX_SUPER) {
+      if (angle < ANGLE_MAX_SUPER) {
         score += 20;
       } else {
-        score += ((ANGLE_THRESHOLD - angleDot) / ANGLE_THRESHOLD) * 30;
+        score += ((ANGLE_THRESHOLD - angle) / ANGLE_THRESHOLD) * 30;
       }
     }
 
