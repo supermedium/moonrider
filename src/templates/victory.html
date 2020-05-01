@@ -15,11 +15,11 @@
     render-order="victory"></a-entity>
 
   <a-entity
-    raycastable
     id="victoryInfoRank"
     class="accuracyTextCounterSubscribe"
     bind__animation="enabled: isVictory"
     bind__victory-rank="isVictory: isVictory; rank: score.rank"
+    bind-toggle__raycastable="isVictory"
     scale="0 0 0"
     position="0 -0.034 0"
     animation__rotation="property: object3D.rotation.y; from: 0; to: -360; loop: true; easing: linear; dur: 5000; startEvents: textcounterdone"
