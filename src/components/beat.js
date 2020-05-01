@@ -573,7 +573,7 @@ AFRAME.registerComponent('beat', {
    */
   calculateScoreBlade: function (bladeEl, angleDot) {
     // 70% score on speed.
-    const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 40 : 30;
+    const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 40 : 28;
     const speed = bladeEl.components.blade.strokeSpeed;
     let score = (speed / SUPER_SCORE_SPEED) * 70;
     score = Math.min(score, 70)

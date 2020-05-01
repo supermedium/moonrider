@@ -86,7 +86,7 @@ AFRAME.registerComponent('blade', {
     const bladeLocalTriangle = new THREE.Triangle();
 
     return function (beat) {
-      if (this.strokeSpeed < 3.5) { return false; }
+      if (this.strokeSpeed < 7.5) { return false; }
 
       // Convert points to beat space.
       for (let i = 0; i < 3; i++) {
