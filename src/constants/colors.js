@@ -30,10 +30,10 @@ COLORS.schemes = {
   blue: {
     name: 'Star Warrior',
     off: '#111',
-    primary: '#0B4BB3',
-    primarybright: '#4A90FF',
-    secondary: '#FFD840',
-    secondarybright: '#FF882B',
+    primary: '#1e4482',
+    primarybright: '#0B4BB3',
+    secondary: '#c27727',
+    secondarybright: '#FFD840',
     tertiary: '#d7fdf9'
   },
 
@@ -85,6 +85,16 @@ COLORS.schemes = {
     secondary: '#34ebd8',
     secondarybright: '#40fbeA',
     tertiary: '#eb3434'
+  },
+
+  cheetah: {
+    name: 'Cheetah SoL',
+    off: '#111',
+    primary: '#c27727',
+    primarYBright: '#e68319',
+    secondary: '#635c54',
+    secondarybright: '#8a857f',
+    tertiary: '#ebebeb'
   },
 
   black: {
