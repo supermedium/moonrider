@@ -580,7 +580,7 @@ AFRAME.registerComponent('beat', {
 
     // 30% score on direction.
     if (this.data.type === DOT) {
-      score += 20;
+      score += 30;
     } else {
       if (angleDot > ANGLE_DOT_SUPER) {
         score += 30;
@@ -598,10 +598,14 @@ AFRAME.registerComponent('beat', {
    */
   calculateScorePunch: function (punchEl) {
     // Get 60% of the score just by hitting the beat.
-    let score = 60;
-    const SUPER_SCORE_SPEED = 4;
+    const baseScore = 60;
+    const SUPER_SCORE_SPEED = 3.5;
     const speed = punchEl.components.punch.speed;
-    score += Math.min((speed / SUPER_SCORE_SPEED), 1) * 40;
+
+    let speedScore = (speed / SUPER_SCORE_SPEED) * 40;
+    speedScore = Math.min(speedScore, 40);
+
+    const score = baseScore + speedScore;
     this.score(score);
   },
 
