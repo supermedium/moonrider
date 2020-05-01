@@ -561,7 +561,7 @@ AFRAME.registerComponent('beat', {
     this.queueBeatHitEvent = hitEventDetail;
 
     // Super FX.
-    if (score > 90) {
+    if (score >= 100) {
       this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
       el.object3D, this.data.color);
       this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
@@ -573,12 +573,10 @@ AFRAME.registerComponent('beat', {
    */
   calculateScoreBlade: function (bladeEl, angleDot) {
     // 70% score on speed.
-    let SUPER_SCORE_SPEED = 10;
-    if (this.cutDirection === 'down') {
-      SUPER_SCORE_SPEED = 22;
-    }
+    const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 40 : 30;
     const speed = bladeEl.components.blade.strokeSpeed;
-    let score = (Math.min((speed / SUPER_SCORE_SPEED) * 100, 100) / 100) * 70;
+    let score = (speed / SUPER_SCORE_SPEED) * 70;
+    score = Math.min(score, 70)
 
     // 30% score on direction.
     if (this.data.type === DOT) {

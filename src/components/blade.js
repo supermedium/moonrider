@@ -69,11 +69,11 @@ AFRAME.registerComponent('blade', {
 
     // Distance covered but the blade tip in one frame.
     this.strokeDirectionVector.copy(bladeTipPositions[2]).sub(bladeTipPositions[0]);
-    this.strokeDirectionVector.z = 0;
-    this.strokeDirectionVector.normalize();
-
     const distance = this.strokeDirectionVector.length();
     this.strokeSpeed = distance / (delta / 1000);
+
+    this.strokeDirectionVector.z = 0;
+    this.strokeDirectionVector.normalize();
 
     // Move down the queue. Calculate direction through several frames for less noise.
     const oldest = bladeTipPositions.shift();
@@ -86,6 +86,8 @@ AFRAME.registerComponent('blade', {
     const bladeLocalTriangle = new THREE.Triangle();
 
     return function (beat) {
+      if (this.strokeSpeed < 3.5) { return false; }
+
       // Convert points to beat space.
       for (let i = 0; i < 3; i++) {
         bladeLocalPositions[i].copy(this.bladeWorldPositions[i]);
