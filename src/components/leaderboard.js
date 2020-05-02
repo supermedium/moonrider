@@ -17,6 +17,7 @@ AFRAME.registerComponent('leaderboard', {
     messagingSenderId: {type: 'string'},
 
     challengeId: {default: ''},
+    difficulty: {default: ''},
     inVR: {default: false},
     gameMode: {type: 'string'},
     menuSelectedChallengeId: {default: ''},
@@ -57,13 +58,20 @@ AFRAME.registerComponent('leaderboard', {
       this.checkLeaderboardQualify();
     }
 
+    if (this.data.difficulty && oldData.difficulty !== this.data.difficulty) {
+      this.fetchScores(this.data.menuSelectedChallengeId);
+      return;
+    }
+
     if (this.data.menuSelectedChallengeId &&
         oldData.menuSelectedChallengeId !== this.data.menuSelectedChallengeId) {
       this.fetchScores(this.data.menuSelectedChallengeId);
+      return;
     }
 
     if (this.data.challengeId && oldData.challengeId !== this.data.challengeId) {
       this.fetchScores(this.data.challengeId);
+      return;
     }
   },
 
@@ -78,7 +86,7 @@ AFRAME.registerComponent('leaderboard', {
       gameMode: this.data.gameMode,
       score: state.score.score,
       username: this.username,
-      difficulty: state.challenge.difficulty,
+      difficulty: this.data.difficulty || state.challenge.difficulty,
       time: new Date()
     };
     this.db.add(scoreData);
