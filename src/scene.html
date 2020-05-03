@@ -129,7 +129,7 @@
 
     <!-- Player. -->
     <a-entity id="cameraRig">
-      <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls="acceleration: 15"></a-entity>
+      <a-entity id="camera" position="0 1.6 0.5" camera="far: 40000" look-controls wasd-controls="acceleration: 15"></a-entity>
       <a-entity
         id="cameraWallCollider"
         bind__raycaster__wall="enabled: isPlaying && gameMode !== 'ride'"

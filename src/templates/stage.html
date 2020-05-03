@@ -1,20 +1,19 @@
-<a-entity id="stage">
-  <a-entity
-    id="audioAnalyser"
-    audioanalyser="fftSize: 32; enableBeatDetection: false; enableLevels: false; enableWaveform: false; enableVolume: false"></a-entity>
+<a-entity
+  id="audioAnalyser"
+  audioanalyser="fftSize: 32; enableBeatDetection: false; enableLevels: false; enableWaveform: false; enableVolume: false"></a-entity>
 
+<a-entity id="stage" follow-z="target: #curveFollowRig">
   <a-entity
     id="backglow"
     obj-model="obj: #backGlowObj"
     materials="name: backglow"
-    follow-z="target: #curveFollowRig"
     render-order="stage"></a-entity>
 
   <a-entity
     id="rings"
     obj-model="obj: #ringsObj"
     materials="name: rings"
-    follow-z="target: #curveFollowRig; offset: 0 0 -1500"
+    position="0 0 -1500"
     render-order="stage"></a-entity>
 
   <a-entity
@@ -22,7 +21,6 @@
     class="aurora"
     obj-model="obj: #aurorasObj"
     materials="name: aurora"
-    follow-z="target: #curveFollowRig"
     render-order="aurora"></a-entity>
 
   <a-entity
@@ -30,28 +28,29 @@
     obj-model="obj: #merkabaObj"
     bind__visible="!isVictory && !isGameOver"
     materials="name: merkaba"
-    animation="property: rotation; from:0 0 0; to: 360 360 360; dur: 50000; easing: linear; loop: true"
-    follow-z="target: #curveFollowRig; offset: 0 46 -1500"></a-entity>
+    animation="property: rotation; from: 0 0 0; to: 360 360 360; dur: 50000; easing: linear; loop: true"
+    position="0 46 -1500"></a-entity>
 
   <a-entity
     class="merkababloom"
     geometry="primitive: plane; width: 200; height: 200"
     material="shader: flat; src: #merkabaBloomImg; blending: additive; depthTest: false; color: #888"
-    follow-z="target: #curveFollowRig; offset: 0 46 -1400"
+    position="0 46 -1400"
     render-order="stage"></a-entity>
+
   <a-entity
     class="merkababloom"
     bind__material="color: colorTertiary"
     geometry="primitive: plane; width: 250; height: 250"
     animation="property: object3D.rotation.z; from: 0; to: 360; loop: true; easing: linear; dur: 30000"
     material="shader: flat; src: #merkabaBloomImg; blending: additive; depthTest: false"
-    follow-z="target: #curveFollowRig; offset: 0 46 -1380"
+    position="0 46 -1380"
     render-order="stage"></a-entity>
 
   <a-entity
     id="moon"
     geometry="primitive: plane; width: 1000; height: 500"
-    follow-z="target: #curveFollowRig; offset: 0 1000 -1000"
+    position="0 1000 -1000"
     rotation="45 0 0"
     materials="name: moon"
     ></a-entity>
