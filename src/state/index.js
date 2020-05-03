@@ -133,6 +133,7 @@ AFRAME.registerState({
     playlistTitle: '',
     score: {
       accuracy: 100,  // Out of 100.
+      accuracyScore: 0,  // Raw number.
       accuracyInt: 100,  // Out of 100.
       active: false,
       beatsHit: 0,
@@ -173,6 +174,7 @@ AFRAME.registerState({
       if (state.damage > DAMAGE_DECAY) {
         state.damage -= DAMAGE_DECAY;
       }
+
       state.score.beatsHit++;
       state.score.combo++;
       if (state.score.combo > state.score.maxCombo) {
@@ -180,6 +182,7 @@ AFRAME.registerState({
       }
 
       payload.score = isNaN(payload.score) ? 100 : payload.score;
+      state.score.accuracyScore += payload.percent;
       state.score.score += Math.floor(payload.score);
       updateScoreAccuracy(state);
     },
@@ -839,6 +842,7 @@ function resetScore (state) {
   state.damage = 0;
   state.score.accuracy = 100;
   state.score.accuracyInt = 100;
+  state.score.accuracyScore = 0;
   state.score.beatsHit = 0;
   state.score.beatsMissed = 0;
   state.score.finalAccuracy = 100;
@@ -885,7 +889,7 @@ function updateMenuSongInfo (state, challenge) {
 function updateScoreAccuracy (state) {
   // Update live accuracy.
   const currentNumBeats = state.score.beatsHit + state.score.beatsMissed;
-  state.score.accuracy = (state.score.score / (currentNumBeats * 100)) * 100;
+  state.score.accuracy = (state.score.accuracyScore / (currentNumBeats * 100)) * 100;
   state.score.accuracy = state.score.accuracy.toFixed(2);
   state.score.accuracyInt = parseInt(state.score.accuracy);
 }

@@ -557,6 +557,7 @@ AFRAME.registerComponent('beat', {
   score: function (score, percent) {
     const el = this.el;
     const hitEventDetail = this.hitEventDetail;
+    hitEventDetail.percent = percent;
     hitEventDetail.score = score;
     this.queueBeatHitEvent = hitEventDetail;
 
@@ -618,6 +619,7 @@ AFRAME.registerComponent('beat', {
     this.destroyBeat(weaponEl, Math.random() < 0.9);
     el.parentNode.components['beat-hit-sound'].playSound(el, this.cutDirection);
     const hitEventDetail = this.hitEventDetail;
+    hitEventDetail.percent = 100;
     hitEventDetail.score = 100;
     this.queueBeatHitEvent = hitEventDetail;
   }
