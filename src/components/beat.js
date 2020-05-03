@@ -554,14 +554,14 @@ AFRAME.registerComponent('beat', {
    * Emit score and show score effects.
    * Called by multiple modes (blade, punch).
    */
-  score: function (score) {
+  score: function (score, percent) {
     const el = this.el;
     const hitEventDetail = this.hitEventDetail;
     hitEventDetail.score = score;
     this.queueBeatHitEvent = hitEventDetail;
 
     // Super FX.
-    if (score >= 100) {
+    if (percent >= 100) {
       this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
       el.object3D, this.data.color);
       this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
@@ -572,24 +572,27 @@ AFRAME.registerComponent('beat', {
    * Blade scoring.
    */
   calculateScoreBlade: function (bladeEl, angleDot) {
-    // 70% score on speed.
+    // 70% score on speed. Downward hits get gravity factor.
     const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 22 : 12;
-    const speed = bladeEl.components.blade.strokeSpeed;
-    let score = (speed / SUPER_SCORE_SPEED) * 70;
-    score = Math.min(score, 70)
+
+    const speedScore = (bladeEl.components.blade.strokeSpeed / SUPER_SCORE_SPEED) * 70;
+    let score = Math.min(speedScore, 210);  // Can get up to 3x points by swinging at 36.
+    let percent = Math.min(speedScore, 70)  // Cap the percent to the 70%.
 
     // 30% score on direction.
     if (this.data.type === DOT) {
       score += 30;
+      percent += 30;
     } else {
+      score += angleDot * 30;
       if (angleDot > ANGLE_DOT_SUPER) {
-        score += 30;
+        percent += 30;
       } else {
-        score += angleDot * 30;
+        percent += angleDot * 30;
       }
     }
 
-    this.score(Math.round(score));
+    this.score(Math.round(score), Math.round(percent));
   },
 
   /**
@@ -597,16 +600,14 @@ AFRAME.registerComponent('beat', {
    * More points scored if punching straight down the curve.
    */
   calculateScorePunch: function (punchEl) {
-    // Get 60% of the score just by hitting the beat.
-    const baseScore = 60;
+    const base = 60;  // Get 60% of the score just by hitting the beat.
+
     const SUPER_SCORE_SPEED = 3.5;
-    const speed = punchEl.components.punch.speed;
+    const speedScore = (punchEl.components.punch.speed / SUPER_SCORE_SPEED) * 40;
 
-    let speedScore = (speed / SUPER_SCORE_SPEED) * 40;
-    speedScore = Math.min(speedScore, 40);
-
-    const score = baseScore + speedScore;
-    this.score(score);
+    const percent = baseScore + Math.min(speedScore, 40);
+    const score = base + Math.min(speedScore, 120);
+    this.score(percent, score);
   },
 
   /**
