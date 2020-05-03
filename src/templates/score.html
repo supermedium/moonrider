@@ -8,6 +8,7 @@
   bind__score-texts="isLoading: isLoading"
   bind__visible="score.active"
   render-order="score">
+
   <a-entity
     id="songProgressRing"
     bind__material="color: colorSecondary"
@@ -30,7 +31,7 @@
     <a-entity
       id="accuracy"
       mixin="scoreText"
-      bind__text="color: colorSecondary; value: 'SCORE  ' + score.accuracyInt + '%'"
+      bind__text="color: colorSecondary; value: score.accuracyInt + '%' + ' / ' + score.score"
       text="width: 3.5; align: left; anchor: left"
       rotation="-20 0 0"></a-entity>
   </a-entity>
