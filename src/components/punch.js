@@ -24,15 +24,12 @@ AFRAME.registerComponent('punch', {
   tick: function (time, dt) {
     if (!this.data.enabled) { return; }
 
-    if ((time - this.lastSampleTime) < 50) { return; }
-
     // Calculate velocity (direction + speed), m/s.
     this.direction = this.currentPos
       .copy(this.el.object3D.position)
       .sub(this.lastSample)
 
     this.speed = this.direction.length() / ((time - this.lastSampleTime) / 1000);
-    this.rig.object3D.localToWorld(this.direction);
 
     this.lastSample.copy(this.el.object3D.position);
     this.lastSampleTime = time;

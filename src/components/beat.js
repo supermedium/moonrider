@@ -569,6 +569,8 @@ AFRAME.registerComponent('beat', {
   score: function (score, percent) {
     const el = this.el;
     const hitEventDetail = this.hitEventDetail;
+
+    score = Math.ceil(parseInt(score, 10) / 10) * 10;
     hitEventDetail.percent = percent;
     hitEventDetail.score = score;
     this.queueBeatHitEvent = hitEventDetail;
@@ -586,7 +588,7 @@ AFRAME.registerComponent('beat', {
    */
   calculateScoreBlade: function (bladeEl, angleDot) {
     // 70% score on speed. Downward hits get gravity factor.
-    const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 22 : 12;
+    const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 20 : 10;
 
     const speedScore = (bladeEl.components.blade.strokeSpeed / SUPER_SCORE_SPEED) * 70;
     let score = Math.min(speedScore, 210);  // Can get up to 3x points by swinging at 36.
@@ -605,7 +607,7 @@ AFRAME.registerComponent('beat', {
       }
     }
 
-    this.score(Math.round(score), Math.round(percent));
+    this.score(score, percent);
   },
 
   /**
@@ -615,12 +617,12 @@ AFRAME.registerComponent('beat', {
   calculateScorePunch: function (punchEl) {
     const base = 60;  // Get 60% of the score just by hitting the beat.
 
-    const SUPER_SCORE_SPEED = 3.5;
+    const SUPER_SCORE_SPEED = 1.75;
     const speedScore = (punchEl.components.punch.speed / SUPER_SCORE_SPEED) * 40;
 
-    const percent = baseScore + Math.min(speedScore, 40);
+    const percent = base + Math.min(speedScore, 40);
     const score = base + Math.min(speedScore, 120);
-    this.score(percent, score);
+    this.score(score, percent);
   },
 
   /**

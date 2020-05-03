@@ -3,7 +3,7 @@ var sourceCreatedCallback;
 const LAYER_BOTTOM = 'bottom';
 const LAYER_MIDDLE = 'middle';
 const LAYER_TOP = 'top';
-const VOLUME = 0.15;
+const VOLUME = 0.185;
 
 /**
  * Beat hit sound using positional audio and audio buffer source.
