@@ -656,15 +656,15 @@ AFRAME.registerState({
       state.score.finalAccuracy = state.score.accuracy;
 
       const accuracy = parseFloat(state.score.accuracy);
-      if (accuracy >= 90) {
+      if (accuracy >= 97) {
         state.score.rank = 'S';
-      } else if (accuracy >= 80) {
+      } else if (accuracy >= 90) {
         state.score.rank = 'A';
-      } else if (accuracy >= 60) {
+      } else if (accuracy >= 80) {
         state.score.rank = 'B';
-      } else if (accuracy >= 40) {
+      } else if (accuracy >= 70) {
         state.score.rank = 'C';
-      } else if (accuracy >= 30) {
+      } else if (accuracy >= 60) {
         state.score.rank = 'D';
       } else {
         state.score.rank = 'F';
