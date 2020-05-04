@@ -439,11 +439,10 @@ AFRAME.registerState({
      */
     leaderboardscoreadded: (state, payload) => {
       // Insert.
-      let added = false;
       for (let i = 0; i < state.leaderboard.length; i++) {
-        if (!added && payload.scoreData.score >= payload.score.score) {
+        if (payload.scoreData.score >= state.leaderboard[i].score ||
+            i >= state.leaderboard.length - 1) {
           state.leaderboard.splice(i, 0, payload.scoreData);
-          added = true;
           break;
         }
       }
