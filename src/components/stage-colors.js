@@ -54,6 +54,10 @@ AFRAME.registerComponent('stage-colors', {
   },
 
   setColor: function (target, code) {
+    if (!colorCodes[code]) {
+      code = 5;
+    }
+
     if (target.startsWith('curve')) {
       // New event style.
       this.el.emit(`${target}stageeventcolor`, colorCodes[code].replace('bright', ''), false);
