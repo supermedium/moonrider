@@ -45,7 +45,7 @@ AFRAME.registerComponent('super-keyboard', {
   },
 
   init: function () {
-    this.el.addEventListener('click', this.click.bind(this));
+    this.el.addEventListener('mousedown', this.click.bind(this));
     this.changeEventDetail = {};
 
     this.keys = null;
