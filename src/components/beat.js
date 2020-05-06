@@ -154,67 +154,53 @@ AFRAME.registerComponent('beat-system', {
     if (!beatsToCheck.length) { return; }
 
     // Check hits.
-    const weapons = this.weapons;
     for (let i = 0; i < beatsToCheck.length; i++) {
-      const beat = beatsToCheck[i];
-
       // If ?synctest=true, auto-explode beat and play sound to easily test sync.
       if ((SYNC_TEST || !this.data.hasVR) && beatsToCheck[i].data.type !== MINE) {
-        beat.autoHit(this.weapons[0].el);
+        beatsToCheck[i].autoHit(this.weapons[0].el);
         continue;
       }
+      this.checkCollision(beatsToCheck[i], this.weapons[0], this.weapons[1]);
+    }
+  },
 
-      // Mine.
-      if (beat.data.type === MINE) {
-        if (weapons[0].checkCollision(beat)) {
-          beat.onHit(weapons[0].el);
-          return;
-        }
-        if (weapons[1].checkCollision(beat)) {
-          beat.onHit(weapons[1].el);
-        }
+  checkCollision: function (beat, weapon1, weapon2) {
+    // Mine.
+    if (beat.data.type === MINE) {
+      if (weapon1.checkCollision(beat)) {
+        beat.onHit(weapon1.el);
         return;
       }
-
-      // Good hit, continue.
-      const correctWeapon = WEAPON_COLORS[weapons[0].el.dataset.hand] === beat.data.color
-        ? weapons[0]
-        : weapons[1];
-      if (correctWeapon.checkCollision(beat)) {
-        correctWeapon.wrongBeat = null;  // Clear.
-        beat.onHit(correctWeapon.el);
-        continue;
+      if (weapon2.checkCollision(beat)) {
+        beat.onHit(weapon2.el);
       }
-
-      // Flag the wrong beat hit.
-      const wrongWeapon = correctWeapon === weapons[0] ? weapons[1] : weapons[0];
-      if (wrongWeapon.checkCollision(beat)) {
-        wrongWeapon.wrongBeat = beat;
-        continue;
-      }
+      return;
     }
 
-    // Trigger wrong hits after check.
-    for (let i = 0; i < weapons.length; i++) {
-      const weapon = weapons[i];
-      if (!weapon.wrongBeat) { continue; }
+    // Successful hit, let the beat handle further processing.
+    const correctWeapon = WEAPON_COLORS[weapon1.el.dataset.hand] === beat.data.color
+      ? weapon1
+      : weapon2;
+    if (correctWeapon.checkCollision(beat)) {
+      beat.onHit(correctWeapon.el);
+      return;
+    }
 
+    // If not successful hit, check if mismatched hit.
+    const wrongWeapon = correctWeapon === weapon1 ? weapon2 : weapon1;
+    if (wrongWeapon.checkCollision(beat)) {
       // Minimum speed for wrong beat.
-      if (this.data.gameMode === 'classic' && weapon.strokeSpeed < 15) {
+      if (this.data.gameMode === 'classic' && wrongWeapon.strokeSpeed < 15) {
         continue;
       }
 
-      if (this.data.gameMode === 'punch' && weapon.speed < 2) {
+      if (this.data.gameMode === 'punch' && wrongWeapon.speed < 2) {
         continue;
       }
 
-      weapon.wrongBeat.onHit(weapon.el, true);
-      weapon.wrongBeat.destroyBeat(weapon.el, false);
+      beat.onHit(wrongWeapon.el, true);
+      beat.destroyBeat(wrongWeapon.el, false);
     }
-
-    // Clear.
-    weapons[0].wrongBeat = null;
-    weapons[1].wrongBeat = null;
   },
 
   horizontalPositions: {},
