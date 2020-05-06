@@ -191,11 +191,11 @@ AFRAME.registerComponent('beat-system', {
     if (wrongWeapon.checkCollision(beat)) {
       // Minimum speed for wrong beat.
       if (this.data.gameMode === 'classic' && wrongWeapon.strokeSpeed < 15) {
-        continue;
+        return;
       }
 
       if (this.data.gameMode === 'punch' && wrongWeapon.speed < 2) {
-        continue;
+        return;
       }
 
       beat.onHit(wrongWeapon.el, true);
@@ -437,10 +437,6 @@ AFRAME.registerComponent('beat', {
     mesh.geometry.computeBoundingBox();
 
     this.bbox = mesh.geometry.boundingBox;
-
-    if (type !== 'mine') {
-      this.bbox.expandByScalar(0.125);
-    }
   },
 
   wrongHit: function () {
