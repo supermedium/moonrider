@@ -636,11 +636,18 @@ AFRAME.registerComponent('beat', {
   calculateScorePunch: function (punchEl) {
     const base = 60;  // Get 60% of the score just by hitting the beat.
 
-    const SUPER_SCORE_SPEED = 1.75;
-    const speedScore = (punchEl.components.punch.speed / SUPER_SCORE_SPEED) * 40;
+    const SUPER_SCORE_SPEED = 1.5;
+    const speed = punchEl.components.punch.speed;
+    const speedScore = (speed / SUPER_SCORE_SPEED) * 40;
+
+    let score;
+    if (speed <= SUPER_SCORE_SPEED) {
+      score = base + Math.min(speedScore, 40);
+    } else {
+      score = base + remap(speed, 1.5, 6, 40, 70);
+    }
 
     const percent = base + Math.min(speedScore, 40);
-    const score = base + Math.min(speedScore, 120);
     this.score(score, percent);
   },
 
