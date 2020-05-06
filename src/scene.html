@@ -165,7 +165,7 @@
           haptics__plume="events: plumepulse; dur: 35; force: 0.1"
           headfist="hand: {{ hand }}"
           raycaster="objects: [raycastable]; far: 5; showLine: false"
-          raycaster__game="objects: [raycastable-game]; far: 1; interval: {{ hand == 'right' and '70' or '71' }}; showLine: false"
+          raycaster__game="objects: [raycastable-game]; far: 1; interval: {{ hand == 'right' and '70' or '71' }}; direction: 0 1 -1"
           weapon="hand: {{ hand }}"
           weapon-particles="hand: {{ hand }}"
           thumb-controls
