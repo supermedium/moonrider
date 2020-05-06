@@ -198,6 +198,16 @@ AFRAME.registerComponent('beat-system', {
     for (let i = 0; i < weapons.length; i++) {
       const weapon = weapons[i];
       if (!weapon.wrongBeat) { continue; }
+
+      // Minimum speed for wrong beat.
+      if (this.data.gameMode === 'classic' && weapon.strokeSpeed < 15) {
+        continue;
+      }
+
+      if (this.data.gameMode === 'punch' && weapon.speed < 2) {
+        continue;
+      }
+
       weapon.wrongBeat.onHit(weapon.el, true);
       weapon.wrongBeat.destroyBeat(weapon.el, false);
     }
