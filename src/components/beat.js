@@ -578,10 +578,17 @@ AFRAME.registerComponent('beat', {
   calculateScoreBlade: function (bladeEl, angleDot) {
     // 70% score on speed. Downward hits get gravity factor.
     const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 20 : 10;
-
+    const speed = bladeEl.components.blade.strokeSpeed;
     const speedScore = (bladeEl.components.blade.strokeSpeed / SUPER_SCORE_SPEED) * 70;
-    let score = Math.min(speedScore, 210);  // Can get up to 3x points by swinging at 30.
-    let percent = Math.min(speedScore, 70)  // Cap the percent to the 70%.
+
+    let score;
+    if (speed <= SUPER_SCORE_SPEED) {
+      score = Math.min(speedScore, 70);
+    } else {
+      score = remap(speed, 10, 60, 70, 100);
+    }
+
+    let percent = Math.min(speedScore, 70);
 
     // 30% score on direction.
     if (this.data.type === DOT) {
@@ -674,4 +681,8 @@ function elastic (amplitude, period) {
        Math.sin((((t - 1) - (p / (Math.PI * 2) *
        Math.asin(1 / a))) * (Math.PI * 2)) / p);
   }
+}
+
+function remap (value, low1, high1, low2, high2) {
+  return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }

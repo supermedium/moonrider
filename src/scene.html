@@ -1,8 +1,8 @@
 <!-- https://freesound.org/people/deleted_user_2731495/sounds/183881/ -->
 <audio id="introSong" src="assets/sounds/menu.ogg" loop></audio>
 
-{% set firestore = IS_PRODUCTION and 'moonrider-prod' or 'moonrider-dev' %}
-{% set firekey = IS_PRODUCTION and 'AIzaSyAilakXLvMgwPcBcHs3oys51eLp4yrfz0w' or 'AIzaSyALCaDKg0b7aD3nOyRv_f5RTZ1vedrGyWw' %}
+{% set firestore = true and 'moonrider-prod' or 'moonrider-dev' %}
+{% set firekey = true and 'AIzaSyAilakXLvMgwPcBcHs3oys51eLp4yrfz0w' or 'AIzaSyALCaDKg0b7aD3nOyRv_f5RTZ1vedrGyWw' %}
 
 <!-- pool__beat-shadow="mixin: beatShadow; size: 100; container: #beatContainer; dynamic: true" -->
 <a-scene
@@ -196,8 +196,8 @@
                 obj-model="obj: #weaponObj"
                 materials="name: {{ hand }}Weapon"
                 render-order="weapon"
-                position="0 -0.43 0">
-                <a-entity class="bladeTipHelper" position="0 -0.43 0"></a-entity>
+                position="0 -0.3 0">
+                <a-entity class="bladeTipHelper" position="0 -0.42 0"></a-entity>
               </a-entity>
             </a-entity>
 
@@ -206,7 +206,7 @@
               bind__visible="!isPlaying || gameMode === 'classic'"
               obj-model="obj: #weaponHandleObj"
               materials="name: {{ hand }}WeaponHandle">
-              <a-entity class="bladeHandleHelper" position="0 0.3 0"></a-entity>
+              <a-entity class="bladeHandleHelper"></a-entity>
             </a-entity>
           </a-entity>
 

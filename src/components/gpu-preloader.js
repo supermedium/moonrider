@@ -11,7 +11,6 @@ AFRAME.registerComponent('gpu-preloader', {
     setTimeout(() => {
       this.preloadFromSelector('#mainLogo');
       this.preloadFromSelector('#prevArrow');
-      this.preloadFromSelector('#soundboxingButton');
       this.preloadFromSelector('#stepback');
       this.preloadFromSelector('.difficultyBackground');
       this.preloadFromSelector('.genreIcon');
