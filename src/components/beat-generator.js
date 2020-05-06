@@ -9,7 +9,7 @@ const DEBUG_MINES = AFRAME.utils.getUrlParameter('debugmines');
 export const BEAT_ANTICIPATION_TIME = 1.1;
 export const BEAT_PRELOAD_TIME = 1.1;
 export const PUNCH_OFFSET = 0.5;
-export const SWORD_OFFSET = 1.5;
+export const SWORD_OFFSET = 1.2;
 
 // How far out to load beats (ms).
 const isMobile = AFRAME.utils.device.isMobile();
