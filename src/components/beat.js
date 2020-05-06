@@ -449,10 +449,11 @@ AFRAME.registerComponent('beat', {
     blockEl.setAttribute('materials', 'name', 'beat');
     const mesh = blockEl.getObject3D('mesh');
     mesh.geometry.computeBoundingBox();
+
     this.bbox = mesh.geometry.boundingBox;
 
     if (type !== 'mine') {
-      this.bbox.expandByScalar(0.1);
+      this.bbox.expandByScalar(0.125);
     }
   },
 
