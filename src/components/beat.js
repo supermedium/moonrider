@@ -428,8 +428,9 @@ AFRAME.registerComponent('beat', {
     const mesh = blockEl.getObject3D('mesh');
     mesh.geometry.computeBoundingBox();
     this.bbox = mesh.geometry.boundingBox;
+
     if (type !== 'mine') {
-      this.bbox.expandByScalar(0.125);
+      this.bbox.expandByScalar(0.1);
     }
   },
 
@@ -579,7 +580,7 @@ AFRAME.registerComponent('beat', {
     const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 20 : 10;
 
     const speedScore = (bladeEl.components.blade.strokeSpeed / SUPER_SCORE_SPEED) * 70;
-    let score = Math.min(speedScore, 210);  // Can get up to 3x points by swinging at 36.
+    let score = Math.min(speedScore, 210);  // Can get up to 3x points by swinging at 30.
     let percent = Math.min(speedScore, 70)  // Cap the percent to the 70%.
 
     // 30% score on direction.
