@@ -84,6 +84,7 @@ AFRAME.registerComponent('blade', {
     const bladeLocalPositions = [new THREE.Vector3(), new THREE.Vector3(),
                                  new THREE.Vector3(), new THREE.Vector3()];
     const bladeLocalTriangle = new THREE.Triangle();
+    const cornerBox = new THREE.Box3();
 
     return function (beat) {
       if (this.strokeSpeed < 3) { return false; }
@@ -101,7 +102,14 @@ AFRAME.registerComponent('blade', {
         bladeLocalPositions[1],
         bladeLocalPositions[2]);
 
-      if (beat.bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
+      // Increase hitbox for corner beats.
+      // This uses length of the string (e.g., 'upleft', 'downright').
+      let bbox = beat.bbox;
+      if (beat.cutDirection.length > 5) {
+        bbox = cornerBox.copy(beat.bbox).expandByScalar(0.05);
+      }
+
+      if (bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
 
       // Previous frame triangle.
       // Only checked if the current frame triangle does not intersect.
@@ -109,7 +117,7 @@ AFRAME.registerComponent('blade', {
       beat.blockEl.object3D.worldToLocal(bladeLocalPositions[3]);
       bladeLocalTriangle.set(bladeLocalPositions[2], bladeLocalPositions[3],
                              bladeLocalPositions[0]);
-      if (beat.bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
+      if (bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
 
       return false;
     };
