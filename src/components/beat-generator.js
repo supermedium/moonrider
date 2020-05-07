@@ -297,7 +297,8 @@ AFRAME.registerComponent('beat-generator', {
     const renderOrder = this.el.systems['render-order'].order.beats + 1 - songPosition;
 
     if (data.gameMode === 'ride') {
-      beatEl.components.plume.onGenerate(songPosition, horizontalPosition, verticalPosition);
+      beatEl.components.plume.onGenerate(songPosition, horizontalPosition, verticalPosition,
+                                         this.playerHeight.beatOffset);
       beatEl.setAttribute('render-order', renderOrder);
     } else {
       beatEl.components.beat.onGenerate(songPosition, horizontalPosition, verticalPosition,

@@ -33,7 +33,7 @@ AFRAME.registerComponent('plume', {
     }
   },
 
-  onGenerate: function (songPosition, horizontalPosition, verticalPosition) {
+  onGenerate: function (songPosition, horizontalPosition, verticalPosition, heightOffset) {
     const data = this.data;
     const el = this.el;
     // Set position.
@@ -41,7 +41,7 @@ AFRAME.registerComponent('plume', {
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
     el.object3D.position.x += this.horizontalPositions[horizontalPosition];
-    el.object3D.position.y += this.verticalPositions[verticalPosition];
+    el.object3D.position.y += this.verticalPositions[verticalPosition] + heightOffset;
     el.object3D.rotation.z = Math.random() * Math.PI * 2;
 
     this.songPosition = songPosition;
