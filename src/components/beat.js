@@ -437,6 +437,10 @@ AFRAME.registerComponent('beat', {
     mesh.geometry.computeBoundingBox();
 
     this.bbox = mesh.geometry.boundingBox;
+
+    if (this.data.type === 'mine') {
+      this.bbox.expandByScalar(-0.25);
+    }
   },
 
   wrongHit: function () {
