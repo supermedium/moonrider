@@ -84,10 +84,11 @@ AFRAME.registerComponent('blade', {
     const bladeLocalPositions = [new THREE.Vector3(), new THREE.Vector3(),
                                  new THREE.Vector3(), new THREE.Vector3()];
     const bladeLocalTriangle = new THREE.Triangle();
-    const cornerBox = new THREE.Box3();
+    const topBox = new THREE.Box3();
+    const TOP = 'top';
 
     return function (beat) {
-      if (this.strokeSpeed < 3) { return false; }
+      if (this.strokeSpeed < 1) { return false; }
 
       // Convert points to beat space.
       for (let i = 0; i < 3; i++) {
@@ -102,11 +103,10 @@ AFRAME.registerComponent('blade', {
         bladeLocalPositions[1],
         bladeLocalPositions[2]);
 
-      // Increase hitbox for corner beats.
-      // This uses length of the string (e.g., 'upleft', 'downright').
+      // Increase hitbox for high beats.
       let bbox = beat.bbox;
-      if (beat.cutDirection.length > 5) {
-        bbox = cornerBox.copy(beat.bbox).expandByScalar(0.05);
+      if (beat.verticalPosition === TOP) {
+        bbox = topBox.copy(beat.bbox).expandByScalar(0.07);
       }
 
       if (bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
