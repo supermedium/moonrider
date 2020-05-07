@@ -585,8 +585,7 @@ AFRAME.registerComponent('beat', {
    * Blade scoring.
    */
   calculateScoreBlade: function (bladeEl, angleDot) {
-    // 70% score on speed. Downward hits get gravity factor.
-    const SUPER_SCORE_SPEED = this.cutDirection === 'down' ? 20 : 10;
+    const SUPER_SCORE_SPEED = 10;
     const speed = bladeEl.components.blade.strokeSpeed;
     const speedScore = (bladeEl.components.blade.strokeSpeed / SUPER_SCORE_SPEED) * 70;
 
