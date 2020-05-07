@@ -3,7 +3,7 @@
   class="accuracyTextCounterSubscribe"
   bind__animation="enabled: isVictory"
   bind__scale="isVictory && '0 0 0' || '1 1 1'"
-  bind__visible="(!!menuSelectedChallenge.id || !!challenge.id) && (menuActive || isPaused || isVictory) && !genreMenuOpen && gameMode !== 'ride'"
+  bind__visible="(!!menuSelectedChallenge.id || !!challenge.id) && (menuActive || isPaused || isVictory || isLoading) && !genreMenuOpen && gameMode !== 'ride'"
   position="2.36 1.5 -1.19"
   rotation="0 -60 0"
   animation="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutBack; startEvents: textcounterdone"
