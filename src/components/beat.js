@@ -593,7 +593,7 @@ AFRAME.registerComponent('beat', {
     if (speed <= SUPER_SCORE_SPEED) {
       score = Math.min(speedScore, 70);
     } else {
-      score = remap(clamp(speed, 10, 60), 10, 60, 70, 100);
+      score = remap(clamp(speed, 10, 45), 10, 45, 70, 100);
     }
 
     let percent = Math.min(speedScore, 70);
