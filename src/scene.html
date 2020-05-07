@@ -4,7 +4,6 @@
 {% set firestore = true and 'moonrider-prod' or 'moonrider-dev' %}
 {% set firekey = true and 'AIzaSyAilakXLvMgwPcBcHs3oys51eLp4yrfz0w' or 'AIzaSyALCaDKg0b7aD3nOyRv_f5RTZ1vedrGyWw' %}
 
-<!-- pool__beat-shadow="mixin: beatShadow; size: 100; container: #beatContainer; dynamic: true" -->
 <a-scene
   bind__beat-generator="challengeId: challenge.id; difficulty: challenge.difficulty; gameMode: gameMode; has3DOFVR: has3DOFVR; hasSongLoadError: hasSongLoadError; isPlaying: isPlaying; isZipFetching: isZipFetching; menuSelectedChallengeId: menuSelectedChallenge.id; songDuration: challenge.songDuration; speed: speed"
   bind__beat-system="gameMode: gameMode; hasVR: hasVR; isLoading: isLoading; isPlaying: isPlaying"
@@ -52,11 +51,12 @@
   pool__beat-fx-blue="mixin: blueBeatFX; size: 10; container: #rigContainer; dynamic: true"
   pool__beat-fx-red="mixin: redBeatFX; size: 10; container: #rigContainer; dynamic: true"
   pool__beat-fx-mine="mixin: mineFX; size: 12; container: #rigContainer; dynamic: true"
+  pool__beat-shadow="mixin: beatShadow; size: 15; container: #beatContainer"
   pool__punch-fx-blue="mixin: bluePunchFX; size: 10; container: #rigContainer; dynamic: true"
   pool__punch-fx-red="mixin: redPunchFX; size: 10; container: #rigContainer; dynamic: true"
   pool__punch-fx-mine="mixin: yellowPunchFX; size: 12; container: #rigContainer; dynamic: true"
   pool__tunnels="mixin: tunnel; size: 10; container: #tunnelsContainer; dynamic: true"
-  pool__wall="mixin: wall; size: 20; container: #beatContainer; dynamic: true"
+  pool__wall="mixin: wall; size: 20; container: #wallContainer; dynamic: true"
   proxy-event__cleargame1="event: gamemenuexit; as: cleargame; to: a-scene"
   proxy-event__cleargame2="event: gamemenurestart; as: cleargame; to: a-scene"
   proxy-event__cleargame3="event: songcomplete; as: cleargame; to: a-scene"
@@ -110,6 +110,10 @@
     beat-hit-sound
     bind__visible="isPlaying"></a-entity>
 
+  <a-entity
+    id="wallContainer"
+    bind__visible="isPlaying"></a-entity>
+
   <a-entity id="curveFollowRig"
     bind__curve-follow-rig-reset="isVictory: isVictory"
     bind__supercurve-follow="enabled: isPlaying; speed: speed"
@@ -129,7 +133,14 @@
 
     <!-- Player. -->
     <a-entity id="cameraRig">
-      <a-entity id="camera" position="0 1.6 0.5" camera="far: 10000" look-controls wasd-controls="acceleration: 15"></a-entity>
+      <a-entity
+        id="camera"
+        bind__wasd-controls="enabled: !inVr"
+        position="0 1.6 0.5"
+        camera="far: 10000"
+        look-controls
+        player-height
+        wasd-controls="acceleration: 15"></a-entity>
       <a-entity
         id="cameraWallCollider"
         bind__raycaster__wall="enabled: isPlaying && gameMode !== 'ride'"

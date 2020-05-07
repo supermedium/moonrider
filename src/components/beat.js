@@ -362,7 +362,7 @@ AFRAME.registerComponent('beat', {
    * Called when summoned by beat-generator.
    * Called after updatePosition.
    */
-  onGenerate: function (songPosition, horizontalPosition, verticalPosition, cutDirection) {
+  onGenerate: function (songPosition, horizontalPosition, verticalPosition, cutDirection, heightOffset) {
     const data = this.data;
     const el = this.el;
 
@@ -401,7 +401,7 @@ AFRAME.registerComponent('beat', {
     }
 
     // Shadow.
-    // this.shadow = this.el.sceneEl.components['pool__beat-shadow'].requestEntity();
+    this.shadow = this.el.sceneEl.components['pool__beat-shadow'].requestEntity();
     if (this.shadow) {
       this.shadow.object3D.visible = true;
       this.shadow.object3D.position.copy(el.object3D.position);
@@ -417,7 +417,7 @@ AFRAME.registerComponent('beat', {
     const offset = 0.5;
     el.object3D.position.y -= offset;
     this.positionStart = el.object3D.position.y;
-    this.positionChange = this.verticalPositions[verticalPosition] + offset;
+    this.positionChange = this.verticalPositions[verticalPosition] + offset + heightOffset;
   },
 
   /**

@@ -92,6 +92,7 @@ AFRAME.registerComponent('beat-generator', {
     this.curveFollowRigEl = document.getElementById('curveFollowRig');
     this.tube = document.getElementById('tube');
     this.index = {events: 0, notes: 0, obstacles: 0};
+    this.wallContainer = document.getElementById('wallContainer');
 
     this.leftStageLasers = document.getElementById('leftStageLasers');
     this.rightStageLasers = document.getElementById('rightStageLasers');
@@ -121,6 +122,10 @@ AFRAME.registerComponent('beat-generator', {
         }
       });
     */
+  },
+
+  play: function () {
+    this.playerHeight = document.querySelector('[player-height]').components['player-height'];
   },
 
   update: function (oldData) {
@@ -296,7 +301,7 @@ AFRAME.registerComponent('beat-generator', {
       beatEl.setAttribute('render-order', renderOrder);
     } else {
       beatEl.components.beat.onGenerate(songPosition, horizontalPosition, verticalPosition,
-                                        cutDirection);
+                                        cutDirection, this.playerHeight.beatOffset);
       beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
     }
     beatEl.play();
@@ -401,9 +406,16 @@ AFRAME.registerComponent('beat-generator', {
     this.index.events = 0;
     this.index.notes = 0;
     this.index.obstacles = 0;
+
     for (let i = 0; i < this.beatContainer.children.length; i++) {
-      let child = this.beatContainer.children[i];
+      const child = this.beatContainer.children[i];
+      child.object3D.position.set(0, 0, -9999);
       if (child.components.beat) { child.components.beat.returnToPool(); }
+    }
+
+    for (let i = 0; i < this.wallContainer.children.length; i++) {
+      const child = this.wallContainer.children[i];
+      child.object3D.position.set(0, 0, -9999);
       if (child.components.wall) { child.components.wall.returnToPool(); }
     }
   },
