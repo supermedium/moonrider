@@ -593,7 +593,7 @@ AFRAME.registerComponent('beat', {
     if (speed <= SUPER_SCORE_SPEED) {
       score = Math.min(speedScore, 70);
     } else {
-      score = remap(speed, 10, 60, 70, 100);
+      score = remap(clamp(speed, 10, 60), 10, 60, 70, 100);
     }
 
     let percent = Math.min(speedScore, 70);
@@ -629,7 +629,7 @@ AFRAME.registerComponent('beat', {
     if (speed <= SUPER_SCORE_SPEED) {
       score = base + Math.min(speedScore, 40);
     } else {
-      score = base + remap(speed, 1.5, 6, 40, 70);
+      score = base + remap(clamp(speed, 1.5, 6), 1.5, 6, 40, 70);
     }
 
     const percent = base + Math.min(speedScore, 40);
@@ -701,3 +701,7 @@ function elastic (amplitude, period) {
 function remap (value, low1, high1, low2, high2) {
   return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
+
+function clamp (val, min, max) {
+  return Math.min(Math.max(val, min), max);
+};
