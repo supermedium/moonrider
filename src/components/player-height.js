@@ -22,7 +22,7 @@ AFRAME.registerComponent('player-height', {
 
     // Adjust beat container height.
     const height = clamp(this.height, 1.6, 2.2);
-    this.beatOffset = remap(height, 1.6, 2.2, 0, 0.4);
+    this.beatOffset = remap(height, 1.6, 2.2, 0, 0.2);
   }
 });
 
