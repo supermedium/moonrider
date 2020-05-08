@@ -85,7 +85,8 @@ AFRAME.registerComponent('blade', {
     const bladeLocalPositions = [new THREE.Vector3(), new THREE.Vector3(),
                                  new THREE.Vector3(), new THREE.Vector3()];
     const bladeLocalTriangle = new THREE.Triangle();
-    const TOP = 'top';
+    const LEFT = 'left';
+    const RIGHT = 'right';
 
     return function (beat) {
       if (this.strokeSpeed < 1) { return false; }
@@ -105,8 +106,8 @@ AFRAME.registerComponent('blade', {
 
       // Increase hitbox for high beats.
       bbox.copy(beat.bbox);
-      bbox.expandByScalar(0.05);
-      if (beat.verticalPosition === TOP) {
+      bbox.expandByScalar(0.02);
+      if (beat.horizontalPosition === LEFT || beat.horizontalPosition === RIGHT) {
         bbox.expandByScalar(0.07);
       }
 
