@@ -567,27 +567,27 @@ AFRAME.registerComponent('beat', {
   calculateScoreBlade: function (bladeEl, angleDot) {
     const SUPER_SCORE_SPEED = 10;
     const speed = bladeEl.components.blade.strokeSpeed;
-    const speedScore = (bladeEl.components.blade.strokeSpeed / SUPER_SCORE_SPEED) * 70;
+    const speedScore = (bladeEl.components.blade.strokeSpeed / SUPER_SCORE_SPEED) * 30;
 
     let score;
     if (speed <= SUPER_SCORE_SPEED) {
-      score = Math.min(speedScore, 70);
+      score = Math.min(speedScore, 30);
     } else {
-      score = remap(clamp(speed, 10, 45), 10, 45, 70, 100);
+      score = remap(clamp(speed, 10, 25), 10, 25, 30, 50);
     }
 
     let percent = Math.min(speedScore, 70);
 
-    // 30% score on direction.
+    // 70% score on direction.
     if (this.data.type === DOT) {
-      score += 30;
-      percent += 30;
+      score += 70;
+      percent += 70;
     } else {
-      score += angleDot * 30;
+      score += angleDot * 70;
       if (angleDot > ANGLE_DOT_SUPER) {
-        percent += 30;
+        percent += 70;
       } else {
-        percent += angleDot * 30;
+        percent += angleDot * 70;
       }
     }
 
