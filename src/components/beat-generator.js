@@ -416,7 +416,7 @@ AFRAME.registerComponent('beat-generator', {
 
     for (let i = 0; i < this.wallContainer.children.length; i++) {
       const child = this.wallContainer.children[i];
-      child.object3D.position.set(0, 0, -9999);
+      child.object3D.position.set(0, -9999, 0);
       if (child.components.wall) { child.components.wall.returnToPool(); }
     }
   },
