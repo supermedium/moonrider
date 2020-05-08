@@ -165,7 +165,7 @@
           bind__raycaster="enabled: {{ hand }}RaycasterActive"
           bind__raycaster__game="enabled: isPlaying && (gameMode === 'classic' || gameMode === 'punch')"
           bind__blade="enabled: isPlaying && gameMode === 'classic'"
-          bind__weapon-particles="enabled: isPlaying"
+          bind__weapon-particles="enabled: isPlaying; gameMode: gameMode"
           bind__trail="colorScheme: colorScheme; enabled: isPlaying && gameMode === 'classic'"
           controller="hand: {{ hand }}"
           data-hand="{{ hand }}"

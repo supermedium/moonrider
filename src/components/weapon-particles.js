@@ -1,5 +1,7 @@
 const HIT_LEFT = 'hitLeft';
 const HIT_RIGHT = 'hitRight';
+const PUNCH_WALL_RAY = {direction: {x: 0, y: -0.25, z: -1}};
+const BLADE_WALL_RAY = {direction: {x: 0, y: 1, z: -1}};
 
 /**
  * Show particles when touched by weapon.
@@ -7,6 +9,7 @@ const HIT_RIGHT = 'hitRight';
 AFRAME.registerComponent('weapon-particles', {
   schema: {
     enabled: {default: false},
+    gameMode: {default: ''},
     hand: {type: 'string'}
   },
 
@@ -16,6 +19,14 @@ AFRAME.registerComponent('weapon-particles', {
 
     this.weaponEnter = this.weaponEnter.bind(this);
     this.weaponLeave = this.weaponLeave.bind(this);
+  },
+
+  update: function (oldData) {
+    if (oldData.gameMode !== this.data.gameMode) {
+      this.el.setAttribute(
+        'raycaster__game',
+        this.data.gameMode === 'punch' ? PUNCH_WALL_RAY : BLADE_WALL_RAY);
+    }
   },
 
   pause: function () {
