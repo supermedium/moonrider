@@ -58,6 +58,7 @@
     "html-require-loader": "^1.0.1",
     "ip": "1.1.5",
     "json-loader": "^0.5.7",
+    "lodash.debounce": "^4.0.8",
     "promise-polyfill": "^8.1.0",
     "style-loader": "^0.23.1",
     "super-nunjucks-loader": "^2.0.0",

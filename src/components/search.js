@@ -1,4 +1,5 @@
 const algoliasearch = require('algoliasearch/lite');
+const debounce = require('lodash.debounce');
 
 const client = algoliasearch('QULTOY3ZWU', 'be07164192471df7e97e6fa70c1d041d');
 const algolia = client.initIndex('beatsaver');
@@ -38,6 +39,8 @@ AFRAME.registerComponent('search', {
       this.keyboardEl.components['super-keyboard'].data.value = '';
       this.keyboardEl.components['super-keyboard'].updateTextInput('');
     }
+
+    this.debouncedSearch = debounce(this.search.bind(this), 1000);
   },
 
   play: function () {
@@ -51,7 +54,7 @@ AFRAME.registerComponent('search', {
   events: {
     superkeyboardchange: function (evt) {
       if (evt.target !== this.el) { return; }
-      this.search(evt.detail.value);
+      this.debouncedSearch(evt.detail.value);
     }
   },
 
