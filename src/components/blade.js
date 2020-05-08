@@ -81,10 +81,10 @@ AFRAME.registerComponent('blade', {
   },
 
   checkCollision: (function () {
+    const bbox = new THREE.Box3();
     const bladeLocalPositions = [new THREE.Vector3(), new THREE.Vector3(),
                                  new THREE.Vector3(), new THREE.Vector3()];
     const bladeLocalTriangle = new THREE.Triangle();
-    const topBox = new THREE.Box3();
     const TOP = 'top';
 
     return function (beat) {
@@ -94,7 +94,7 @@ AFRAME.registerComponent('blade', {
       for (let i = 0; i < 3; i++) {
         bladeLocalPositions[i].copy(this.bladeWorldPositions[i]);
         beat.blockEl.object3D.worldToLocal(bladeLocalPositions[i]);
-        bladeLocalPositions[i].multiplyScalar(1.5);
+        bladeLocalPositions[i].multiplyScalar(1.75);
       }
 
       // Current frame triangle.
@@ -104,10 +104,10 @@ AFRAME.registerComponent('blade', {
         bladeLocalPositions[2]);
 
       // Increase hitbox for high beats.
-      let bbox = beat.bbox;
+      bbox.copy(beat.bbox);
       bbox.expandByScalar(0.05);
       if (beat.verticalPosition === TOP) {
-        bbox = topBox.copy(beat.bbox).expandByScalar(0.07);
+        bbox.expandByScalar(0.07);
       }
 
       if (bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }

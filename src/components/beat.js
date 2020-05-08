@@ -576,7 +576,7 @@ AFRAME.registerComponent('beat', {
       score = remap(clamp(speed, 10, 25), 10, 25, 30, 50);
     }
 
-    let percent = Math.min(speedScore, 70);
+    let percent = Math.min(speedScore, 30);
 
     // 70% score on direction.
     if (this.data.type === DOT) {

@@ -206,8 +206,8 @@
                 obj-model="obj: #weaponObj"
                 materials="name: {{ hand }}Weapon"
                 render-order="weapon"
-                position="0 -0.45 0">
-                <a-entity class="bladeTipHelper" position="0 -0.44 0"></a-entity>
+                position="0 -0.43 0">
+                <a-entity class="bladeTipHelper" position="0 -0.45 0"></a-entity>
               </a-entity>
             </a-entity>
 
@@ -216,7 +216,7 @@
               bind__visible="!isPlaying || gameMode === 'classic'"
               obj-model="obj: #weaponHandleObj"
               materials="name: {{ hand }}WeaponHandle">
-              <a-entity class="bladeHandleHelper" position="0 0.05 0"></a-entity>
+              <a-entity class="bladeHandleHelper"></a-entity>
             </a-entity>
           </a-entity>
 
