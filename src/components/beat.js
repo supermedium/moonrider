@@ -288,7 +288,6 @@ AFRAME.registerComponent('beat', {
     this.poolName = undefined;
     this.returnToPoolTimer = DESTROY_TIME;
     this.rotationAxis = new THREE.Vector3();
-    this.shadow = null;
     this.superCutIdx = 0;
     this.startPositionZ = undefined;
     this.warmupTime = 0;
@@ -400,14 +399,6 @@ AFRAME.registerComponent('beat', {
       el.object3D.rotation.z = THREE.Math.degToRad(ROTATIONS[cutDirection]);
     }
 
-    // Shadow.
-    this.shadow = this.el.sceneEl.components['pool__beat-shadow'].requestEntity();
-    if (this.shadow) {
-      this.shadow.object3D.visible = true;
-      this.shadow.object3D.position.copy(el.object3D.position);
-      this.shadow.object3D.position.y += 0.05;
-    }
-
     // Set up rotation warmup.
     this.rotationStart = el.object3D.rotation.y;
     this.rotationChange = WARMUP_ROTATION_CHANGE;
@@ -486,12 +477,6 @@ AFRAME.registerComponent('beat', {
       this.broken.emit('explode', this.explodeEventDetail, false);
     }
 
-    if (this.shadow) {
-      this.el.sceneEl.components['pool__beat-shadow'].returnEntity(this.shadow);
-      this.shadow.object3D.visible = false;
-      this.shadow = null;
-    }
-
     if (this.beatSystem.data.gameMode === CLASSIC && correctHit) {
       weaponEl.components.trail.pulse();
     }
@@ -505,11 +490,6 @@ AFRAME.registerComponent('beat', {
     this.el.object3D.position.set(0, 0, -9999);
     this.el.object3D.visible = false;
     this.el.sceneEl.components[this.poolName].returnEntity(this.el);
-    if (this.shadow) {
-      this.el.sceneEl.components['pool__beat-shadow'].returnEntity(this.shadow);
-      this.shadow.object3D.visible = false;
-      this.shadow = null;
-    }
   },
 
   onHit: function (weaponEl, wrongHit) {
