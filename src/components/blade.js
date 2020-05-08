@@ -105,6 +105,7 @@ AFRAME.registerComponent('blade', {
 
       // Increase hitbox for high beats.
       let bbox = beat.bbox;
+      bbox.expandByScalar(0.05);
       if (beat.verticalPosition === TOP) {
         bbox = topBox.copy(beat.bbox).expandByScalar(0.07);
       }
