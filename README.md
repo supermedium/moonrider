@@ -6,9 +6,7 @@ Surf the musical road among the moon, stars, and northern lights.
 
 **[Read more about it with elliottate at bsaber.com](https://bsaber.com/moonrider/)**
 
-A free and open source music visualization and rhythm game website. From the
-creators of the [Beat Saver Viewer](https://supermedium.com/beatsaver-viewer)
-used by the community to preview maps.
+An open source music visualization and rhythm game website to demonstrate the [A-Frame](https://aframe.io) developer framework. Built by two people in a few months, not intended to be a fully released game nor paid product.
 
 ![gif](https://user-images.githubusercontent.com/674727/58050249-ab442900-7b03-11e9-8763-913d42a26708.gif)
 
