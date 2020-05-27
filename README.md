@@ -4,20 +4,20 @@
 
 Surf the musical road among the moon, stars, and northern lights.
 
-**[Read more about it with elliottate at bsaber.com](https://bsaber.com/moonrider/)**
-
-An open source music visualization and rhythm game website to demonstrate the [A-Frame](https://aframe.io) developer framework. Built by two people in a few months, not intended to be a fully released game nor paid product.
+A side project built by two people in a few months to show off VR running
+inside a webpage. Built with HTML, JavaScript, and A-Frame. Not meant to be an
+official game nor commerical product. Moon Rider is meant to be an open source
+resource for the web developer community to learn from, and to push forward the
+open WebXR initiative.
 
 ![gif](https://user-images.githubusercontent.com/674727/58050249-ab442900-7b03-11e9-8763-913d42a26708.gif)
 
+**[Read more about it with elliottate at bsaber.com](https://bsaber.com/moonrider/)**
+
 Song maps are sourced from beatsaver.com with expressed support from the Beat
 Saver community admins. Supports all browsers and headsets (incl. Quest). If
-there are any issues, file an issue here on GitHub or leave a
-message in the [Supermedium Discord](https://supermedium.com/discord).
-
-Built with JavaScript and [A-Frame](https://aframe.io) to demonstrate the Web
-is capable of high-quality VR experiences and to provide a learning resource
-for the developer community.
+there are any issues, file an issue here on GitHub or leave a message in the
+[Supermedium Discord](https://supermedium.com/discord).
 
 [**Try the site out now in your browser!**](https://supermedium.com/moonrider/)
 
