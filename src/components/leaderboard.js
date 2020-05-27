@@ -3,7 +3,7 @@ const pr = require('profane-words');
 require('firebase/firestore');
 
 const NUM_SCORES_DISPLAYED = 10;
-const ba = /(fuc)|(ass)|(nig)|(shit)|(retard)/g;
+const ba = /(fuc)|(ass)|(nig)|(shit)|(retard)/gi;
 
 /**
  * High score with Firebase cloud store.
