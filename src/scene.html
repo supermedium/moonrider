@@ -195,7 +195,7 @@
 
           <!-- Blade. -->
           <a-entity bind__position="has3DOFVR && '0 0 -0.5' || '0 0 0'"
-                    rotation="135 0 0">
+                    bind__rotation="controllerType.indexOf('oculus') !== -1 && '135 0 0' || '90 0 0'">
             <a-entity
               class="bladeContainer"
               bind__visible="isPlaying && gameMode === 'classic'"
