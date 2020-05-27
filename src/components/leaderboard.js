@@ -1,7 +1,9 @@
 const firebase = require('firebase/app');
+const pr = require('profane-words');
 require('firebase/firestore');
 
 const NUM_SCORES_DISPLAYED = 10;
+const ba = /(fuc)|(ass)|(nig)|(shit)|(retard)/g;
 
 /**
  * High score with Firebase cloud store.
@@ -89,7 +91,12 @@ AFRAME.registerComponent('leaderboard', {
       difficulty: this.data.difficulty || state.challenge.difficulty,
       time: new Date()
     };
-    this.db.add(scoreData);
+
+    if (!pr.includes(this.username.toLowerCase()) &&
+        !this.username.matches(ba)) {
+      this.db.add(scoreData);
+    }
+
     this.addEventDetail.scoreData = scoreData;
     this.el.emit('leaderboardscoreadded', this.addEventDetail, false);
   },

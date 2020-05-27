@@ -1,9 +1,9 @@
 {% set text = 'Moon Rider (v2.8)\n\n' %}
-{% set text = text + 'A free and open source music visualization and rhythm game website powered by the community Beat Saver public dataset. ' %}
-{% set text = text + 'From creators of the Beat Saver Viewer.\n\n' %}
-{% set text = text + 'Song maps are sourced from beatsaver.com with expressed support from the Beat Saver community admins. Supports most browsers and headsets (including Quest).\n\n' %}
-{% set text = text + 'Moon Rider is a demo of a VR game running in a webpage (bsaber.com/moonrider).\n\n' %}
-{% set text = text + 'Try to swing more your arms versus your wrists for safety and take frequent breaks!\n\n' %}
+{% set text = text + 'Open source demonstration codebase of a VR app built in HTML and JavaScript running on the Web.\n\n' %}
+{% set text = text + 'Built by two people in less than a few months as a resource for A-Frame developers. ' %}
+{% set text = text + 'Not meant to be an official, paid, nor fully released product.\n\n' %}
+{% set text = text + 'Song maps sourced from beatsaver.com with expressed support from Beat Saver community admins. Supports most browsers and headsets (including Quest).\n\n' %}
+{% set text = text + 'This game was meant to serve as an example of a VR app running inside a webpage to help progress the open WebXR initiative (bsaber.com/moonrider).\n\n' %}
 {% set text = text + 'Chat with us on moonrider.xyz/discord' %}
 
 <a-entity
@@ -22,6 +22,6 @@
   <a-entity
     id="newsText"
     mixin="font"
-    text="align: left; color: #FAFAFA; baseline: center; width: 1.25; value: {{ text }}"
+    text="align: left; color: #FAFAFA; baseline: center; width: 1.6; wrapCount: 50; value: {{ text }}"
     position="0 -0.04 0.001"></a-entity>
 </a-entity>
