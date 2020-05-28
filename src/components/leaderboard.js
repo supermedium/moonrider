@@ -93,7 +93,7 @@ AFRAME.registerComponent('leaderboard', {
     };
 
     if (!pr.includes(this.username.toLowerCase()) &&
-        !this.username.matches(ba)) {
+        !this.username.match(ba)) {
       this.db.add(scoreData);
     }
 
