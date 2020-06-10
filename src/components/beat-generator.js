@@ -261,7 +261,7 @@ AFRAME.registerComponent('beat-generator', {
       return;
     }
 
-    if (data.gameMode === 'punch') { type = 'dot'; }
+    if (AFRAME.utils.getUrlParameter('dot') || data.gameMode === 'punch') { type = 'dot'; }
 
     const beatEl = this.requestBeat(type, color);
     if (!beatEl) { return; }

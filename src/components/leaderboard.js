@@ -135,6 +135,8 @@ AFRAME.registerComponent('leaderboard', {
     const state = this.el.sceneEl.systems.state.state;
     const score = state.score.score;
 
+    if (AFRAME.utils.getUrlParameter('dot')) { return; }
+
     // If less than 10, then automatic high score.
     if (this.scores.length < NUM_SCORES_DISPLAYED) {
       this.qualifyingIndex = this.scores.length;
