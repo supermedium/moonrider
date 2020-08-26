@@ -6,7 +6,7 @@
     "deploy": "npm run predeploy && ghpages git@github.com:supermedium/moonrider.git -p .ghpages && rm -rf .ghpages",
     "lint": "semistandard -v | snazzy",
     "lint:fix": "semistandard --fix",
-    "predeploy": "NODE_ENV=production npm run build && shx mkdir -p .ghpages && cp -r index.html assets build vendor CNAME .ghpages",
+    "predeploy": "cross-env NODE_ENV=production npm run build && shx mkdir -p .ghpages && cp -r index.html assets build vendor CNAME .ghpages",
     "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot-only --inline --port 3000"
   },
   "dependencies": {
@@ -54,7 +54,7 @@
     "babel-preset-minify": "^0.5.0",
     "css-loader": "^0.28.7",
     "debug": "^4.1.0",
-    "firebase": "5.9.2",
+    "firebase": "^7.19.0",
     "html-require-loader": "^1.0.1",
     "ip": "1.1.5",
     "json-loader": "^0.5.7",
@@ -90,7 +90,7 @@
     ]
   },
   "engines": {
-    "node": "<=11.15.0",
-    "npm": "<=6.7.0"
+    "node": "<=12.18.3",
+    "npm": "<=6.14.6"
   }
 }
