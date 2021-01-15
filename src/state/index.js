@@ -219,7 +219,8 @@ AFRAME.registerState({
         'oculus-quest-controls',
         'oculus-touch-controls',
         'vive-controls',
-        'windows-motion-controls'
+        'windows-motion-controls',
+        'generic-tracked-controller-controls'
       ].indexOf(state.controllerType) !== -1;
 
       state.has3DOFVR = [

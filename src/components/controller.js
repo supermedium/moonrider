@@ -28,6 +28,7 @@ AFRAME.registerComponent('controller', {
     el.setAttribute('vive-controls', hand);
     el.setAttribute('vive-focus-controls', hand);
     el.setAttribute('windows-motion-controls', hand);
+    el.setAttribute('generic-tracked-controller-controls', hand);
   },
 
   config: {
@@ -84,6 +85,13 @@ AFRAME.registerComponent('controller', {
       cursor: {
         downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
         upEvents: ['trackpadup', 'triggerup', 'gripup']
+      }
+    },
+
+    'generic-tracked-controller-controls': {
+      cursor: {
+        downEvents: ['triggerdown'],
+        upEvents: ['triggerup']
       }
     }
   }
