@@ -15,7 +15,7 @@ AFRAME.registerComponent('stars', {
     for (let i = 0; i < this.data.count; i++) {
       positions.push(rand(), rand(), rand() * 4);
     }
-    geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     geometry.computeBoundingSphere();
     const points = new THREE.Points(geometry, this.material);
     this.el.setObject3D('stars', points);

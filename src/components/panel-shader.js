@@ -2,7 +2,7 @@ import COLORS from '../constants/colors';
 
 AFRAME.registerShader('panelShader', {
   schema: {
-    active: {type: 'number', is: 'uniform', default: 0},
+    activePanel: {type: 'number', is: 'uniform', default: 0},
     brightness: {type: 'number', is: 'uniform', default: 0.3},
     borderWidth: {type: 'number', is: 'uniform', default: 0.004},
     borderRadius: {type: 'number', is: 'uniform', default: 0.15},

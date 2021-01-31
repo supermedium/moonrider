@@ -14,7 +14,7 @@ AFRAME.registerComponent('tail', {
 
     const geometry = this.geometry = new THREE.PlaneBufferGeometry(
       data.width, data.height, data.segments, 1);
-    geometry.removeAttribute('normal');
+    geometry.deleteAttribute('normal');
     geometry.translate(data.width / 2, 0, 0);
 
     const material = this.el.sceneEl.systems.materials.handStarTrail;

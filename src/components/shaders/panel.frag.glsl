@@ -1,4 +1,6 @@
-#extension GL_OES_standard_derivatives : enable
+#if __VERSION__ == 100
+  #extension GL_OES_standard_derivatives : enable
+#endif
 
 uniform vec3 colorPrimary;
 uniform vec3 colorSecondary;
@@ -12,7 +14,7 @@ uniform float brightness;
 uniform float ratio;
 uniform float midSection;
 uniform float opacity;
-uniform float active;
+uniform float activePanel;
 
 varying vec2 uvs;
 
@@ -28,7 +30,7 @@ void main()
   vec2 uv2 = uv * 2.0 - 1.0; // from -1 to 1
   uv2.x *= ratio;
 
-  vec3 col = mix(colorSecondary * uv.y, colorPrimary * uv.y, uv.x) * (brightness + active * 0.4);
+  vec3 col = mix(colorSecondary * uv.y, colorPrimary * uv.y, uv.x) * (brightness + activePanel * 0.4);
   vec3 borderCol = mix(colorSecondary, colorPrimary, uv.y);
 
   vec2 size = vec2(0.83 * ratio, 0.86) - borderRadius;

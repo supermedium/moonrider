@@ -135,7 +135,7 @@ AFRAME.registerState({
       accuracy: 100,  // Out of 100.
       accuracyScore: 0,  // Raw number.
       accuracyInt: 100,  // Out of 100.
-      active: false,
+      activePanel: false,
       beatsHit: 0,
       beatsMissed: 0,
       beatsText: '',
@@ -146,7 +146,7 @@ AFRAME.registerState({
       score: 0
     },
     search: {
-      active: true,
+      activePanel: true,
       page: 0,
       hasError: false,
       hasNext: false,

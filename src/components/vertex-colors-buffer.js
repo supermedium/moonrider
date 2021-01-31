@@ -39,7 +39,7 @@ AFRAME.registerComponent('vertex-colors-buffer', {
     }
 
     if (!geometry.attributes.color) {
-      geometry.addAttribute('color',
+      geometry.setAttribute('color',
         new THREE.BufferAttribute(
           new Float32Array(geometry.attributes.position.array.length), 3
         )

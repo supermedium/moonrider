@@ -218,8 +218,8 @@
   id="bigMenuButton"
   geometry="primitive: plane; width: 1.15; height: 0.23"
   material="shader: panelShader; brightness: 0.5; borderWidth: 0.05; ratio: 4; borderRadius: 0.6"
-  animation__mouseenter1="property: components.material.material.uniforms.active.value; from: 0; to: 1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 100"
-  animation__mouseleave1="property: components.material.material.uniforms.active.value; from: 1; to: 0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 100"
+  animation__mouseenter1="property: components.material.material.uniforms.activePanel.value; from: 0; to: 1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 100"
+  animation__mouseleave1="property: components.material.material.uniforms.activePanel.value; from: 1; to: 0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 100"
   animation__mouseenter2="property: scale; from: 1 1 1; to: 1.04 1.04 1.04; startEvents: mouseenter; pauseEvents: mouseleave; dur: 80"
   animation__mouseleave2="property: scale; to: 1 1 1; from: 1.04 1.04 1.04; startEvents: mouseleave; pauseEvents: mouseenter; dur: 80"
   render-order="menubutton"></a-mixin>

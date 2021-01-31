@@ -43,8 +43,8 @@ AFRAME.registerComponent('trail', {
 
     this.newSample = null;
 
-    geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3).setDynamic(true));
-    geometry.addAttribute('vertexColor', new THREE.BufferAttribute(colors, 4).setDynamic(true));
+    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3).setUsage(THREE.DynamicDrawUsage));
+    geometry.setAttribute('vertexColor', new THREE.BufferAttribute(colors, 4).setUsage(THREE.DynamicDrawUsage));
 
     const material = new THREE.ShaderMaterial({
       side: THREE.DoubleSide,
