@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  moonrider:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    command: npm run start
+    environment:
+      - NODE_OPTIONS=--openssl-legacy-provider
