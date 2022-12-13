@@ -23,16 +23,17 @@ AFRAME.registerComponent('beat-generator', {
   dependencies: ['stage-colors'],
 
   schema: {
-    challengeId: {type: 'string'},  // If clicked play.
-    gameMode: {type: 'string'},  // classic, punch, ride.
-    difficulty: {type: 'string'},
-    has3DOFVR: {default: false},
-    hasSongLoadError: {default: false},
-    isPlaying: {default: false},
-    isZipFetching: {default: false},
-    menuSelectedChallengeId: {type: 'string'},
-    songDuration: {type: 'number'},  // Seconds.
-    speed: {type: 'number'}
+    challengeId: { type: 'string' },  // If clicked play.
+    gameMode: { type: 'string' },  // classic, punch, ride.
+    difficulty: { type: 'string' },
+    beatmapCharacteristic: { type: 'string' },
+    has3DOFVR: { default: false },
+    hasSongLoadError: { default: false },
+    isPlaying: { default: false },
+    isZipFetching: { default: false },
+    menuSelectedChallengeId: { type: 'string' },
+    songDuration: { type: 'number' },  // Seconds.
+    speed: { type: 'number' }
   },
 
   orientationsHumanized: [
@@ -56,20 +57,20 @@ AFRAME.registerComponent('beat-generator', {
   },
 
   positionHumanized: {
-    topLeft: {layer: 2, index: 0},
-    topCenterLeft: {layer: 2, index: 1},
-    topCenterRight: {layer: 2, index: 2},
-    topRight: {layer: 2, index: 3},
+    topLeft: { layer: 2, index: 0 },
+    topCenterLeft: { layer: 2, index: 1 },
+    topCenterRight: { layer: 2, index: 2 },
+    topRight: { layer: 2, index: 3 },
 
-    middleLeft: {layer: 1, index: 0},
-    middleCenterLeft: {layer: 1, index: 1},
-    middleCenterRight: {layer: 1, index: 2},
-    middleRight: {layer: 1, index: 3},
+    middleLeft: { layer: 1, index: 0 },
+    middleCenterLeft: { layer: 1, index: 1 },
+    middleCenterRight: { layer: 1, index: 2 },
+    middleRight: { layer: 1, index: 3 },
 
-    bottomLeft: {layer: 0, index: 0},
-    bottomCenterLeft: {layer: 0, index: 1},
-    bottomCenterRight: {layer: 0, index: 2},
-    bottomRight: {layer: 0, index: 3},
+    bottomLeft: { layer: 0, index: 0 },
+    bottomCenterLeft: { layer: 0, index: 1 },
+    bottomCenterRight: { layer: 0, index: 2 },
+    bottomRight: { layer: 0, index: 3 },
   },
 
   verticalPositionsHumanized: {
@@ -91,7 +92,7 @@ AFRAME.registerComponent('beat-generator', {
     this.curveEl = document.getElementById('curve');
     this.curveFollowRigEl = document.getElementById('curveFollowRig');
     this.tube = document.getElementById('tube');
-    this.index = {events: 0, notes: 0, obstacles: 0};
+    this.index = { events: 0, notes: 0, obstacles: 0 };
     this.wallContainer = document.getElementById('wallContainer');
 
     this.leftStageLasers = document.getElementById('leftStageLasers');
@@ -104,7 +105,7 @@ AFRAME.registerComponent('beat-generator', {
     this.el.addEventListener('ziploaderend', evt => {
       this.beats = evt.detail.beats;
       if (!this.data.challengeId || this.data.hasSongLoadError) { return; }
-      this.beatData = this.beats[this.data.difficulty];
+      this.beatData = this.beats[this.data.beatmapCharacteristic + '-' + this.data.difficulty];
       this.processBeats();
     });
 
@@ -139,7 +140,7 @@ AFRAME.registerComponent('beat-generator', {
 
       // Process.
       if (!this.data.isZipFetching && this.beats && !this.data.hasSongLoadError) {
-        this.beatData = this.beats[this.data.difficulty];
+        this.beatData = this.beats[this.data.beatmapCharacteristic + '-' + this.data.difficulty];
         this.processBeats();
       }
 
@@ -163,6 +164,12 @@ AFRAME.registerComponent('beat-generator', {
     this.beatData._obstacles.sort(lessThan);
     this.beatData._notes.sort(lessThan);
     this.bpm = this.beatData._beatsPerMinute;
+
+
+    // Performance: Remove all obstacles if there are more than 256 (often used with Noodle Extensions)
+    if (this.beatData._obstacles.length > 256) {
+      this.beatData._obstacles = [];
+    }
 
     // Some events have negative time stamp to initialize the stage.
     const events = this.beatData._events;
@@ -255,9 +262,9 @@ AFRAME.registerComponent('beat-generator', {
     }
 
     if (data.has3DOFVR &&
-        data.gameMode !== 'viewer' &&
-        data.gameMode !== 'ride' &&
-        color === 'red') {
+      data.gameMode !== 'viewer' &&
+      data.gameMode !== 'ride' &&
+      color === 'red') {
       return;
     }
 
@@ -279,8 +286,8 @@ AFRAME.registerComponent('beat-generator', {
 
     // Apply sword offset. Blocks arrive on beat in front of the user.
     const cutDirection = this.orientationsHumanized[noteInfo._cutDirection];
-    const horizontalPosition = this.horizontalPositionsHumanized[noteInfo._lineIndex];
-    const verticalPosition = this.verticalPositionsHumanized[noteInfo._lineLayer];
+    const horizontalPosition = this.horizontalPositionsHumanized[noteInfo._lineIndex] || 'left';
+    const verticalPosition = this.verticalPositionsHumanized[noteInfo._lineLayer] || 'middle';
 
     // Factor in sword offset and beat anticipation time (percentage).
     const weaponOffset = this.data.gameMode === 'classic' ? SWORD_OFFSET : PUNCH_OFFSET;
@@ -298,11 +305,11 @@ AFRAME.registerComponent('beat-generator', {
 
     if (data.gameMode === 'ride') {
       beatEl.components.plume.onGenerate(songPosition, horizontalPosition, verticalPosition,
-                                         this.playerHeight.beatOffset);
+        this.playerHeight.beatOffset);
       beatEl.setAttribute('render-order', renderOrder);
     } else {
       beatEl.components.beat.onGenerate(songPosition, horizontalPosition, verticalPosition,
-                                        cutDirection, this.playerHeight.beatOffset);
+        cutDirection, this.playerHeight.beatOffset);
       beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
     }
     beatEl.play();
@@ -328,7 +335,7 @@ AFRAME.registerComponent('beat-generator', {
     if (data.has3DOFVR && data.gameMode !== 'viewer') { return; }
 
     const durationSeconds = 60 * (wallInfo._duration / this.bpm);
-    const horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];
+    const horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex] || 'none';
     const isCeiling = wallInfo._type === 1;
     const length = durationSeconds * data.speed;
     const width = wallInfo._width / 2;  // We want half the reported width.
@@ -343,13 +350,13 @@ AFRAME.registerComponent('beat-generator', {
 
     const lengthPercent = length / this.curveEl.components.supercurve.length;
     wallEl.components.wall.onGenerate(songPosition, horizontalPosition, width, length,
-                                      isCeiling, songPosition + lengthPercent);
+      isCeiling, songPosition + lengthPercent);
     wallEl.play();
 
     // Set render order (back to front so decreasing render order as index increases).
     // For walls, set as the back end of the wall.
     wallEl.object3D.renderOrder = this.el.systems['render-order'].order.beats + 1 -
-                                  (songPosition + lengthPercent);
+      (songPosition + lengthPercent);
   },
 
   generateEvent: function (event) {
@@ -431,4 +438,4 @@ AFRAME.registerComponent('beat-generator', {
   }
 });
 
-function lessThan (a, b) { return a._time - b._time; }
+function lessThan(a, b) { return a._time - b._time; }

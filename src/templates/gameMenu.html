@@ -80,13 +80,13 @@
         id="gameMenuSongName"
         position="0 0.01 0"
         mixin="font" text="align: center; color: #fff; wrapCount: 30; baseline: top; lineHeight: 36; width: 1.2"
-        bind__text="value: challenge.songName"></a-entity>
+        bind__text="value: challenge.metadata.songName"></a-entity>
       <a-entity
         id="gameMenuSongSubName"
         mixin="font"
         position="0 -0.09 0"
         bind__text="color: colorSecondary"
-        bind__text-truncate="value: challenge.songSubName + ' - ' + challenge.author"
+        bind__text-truncate="value: challenge.metadata.songSubName + ' - ' + challenge.metadata.songAuthorName"
         text-truncate="length: 80"
         text="wrapCount: 80; align: center; width: 2.4" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
     </a-entity>

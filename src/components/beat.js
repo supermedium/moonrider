@@ -1,4 +1,4 @@
-import {PUNCH_OFFSET, SWORD_OFFSET} from './beat-generator';
+import { PUNCH_OFFSET, SWORD_OFFSET } from './beat-generator';
 const COLORS = require('../constants/colors.js');
 
 const auxObj3D = new THREE.Object3D();
@@ -14,7 +14,7 @@ const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 const elasticEasing = getElasticEasing(1.33, 0.5);
 
 const DESTROYED_SPEED = 1.0;
-const ONCE = {once: true};
+const ONCE = { once: true };
 const DESTROY_TIME = 1000;
 
 // Play sound and explode at reach to test sync.
@@ -47,7 +47,7 @@ const MODELS = {
   mine: 'mineObjTemplate'
 };
 
-const WEAPON_COLORS = {right: 'blue', left: 'red'};
+const WEAPON_COLORS = { right: 'blue', left: 'red' };
 
 const ROTATIONS = {
   right: 0,
@@ -68,11 +68,11 @@ const SIZES = {
 
 AFRAME.registerComponent('beat-system', {
   schema: {
-    gameMode: {default: 'classic', oneOf: ['classic', 'punch', 'ride']},
-    hasVR: {default: false},
-    inVR: {default: false},
-    isLoading: {default: false},
-    isPlaying: {default: false}
+    gameMode: { default: 'classic', oneOf: ['classic', 'punch', 'ride'] },
+    hasVR: { default: false },
+    inVR: { default: false },
+    isLoading: { default: false },
+    isPlaying: { default: false }
   },
 
   init: function () {
@@ -137,8 +137,8 @@ AFRAME.registerComponent('beat-system', {
       let inFront = true;
       for (let i = 0; i < beatsToCheck.length; i++) {
         if (beat.horizontalPosition === beatsToCheck[i].horizontalPosition &&
-            beat.verticalPosition === beatsToCheck[i].verticalPosition &&
-            beat.songPosition > beatsToCheck[i].songPosition) {
+          beat.verticalPosition === beatsToCheck[i].verticalPosition &&
+          beat.songPosition > beatsToCheck[i].songPosition) {
           inFront = false;
         }
         if (!inFront) { break; }
@@ -238,6 +238,7 @@ AFRAME.registerComponent('beat-system', {
       const hMargin = gameMode === CLASSIC ? size : size * 1.2;
       horizontalPositions.left = -1.5 * hMargin;
       horizontalPositions.middleleft = -0.5 * hMargin;
+      horizontalPositions.middle = hMargin;
       horizontalPositions.middleright = 0.5 * hMargin;
       horizontalPositions.right = 1.5 * hMargin;
 
@@ -273,9 +274,9 @@ AFRAME.registerComponent('beat-system', {
  */
 AFRAME.registerComponent('beat', {
   schema: {
-    color: {default: 'red', oneOf: ['red', 'blue']},
-    debug: {default: false},
-    type: {default: 'arrow', oneOf: ['arrow', DOT, MINE]}
+    color: { default: 'red', oneOf: ['red', 'blue'] },
+    debug: { default: false },
+    type: { default: 'arrow', oneOf: ['arrow', DOT, MINE] }
   },
 
   init: function () {
@@ -291,7 +292,7 @@ AFRAME.registerComponent('beat', {
     this.superCutIdx = 0;
     this.startPositionZ = undefined;
     this.warmupTime = 0;
-    this.weaponColors = {right: 'blue', left: 'red'};
+    this.weaponColors = { right: 'blue', left: 'red' };
     this.curveEl = document.getElementById('curve');
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.mineParticles = document.getElementById('mineParticles');
@@ -496,9 +497,9 @@ AFRAME.registerComponent('beat', {
     const data = this.data;
 
     // Haptics.
-    try{
+    try {
       weaponEl.components.haptics__beat.pulse();
-    } catch (err){
+    } catch (err) {
       console.log(err);
     }
 
@@ -556,7 +557,7 @@ AFRAME.registerComponent('beat', {
     // Super FX.
     if (percent >= 100) {
       this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
-      el.object3D, this.data.color);
+        el.object3D, this.data.color);
       this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
     }
   },
@@ -634,7 +635,7 @@ AFRAME.registerComponent('beat', {
  * Load OBJ from already parsed and loaded OBJ template.
  */
 const geometries = {};
-function setObjModelFromTemplate (el, templateId) {
+function setObjModelFromTemplate(el, templateId) {
   // Load into cache.
   if (!geometries[templateId]) {
     const templateEl = document.getElementById(templateId);
@@ -658,12 +659,12 @@ function setObjModelFromTemplate (el, templateId) {
   }
 }
 
-function getElasticEasing (a, p) {
+function getElasticEasing(a, p) {
   return t => 1 - elastic(a, p)(1 - t);
 }
 
-function elastic (amplitude, period) {
-  function minMax (val, min, max) {
+function elastic(amplitude, period) {
+  function minMax(val, min, max) {
     return Math.min(Math.max(val, min), max);
   }
 
@@ -673,15 +674,15 @@ function elastic (amplitude, period) {
     return (t === 0 || t === 1)
       ? t
       : -a * Math.pow(2, 10 * (t - 1)) *
-       Math.sin((((t - 1) - (p / (Math.PI * 2) *
-       Math.asin(1 / a))) * (Math.PI * 2)) / p);
+      Math.sin((((t - 1) - (p / (Math.PI * 2) *
+        Math.asin(1 / a))) * (Math.PI * 2)) / p);
   }
 }
 
-function remap (value, low1, high1, low2, high2) {
+function remap(value, low1, high1, low2, high2) {
   return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
 
-function clamp (val, min, max) {
+function clamp(val, min, max) {
   return Math.min(Math.max(val, min), max);
 };

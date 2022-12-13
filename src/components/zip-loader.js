@@ -1,8 +1,10 @@
 AFRAME.registerComponent('zip-loader', {
   schema: {
-    difficulties: {type: 'array'},
-    isLoading: {default: 'false'},
-    version: {type: 'string'}  // e.g., 811-535.
+    difficulties: { type: 'array' },
+    isLoading: { default: 'false' },
+    version: { type: 'string' },
+    directDownload: { type: 'string' },
+    bpm: { type: 'number' }
   },
 
   init: function () {
@@ -23,10 +25,13 @@ AFRAME.registerComponent('zip-loader', {
 
     // Abort previous ZIP request if new song selected.
     if (oldData.version && oldData.version !== data.version &&
-        this.cachedVersion !== data.version) {
+      this.cachedVersion !== data.version) {
       this.message.abort = true;
       this.message.difficulties = JSON.stringify(this.data.difficulties);
       this.message.version = oldData.version;
+      this.message.directDownload = this.data.directDownload;
+      this.message.bpm = this.data.bpm;
+      this.message.hash = this.data.hash;
       this.worker.postMessage(this.message);  // Start the worker.
     }
 
@@ -38,28 +43,21 @@ AFRAME.registerComponent('zip-loader', {
 
     // Faulty ZIP.
     if (!oldData.isLoading && this.data.isLoading &&
-        this.cachedVersion === this.data.version &&
-        !this.cachedZip) {
+      this.cachedVersion === this.data.version &&
+      !this.cachedZip) {
       this.el.emit('songloaderror');
     }
   },
 
   fetchZip: function (version) {
     this.el.emit('ziploaderstart', null, false);
-    if (this.cachedVersion === version) {
-      // Faulty ZIP.
-      if (!this.cachedZip) {
-        this.el.emit('songloaderror');
-        return;
-      }
-
-      this.el.emit('ziploaderend', this.cachedZip, false);
-      return;
-    }
 
     this.message.abort = false;
     this.message.difficulties = JSON.stringify(this.data.difficulties);
     this.message.version = version;
+    this.message.directDownload = this.data.directDownload;
+    this.message.bpm = this.data.bpm;
+    this.message.hash = this.data.hash;
     this.worker.postMessage(this.message);  // Start the worker.
   },
 
@@ -105,7 +103,7 @@ AFRAME.registerComponent('zip-loader', {
 /**
  * Beat Saver JSON sometimes have weird characters in front of JSON in utf16le encoding.
  */
-function jsonParseClean (str) {
+function jsonParseClean(str) {
   try {
     str = str.trim();
     str = str.replace(/\u0000/g, '').replace(/\u\d\d\d\d/g, '');
@@ -127,7 +125,7 @@ function jsonParseClean (str) {
 const errorRe1 = /column (\d+)/m;
 const errorRe2 = /position (\d+)/m;
 
-function jsonParseLoop (str, i) {
+function jsonParseLoop(str, i) {
   try {
     return JSON.parse(str);
   } catch (e) {
