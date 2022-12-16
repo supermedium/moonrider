@@ -8,8 +8,7 @@ const PREVIEW_VOLUME = 0.5;
 AFRAME.registerComponent('song-preview-system', {
   schema: {
     previewStartTime: { type: 'int' },
-    selectedChallengeId: { type: 'string' },
-    hash: { type: 'string' }
+    selectedChallengeId: { type: 'string' }
   },
 
   init: function () {
