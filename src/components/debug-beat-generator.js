@@ -24,7 +24,7 @@ AFRAME.registerComponent('debug-beat-generator', {
     }
 
     if (this.data.beatEnabled ||
-        AFRAME.utils.getUrlParameter('debugstate').trim() === 'gameplay') {
+      AFRAME.utils.getUrlParameter('debugstate').trim() === 'gameplay') {
       window.addEventListener('keydown', this.onKeyDown);
       this.addDebugBeatControls();
     }
@@ -58,7 +58,6 @@ AFRAME.registerComponent('debug-beat-generator', {
     });
   },
 
-
   generateWall: function (wallInfo) {
     this.beatLoader.bpm = 90;
     this.beatLoader.generateWall({
@@ -74,7 +73,7 @@ AFRAME.registerComponent('debug-beat-generator', {
   onKeyDown: function (event) {
     const keyCode = event.keyCode;
     switch (keyCode) {
-      case 32: {  // Space bar.
+      case 32: { // Space bar.
         this.spawn();
         break;
       }
@@ -182,15 +181,16 @@ AFRAME.registerComponent('debug-beat-generator', {
       containerEl.appendChild(div);
       div.addEventListener('click', handler);
       return div;
-    };
-
-    function addGenerateButton (text, containerEl) {
-      const buttonEl = addButton('Spawn (Space Bar)', parentDiv, () => { self.spawn(); });
-      buttonEl.style.width = '460px';
-      buttonEl.style.bottomMargin = '10px'
     }
 
-    function setBeatButton(text, containerEl) {
+    function addGenerateButton (text, containerEl) {
+      const buttonEl = addButton('Spawn (Space Bar)', parentDiv, () => {
+        self.spawn();});
+      buttonEl.style.width = '460px';
+      buttonEl.style.bottomMargin = '10px';
+    }
+
+    function setBeatButton (text, containerEl) {
       var buttonEl = addButton('Set Beat', parentDiv, function () {
         var color = self.selectedBeat.type !== 'mine' ? ' ' + self.selectedBeat.color : '';
         var orientation = self.selectedBeat.type !== 'arrow' ? '' : ' ' + self.selectedBeat.orientation;
@@ -210,8 +210,8 @@ AFRAME.registerComponent('debug-beat-generator', {
         };
       });
       buttonEl.style.width = '460px';
-      buttonEl.style.bottomMargin = '10px'
-    };
+      buttonEl.style.bottomMargin = '10px';
+    }
   },
 
   addDebugStageControls: function () {
@@ -231,7 +231,7 @@ AFRAME.registerComponent('debug-beat-generator', {
       div.style.font = '14px sans-serif';
       div.style.textAlign = 'center';
       div.style.cursor = 'pointer';
-      div.style.left = (20 + i * 120)+'px';
+      div.style.left = (20 + i * 120) + 'px';
       div.innerHTML = name;
       if (type === 'element') {
         div.addEventListener('click', () => {
@@ -241,8 +241,8 @@ AFRAME.registerComponent('debug-beat-generator', {
         });
       } else {
         div.addEventListener('click', () => {
-          this.beatLoader.generateEvent({_type: currControl, _value: i})
-        })
+          this.beatLoader.generateEvent({_type: currControl, _value: i});
+        });
       }
       document.body.appendChild(div);
     };
@@ -253,7 +253,8 @@ AFRAME.registerComponent('debug-beat-generator', {
       'leftStageLasers',
       'rightStageLasers',
       'floor'
-    ].forEach((id, i) => { addControl(i, id, 'element'); });
+    ].forEach((id, i) => {
+      addControl(i, id, 'element');});
 
     [
       'off',
@@ -264,6 +265,7 @@ AFRAME.registerComponent('debug-beat-generator', {
       'red',
       'red',
       'redfade'
-    ].forEach((id, i) => { addControl(i, id, 'value'); });
+    ].forEach((id, i) => {
+      addControl(i, id, 'value');});
   }
 });

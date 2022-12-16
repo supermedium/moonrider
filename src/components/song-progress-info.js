@@ -9,7 +9,7 @@ AFRAME.registerComponent('song-progress-info', {
     this.tick = AFRAME.utils.throttleTick(this.tick.bind(this), 1000);
 
     this.progress = this.el.getObject3D('mesh');
-    this.progress.geometry.translate(0.285,0,0);
+    this.progress.geometry.translate(0.285, 0, 0);
     this.el.sceneEl.addEventListener('cleargame', () => {
       this.progress.scale.x = 0.0001;
     });
@@ -24,8 +24,8 @@ AFRAME.registerComponent('song-progress-info', {
     if (!source || !source.buffer) { return; }
 
     const progress =
-      this.el.sceneEl.components.song.getCurrentTime() /
-      source.buffer.duration;
+    this.el.sceneEl.components.song.getCurrentTime() /
+    source.buffer.duration;
 
     if (!progress) { return; }
     this.progress.scale.x = progress;

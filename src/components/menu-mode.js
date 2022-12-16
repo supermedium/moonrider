@@ -55,13 +55,13 @@ AFRAME.registerComponent('menu-mode', {
       modeEl.emit(selected ? 'select' : 'deselect', null, false);
 
       const background = modeEl.querySelector('.modeBackground');
-      background.emit(selected ? 'select': 'deselect', null, false);
+      background.emit(selected ? 'select' : 'deselect', null, false);
       background.setAttribute(
         'mixin',
         'modeBackgroundSelect' + (selected ? '' : ' modeBackgroundHover'));
 
       const thumb = modeEl.querySelector('.modeThumb');
-      thumb.emit(selected ? 'select': 'deselect', null, false);
+      thumb.emit(selected ? 'select' : 'deselect', null, false);
 
       const title = modeEl.querySelector('.modeTitle');
       title.setAttribute(

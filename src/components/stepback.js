@@ -19,8 +19,7 @@ AFRAME.registerComponent('stepback', {
       this.message.getObject3D('mesh').material.opacity = 1 - Math.abs(camPos.z - msgPos.z);
       msgPos.x = camPos.x;
       msgPos.y = camPos.y;
-    }
-    else {
+    }else {
       this.message.object3D.visible = false;
       this.throttling = 500;
     }

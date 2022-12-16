@@ -32,12 +32,12 @@ AFRAME.registerComponent('menu-playlist-button', {
   update: function (oldData) {
     // Play animation when song is favorited.
     if (!oldData.isFavorited && this.data.isFavorited &&
-        oldData.selectedChallenge === this.data.selectedChallenge) {
-      this.el.object3D.position.z = 0.01
+      oldData.selectedChallenge === this.data.selectedChallenge) {
+      this.el.object3D.position.z = 0.01;
       this.el.components['animation__scaleup'].beginAnimation();
       setTimeout(() => {
         this.el.components['animation__scaledown'].beginAnimation();
-        this.el.object3D.position.z = 0
+        this.el.object3D.position.z = 0;
       }, 800);
     }
   }

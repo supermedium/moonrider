@@ -26,7 +26,6 @@ AFRAME.registerComponent('player-height', {
   }
 });
 
-
 function median (arr) {
   arr.sort(sort);
   const mid = arr.length / 2;
@@ -43,4 +42,4 @@ function remap (value, low1, high1, low2, high2) {
 
 function clamp (val, min, max) {
   return Math.min(Math.max(val, min), max);
-};
+}

@@ -1,4 +1,4 @@
-import {PUNCH_OFFSET, SWORD_OFFSET} from './beat-generator';
+import { PUNCH_OFFSET, SWORD_OFFSET } from './beat-generator';
 const COLORS = require('../constants/colors.js');
 
 const auxObj3D = new THREE.Object3D();
@@ -6,8 +6,8 @@ const bbox = new THREE.Box3();
 const otherBbox = new THREE.Box3();
 const collisionZThreshold = -1.65;
 
-const ANGLE_DOT_SUPER = 0.97;  // ~15-degrees.
-const ANGLE_DOT_MIN = 0.625;  // ~50-degrees.
+const ANGLE_DOT_SUPER = 0.97; // ~15-degrees.
+const ANGLE_DOT_MIN = 0.625; // ~50-degrees.
 const WARMUP_TIME = 2000;
 const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 
@@ -137,8 +137,8 @@ AFRAME.registerComponent('beat-system', {
       let inFront = true;
       for (let i = 0; i < beatsToCheck.length; i++) {
         if (beat.horizontalPosition === beatsToCheck[i].horizontalPosition &&
-            beat.verticalPosition === beatsToCheck[i].verticalPosition &&
-            beat.songPosition > beatsToCheck[i].songPosition) {
+          beat.verticalPosition === beatsToCheck[i].verticalPosition &&
+          beat.songPosition > beatsToCheck[i].songPosition) {
           inFront = false;
         }
         if (!inFront) { break; }
@@ -496,9 +496,9 @@ AFRAME.registerComponent('beat', {
     const data = this.data;
 
     // Haptics.
-    try{
+    try {
       weaponEl.components.haptics__beat.pulse();
-    } catch (err){
+    } catch (err) {
       console.log(err);
     }
 
@@ -556,7 +556,7 @@ AFRAME.registerComponent('beat', {
     // Super FX.
     if (percent >= 100) {
       this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(
-      el.object3D, this.data.color);
+        el.object3D, this.data.color);
       this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
     }
   },
@@ -599,7 +599,7 @@ AFRAME.registerComponent('beat', {
    * More points scored if punching straight down the curve.
    */
   calculateScorePunch: function (punchEl) {
-    const base = 60;  // Get 60% of the score just by hitting the beat.
+    const base = 60; // Get 60% of the score just by hitting the beat.
 
     const SUPER_SCORE_SPEED = 1.5;
     const speed = punchEl.components.punch.speed;
@@ -673,9 +673,9 @@ function elastic (amplitude, period) {
     return (t === 0 || t === 1)
       ? t
       : -a * Math.pow(2, 10 * (t - 1)) *
-       Math.sin((((t - 1) - (p / (Math.PI * 2) *
-       Math.asin(1 / a))) * (Math.PI * 2)) / p);
-  }
+      Math.sin((((t - 1) - (p / (Math.PI * 2) *
+        Math.asin(1 / a))) * (Math.PI * 2)) / p);
+  };
 }
 
 function remap (value, low1, high1, low2, high2) {
@@ -684,4 +684,4 @@ function remap (value, low1, high1, low2, high2) {
 
 function clamp (val, min, max) {
   return Math.min(Math.max(val, min), max);
-};
+}

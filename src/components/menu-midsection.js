@@ -10,8 +10,8 @@ AFRAME.registerComponent('menu-midsection', {
     }
 
     if ((!oldData.active && this.data.active) ||
-        (this.data.selectedChallenge &&
-         oldData.selectedChallenge !== this.data.selectedChallenge)) {
+      (this.data.selectedChallenge &&
+      oldData.selectedChallenge !== this.data.selectedChallenge)) {
       this.el.emit('showdifficultysection', null, false);
     }
   }

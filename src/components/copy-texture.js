@@ -8,7 +8,8 @@ AFRAME.registerComponent('copy-texture', {
   init: function () {
     const data = this.data;
 
-    data.from.addEventListener('materialtextureloaded', () => { this.copyTexture(); });
+    data.from.addEventListener('materialtextureloaded', () => {
+      this.copyTexture();});
     this.copyTexture();
   },
 

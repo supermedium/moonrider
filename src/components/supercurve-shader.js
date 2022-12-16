@@ -7,7 +7,7 @@ AFRAME.registerShader('supercurve', {
     color2: {type: 'color', is: 'uniform', default: COLORS.initial.secondary},
     fogColor: {type: 'color', is: 'uniform', default: COLORS.initial.primary},
     side: {default: 'double'},
-    transparent: {default: true},
+    transparent: {default: true}
   },
 
   fragmentShader: require('./shaders/supercurve.frag.glsl'),

@@ -17,7 +17,7 @@ AFRAME.registerComponent('text-counter', {
   init: function () {
     this.currentValue = 0;
     this.hasCompleted = false;
-    this.textValue = {value : ''};
+    this.textValue = {value: ''};
   },
 
   update: function (oldData) {
@@ -47,4 +47,4 @@ AFRAME.registerComponent('text-counter', {
     var d = Math.pow(10, this.data.decimals);
     return (parseInt(n * d) / d).toFixed(this.data.decimals);
   }
-})
+});

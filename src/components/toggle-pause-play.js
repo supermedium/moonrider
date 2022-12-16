@@ -5,6 +5,6 @@ AFRAME.registerComponent('toggle-pause-play', {
 
   update: function () {
     const action = this.data.isPlaying ? 'pause' : 'play';
-    parent.postMessage(JSON.stringify({ verify: 'game-action', action }), '*');
+    parent.postMessage(JSON.stringify({ verify: 'game-action', action}), '*');
   }
 });
