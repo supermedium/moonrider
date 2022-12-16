@@ -26,7 +26,7 @@ if (!!skipDebug) {
  */
 AFRAME.registerComponent('song', {
   schema: {
-    audio: {type: 'string'},  // Blob URL.
+    audio: {type: 'string'}, // Blob URL.
     analyserEl: {type: 'selector', default: '#audioAnalyser'},
     challengeId: {default: ''},
     isBeatsPreloaded: {default: false},

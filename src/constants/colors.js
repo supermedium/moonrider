@@ -64,7 +64,7 @@ COLORS.schemes = {
     primarybright: '#FAF761',
     secondary: '#E03A3E',
     secondarybright: '#FA7578',
-    tertiary: '#278ECC',
+    tertiary: '#278ECC'
   },
 
   red: {
@@ -74,7 +74,7 @@ COLORS.schemes = {
     primarybright: '#FA7578',
     secondary: '#DADADA',
     secondarybright: '#EFEFEF',
-    tertiary: '#666',
+    tertiary: '#666'
   },
 
   rgb: {
@@ -104,9 +104,9 @@ COLORS.schemes = {
     primarybright: '#808080',
     secondary: '#FFF',
     secondarybright: '#FFF',
-    tertiary: '#B8B8B8',
+    tertiary: '#B8B8B8'
   }
-}
+};
 
 COLORS.options = Object.keys(COLORS.schemes);
 

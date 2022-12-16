@@ -24,4 +24,4 @@ AFRAME.registerComponent('stars', {
   update: function () {
     this.material.color.setStyle(this.data.color);
   }
-})
+});

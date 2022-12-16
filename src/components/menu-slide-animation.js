@@ -5,7 +5,7 @@ AFRAME.registerComponent('menu-slide-animation', {
   },
 
   init: function () {
-    this.isLeft = false;  // Means toleft.
+    this.isLeft = false; // Means toleft.
   },
 
   update: function (oldData) {
@@ -14,7 +14,7 @@ AFRAME.registerComponent('menu-slide-animation', {
     if (this.isLeft) {
       // Unselect.
       if (oldData.menuSelectedChallengeId && !data.menuSelectedChallengeId &&
-          !data.isSearching) { this.rightMenu(); }
+        !data.isSearching) { this.rightMenu(); }
       // Keyboard close.
       if (oldData.isSearching && !data.isSearching && !data.menuSelectedChallengeId) {
         this.rightMenu();

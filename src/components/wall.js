@@ -1,4 +1,4 @@
-import {SIZES} from './beat';
+import { SIZES } from './beat';
 
 const HEIGHT = 2.5;
 const CEILING_THICKNESS = 1.5;
@@ -75,7 +75,7 @@ AFRAME.registerComponent('wall', {
       // Note that curve is upside down so the positions are reversed...normally, this would
       // read as `+ (width / 2) - 0.25`.
       const centerPosition = (-1 * beatSystem.horizontalPositions[horizontalPosition]) -
-                             (width / 2) + 0.25;
+        (width / 2) + 0.25;
       left.x = centerPosition - (width / 2);
       right.x = centerPosition + (width / 2);
 

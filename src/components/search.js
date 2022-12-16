@@ -29,11 +29,12 @@ AFRAME.registerComponent('search', {
     this.popularHits = topSearch;
     shuffle(this.popularHits);
     this.queryObject = { hitsPerPage: 0, query: '' };
-    this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
+    this.el.sceneEl.addEventListener('searchclear', () => {
+      this.search('');});
   },
 
   update: function (oldData) {
-    if (!this.popularHits) { return; }  // First load.
+    if (!this.popularHits) { return; } // First load.
 
     this.search(this.data.query);
 
@@ -152,7 +153,7 @@ AFRAME.registerComponent('search-result-list', {
   }
 });
 
-function shuffle(array) {
+function shuffle (array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];

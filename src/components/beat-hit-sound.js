@@ -101,7 +101,7 @@ AFRAME.registerComponent('beat-hit-sound', {
     if (this.currentCutDirection === 'up') {
       source.detune.linearRampToValueAtTime(400, 1);
     }
-	},
+  },
 
   /**
    * Get whether beat is on bottom, middle, or top layer.

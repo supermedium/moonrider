@@ -27,10 +27,10 @@ AFRAME.registerSystem('materials', {
     this.textureList.push(this.envmapTexture);
 
     /*
-    this.cutFxCanvas = document.createElement('canvas');
-    this.cutFxTexture = new THREE.CanvasTexture(this.cutFxCanvas);
-    this.generateCutFxTexture();
-    this.textureList.push(this.cutFxTexture);
+    this.cutFxCanvas = document.createElement('canvas')
+    this.cutFxTexture = new THREE.CanvasTexture(this.cutFxCanvas)
+    this.generateCutFxTexture()
+    this.textureList.push(this.cutFxTexture)
     */
 
     this.fistsCanvas = document.createElement('canvas');
@@ -143,7 +143,7 @@ AFRAME.registerSystem('materials', {
     weaponTexture.wrapS = THREE.RepeatWrapping;
     weaponTexture.wrapT = THREE.RepeatWrapping;
     weaponTexture.repeat.set(2, 2);
-    weaponTexture.magFilter =  THREE.NearestFilter;
+    weaponTexture.magFilter = THREE.NearestFilter;
     this.textureList.push(weaponTexture);
 
     this.rightWeapon = new THREE.ShaderMaterial({
@@ -307,45 +307,45 @@ AFRAME.registerSystem('materials', {
     this.arrowBluePlume = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
-      uniforms : {
+      uniforms: {
         color: {value: new THREE.Color(scheme.secondary)},
         src: {value: plumeTexture}
       },
       transparent: true,
-      depthTest: false,
+      depthTest: false
     });
 
     this.arrowRedPlume = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
-      uniforms : {
+      uniforms: {
         color: {value: new THREE.Color(scheme.primary)},
         src: {value: plumeTexture}
       },
       transparent: true,
-      depthTest: false,
+      depthTest: false
     });
 
     this.dotBluePlume = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
-      uniforms : {
+      uniforms: {
         color: {value: new THREE.Color(scheme.secondary)},
         src: {value: plumeTexture}
       },
       transparent: true,
-      depthTest: false,
+      depthTest: false
     });
 
     this.dotRedPlume = new THREE.ShaderMaterial({
       vertexShader: require('./shaders/plume.vert.glsl'),
       fragmentShader: require('./shaders/plume.frag.glsl'),
-      uniforms : {
+      uniforms: {
         color: {value: new THREE.Color(scheme.primary)},
         src: {value: plumeTexture}
       },
       transparent: true,
-      depthTest: false,
+      depthTest: false
     });
 
     this.minePlume = new THREE.ShaderMaterial({
@@ -356,7 +356,7 @@ AFRAME.registerSystem('materials', {
         src: {value: plumeTexture}
       },
       transparent: true,
-      depthTest: false,
+      depthTest: false
     });
 
     const tubeTexture = new THREE.TextureLoader().load(document.getElementById('tubeImg').src);
@@ -453,7 +453,7 @@ AFRAME.registerSystem('materials', {
     set(this.tunnel, 'color3', scheme.tertiary);
 
     this.generateBeatsTexture();
-    // this.generateCutFxTexture();
+    // this.generateCutFxTexture()
     this.generateEnvmapTexture();
     this.generateFistsTexture();
 
@@ -569,7 +569,7 @@ AFRAME.registerSystem('materials', {
         imdata[i + 2] = Math.floor(
           primary.b * primaryWeight + secondary.b * secondaryWeight);
         imdata[i + 3] = 255;
-      };
+      }
 
       ctx.putImageData(im, 0, 0);
       document.getElementById('envmapImg').src = canvas.toDataURL('image/png');
@@ -578,43 +578,43 @@ AFRAME.registerSystem('materials', {
 
   /*
   generateCutFxTexture: function () {
-    const scheme = this.scheme;
-    const primary = new THREE.Color(scheme.primary);
-    const secondary = new THREE.Color(scheme.secondary);
+    const scheme = this.scheme
+    const primary = new THREE.Color(scheme.primary)
+    const secondary = new THREE.Color(scheme.secondary)
 
-    const img = document.getElementById('cutFxTemplateImg');
+    const img = document.getElementById('cutFxTemplateImg')
     img.addEventListener('load', () => {
-      const w = img.width;
-      const h = img.height;
+      const w = img.width
+      const h = img.height
 
-      const canvas = this.cutFxCanvas;
-      canvas.width = w;
-      canvas.height = h;
+      const canvas = this.cutFxCanvas
+      canvas.width = w
+      canvas.height = h
 
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      const im = ctx.getImageData(0, 0, w, h);
-      const imdata = im.data;
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0)
+      const im = ctx.getImageData(0, 0, w, h)
+      const imdata = im.data
 
-      let primaryWeight;
-      let secondaryWeight;
+      let primaryWeight
+      let secondaryWeight
       for (let i = 0; i < imdata.length; i += 4) {
-        primaryWeight = imdata[i];
-        secondaryWeight = imdata[i + 1];
-        primaryWeight *= 1 - secondaryWeight / 255.0;
+        primaryWeight = imdata[i]
+        secondaryWeight = imdata[i + 1]
+        primaryWeight *= 1 - secondaryWeight / 255.0
 
         imdata[i + 0] = Math.floor(
-          primary.r * primaryWeight + secondary.r * secondaryWeight);
+          primary.r * primaryWeight + secondary.r * secondaryWeight)
         imdata[i + 1] = Math.floor(
-          primary.g * primaryWeight + secondary.g * secondaryWeight);
+          primary.g * primaryWeight + secondary.g * secondaryWeight)
         imdata[i + 2] = Math.floor(
-          primary.b * primaryWeight + secondary.b * secondaryWeight);
-        imdata[i + 3] = 255;
-      };
+          primary.b * primaryWeight + secondary.b * secondaryWeight)
+        imdata[i + 3] = 255
+      }
 
-      ctx.putImageData(im, 0, 0);
-      document.getElementById('cutFxImg').src = canvas.toDataURL('image/png');
-    });
+      ctx.putImageData(im, 0, 0)
+      document.getElementById('cutFxImg').src = canvas.toDataURL('image/png')
+    })
   },
   */
 

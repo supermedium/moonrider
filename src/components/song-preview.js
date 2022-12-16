@@ -15,7 +15,7 @@ AFRAME.registerComponent('song-preview-system', {
     this.audio = document.createElement('audio');
     this.audio.volume = PREVIEW_VOLUME;
 
-    function deepGet(obj, properties) {
+    function deepGet (obj, properties) {
       if (obj === undefined || obj === null) {
         return;
       }
@@ -34,7 +34,6 @@ AFRAME.registerComponent('song-preview-system', {
       const data = this.data;
 
       if (data.selectedChallengeId /* && oldData.selectedChallengeId !== data.selectedChallengeId */) {
-
         this.audio.setAttribute('src', audioSrc);
         this.audio.currentTime = deepGet(evt.detail, ['info', '_previewStartTime']) || data.previewStartTime || 12;
         this.audio.play();
@@ -47,5 +46,5 @@ AFRAME.registerComponent('song-preview-system', {
     if (!data.selectedChallengeId || oldData.selectedChallengeId !== data.selectedChallengeId) {
       this.audio.pause();
     }
-  },
+  }
 });

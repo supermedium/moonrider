@@ -18,15 +18,15 @@ AFRAME.registerComponent('blade', {
     this.strokeSpeed = 0;
     this.bladeBottomPosition = new THREE.Vector3();
     this.bladeTipPositions = [
-      new THREE.Vector3(),  // Oldest.
+      new THREE.Vector3(), // Oldest.
       new THREE.Vector3(),
-      new THREE.Vector3()  // Most recent.
+      new THREE.Vector3() // Most recent.
     ];
     this.bladeWorldPositions = [
-      new THREE.Vector3(),  // Current frame tip.
-      new THREE.Vector3(),  // Current frame handle.
-      new THREE.Vector3(),  // Last frame tip.
-      new THREE.Vector3(),  // Last frame handle.
+      new THREE.Vector3(), // Current frame tip.
+      new THREE.Vector3(), // Current frame handle.
+      new THREE.Vector3(), // Last frame tip.
+      new THREE.Vector3(), // Last frame handle.
     ];
 
     this.bladeEl = this.el.querySelector('.blade');
@@ -50,8 +50,8 @@ AFRAME.registerComponent('blade', {
 
     /*
     if (this.el.closest('#rightHand')) {
-      this.createDebugCube(this.bladeHandle.getWorldPosition(new THREE.Vector3()), 0xFF0000);
-      this.createDebugCube(this.blade.getWorldPosition(new THREE.Vector3()), 0x00FF00);
+      this.createDebugCube(this.bladeHandle.getWorldPosition(new THREE.Vector3()), 0xFF0000)
+      this.createDebugCube(this.blade.getWorldPosition(new THREE.Vector3()), 0x00FF00)
     }
     */
 
@@ -83,7 +83,7 @@ AFRAME.registerComponent('blade', {
   checkCollision: (function () {
     const bbox = new THREE.Box3();
     const bladeLocalPositions = [new THREE.Vector3(), new THREE.Vector3(),
-                                 new THREE.Vector3(), new THREE.Vector3()];
+      new THREE.Vector3(), new THREE.Vector3()];
     const bladeLocalTriangle = new THREE.Triangle();
     const LEFT = 'left';
     const RIGHT = 'right';
@@ -118,7 +118,7 @@ AFRAME.registerComponent('blade', {
       bladeLocalPositions[3].copy(this.bladeWorldPositions[3]);
       beat.blockEl.object3D.worldToLocal(bladeLocalPositions[3]);
       bladeLocalTriangle.set(bladeLocalPositions[2], bladeLocalPositions[3],
-                             bladeLocalPositions[0]);
+        bladeLocalPositions[0]);
       if (bbox.intersectsTriangle(bladeLocalTriangle)) { return true; }
 
       return false;
@@ -132,4 +132,3 @@ AFRAME.registerComponent('blade', {
     this.el.sceneEl.object3D.add(mesh);
   }
 });
-

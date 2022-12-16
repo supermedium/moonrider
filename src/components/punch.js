@@ -27,7 +27,7 @@ AFRAME.registerComponent('punch', {
     // Calculate velocity (direction + speed), m/s.
     this.direction = this.currentPos
       .copy(this.el.object3D.position)
-      .sub(this.lastSample)
+      .sub(this.lastSample);
 
     this.speed = this.direction.length() / ((time - this.lastSampleTime) / 1000);
 

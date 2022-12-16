@@ -40,7 +40,7 @@ AFRAME.registerComponent('supercurve', {
   generateCurve: function (length) {
     this.length = length;
 
-    length += EXTRA_LENGTH;  // Add extra length for anticipation time past song duration.
+    length += EXTRA_LENGTH; // Add extra length for anticipation time past song duration.
     this.fullLength = length;
 
     this.points.length = 0;
@@ -236,7 +236,7 @@ AFRAME.registerComponent('supercurve', {
     return function (percent, object3D) {
       this.getPositionRelativeToTangent(percent, lookAt, lookAtTarget);
       object3D.lookAt(lookAtTarget);
-      object3D.position.y += 0.01;  // Z-fighting
+      object3D.position.y += 0.01; // Z-fighting
     };
   })(),
 

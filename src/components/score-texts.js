@@ -12,7 +12,7 @@ AFRAME.registerComponent('score-texts', {
     for (let i = 0; i < this.textEls.length; i++) {
       this.textEls[i].setAttribute('animation__fadein', {
         autoplay: false,
-        property:'components.text.material.uniforms.opacity.value',
+        property: 'components.text.material.uniforms.opacity.value',
         delay: 250,
         dur: 750,
         easing: 'easeInOutCubic',

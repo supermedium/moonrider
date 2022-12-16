@@ -6,8 +6,8 @@ const bbox = new THREE.Box3();
 const otherBbox = new THREE.Box3();
 const collisionZThreshold = -1.65;
 
-const ANGLE_DOT_SUPER = 0.97;  // ~15-degrees.
-const ANGLE_DOT_MIN = 0.625;  // ~50-degrees.
+const ANGLE_DOT_SUPER = 0.97; // ~15-degrees.
+const ANGLE_DOT_MIN = 0.625; // ~50-degrees.
 const WARMUP_TIME = 2000;
 const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 
@@ -600,7 +600,7 @@ AFRAME.registerComponent('beat', {
    * More points scored if punching straight down the curve.
    */
   calculateScorePunch: function (punchEl) {
-    const base = 60;  // Get 60% of the score just by hitting the beat.
+    const base = 60; // Get 60% of the score just by hitting the beat.
 
     const SUPER_SCORE_SPEED = 1.5;
     const speed = punchEl.components.punch.speed;
@@ -635,7 +635,7 @@ AFRAME.registerComponent('beat', {
  * Load OBJ from already parsed and loaded OBJ template.
  */
 const geometries = {};
-function setObjModelFromTemplate(el, templateId) {
+function setObjModelFromTemplate (el, templateId) {
   // Load into cache.
   if (!geometries[templateId]) {
     const templateEl = document.getElementById(templateId);
@@ -659,12 +659,12 @@ function setObjModelFromTemplate(el, templateId) {
   }
 }
 
-function getElasticEasing(a, p) {
+function getElasticEasing (a, p) {
   return t => 1 - elastic(a, p)(1 - t);
 }
 
-function elastic(amplitude, period) {
-  function minMax(val, min, max) {
+function elastic (amplitude, period) {
+  function minMax (val, min, max) {
     return Math.min(Math.max(val, min), max);
   }
 
@@ -676,13 +676,13 @@ function elastic(amplitude, period) {
       : -a * Math.pow(2, 10 * (t - 1)) *
       Math.sin((((t - 1) - (p / (Math.PI * 2) *
         Math.asin(1 / a))) * (Math.PI * 2)) / p);
-  }
+  };
 }
 
-function remap(value, low1, high1, low2, high2) {
+function remap (value, low1, high1, low2, high2) {
   return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
 
-function clamp(val, min, max) {
+function clamp (val, min, max) {
   return Math.min(Math.max(val, min), max);
-};
+}

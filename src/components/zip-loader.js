@@ -32,7 +32,7 @@ AFRAME.registerComponent('zip-loader', {
       this.message.directDownload = this.data.directDownload;
       this.message.bpm = this.data.bpm;
       this.message.hash = this.data.hash;
-      this.worker.postMessage(this.message);  // Start the worker.
+      this.worker.postMessage(this.message); // Start the worker.
     }
 
     if (data.version && oldData.version !== data.version) {
@@ -58,7 +58,7 @@ AFRAME.registerComponent('zip-loader', {
     this.message.directDownload = this.data.directDownload;
     this.message.bpm = this.data.bpm;
     this.message.hash = this.data.hash;
-    this.worker.postMessage(this.message);  // Start the worker.
+    this.worker.postMessage(this.message); // Start the worker.
   },
 
   onMessage: function (evt) {
@@ -67,13 +67,11 @@ AFRAME.registerComponent('zip-loader', {
         this.el.emit('songloaderror');
         break;
       }
-
       case 'progress': {
         if (evt.data.version !== this.data.version) { return; }
         this.loadingIndicator.setAttribute('material', 'progress', evt.data.progress);
         break;
       }
-
       case 'load': {
         this.cachedVersion = evt.data.version;
         this.cachedZip = evt.data.data;
@@ -103,7 +101,7 @@ AFRAME.registerComponent('zip-loader', {
 /**
  * Beat Saver JSON sometimes have weird characters in front of JSON in utf16le encoding.
  */
-function jsonParseClean(str) {
+function jsonParseClean (str) {
   try {
     str = str.trim();
     str = str.replace(/\u0000/g, '').replace(/\u\d\d\d\d/g, '');
@@ -113,7 +111,7 @@ function jsonParseClean(str) {
     }
 
     // Remove Unicode escape sequences.
-    // stringified = stringified.replace(/\\u..../g, ' ');
+    // stringified = stringified.replace(/\\u..../g, ' ')
     return jsonParseLoop(str, 0);
   } catch (e) {
     // Should not reach here.
@@ -125,7 +123,7 @@ function jsonParseClean(str) {
 const errorRe1 = /column (\d+)/m;
 const errorRe2 = /position (\d+)/m;
 
-function jsonParseLoop(str, i) {
+function jsonParseLoop (str, i) {
   try {
     return JSON.parse(str);
   } catch (e) {
