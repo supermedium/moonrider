@@ -72,6 +72,5 @@ AFRAME.registerComponent('weapon-particles', {
       const material = this.intersectedEl.getObject3D('mesh').material;
       material.uniforms[uniform].value = intersection.point;
     }
-
   }
 });

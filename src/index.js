@@ -1,7 +1,9 @@
 function requireAll (req) { req.keys().forEach(req); }
 
-console.time = () => {};
-console.timeEnd = () => {};
+console.time = () => {
+};
+console.timeEnd = () => {
+};
 
 require('../vendor/BufferGeometryUtils');
 

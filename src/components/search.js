@@ -26,11 +26,12 @@ AFRAME.registerComponent('search', {
     this.popularHits = topSearch;
     shuffle(this.popularHits);
     this.queryObject = {hitsPerPage: 0, query: ''};
-    this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
+    this.el.sceneEl.addEventListener('searchclear', () => {
+      this.search('');});
   },
 
   update: function (oldData) {
-    if (!this.popularHits) { return; }  // First load.
+    if (!this.popularHits) { return; } // First load.
 
     this.search(this.data.query);
 
@@ -61,7 +62,7 @@ AFRAME.registerComponent('search', {
   search: function (query) {
     // Use cached for popular hits.
     if (!query && this.data.difficultyFilter === 'All' && !this.data.genre &&
-        !this.data.playlist && this.popularHits) {
+      !this.data.playlist && this.popularHits) {
       this.eventDetail.results = this.popularHits;
       this.eventDetail.query = '';
       this.el.sceneEl.emit('searchresults', this.eventDetail);

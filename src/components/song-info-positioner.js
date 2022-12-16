@@ -1,8 +1,7 @@
 /**
  * Puts #songInfoContainer in specific y position depending on state
  */
- AFRAME.registerComponent('song-info-positioner', {
-
+AFRAME.registerComponent('song-info-positioner', {
   schema: {
     victory: {default: false}
   },

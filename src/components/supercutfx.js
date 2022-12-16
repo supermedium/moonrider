@@ -3,12 +3,12 @@ const auxColor = new THREE.Color();
 AFRAME.registerComponent('supercutfx', {
   schema: {
     colorPrimary: {type: 'string'},
-    colorSecondary: {type: 'string'},
+    colorSecondary: {type: 'string'}
   },
 
   init: function () {
     this.rigEl = document.getElementById('curveFollowRig');
-    this.startTime = -1100;  // Pause on first tick.
+    this.startTime = -1100; // Pause on first tick.
   },
 
   createSuperCut: function (beatObject3D, color) {
@@ -22,7 +22,7 @@ AFRAME.registerComponent('supercutfx', {
 
     this.startTime = el.sceneEl.time;
 
-    auxColor.set(color === 'red' ? this.data.colorPrimary : this.data.colorSecondary)
+    auxColor.set(color === 'red' ? this.data.colorPrimary : this.data.colorSecondary);
     const colorUniform = mesh.material.uniforms.color.value;
     colorUniform.x = auxColor.r;
     colorUniform.y = auxColor.g;

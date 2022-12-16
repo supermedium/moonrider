@@ -30,4 +30,4 @@ AFRAME.registerComponent('stage-lasers', {
     this.lasers[1].rotation.z -= this.speed * delta * 1.01;
     this.lasers[2].rotation.z += this.speed * delta * 1.02;
   }
-})
+});

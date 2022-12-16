@@ -167,7 +167,7 @@ AFRAME.registerComponent('beat-cut-fx', {
       piece.posVelocity.set(0.0, 0.0, 0.0);
       piece.rotVelocity.set(0.0, 0.0, 0.0);
       piece.scale.set(1.0, 1.0, 1.0);
-    };
+    }
 
     if (this.fx) {
       this.fxpool.returnEntity(this.fx);
@@ -204,14 +204,14 @@ AFRAME.registerComponent('beat-cut-fx', {
         piece.posVelocity.y -= 0.000003 * delta;
       } else {
         // Mines.
-        piece.scale.multiplyScalar(0.94)
+        piece.scale.multiplyScalar(0.94);
         piece.posVelocity.multiplyScalar(0.97);
       }
     }
   }
 });
 
-function randomizeVector (v, a){
+function randomizeVector (v, a) {
   v.x += (Math.random() - 0.5) * a;
   v.y += (Math.random() - 0.5) * a;
   v.z += (Math.random() - 0.5) * a;

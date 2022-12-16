@@ -26,5 +26,5 @@ AFRAME.registerComponent('song-preview-system', {
       this.audio.currentTime = data.previewStartTime;
       this.audio.play();
     }
-  },
+  }
 });

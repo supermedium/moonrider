@@ -66,7 +66,7 @@ AFRAME.registerComponent('leaderboard', {
     }
 
     if (this.data.menuSelectedChallengeId &&
-        oldData.menuSelectedChallengeId !== this.data.menuSelectedChallengeId) {
+      oldData.menuSelectedChallengeId !== this.data.menuSelectedChallengeId) {
       this.fetchScores(this.data.menuSelectedChallengeId);
       return;
     }
@@ -93,7 +93,7 @@ AFRAME.registerComponent('leaderboard', {
     };
 
     if (!pr.includes(this.username.toLowerCase()) &&
-        !this.username.match(ba)) {
+      !this.username.match(ba)) {
       this.db.add(scoreData);
     }
 

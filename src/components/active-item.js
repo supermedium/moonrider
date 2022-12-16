@@ -23,7 +23,8 @@ AFRAME.registerComponent('active-item', {
     } else {
       el.setAttribute('material', 'opacity', this.defaultOpacity);
       if (el.components.animation__mouseleave) {
-        setTimeout(() => { el.emit('mouseleave', null, false); });
+        setTimeout(() => {
+          el.emit('mouseleave', null, false);});
       }
     }
   }

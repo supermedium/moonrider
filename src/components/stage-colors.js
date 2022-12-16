@@ -1,4 +1,4 @@
-function $ (id) { return document.getElementById(id); };
+function $ (id) { return document.getElementById(id); }
 
 import COLORS from '../constants/colors';
 
@@ -44,7 +44,7 @@ AFRAME.registerComponent('stage-colors', {
 
   update: function (oldData) {
     if (oldData.colorScheme &&
-        this.data.colorScheme !== oldData.colorScheme) {
+      this.data.colorScheme !== oldData.colorScheme) {
       updateAnimations(this.el.sceneEl, this.data.colorScheme);
     }
   },
@@ -111,7 +111,7 @@ function setAnimations (scene, scheme) {
         dur: animation.dur,
         from: animation.from ? COLORS.schemes[scheme][animation.from] : '',
         startEvents: `${animatable.name}${animation.id}`,
-        to: COLORS.schemes[scheme][animation.to],
+        to: COLORS.schemes[scheme][animation.to]
       });
     }
   }
