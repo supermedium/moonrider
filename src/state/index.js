@@ -1,6 +1,7 @@
 /* global localStorage */
 import COLORS from '../constants/colors';
 const utils = require('../utils');
+const convertBeatmap = require('../lib/convert-beatmap');
 
 const challengeDataStore = {};
 let HAS_LOGGED_VR = false;
@@ -38,7 +39,7 @@ const SKIP_INTRO = AFRAME.utils.getUrlParameter('skipintro') === 'true';
 
 const colorScheme = localStorage.getItem('colorScheme') || 'default';
 
-let favorites = localStorage.getItem('favorites');
+let favorites = localStorage.getItem('favorites-v2');
 if (favorites) {
   try {
     favorites = JSON.parse(favorites);
@@ -169,7 +170,10 @@ AFRAME.registerState({
       queryText: '',
       results: [],
       songNameTexts: '',  // All names in search results merged together.
-      songSubNameTexts: ''  // All sub names in search results merged together.
+      songSubNameTexts: '',  // All sub names in search results merged together.
+      // url and urlPage are used to load more results from the API when scrolling down
+      url: '',
+      urlPage: 0,
     },
     searchResultsPage: [],
     speed: 10
@@ -353,7 +357,7 @@ AFRAME.registerState({
         for (let i = 0; i < state.favorites.length; i++) {
           if (state.favorites[i].id === id) {
             state.favorites.splice(i, 1);
-            localStorage.setItem('favorites', JSON.stringify(state.favorites));
+            localStorage.setItem('favorites-v2', JSON.stringify(state.favorites));
             return;
           }
         }
@@ -362,7 +366,7 @@ AFRAME.registerState({
         state.menuSelectedChallenge.isFavorited = true;
         if (state.favorites.filter(favorite => favorite.id === id).length) { return; }
         state.favorites.push(challenge)
-        localStorage.setItem('favorites', JSON.stringify(state.favorites));
+        localStorage.setItem('favorites-v2', JSON.stringify(state.favorites));
       }
     },
 
@@ -675,6 +679,28 @@ AFRAME.registerState({
       }
       state.search.page++;
       computeSearchPagination(state);
+
+      if (state.search.url === undefined) {
+        return;
+      }
+
+      if ((state.search.page + 3) > Math.floor(state.search.results.length / SEARCH_PER_PAGE)) {
+
+        state.search.urlPage = state.search.urlPage + 1;
+
+        fetch(state.search.url.replaceAll('CURRENT_PAGE_INDEX', state.search.urlPage))
+          .then(r => { return r.json() })
+          .then(res => {
+            var hits = res['docs'].map(convertBeatmap)
+
+            state.search.results.push(...hits);
+
+            for (i = 0; i < hits.length; i++) {
+              let result = hits[i];
+              challengeDataStore[result.id] = result;
+            }            
+          })
+      }
     },
 
     /**
@@ -684,6 +710,8 @@ AFRAME.registerState({
       var i;
       state.search.hasError = false;
       state.search.page = 0;
+      state.search.url = payload.url;
+      state.search.urlPage = payload.urlPage;
       state.search.query = payload.query;
       state.search.queryText = truncate(payload.query, 10);
       state.search.results = payload.results;
