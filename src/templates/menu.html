@@ -199,7 +199,7 @@
 <!-- Search. -->
 <a-entity id="keyboard"
   bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: isSearching"
-  super-keyboard="label: Search 15000 Community Songs; inputColor: #fff; labelColor: {{ COLORS.WHITE }}; width: 1.5; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard; font: assets/fonts/Viga-Regular.json; align: center; model: superkeyboard; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
+  super-keyboard="label: Search on beatsaver.com; inputColor: #fff; labelColor: {{ COLORS.WHITE }}; width: 1.5; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard; font: assets/fonts/Viga-Regular.json; align: center; model: superkeyboard; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
   position="0.58 1.2 -1.95" keyboard-raycastable="condition: isSearching" search
   proxy-event__dismiss="event: superkeyboarddismiss; to: a-scene; as: keyboardclose"
   proxy-event__accept="event: superkeyboardinput; to: a-scene; as: keyboardclose" render-order="menubutton"
@@ -256,7 +256,7 @@
   </a-entity> -->
 
   <!-- Search toggle. -->
-  <!--   <a-entity id="searchButtons">
+    <a-entity id="searchButtons">
     <a-entity
       id="searchButton"
       mixin="bigMenuTopButton"
@@ -286,7 +286,7 @@
       text="align: center; wrapCount: 20"
       position="0 0.1 0.035"
       render-order="menutext"></a-entity>
-  </a-entity> -->
+  </a-entity>
 
   <!-- Difficulty menu toggle. -->
   <!--   <a-entity id="difficultyFilter">
@@ -312,7 +312,7 @@
   </a-entity> -->
 
   <!-- Genre menu toggle. -->
-  <!--   <a-entity id="genreButtons">
+    <a-entity id="genreButtons">
     <a-entity id="genreButton"
       mixin="bigMenuTopButton"
       bind__visible-raycastable="mainMenuActive && !genre"
@@ -341,7 +341,7 @@
       text="align: center; wrapCount: 20"
       position="0 0.1 0.035"
       render-order="menutext"></a-entity>
-  </a-entity> -->
+  </a-entity>
 </a-entity>
 
 <!-- Options menu toggle. -->

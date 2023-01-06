@@ -24,13 +24,14 @@ AFRAME.registerComponent('search', {
   },
 
   init: function () {
-    this.eventDetail = { query: '', results: topSearch };
+    this.eventDetail = { query: '', results: topSearch, url: '', page: 0 };
     this.keyboardEl = document.getElementById('keyboard');
     this.popularHits = topSearch;
     shuffle(this.popularHits);
     this.queryObject = { hitsPerPage: 0, query: '' };
     this.el.sceneEl.addEventListener('searchclear', () => {
-      this.search('');});
+      this.search('');
+    });
   },
 
   update: function (oldData) {
@@ -78,49 +79,75 @@ AFRAME.registerComponent('search', {
 
     // Favorites.
     if (this.data.playlist === 'favorites') {
-      this.eventDetail.results = JSON.parse(localStorage.getItem('favorites'));
+      this.eventDetail.results = JSON.parse(localStorage.getItem('favorites-v2'));
       this.el.sceneEl.emit('searchresults', this.eventDetail);
       return;
     }
 
-    if (this.data.difficultyFilter || this.data.genre || this.data.playlist) {
-      filters.length = 0;
+    /*     if (this.data.difficultyFilter || this.data.genre || this.data.playlist) {
+          filters.length = 0
+    
+          // Difficulty filter.
+          if (this.data.difficultyFilter && this.data.difficultyFilter !== 'All') {
+            filters.push(`difficulties:"${this.data.difficultyFilter}"`)
+          }
+    
+          // Genre filter.
+          if (this.data.genre === 'Video Games') {
+            filters.push(`genre:"Video Game" OR genre:"Video Games"`)
+          } else if (this.data.genre) {
+            filters.push(`genre:"${this.data.genre}"`)
+          }
+    
+          // Playlist filter.
+          if (this.data.playlist) {
+            filters.push(`playlists:"${this.data.playlist}"`)
+          }
+    
+          this.queryObject.filters = filters.join(' AND ')
+        } else {
+          delete this.queryObject.filters
+        } */
+    let url = `https://beatsaver.com/api/search/text/CURRENT_PAGE_INDEX?sortOrder=Rating&automapper=true&q=${encodeURIComponent(query)}`;
 
-      // Difficulty filter.
-      if (this.data.difficultyFilter && this.data.difficultyFilter !== 'All') {
-        filters.push(`difficulties:"${this.data.difficultyFilter}"`);
-      }
-
-      // Genre filter.
-      if (this.data.genre === 'Video Games') {
-        filters.push(`genre:"Video Game" OR genre:"Video Games"`);
-      } else if (this.data.genre) {
-        filters.push(`genre:"${this.data.genre}"`);
-      }
-
-      // Playlist filter.
-      if (this.data.playlist) {
-        filters.push(`playlists:"${this.data.playlist}"`);
-      }
-
-      this.queryObject.filters = filters.join(' AND ');
+    if (this.data.genre) {
+      const genreMap = {
+        'Pop': 'pop',
+        'R&B': 'rb',
+        'Rap': 'hip-hop-rap',
+        'Rock': 'rock',
+        'Soundtrack': 'tv-movie-soundtrack',
+        'Video Games': 'video-game-soundtrack',
+        'Electronic': 'electronic',
+        'Hip Hop': 'hip-hop-rap',
+        'House': 'house',
+        'J-Pop': 'j-pop',
+        'K-Pop': 'k-pop',
+        'Meme': 'comedy-meme',
+        'Alternative': 'alternative',
+        'Anime': 'anime',
+        'Comedy': 'comedy-meme',
+        'Dubstep': 'dubstep',
+        'Dance': 'dance'
+      };
+      const tag = genreMap[this.data.genre];
+      url = `https://beatsaver.com/api/search/text/CURRENT_PAGE_INDEX?sortOrder=Rating&automapper=true&tags=${encodeURIComponent(tag)}`;
     } else {
-      delete this.queryObject.filters;
+      if (query && query.length < 3) { return; }
     }
 
-    if (query && query.length < 3) { return; }
+    fetch(url.replaceAll('CURRENT_PAGE_INDEX', 0))
+      .then(r => {
+        return r.json();})
+      .then(res => {
+        var hits = res['docs'].map(convertBeatmap);
 
-    algolia.search(this.queryObject, (err, content) => {
-      if (err) {
-        this.el.sceneEl.emit('searcherror', null, false);
-        console.error(err);
-        return;
-      }
+        this.eventDetail.results = hits;
+        this.eventDetail.url = url;
+        this.eventDetail.urlPage = 0;
 
-      this.eventDetail.results = content.hits;
-
-      this.el.sceneEl.emit('searchresults', this.eventDetail);
-    });
+        this.el.sceneEl.emit('searchresults', this.eventDetail);
+      });
   }
 });
 

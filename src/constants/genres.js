@@ -16,7 +16,7 @@ module.exports = [
   {name: 'Alternative', row: 3, column: 1},
   {name: 'Anime', row: 3, column: 2},
   {name: 'Comedy', row: 3, column: 3},
-  {name: 'Disney', row: 3, column: 4},
+  /* {name: 'TODO', row: 3, column: 4}, */
   {name: 'Dubstep', row: 3, column: 5},
-  {name: 'EDM', row: 3, column: 6}
+  {name: 'Dance', row: 3, column: 6}
 ];
