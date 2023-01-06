@@ -16,7 +16,7 @@ AFRAME.registerComponent('search-thumbnail-atlas', {
   dependencies: ['geometry', 'material'],
 
   schema: {
-    dummyUpdater: {type: 'string'}
+    dummyUpdater: { type: 'string' }
   },
 
   init: function () {
@@ -53,7 +53,7 @@ AFRAME.registerComponent('search-thumbnail-atlas', {
     for (let i = 0; i < results.length; i++) {
       let img = this.images[i] = this.images[i] || document.createElement('img');
       img.crossOrigin = 'anonymous';
-      img.src = utils.getS3FileUrl(results[i].id, 'image.jpg');
+      img.src = results[i].coverURL;
       if (img.complete) {
         this.draw(img, i);
       } else {

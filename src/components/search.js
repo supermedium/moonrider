@@ -1,10 +1,13 @@
 const algoliasearch = require('algoliasearch/lite');
 const debounce = require('lodash.debounce');
 
+const convertBeatmap = require('../lib/convert-beatmap');
+
 const client = algoliasearch('QULTOY3ZWU', 'be07164192471df7e97e6fa70c1d041d');
 const algolia = client.initIndex('beatsaver');
 
-const topSearch = require('../lib/search.json');
+const topSearchRaw = require('../lib/search.json');
+const topSearch = topSearchRaw.map(convertBeatmap);
 
 const filters = [];
 
@@ -14,18 +17,18 @@ const filters = [];
  */
 AFRAME.registerComponent('search', {
   schema: {
-    difficultyFilter: {default: 'All'},
-    genre: {default: ''},
-    playlist: {default: ''},
-    query: {default: ''}
+    difficultyFilter: { default: 'All' },
+    genre: { default: '' },
+    playlist: { default: '' },
+    query: { default: '' }
   },
 
   init: function () {
-    this.eventDetail = {query: '', results: topSearch};
+    this.eventDetail = { query: '', results: topSearch };
     this.keyboardEl = document.getElementById('keyboard');
     this.popularHits = topSearch;
     shuffle(this.popularHits);
-    this.queryObject = {hitsPerPage: 0, query: ''};
+    this.queryObject = { hitsPerPage: 0, query: '' };
     this.el.sceneEl.addEventListener('searchclear', () => {
       this.search('');});
   },
@@ -133,7 +136,7 @@ AFRAME.registerComponent('search-result-list', {
         }
       }
     });
-    obv.observe(this.el, {attributes: true, childList: false, subtree: true});
+    obv.observe(this.el, { attributes: true, childList: false, subtree: true });
   },
 
   events: {

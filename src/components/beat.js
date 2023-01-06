@@ -14,7 +14,7 @@ const WARMUP_ROTATION_CHANGE = 2 * Math.PI;
 const elasticEasing = getElasticEasing(1.33, 0.5);
 
 const DESTROYED_SPEED = 1.0;
-const ONCE = {once: true};
+const ONCE = { once: true };
 const DESTROY_TIME = 1000;
 
 // Play sound and explode at reach to test sync.
@@ -47,7 +47,7 @@ const MODELS = {
   mine: 'mineObjTemplate'
 };
 
-const WEAPON_COLORS = {right: 'blue', left: 'red'};
+const WEAPON_COLORS = { right: 'blue', left: 'red' };
 
 const ROTATIONS = {
   right: 0,
@@ -68,11 +68,11 @@ const SIZES = {
 
 AFRAME.registerComponent('beat-system', {
   schema: {
-    gameMode: {default: 'classic', oneOf: ['classic', 'punch', 'ride']},
-    hasVR: {default: false},
-    inVR: {default: false},
-    isLoading: {default: false},
-    isPlaying: {default: false}
+    gameMode: { default: 'classic', oneOf: ['classic', 'punch', 'ride'] },
+    hasVR: { default: false },
+    inVR: { default: false },
+    isLoading: { default: false },
+    isPlaying: { default: false }
   },
 
   init: function () {
@@ -238,6 +238,7 @@ AFRAME.registerComponent('beat-system', {
       const hMargin = gameMode === CLASSIC ? size : size * 1.2;
       horizontalPositions.left = -1.5 * hMargin;
       horizontalPositions.middleleft = -0.5 * hMargin;
+      horizontalPositions.middle = hMargin;
       horizontalPositions.middleright = 0.5 * hMargin;
       horizontalPositions.right = 1.5 * hMargin;
 
@@ -273,9 +274,9 @@ AFRAME.registerComponent('beat-system', {
  */
 AFRAME.registerComponent('beat', {
   schema: {
-    color: {default: 'red', oneOf: ['red', 'blue']},
-    debug: {default: false},
-    type: {default: 'arrow', oneOf: ['arrow', DOT, MINE]}
+    color: { default: 'red', oneOf: ['red', 'blue'] },
+    debug: { default: false },
+    type: { default: 'arrow', oneOf: ['arrow', DOT, MINE] }
   },
 
   init: function () {
@@ -291,7 +292,7 @@ AFRAME.registerComponent('beat', {
     this.superCutIdx = 0;
     this.startPositionZ = undefined;
     this.warmupTime = 0;
-    this.weaponColors = {right: 'blue', left: 'red'};
+    this.weaponColors = { right: 'blue', left: 'red' };
     this.curveEl = document.getElementById('curve');
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.mineParticles = document.getElementById('mineParticles');

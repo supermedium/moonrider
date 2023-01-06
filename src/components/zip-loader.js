@@ -1,8 +1,10 @@
 AFRAME.registerComponent('zip-loader', {
   schema: {
-    difficulties: {type: 'array'},
-    isLoading: {default: 'false'},
-    version: {type: 'string'} // e.g., 811-535.
+    difficulties: { type: 'array' },
+    isLoading: { default: 'false' },
+    version: { type: 'string' },
+    directDownload: { type: 'string' },
+    bpm: { type: 'number' }
   },
 
   init: function () {
@@ -27,6 +29,9 @@ AFRAME.registerComponent('zip-loader', {
       this.message.abort = true;
       this.message.difficulties = JSON.stringify(this.data.difficulties);
       this.message.version = oldData.version;
+      this.message.directDownload = this.data.directDownload;
+      this.message.bpm = this.data.bpm;
+      this.message.hash = this.data.hash;
       this.worker.postMessage(this.message); // Start the worker.
     }
 
@@ -46,20 +51,13 @@ AFRAME.registerComponent('zip-loader', {
 
   fetchZip: function (version) {
     this.el.emit('ziploaderstart', null, false);
-    if (this.cachedVersion === version) {
-      // Faulty ZIP.
-      if (!this.cachedZip) {
-        this.el.emit('songloaderror');
-        return;
-      }
-
-      this.el.emit('ziploaderend', this.cachedZip, false);
-      return;
-    }
 
     this.message.abort = false;
     this.message.difficulties = JSON.stringify(this.data.difficulties);
     this.message.version = version;
+    this.message.directDownload = this.data.directDownload;
+    this.message.bpm = this.data.bpm;
+    this.message.hash = this.data.hash;
     this.worker.postMessage(this.message); // Start the worker.
   },
 
