@@ -3,7 +3,7 @@ module.exports = function convertBeatmap (src) {
 
   src['version'] = src['versions'][0]['hash'];
 
-  const coverImageCorsProxy = 'https://beatproxy.fly.dev/cdn-proxy/';
+  const coverImageCorsProxy = 'https://beatproxy.b-cdn.net/';
 
   src['directDownload'] = src['versions'][0]['downloadURL'];
 
