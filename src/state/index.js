@@ -691,7 +691,7 @@ AFRAME.registerState({
         fetch(state.search.url.replaceAll('CURRENT_PAGE_INDEX', state.search.urlPage))
           .then(r => { return r.json() })
           .then(res => {
-            var hits = res['docs'].map(convertBeatmap)
+            var hits = (res['docs'] || res['maps']).map(convertBeatmap)
 
             state.search.results.push(...hits);
 

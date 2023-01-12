@@ -1,6 +1,8 @@
 module.exports = function convertBeatmap (src) {
   if (src.converted) return src;
 
+  if (src['map']) { src = src['map']; }
+
   src['version'] = src['versions'][0]['hash'];
 
   const coverImageCorsProxy = 'https://beatproxy.b-cdn.net/';

@@ -110,7 +110,9 @@ AFRAME.registerComponent('search', {
         } */
     let url = `https://beatsaver.com/api/search/text/CURRENT_PAGE_INDEX?sortOrder=Rating&automapper=true&q=${encodeURIComponent(query)}`;
 
-    if (this.data.genre) {
+    if (this.data.playlist) {
+      url = `https://api.beatsaver.com/playlists/id/${this.data.playlist}/CURRENT_PAGE_INDEX`;
+    } else if (this.data.genre) {
       const genreMap = {
         'Pop': 'pop',
         'R&B': 'rb',
@@ -140,7 +142,7 @@ AFRAME.registerComponent('search', {
       .then(r => {
         return r.json();})
       .then(res => {
-        var hits = res['docs'].map(convertBeatmap);
+        var hits = (res['docs'] || res['maps']).map(convertBeatmap);
 
         this.eventDetail.results = hits;
         this.eventDetail.url = url;
