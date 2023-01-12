@@ -1,9 +1,7 @@
 module.exports = function convertBeatmap (src) {
   if (src.converted) return src;
 
-  if (src['map']) {
-    src = src['map'];
-  }
+  if (src['map']) { src = src['map']; }
 
   src['version'] = src['versions'][0]['hash'];
 
