@@ -1,10 +1,6 @@
-const algoliasearch = require('algoliasearch/lite');
 const debounce = require('lodash.debounce');
 
 const convertBeatmap = require('../lib/convert-beatmap');
-
-const client = algoliasearch('QULTOY3ZWU', 'be07164192471df7e97e6fa70c1d041d');
-const algolia = client.initIndex('beatsaver');
 
 const topSearchRaw = require('../lib/search.json');
 const topSearch = topSearchRaw.map(convertBeatmap);
