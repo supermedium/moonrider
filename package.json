@@ -46,7 +46,6 @@
     "aframe-super-hot-html-loader": "^1.2.0",
     "aframe-super-hot-loader": "^1.5.0",
     "aframe-thumb-controls-component": "^2.0.2",
-    "algoliasearch": "^3.29.0",
     "ansi-html": "0.0.7",
     "autoprefixer": "^7.2.3",
     "babel-loader": "^8.0.5",
