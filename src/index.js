@@ -36,8 +36,27 @@ require('./scene.html');
 if (module.hot) { module.hot.accept(); }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initNoticeForm();
   initSubscribeForm();
 });
+
+/**
+ * Init XHR handler to notice.
+ */
+function initNoticeForm () {
+  if (localStorage.getItem('noticeClosed')) {
+    let span = document.getElementById("brokenNotice");
+    span.parentNode.removeChild(span);
+    return;
+  }
+
+  document.getElementById('noticeClose').addEventListener('click', () => {
+    console.log(this);
+    let span = document.getElementById("brokenNotice");
+    span.parentNode.removeChild(span);
+    localStorage.setItem('noticeClosed', true);
+  });
+}
 
 /**
  * Init XHR handler to subscribe.
