@@ -1,5 +1,7 @@
 # Moon Riker
 
+This is a fork of Moon Rider. It might not ever be very different.
+
 ![moonrider](https://user-images.githubusercontent.com/674727/54646629-e91dc600-4a5c-11e9-8a6e-91e77f28523d.jpg)
 
 Surf the musical road among the moon, stars, and northern lights.
