@@ -7,7 +7,7 @@
     "lint": "semistandard -v | snazzy",
     "lint:fix": "semistandard --fix",
     "predeploy": "cross-env NODE_ENV=production npm run build && shx mkdir -p .ghpages && cp -r index.html assets build vendor CNAME .ghpages",
-    "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot-only --inline --port 3000"
+    "start": "webpack-dev-server --host 127.0.0.1 --progress --colors --hot-only --inline --port 3000 --public mr.rikers.org"
   },
   "dependencies": {
     "@babel/cli": "^7.17.0",
