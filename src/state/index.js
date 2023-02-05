@@ -90,7 +90,7 @@ AFRAME.registerState({
     difficultyFilter: 'All',
     difficultyFilterMenuOpen: false,
     favorites: favorites,
-    gameMode: 'ride',
+    gameMode: 'classic',
     genre: '',
     genres: require('../constants/genres'),
     genreMenuOpen: false,
