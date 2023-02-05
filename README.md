@@ -1,4 +1,4 @@
-# Moon Rider
+# Moon Riker
 
 ![moonrider](https://user-images.githubusercontent.com/674727/54646629-e91dc600-4a5c-11e9-8a6e-91e77f28523d.jpg)
 
@@ -6,7 +6,7 @@ Surf the musical road among the moon, stars, and northern lights.
 
 A side project built by two people in a few months to show off VR running
 inside a webpage. Built with HTML, JavaScript, and A-Frame. Not meant to be an
-official game nor commerical product. Moon Rider is meant to be an open source
+official game nor commerical product. Moon Riker is meant to be an open source
 resource for the web developer community to learn from, and to push forward the
 open WebXR initiative.
 
