@@ -332,13 +332,11 @@ AFRAME.registerState({
 
     displayconnected: state => {
       state.hasVR = true;
-
       if (HAS_LOGGED_VR) { return; }
       try {
         if ('getVRDisplays' in navigator) {
           navigator.getVRDisplays().then(displays => {
             if (!displays.length) { return; }
-            gtag('event', 'entervr', { event_label: displays[0].displayName });
             HAS_LOGGED_VR = true;
           });
         }
@@ -803,6 +801,12 @@ AFRAME.registerState({
 
     'enter-vr': state => {
       state.inVR = AFRAME.utils.device.checkHeadsetConnected();
+      if (!AFRAME.utils.device.isMobile()) { 
+        gtag('event', 'entervr', {});
+        if (AFRAME.utils.device.isOculusBrowser()) {
+          gtag('event', 'oculusbrowser', {});
+        }
+      }
     },
 
     'exit-vr': state => {
