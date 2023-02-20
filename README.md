@@ -12,10 +12,7 @@ open WebXR initiative.
 
 ![gif](https://user-images.githubusercontent.com/674727/58050249-ab442900-7b03-11e9-8763-913d42a26708.gif)
 
-**[Read more about it with elliottate at bsaber.com](https://bsaber.com/moonrider/)**
-
-Song maps are sourced from beatsaver.com with expressed support from the Beat
-Saver community admins. Supports all browsers and headsets (incl. Quest). If
+Song maps are sourced from [beatsaver](https://beatsaver.com). Supports all browsers and headsets (incl. Quest). If
 there are any issues, file an issue here on GitHub or leave a message in the
 [Supermedium Discord](https://supermedium.com/discord).
 
