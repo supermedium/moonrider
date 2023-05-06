@@ -45,6 +45,7 @@
     "aframe-super-hot-html-loader": "^1.2.0",
     "aframe-super-hot-loader": "^1.5.0",
     "aframe-thumb-controls-component": "^2.0.2",
+    "aframe-text-geometry-component": "^0.5.1",
     "ansi-html": "0.0.7",
     "autoprefixer": "^7.2.3",
     "babel-loader": "^8.0.5",
