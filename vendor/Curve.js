@@ -1,6 +1,6 @@
 // Modified to allow optional targets for GC.
 // TODO: Upstream.
-const _Math = THREE.Math;
+const _Math = THREE.MathUtils;
 const Vector3 = THREE.Vector3;
 const Matrix4 = THREE.Matrix4;
 

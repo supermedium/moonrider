@@ -21,7 +21,7 @@ if (process.env.DEBUG_LOG) {
 }
 require('aframe-orbit-controls');
 require('aframe-proxy-event-component');
-require('aframe-render-order-component');
+//require('aframe-render-order-component');
 require('aframe-state-component');
 require('aframe-slice9-component');
 require('aframe-thumb-controls-component');

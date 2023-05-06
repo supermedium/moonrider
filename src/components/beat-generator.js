@@ -301,16 +301,16 @@ AFRAME.registerComponent('beat-generator', {
     const songPosition = ((noteInfo._time * msPerBeat) / durationMs) + positionOffset;
 
     // Set render order (back to front so decreasing render order as index increases).
-    const renderOrder = this.el.systems['render-order'].order.beats + 1 - songPosition;
+    //const renderOrder = this.el.systems['render-order'].order.beats + 1 - songPosition;
 
     if (data.gameMode === 'ride') {
       beatEl.components.plume.onGenerate(songPosition, horizontalPosition, verticalPosition,
         this.playerHeight.beatOffset);
-      beatEl.setAttribute('render-order', renderOrder);
+        //beatEl.setAttribute('render-order', renderOrder);
     } else {
       beatEl.components.beat.onGenerate(songPosition, horizontalPosition, verticalPosition,
         cutDirection, this.playerHeight.beatOffset);
-      beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
+        //beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
     }
     beatEl.play();
   },
@@ -356,8 +356,8 @@ AFRAME.registerComponent('beat-generator', {
 
     // Set render order (back to front so decreasing render order as index increases).
     // For walls, set as the back end of the wall.
-    wallEl.object3D.renderOrder = this.el.systems['render-order'].order.beats + 1 -
-      (songPosition + lengthPercent);
+    //wallEl.object3D.renderOrder = this.el.systems['render-order'].order.beats + 1 -
+    //  (songPosition + lengthPercent);
   },
 
   generateEvent: function (event) {
