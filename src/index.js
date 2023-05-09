@@ -6,6 +6,7 @@ console.timeEnd = () => {
 };
 
 require('../vendor/BufferGeometryUtils');
+require('../vendor/aframe-text-geometry-component.min');
 
 require('aframe-aabb-collider-component');
 require('aframe-atlas-uvs-component');
@@ -21,7 +22,7 @@ if (process.env.DEBUG_LOG) {
 }
 require('aframe-orbit-controls');
 require('aframe-proxy-event-component');
-//require('aframe-render-order-component');
+require('../vendor/aframe-render-order-component.min');
 require('aframe-state-component');
 require('aframe-slice9-component');
 require('aframe-thumb-controls-component');
