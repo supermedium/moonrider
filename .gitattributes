@@ -26,8 +26,8 @@ LICENSE text
 *.jpg  binary
 *.jpeg binary
 *.png binary
-*.wav filter=lfs diff=lfs merge=lfs -text
-*.psd filter=lfs diff=lfs merge=lfs -text
-*.blend filter=lfs diff=lfs merge=lfs -text
-*.psb filter=lfs diff=lfs merge=lfs -text
-assets/raw_assets/*.* filter=lfs diff=lfs merge=lfs -text
+*.wav -text
+*.psd -text
+*.blend -text
+*.psb -text
+assets/raw_assets/*.* -text
