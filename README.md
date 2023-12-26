@@ -40,6 +40,14 @@ npm run start
 
 Then head to `localhost:3000` in your browser.
 
+## Docker
+
+To build:
+```docker build . -t moonrider:latest```
+
+To run:
+```docker run -p 3000:3000 moonrider```
+
 ### Remixing and Forking
 
 Make this game your own! Some easy ways to mess around:
