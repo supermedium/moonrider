@@ -31,14 +31,15 @@ Big thanks to @elliottate for helping out with this!
 
 ## Development
 
-Have Node (< v12, recommended v11) and npm installed.
+Have Node (recommend v14.15.4) and npm installed.
 
 ```
-npm install
-npm run start
+yarn install
+yarn start
 ```
 
-Then head to `localhost:3000` in your browser.
+Then head to `localhost:3000` in your browser. SSL might be needed ot test on a 
+headset, in that case try ngrok or localhost.run
 
 ### Remixing and Forking
 
@@ -75,7 +76,7 @@ Showing off some crazy customizations? Enable GitHub Pages deployment to deploy
 `gh-pages` branch, and then:
 
 ```
-npm run deploy
+yarn run deploy
 ```
 
 The website will be available on `https://yourusername.github.io/moonrider/`.

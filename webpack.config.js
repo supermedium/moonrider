@@ -22,6 +22,7 @@ module.exports = {
     disableHostCheck: true,
     hotOnly: true
   },
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'cheap-module-eval-source-map',
   entry: {
     build: './src/index.js',
     zip: './src/workers/zip.js'

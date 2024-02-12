@@ -79,7 +79,17 @@ AFRAME.registerComponent('zip-loader', {
         // Check for faulty empty beats object.
         let key;
         const beats = evt.data.data.beats;
-        for (key in beats) { break; }
+        
+        for (key in beats) {
+          // check beatmap version compatibility
+          // some beats can have version different form the zip info
+          let ver = beats[key].version || beats[key]._version;
+          if (typeof ver !== 'string' || parseInt(ver[0]) >= 3) {
+            this.el.emit('songloadbadversion');
+            this.cachedZip = null;
+            return;
+          }
+        }
         if (!key) {
           this.cachedZip = null;
           if (evt.data.version === this.data.version) {

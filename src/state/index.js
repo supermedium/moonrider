@@ -789,6 +789,17 @@ AFRAME.registerState({
       state.isZipFetching = false;
     },
 
+    songloadbadversion: state => {
+      state.hasSongLoadError = true;
+
+      state.loadingText = 'Sorry! Song version incompatible.\nPlease select another song.';
+
+      state.challenge.id = '';
+      state.challenge.isBeatsPreloaded = false;
+      state.isSongProcessing = false;
+      state.isZipFetching = false;
+    },
+
     songprocessfinish: state => {
       state.isSongProcessing = false;
       state.isLoading = false;  // Done loading after final step!
