@@ -84,7 +84,7 @@ AFRAME.registerComponent('zip-loader', {
           // check beatmap version compatibility
           // some beats can have version different form the zip info
           let ver = beats[key].version || beats[key]._version;
-          if (typeof ver !== 'string' || parseInt(ver[0]) >= 3) {
+          if (typeof ver !== 'string' || parseInt(ver.split('.')[0]) >= 3) {
             this.el.emit('songloadbadversion');
             this.cachedZip = null;
             return;
