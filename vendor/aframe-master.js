@@ -62347,7 +62347,6 @@ module.exports={
     "sinon-chai": "2.8.0",
     "snazzy": "^5.0.0",
     "too-wordy": "ngokevin/too-wordy",
-    "uglifyjs": "^2.4.10",
     "write-good": "^0.9.1"
   },
   "link": true,

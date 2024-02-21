@@ -1,6 +1,6 @@
 /* global AFRAME */
 var KEYBOARDS = {
-  superkeyboard: {wrapCount: 20, inputOffsetY: 0.008, inputOffsetX: 0.08, img: 'keyboard.png', hoverImg: 'keyboard-hover.png', layout: [{'key': '1', 'x': 0.013, 'y': 0.03, 'w': 0.093, 'h': 0.176}, {'key': '2', 'x': 0.106, 'y': 0.03, 'w': 0.088, 'h': 0.176}, {'key': '3', 'x': 0.194, 'y': 0.03, 'w': 0.077, 'h': 0.176}, {'key': '4', 'x': 0.271, 'y': 0.03, 'w': 0.085, 'h': 0.176}, {'key': '5', 'x': 0.356, 'y': 0.03, 'w': 0.081, 'h': 0.176}, {'key': '6', 'x': 0.437, 'y': 0.03, 'w': 0.081, 'h': 0.176}, {'key': '8', 'x': 0.603, 'y': 0.03, 'w': 0.082, 'h': 0.176}, {'key': '7', 'x': 0.519, 'y': 0.03, 'w': 0.084, 'h': 0.176}, {'key': '9', 'x': 0.685, 'y': 0.03, 'w': 0.076, 'h': 0.176}, {'key': '0', 'x': 0.76, 'y': 0.03, 'w': 0.088, 'h': 0.176}, {'key': 'Delete', 'x': 0.867, 'y': 0.03, 'w': 0.124, 'h': 0.176}, {'key': 'q', 'x': 0.013, 'y': 0.213, 'w': 0.098, 'h': 0.186}, {'key': 'w', 'x': 0.111, 'y': 0.213, 'w': 0.107, 'h': 0.186}, {'key': 'e', 'x': 0.218, 'y': 0.213, 'w': 0.096, 'h': 0.186}, {'key': 'r', 'x': 0.313, 'y': 0.213, 'w': 0.095, 'h': 0.186}, {'key': 't', 'x': 0.408, 'y': 0.213, 'w': 0.094, 'h': 0.186}, {'key': 'y', 'x': 0.503, 'y': 0.213, 'w': 0.099, 'h': 0.186}, {'key': 'u', 'x': 0.602, 'y': 0.213, 'w': 0.097, 'h': 0.186}, {'key': 'i', 'x': 0.701, 'y': 0.213, 'w': 0.085, 'h': 0.186}, {'key': 'o', 'x': 0.786, 'y': 0.213, 'w': 0.099, 'h': 0.186}, {'key': 'p', 'x': 0.885, 'y': 0.213, 'w': 0.097, 'h': 0.186}, {'key': 'a', 'x': 0.063, 'y': 0.408, 'w': 0.1, 'h': 0.182}, {'key': 's', 'x': 0.163, 'y': 0.408, 'w': 0.097, 'h': 0.182}, {'key': 'd', 'x': 0.26, 'y': 0.408, 'w': 0.098, 'h': 0.182}, {'key': 'f', 'x': 0.358, 'y': 0.408, 'w': 0.094, 'h': 0.182}, {'key': 'g', 'x': 0.452, 'y': 0.408, 'w': 0.1, 'h': 0.182}, {'key': 'h', 'x': 0.552, 'y': 0.408, 'w': 0.105, 'h': 0.182}, {'key': 'j', 'x': 0.657, 'y': 0.408, 'w': 0.085, 'h': 0.182}, {'key': 'k', 'x': 0.743, 'y': 0.408, 'w': 0.105, 'h': 0.182}, {'key': 'l', 'x': 0.848, 'y': 0.408, 'w': 0.1, 'h': 0.182}, {'key': 'z', 'x': 0.107, 'y': 0.596, 'w': 0.106, 'h': 0.197}, {'key': 'x', 'x': 0.213, 'y': 0.596, 'w': 0.1, 'h': 0.197}, {'key': 'c', 'x': 0.313, 'y': 0.596, 'w': 0.093, 'h': 0.197}, {'key': 'v', 'x': 0.406, 'y': 0.596, 'w': 0.096, 'h': 0.197}, {'key': 'b', 'x': 0.502, 'y': 0.596, 'w': 0.093, 'h': 0.197}, {'key': 'n', 'x': 0.595, 'y': 0.596, 'w': 0.099, 'h': 0.197}, {'key': 'm', 'x': 0.694, 'y': 0.596, 'w': 0.106, 'h': 0.197}, {'key': ' ', 'x': 0.372, 'y': 0.798, 'w': 0.249, 'h': 0.169}, {'key': 'Insert', 'x': 0.017, 'y': -0.001, 'w': 0.038, 'h': 0.018}]}
+  superkeyboard: {wrapCount: 30, inputOffsetY: 0.008, inputOffsetX: 0.08, img: 'keyboard.png', hoverImg: 'keyboard-hover.png', layout: [{'key': '1', 'x': 0.013, 'y': 0.03, 'w': 0.093, 'h': 0.176}, {'key': '2', 'x': 0.106, 'y': 0.03, 'w': 0.088, 'h': 0.176}, {'key': '3', 'x': 0.194, 'y': 0.03, 'w': 0.077, 'h': 0.176}, {'key': '4', 'x': 0.271, 'y': 0.03, 'w': 0.085, 'h': 0.176}, {'key': '5', 'x': 0.356, 'y': 0.03, 'w': 0.081, 'h': 0.176}, {'key': '6', 'x': 0.437, 'y': 0.03, 'w': 0.081, 'h': 0.176}, {'key': '8', 'x': 0.603, 'y': 0.03, 'w': 0.082, 'h': 0.176}, {'key': '7', 'x': 0.519, 'y': 0.03, 'w': 0.084, 'h': 0.176}, {'key': '9', 'x': 0.685, 'y': 0.03, 'w': 0.076, 'h': 0.176}, {'key': '0', 'x': 0.76, 'y': 0.03, 'w': 0.088, 'h': 0.176}, {'key': 'Delete', 'x': 0.867, 'y': 0.03, 'w': 0.124, 'h': 0.176}, {'key': 'q', 'x': 0.013, 'y': 0.213, 'w': 0.098, 'h': 0.186}, {'key': 'w', 'x': 0.111, 'y': 0.213, 'w': 0.107, 'h': 0.186}, {'key': 'e', 'x': 0.218, 'y': 0.213, 'w': 0.096, 'h': 0.186}, {'key': 'r', 'x': 0.313, 'y': 0.213, 'w': 0.095, 'h': 0.186}, {'key': 't', 'x': 0.408, 'y': 0.213, 'w': 0.094, 'h': 0.186}, {'key': 'y', 'x': 0.503, 'y': 0.213, 'w': 0.099, 'h': 0.186}, {'key': 'u', 'x': 0.602, 'y': 0.213, 'w': 0.097, 'h': 0.186}, {'key': 'i', 'x': 0.701, 'y': 0.213, 'w': 0.085, 'h': 0.186}, {'key': 'o', 'x': 0.786, 'y': 0.213, 'w': 0.099, 'h': 0.186}, {'key': 'p', 'x': 0.885, 'y': 0.213, 'w': 0.097, 'h': 0.186}, {'key': 'a', 'x': 0.063, 'y': 0.408, 'w': 0.1, 'h': 0.182}, {'key': 's', 'x': 0.163, 'y': 0.408, 'w': 0.097, 'h': 0.182}, {'key': 'd', 'x': 0.26, 'y': 0.408, 'w': 0.098, 'h': 0.182}, {'key': 'f', 'x': 0.358, 'y': 0.408, 'w': 0.094, 'h': 0.182}, {'key': 'g', 'x': 0.452, 'y': 0.408, 'w': 0.1, 'h': 0.182}, {'key': 'h', 'x': 0.552, 'y': 0.408, 'w': 0.105, 'h': 0.182}, {'key': 'j', 'x': 0.657, 'y': 0.408, 'w': 0.085, 'h': 0.182}, {'key': 'k', 'x': 0.743, 'y': 0.408, 'w': 0.105, 'h': 0.182}, {'key': 'l', 'x': 0.848, 'y': 0.408, 'w': 0.1, 'h': 0.182}, {'key': 'z', 'x': 0.107, 'y': 0.596, 'w': 0.106, 'h': 0.197}, {'key': 'x', 'x': 0.213, 'y': 0.596, 'w': 0.1, 'h': 0.197}, {'key': 'c', 'x': 0.313, 'y': 0.596, 'w': 0.093, 'h': 0.197}, {'key': 'v', 'x': 0.406, 'y': 0.596, 'w': 0.096, 'h': 0.197}, {'key': 'b', 'x': 0.502, 'y': 0.596, 'w': 0.093, 'h': 0.197}, {'key': 'n', 'x': 0.595, 'y': 0.596, 'w': 0.099, 'h': 0.197}, {'key': 'm', 'x': 0.694, 'y': 0.596, 'w': 0.106, 'h': 0.197}, {'key': ' ', 'x': 0.372, 'y': 0.798, 'w': 0.249, 'h': 0.169}, {'key': 'Insert', 'x': 0.017, 'y': -0.001, 'w': 0.038, 'h': 0.018}]}
 };
 
 if (typeof AFRAME === 'undefined') {
@@ -40,13 +40,15 @@ AFRAME.registerComponent('super-keyboard', {
     maxLength: {type: 'int', default: 0},
     model: {default: 'basic'},
     show: {default: true},
+    multipleInputs: {default: false},
     value: {type: 'string', default: ''},
     width: {default: 0.8}
   },
 
   init: function () {
-    this.el.addEventListener('mousedown', this.click.bind(this));
+    this.el.addEventListener('click', this.click.bind(this));
     this.changeEventDetail = {};
+    this.textInputObject = {};
 
     this.keys = null;
     this.focused = false;
@@ -80,7 +82,7 @@ AFRAME.registerComponent('super-keyboard', {
       value: this.data.label,
       color: this.data.labelColor,
       width: this.data.width,
-    wrapCount: 30});
+      wrapCount: 30});
     this.el.appendChild(this.label);
 
     // Create input.
@@ -90,10 +92,10 @@ AFRAME.registerComponent('super-keyboard', {
       align: this.data.align,
       font: this.data.font,
       lineHeight: 35,
+      shader: 'msdf',
       value: this.data.value,
       color: this.data.inputColor,
       width: this.data.width,
-      wrapCount: 20
     });
     this.el.appendChild(this.textInput);
 
@@ -146,8 +148,8 @@ AFRAME.registerComponent('super-keyboard', {
     }
 
     if (this.data.width !== oldData.width ||
-      this.data.height !== oldData.height ||
-      this.data.keyColor !== oldData.keyColor) {
+        this.data.height !== oldData.height ||
+        this.data.keyColor !== oldData.keyColor) {
       this.kbImg.setAttribute('geometry', {primitive: 'plane', width: w, height: h});
       this.kbImg.setAttribute('material', {
         shader: 'flat',
@@ -158,15 +160,15 @@ AFRAME.registerComponent('super-keyboard', {
     }
 
     if (this.data.label !== oldData.label ||
-      this.data.labelColor !== oldData.labelColor ||
-      this.data.width !== oldData.width) {
+        this.data.labelColor !== oldData.labelColor ||
+        this.data.width !== oldData.width) {
       this.label.setAttribute('text', {
-      value: this.data.label, color: this.data.labelColor, width: this.data.width});
-      this.label.object3D.position.set(0, 0.4 * w, -0.02);
+        value: this.data.label, color: this.data.labelColor, width: this.data.width});
+      this.label.object3D.position.set(0, 0.3 * w, -0.02);
     }
 
     if (this.data.width !== oldData.width ||
-      this.data.keyBgColor !== oldData.keyBgColor) {
+        this.data.keyBgColor !== oldData.keyBgColor) {
       this.initKeyColorPlane();
     }
 
@@ -174,9 +176,9 @@ AFRAME.registerComponent('super-keyboard', {
     if (this.data.align === 'right') { inputx *= -1; }
 
     if (this.data.font !== oldData.font ||
-      this.data.inputColor !== oldData.inputColor ||
-      this.data.width !== oldData.width ||
-      this.data.align !== oldData.align) {
+        this.data.inputColor !== oldData.inputColor ||
+        this.data.width !== oldData.width ||
+        this.data.align !== oldData.align) {
       this.textInput.setAttribute('text', {
         font: this.data.font,
         color: this.data.inputColor,
@@ -202,7 +204,7 @@ AFRAME.registerComponent('super-keyboard', {
 
     if (this.data.width !== oldData.width) {
       this.cursor.setAttribute('geometry', {
-      primitive: 'plane', width: 0.03 * w, height: 0.01 * w});
+        primitive: 'plane', width: 0.03 * w, height: 0.01 * w});
     }
 
     this.updateCursorPosition();
@@ -262,23 +264,16 @@ AFRAME.registerComponent('super-keyboard', {
    * The plane for visual feedback when a key is hovered or clicked
    */
   initKeyColorPlane: function () {
-    var kbdata = KEYBOARDS[this.data.model];
     var keyColorPlane = this.keyColorPlane = document.createElement('a-entity');
     keyColorPlane.classList.add('superKeyboardKeyColorPlane');
     keyColorPlane.object3D.position.z = 0.001;
     keyColorPlane.object3D.visible = false;
-    keyColorPlane.setAttribute('geometry', {primitive: 'plane', buffer: false});
+    keyColorPlane.setAttribute('geometry', {primitive: 'plane'});
     keyColorPlane.setAttribute('material', {shader: 'flat', color: this.data.keyBgColor,
-    transparent: true});
-    if (kbdata.hoverImg) {
-      keyColorPlane.setAttribute('material', {src: this.data.imagePath + '/' + kbdata.hoverImg});
-    }
-
+                                            transparent: true});
     keyColorPlane.addEventListener('componentinitialized', function (evt) {
       if (evt.detail.name !== 'material') { return; }
-      if (!kbdata.hoverImg) {
-        this.getObject3D('mesh').material.blending = THREE.AdditiveBlending;
-      }
+      this.getObject3D('mesh').material.blending = THREE.AdditiveBlending;
     });
     this.el.appendChild(keyColorPlane);
   },
@@ -313,18 +308,6 @@ AFRAME.registerComponent('super-keyboard', {
       keyColorPlane.object3D.position.y = (1 - kdata.y) * h - h2 - keyh / 2;
       // Color.
       keyColorPlane.getObject3D('mesh').material.color.copy(color);
-      // UVs.
-
-      var geometry = keyColorPlane.getObject3D('mesh').geometry;
-      var uvSet = geometry.faceVertexUvs[0];
-      var kdataY = 1 - kdata.y;
-      uvSet[0][0].set(kdata.x, kdataY);
-      uvSet[0][1].set(kdata.x, kdataY - kdata.h);
-      uvSet[0][2].set(kdata.x + kdata.w, kdataY);
-      uvSet[1][0].set(kdata.x, kdataY - kdata.h);
-      uvSet[1][1].set(kdata.x + kdata.w, kdataY - kdata.h);
-      uvSet[1][2].set(kdata.x + kdata.w, kdataY);
-      geometry.uvsNeedUpdate = true;
       break;
     }
     keyColorPlane.object3D.visible = true;
@@ -341,6 +324,8 @@ AFRAME.registerComponent('super-keyboard', {
         '[cursor]',
         '[vive-controls]',
         '[tracked-controls]',
+        '[gearvr-controls]',
+        '[oculus-go-controls]',
         '[oculus-touch-controls]',
         '[windows-motion-controls]',
         '[hand-controls]',
@@ -485,12 +470,18 @@ AFRAME.registerComponent('super-keyboard', {
   },
 
   accept: function () {
-    this.el.object3D.visible = false;
-    if (this.hand && this.hand.ownRaycaster) {
-      this.hand.setAttribute('raycaster', {showLine: false, enabled: false});
-    }
     this.el.emit('superkeyboardinput', {value: this.data.value});
-    this.data.show = false;
+    if (this.data.multipleInputs) {
+      this.rawValue = '';
+      this.data.value = '';
+      this.updateTextInput('');
+    } else {
+      this.el.object3D.visible = false;
+      if (this.hand && this.hand.ownRaycaster) {
+        this.hand.setAttribute('raycaster', {showLine: false, enabled: false});
+      }
+      this.data.show = false;
+    }    
   },
 
   dismiss: function () {
@@ -504,10 +495,10 @@ AFRAME.registerComponent('super-keyboard', {
     this.data.show = false;
   },
 
-  blur: function () {
+  blur: function (ev) {
     this.focused = false;
     if (this.keyHover && this.keyHover.key !== 'Shift') {
-      this.keyColorPlane.object3D.visible = false;
+      this.updateKeyColorPlane(this.keyHover.key, this.keyBgColor);
     }
     this.keyHover = null;
   },
@@ -558,7 +549,7 @@ AFRAME.registerComponent('super-keyboard', {
     var pos = 0;
     var fontFactor = FontFactors[this.textInput.components.text.data.font];
     if (fontFactor === undefined) { fontFactor = 20; }
-    for (var i = 0; i < Math.min(11, this.data.value.length); i++) {
+    for (var i = 0; i < this.data.value.length; i++) {
       var char = findFontChar(font.chars, this.data.value.charCodeAt(i));
       pos += char.width + char.xadvance * (char.id === 32 ? 2 : 1);
     }
@@ -571,22 +562,15 @@ AFRAME.registerComponent('super-keyboard', {
       pos = -pos * ratio * fontFactor * 0.0011 - 0.02 * w;
       pos += w / 2;
     }
-    this.cursor.object3D.position.set(pos * 0.92, posy + 0.05, 0.001);
+    this.cursor.object3D.position.set(pos, posy, 0.001);
     this.cursorUpdated = true;
   },
 
   updateTextInput: function (value) {
-    this.textInput.setAttribute('text', 'value', backTruncate(value || this.data.value, 12));
+    this.textInputObject.value = value || this.data.value;
+    this.textInput.setAttribute('text', this.textInputObject);
   }
 });
-
-function backTruncate (str, length) {
-  if (!str) { return ''; }
-  if (str.length >= length) {
-    return '...' + str.substring(str.length - length, str.length);
-  }
-  return str;
-}
 
 function findFontChar (chars, code) {
   for (var i = 0; i < chars.length; i++) {
