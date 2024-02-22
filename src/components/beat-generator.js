@@ -306,11 +306,11 @@ AFRAME.registerComponent('beat-generator', {
     if (data.gameMode === 'ride') {
       beatEl.components.plume.onGenerate(songPosition, horizontalPosition, verticalPosition,
         this.playerHeight.beatOffset);
-      beatEl.setAttribute('render-order', renderOrder);
+        beatEl.setAttribute('render-order', renderOrder);
     } else {
       beatEl.components.beat.onGenerate(songPosition, horizontalPosition, verticalPosition,
         cutDirection, this.playerHeight.beatOffset);
-      beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
+        beatEl.components.beat.blockEl.object3D.renderOrder = renderOrder;
     }
     beatEl.play();
   },
