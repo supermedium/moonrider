@@ -431,7 +431,10 @@ AFRAME.registerComponent('beat', {
     this.bbox = mesh.geometry.boundingBox;
 
     if (this.data.type === 'mine') {
-      this.bbox.expandByScalar(-0.25);
+      const expand = new THREE.Vector3();
+      this.bbox.getSize(expand);
+      expand.multiplyScalar(-0.25);
+      this.bbox.expandByVector(expand);
     }
   },
 
