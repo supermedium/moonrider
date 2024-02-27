@@ -87,6 +87,10 @@ addEventListener('message', function (evt) {
                 const id = beatmapCharacteristicName + '-' + difficulty;
                 if (data.beats[id] === undefined) {
                   data.beats[id] = beatFiles[beatmapFilename];
+
+                  data.beats[id].mappingExtensions =
+                    Array.isArray(difficultyBeatmap._customData._requirements) &&
+                    difficultyBeatmap._customData._requirements.includes('Mapping Extensions');
                 }
               }
             }

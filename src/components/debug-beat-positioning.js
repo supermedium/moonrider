@@ -1,5 +1,5 @@
-const horizontalPositions = ['left', 'middleleft', 'middleright', 'right'];
-const verticalPositions = ['bottom', 'middle', 'top'];
+const horizontalPositions = [0, 1, 2, 3];
+const verticalPositions = [0, 1, 2];
 
 /**
  * Display all beat positions at once.

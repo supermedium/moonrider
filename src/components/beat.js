@@ -203,9 +203,9 @@ AFRAME.registerComponent('beat-system', {
     }
   },
 
-  horizontalPositions: {},
+  horizontalPositioning: {},
 
-  verticalPositions: {},
+  verticalPositioning: {},
 
   /**
    * Update positioning between blocks, vertically and horizontally depending on
@@ -226,8 +226,8 @@ AFRAME.registerComponent('beat-system', {
 
     return function () {
       const gameMode = this.data.gameMode;
-      const horizontalPositions = this.horizontalPositions;
-      const verticalPositions = this.verticalPositions;
+      const horizontalPositioning = this.horizontalPositioning;
+      const verticalPositioning = this.verticalPositioning;
 
       const heightOffset = this.el.sceneEl.camera.el.object3D.position.y - REFERENCE_HEIGHT;
       const size = SIZES[gameMode];
@@ -236,26 +236,17 @@ AFRAME.registerComponent('beat-system', {
       // of extra margin.
       // For punch mode, we want a wider horizontal spread in punch range, but not vertical.
       const hMargin = gameMode === CLASSIC ? size : size * 1.2;
-      horizontalPositions.left = -1.5 * hMargin;
-      horizontalPositions.middleleft = -0.5 * hMargin;
-      horizontalPositions.middle = hMargin;
-      horizontalPositions.middleright = 0.5 * hMargin;
-      horizontalPositions.right = 1.5 * hMargin;
+      horizontalPositioning.scale = hMargin;
+      horizontalPositioning.offset = -1.5 * hMargin;
 
       // Vertical margin based on size of blocks so they don't overlap.
       // And then overall shifted up and down based on user height (camera Y).
       // But not too low to go underneath the ground.
       const bottomHeight = BOTTOM_HEIGHTS[gameMode];
       const vMargin = size;
-      verticalPositions.bottom = Math.max(
-        BOTTOM_HEIGHT_MIN,
-        bottomHeight + heightOffset);
-      verticalPositions.middle = Math.max(
-        BOTTOM_HEIGHT_MIN + vMargin,
-        bottomHeight + vMargin + heightOffset);
-      verticalPositions.top = Math.max(
-        BOTTOM_HEIGHT_MIN + vMargin * 2,
-        bottomHeight + (vMargin * 2) + heightOffset);
+      const vOffset = Math.max(BOTTOM_HEIGHT_MIN, bottomHeight + heightOffset);
+      verticalPositioning.scale = vMargin;
+      verticalPositioning.offset = vOffset;
     };
   })(),
 
@@ -299,7 +290,7 @@ AFRAME.registerComponent('beat', {
     this.rigContainer = document.getElementById('rigContainer');
     this.superCuts = document.querySelectorAll('.superCutFx');
 
-    this.verticalPositions = this.beatSystem.verticalPositions;
+    this.verticalPositioning = this.beatSystem.verticalPositioning;
 
     this.explodeEventDetail = {
       beatDirection: '',
@@ -394,7 +385,8 @@ AFRAME.registerComponent('beat', {
     const supercurve = this.curveEl.components.supercurve;
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
-    el.object3D.position.x += this.beatSystem.horizontalPositions[horizontalPosition];
+    el.object3D.position.x += this.beatSystem.horizontalPositioning.scale * horizontalPosition +
+      this.beatSystem.horizontalPositioning.offset;
 
     if (data.type !== DOT) {
       el.object3D.rotation.z = THREE.Math.degToRad(ROTATIONS[cutDirection]);
@@ -409,7 +401,8 @@ AFRAME.registerComponent('beat', {
     const offset = 0.5;
     el.object3D.position.y -= offset;
     this.positionStart = el.object3D.position.y;
-    this.positionChange = this.verticalPositions[verticalPosition] + offset + heightOffset;
+    this.positionChange = this.verticalPositioning.scale * verticalPosition +
+      this.verticalPositioning.offset + offset + heightOffset;
   },
 
   /**

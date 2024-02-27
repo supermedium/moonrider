@@ -74,8 +74,8 @@ AFRAME.registerComponent('wall', {
       // Offset vectors to get the left / right vertex points to pass into curve helper.
       // Note that curve is upside down so the positions are reversed...normally, this would
       // read as `+ (width / 2) - 0.25`.
-      const centerPosition = (-1 * beatSystem.horizontalPositions[horizontalPosition]) -
-        (width / 2) + 0.25;
+      const origPosition = beatSystem.horizontalPositioning.scale * horizontalPosition + beatSystem.horizontalPositioning.offset;
+      const centerPosition = (-1 * origPosition) - (width / 2) + 0.25;
       left.x = centerPosition - (width / 2);
       right.x = centerPosition + (width / 2);
 

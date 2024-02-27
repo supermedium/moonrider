@@ -47,15 +47,6 @@ AFRAME.registerComponent('beat-generator', {
     'downright'
   ],
 
-  horizontalPositions: [-0.75, -0.25, 0.25, 0.75],
-
-  horizontalPositionsHumanized: {
-    0: 'left',
-    1: 'middleleft',
-    2: 'middleright',
-    3: 'right'
-  },
-
   positionHumanized: {
     topLeft: { layer: 2, index: 0 },
     topCenterLeft: { layer: 2, index: 1 },
@@ -73,12 +64,6 @@ AFRAME.registerComponent('beat-generator', {
     bottomRight: { layer: 0, index: 3 }
   },
 
-  verticalPositionsHumanized: {
-    0: 'bottom',
-    1: 'middle',
-    2: 'top'
-  },
-
   init: function () {
     this.audioAnalyserEl = document.getElementById('audioanalyser');
     this.beatContainer = document.getElementById('beatContainer');
@@ -88,6 +73,7 @@ AFRAME.registerComponent('beat-generator', {
     this.preloadTime = 0;
     this.songTime = undefined;
     this.bpm = undefined;
+    this.mappingExtensions = false;
     this.curve = null;
     this.curveEl = document.getElementById('curve');
     this.curveFollowRigEl = document.getElementById('curveFollowRig');
@@ -164,6 +150,7 @@ AFRAME.registerComponent('beat-generator', {
     this.beatData._obstacles.sort(lessThan);
     this.beatData._notes.sort(lessThan);
     this.bpm = this.beatData._beatsPerMinute;
+    this.mappingExtensions = this.beatData.mappingExtensions;
 
     // Performance: Remove all obstacles if there are more than 256 (often used with Noodle Extensions)
     if (this.beatData._obstacles.length > 256) {
@@ -286,8 +273,32 @@ AFRAME.registerComponent('beat-generator', {
 
     // Apply sword offset. Blocks arrive on beat in front of the user.
     const cutDirection = this.orientationsHumanized[noteInfo._cutDirection];
-    const horizontalPosition = this.horizontalPositionsHumanized[noteInfo._lineIndex] || 'left';
-    const verticalPosition = this.verticalPositionsHumanized[noteInfo._lineLayer] || 'middle';
+    let horizontalPosition;
+    let verticalPosition;
+    if (this.mappingExtensions) {
+      // Normally, notes go from 0 to 3 for lineIndex, and 0 to 2 for lineLayer.
+      // With custom grids, this could be -99 to 99 for both, in theory.
+      // But, because we want to support decimal values, we need to switch to the
+      // alternate format, where the values omit everything from -999 to 999.
+      //
+      // 0 -> 1000
+      // 1 -> 2000
+      // 2 -> 3000
+      // -1 -> -2000
+      horizontalPosition =
+        noteInfo._lineIndex < 0
+          ? noteInfo._lineIndex / 1000 + 1
+          : noteInfo._lineIndex / 1000 - 1;
+      verticalPosition =
+        noteInfo._lineLayer < 0
+          ? noteInfo._lineLayer / 1000 + 1
+          : noteInfo._lineLayer / 1000 - 1;
+    } else {
+      horizontalPosition = noteInfo._lineIndex;
+      verticalPosition = noteInfo._lineLayer;
+    }
+    if (horizontalPosition === undefined) horizontalPosition = 0 /* left */;
+    if (verticalPosition === undefined) verticalPosition = 1 /* middle */;
 
     // Factor in sword offset and beat anticipation time (percentage).
     const weaponOffset = this.data.gameMode === 'classic' ? SWORD_OFFSET : PUNCH_OFFSET;
@@ -336,7 +347,7 @@ AFRAME.registerComponent('beat-generator', {
     if (data.has3DOFVR && data.gameMode !== 'viewer') { return; }
 
     const durationSeconds = 60 * (wallInfo._duration / this.bpm);
-    const horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex] || 'none';
+    const horizontalPosition = wallInfo._lineIndex;
     const isCeiling = wallInfo._type === 1;
     const length = durationSeconds * data.speed;
     const width = wallInfo._width / 2; // We want half the reported width.
