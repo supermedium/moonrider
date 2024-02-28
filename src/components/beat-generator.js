@@ -155,7 +155,10 @@ AFRAME.registerComponent('beat-generator', {
    */
   processBeats: function () {
     if (this.data.hasSongLoadError) { return; }
-
+    // if there is version and first character is 3, convert to 2.xx
+    if (this.beatData.version  && this.beatData.version.charAt(0) === '3') {
+      this.beatData = convertBeatData_320_to_2xx(this.beatData);
+    }
     // Reset variables used during playback.
     // Beats spawn ahead of the song and get to the user in sync with the music.
     this.songTime = 0;
@@ -442,4 +445,51 @@ AFRAME.registerComponent('beat-generator', {
   }
 });
 
-function lessThan (a, b) { return a._time - b._time; }
+function lessThan(a, b) { return a._time - b._time; }
+
+function convertBeatData_320_to_2xx(beatData) {
+  const newBeatData = {
+    _version: '3.2.2',
+    _beatsPerMinute: beatData._beatsPerMinute,
+    _events: [],
+    _notes: [],
+    _obstacles: []
+  };
+  // ignore bmpEvents
+  // ingore rotationEvents
+  // convert notes
+  newBeatData._notes = beatData.colorNotes.map(note => {
+    return {
+      _time: note.b,
+      _lineIndex: note.x,
+      _lineLayer: note.y,
+      _type: note.c, // 0 = red, 1 = blue 
+      _cutDirection: note.d
+    };
+  });
+  // convert bombs ( add to notes )
+  for (const bomb of beatData.bombNotes) {
+    newBeatData._notes.push({
+      _time: bomb.b,
+      _lineIndex: bomb.x,
+      _lineLayer: bomb.y,
+      _type: 3, // 3 = bomb 
+    });
+  }
+  // sort notes by time ascending
+  newBeatData._notes.sort((a, b) => a._time - b._time);
+  // convert obstacles
+  newBeatData._obstacles = beatData.obstacles.map(obstacle => {
+    return {
+      _time: obstacle.b,
+      _lineIndex: obstacle.x,
+      _lineLayer: obstacle.y,
+      _type: obstacle._type,
+      _duration: obstacle.d,
+      _width: obstacle.w,
+      _height: obstacle.h
+    };
+  });
+
+  return newBeatData;
+}
