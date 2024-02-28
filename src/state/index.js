@@ -712,9 +712,9 @@ AFRAME.registerState({
       state.search.urlPage = payload.urlPage;
       state.search.query = payload.query;
       state.search.queryText = truncate(payload.query, 10);
-      state.search.results = payload.results;
-      for (i = 0; i < payload.results.length; i++) {
-        let result = payload.results[i];
+      state.search.results = payload.results || [];
+      for (i = 0; i < state.search.results.length; i++) {
+        let result = state.search.results[i];
         // result.songSubName = result.songSubName || 'Unknown Artist';
         // result.shortSongName = truncate(result.songName, SONG_NAME_TRUNCATE).toUpperCase();
         // result.shortSongSubName = truncate(result.songSubName, SONG_SUB_NAME_RESULT_TRUNCATE);
@@ -995,6 +995,7 @@ function updateScoreAccuracy(state) {
   // Update live accuracy.
   const currentNumBeats = state.score.beatsHit + state.score.beatsMissed;
   state.score.accuracy = (state.score.accuracyScore / (currentNumBeats * 100)) * 100;
+  state.score.accuracy = isNaN(state.score.accuracy) ? 100 : state.score.accuracy;
   state.score.accuracy = state.score.accuracy.toFixed(2);
   state.score.accuracyInt = parseInt(state.score.accuracy);
 }

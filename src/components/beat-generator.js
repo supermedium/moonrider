@@ -160,6 +160,9 @@ AFRAME.registerComponent('beat-generator', {
     // Beats spawn ahead of the song and get to the user in sync with the music.
     this.songTime = 0;
     this.preloadTime = 0;
+    this.beatData._events = this.beatData._events || [];
+    this.beatData._obstacles = this.beatData._obstacles || [];
+    this.beatData._notes = this.beatData._notes || [];
     this.beatData._events.sort(lessThan);
     this.beatData._obstacles.sort(lessThan);
     this.beatData._notes.sort(lessThan);
