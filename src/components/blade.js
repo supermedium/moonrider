@@ -89,7 +89,7 @@ AFRAME.registerComponent('blade', {
     const RIGHT = 'right';
 
     return function (beat) {
-      if (this.strokeSpeed < 1) { return false; }
+      if (!this.data.enabled || this.strokeSpeed < 1) { return false; }
 
       // Convert points to beat space.
       for (let i = 0; i < 3; i++) {

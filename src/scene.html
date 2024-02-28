@@ -154,19 +154,21 @@
       id="controllerRig"
       proxy-event="event: recentered; to: #cameraRig; captureBubbles: true; as: recenter">
       {% macro weapon (hand, otherHand) %}
+        {% set active = "(challenge.beatmapCharacteristic != 'OneSaber' || " + ("!" if hand != "left") + "challenge.leftHandedMode)" %}
         <a-entity id="{{ hand }}Hand"
           class="weapon"
           bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
-          bind__haptics-wall="enabled: isPlaying && gameMode === 'classic'"
+          bind__haptics="enabled: !isPlaying || {{ active }}"
+          bind__haptics-wall="enabled: isPlaying && gameMode === 'classic' && {{ active }}"
           bind__headfist="isPlaying: isPlaying"
           bind__menu-controls="enabled: mainMenuActive"
           bind__pauser="enabled: isPlaying"
           bind__punch="enabled: isPlaying && gameMode === 'punch'"
           bind__raycaster="enabled: {{ hand }}RaycasterActive"
           bind__raycaster__game="enabled: isPlaying && (gameMode === 'classic' || gameMode === 'punch')"
-          bind__blade="enabled: isPlaying && gameMode === 'classic'"
-          bind__weapon-particles="enabled: isPlaying; gameMode: gameMode"
-          bind__trail="colorScheme: colorScheme; enabled: isPlaying && gameMode === 'classic'"
+          bind__blade="enabled: isPlaying && gameMode === 'classic' && {{ active }}"
+          bind__weapon-particles="enabled: isPlaying && {{ active }}; gameMode: gameMode"
+          bind__trail="colorScheme: colorScheme; enabled: isPlaying && gameMode === 'classic' && {{ active }}"
           controller="hand: {{ hand }}"
           data-hand="{{ hand }}"
           haptics="events: mouseenter; dur: 35; force: 0.075"
@@ -198,7 +200,7 @@
                     bind__rotation="controllerType.indexOf('oculus') !== -1 && '135 0 0' || '90 0 0'">
             <a-entity
               class="bladeContainer"
-              bind__visible="isPlaying && gameMode === 'classic'"
+              bind__visible="isPlaying && gameMode === 'classic' && {{ active }}"
               animation="property: scale; from: 0 0 0; to: 1 1 1; dur: 750; easing: linear; startEvents: drawblade"
               scale="0.001 0.001 0.001">
               <a-entity
@@ -213,7 +215,7 @@
 
             <a-entity
               class="bladeHandle"
-              bind__visible="!isPlaying || gameMode === 'classic'"
+              bind__visible="!isPlaying || gameMode === 'classic' && {{ active }}"
               obj-model="obj: #weaponHandleObj"
               materials="name: {{ hand }}WeaponHandle">
               <a-entity class="bladeHandleHelper"></a-entity>
@@ -225,7 +227,7 @@
             id="{{ hand }}punch"
             class="punch"
             render-order="weapon"
-            bind__visible="isPlaying && gameMode === 'punch'"
+            bind__visible="isPlaying && gameMode === 'punch' && {{ active }}"
             bind__position="has3DOFVR && '0 0 -0.75' || '0 0 0'"
             rotation="0 0 0">
               <a-entity
@@ -249,7 +251,7 @@
             id="{{ hand }}star"
             class="handStar"
             render-order="weapon"
-            bind__visible="isPlaying && gameMode === 'ride'">
+            bind__visible="isPlaying && gameMode === 'ride' && {{ active }}">
               <a-entity
                 class="handStar"
                 bind__material="colorPrimary: colorPrimary; colorSecondary: colorSecondary; colorTertiary: colorTertiary"
