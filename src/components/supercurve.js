@@ -203,11 +203,21 @@ AFRAME.registerComponent('supercurve', {
 
       if (!helperObj3D.parent) { this.el.sceneEl.object3D.add(helperObj3D); }
 
-      // Get point at percent.
-      this.getPointAt(percent, helperObj3D.position);
-
-      // Get tangent at percent.
-      this.getTangentAt(percent, tangent);
+      // Get point and tangent at percent.
+      if (percent < 0) {
+        // linearly extrapolate outside the bounds
+        this.getPointAt(0, helperObj3D.position);
+        this.getTangentAt(0, tangent);
+        helperObj3D.position.addScaledVector(tangent, percent);
+      } else if (percent > 1) {
+        // linearly extrapolate outside the bounds
+        this.getPointAt(1, helperObj3D.position);
+        this.getTangentAt(1, tangent);
+        helperObj3D.position.addScaledVector(tangent, percent);
+      } else {
+        this.getPointAt(percent, helperObj3D.position);
+        this.getTangentAt(percent, tangent);
+      }
 
       // Look down the curve.
       if (reverseLookAt) {
