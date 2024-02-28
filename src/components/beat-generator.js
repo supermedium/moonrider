@@ -25,6 +25,7 @@ AFRAME.registerComponent('beat-generator', {
   schema: {
     challengeId: { type: 'string' }, // If clicked play.
     gameMode: { type: 'string' }, // classic, punch, ride.
+    leftHandedMode: { default: false },
     difficulty: { type: 'string' },
     beatmapCharacteristic: { type: 'string' },
     has3DOFVR: { default: false },
@@ -252,9 +253,9 @@ AFRAME.registerComponent('beat-generator', {
     let color;
     let type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
     if (noteInfo._type === 0) {
-      color = 'red';
+      color = data.leftHandedMode ? 'blue' : 'red';
     } else if (noteInfo._type === 1) {
-      color = 'blue';
+      color = data.leftHandedMode ? 'red' : 'blue';
     } else {
       type = 'mine';
       color = undefined;
@@ -286,7 +287,10 @@ AFRAME.registerComponent('beat-generator', {
 
     // Apply sword offset. Blocks arrive on beat in front of the user.
     const cutDirection = this.orientationsHumanized[noteInfo._cutDirection];
-    const horizontalPosition = this.horizontalPositionsHumanized[noteInfo._lineIndex] || 'left';
+    let lineIndex = noteInfo._lineIndex;
+    // mirror notes in OneSaber left handed mode
+    if (data.leftHandedMode) lineIndex = 3 - lineIndex;
+    const horizontalPosition = this.horizontalPositionsHumanized[lineIndex] || 'left';
     const verticalPosition = this.verticalPositionsHumanized[noteInfo._lineLayer] || 'middle';
 
     // Factor in sword offset and beat anticipation time (percentage).
@@ -336,7 +340,10 @@ AFRAME.registerComponent('beat-generator', {
     if (data.has3DOFVR && data.gameMode !== 'viewer') { return; }
 
     const durationSeconds = 60 * (wallInfo._duration / this.bpm);
-    const horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex] || 'none';
+    let lineIndex = wallInfo._lineIndex;
+    // mirror obstacles in OneSaber left handed mode
+    if (data.leftHandedMode) lineIndex = 3 - lineIndex;
+    const horizontalPosition = this.horizontalPositionsHumanized[lineIndex] || 'none';;
     const isCeiling = wallInfo._type === 1;
     const length = durationSeconds * data.speed;
     const width = wallInfo._width / 2; // We want half the reported width.
@@ -385,10 +392,10 @@ AFRAME.registerComponent('beat-generator', {
         this.tube.emit('pulse', null, false);
         break;
       case 12:
-        this.stageColors.setColor('leftglow', event._value);
+        this.stageColors.setColor(this.data.leftHandedMode ? 'rightglow' : 'leftglow', event._value);
         break;
       case 13:
-        this.stageColors.setColor('rightglow', event._value);
+        this.stageColors.setColor(this.data.leftHandedMode ? 'leftglow' : 'rightglow', event._value);
         break;
     }
   },

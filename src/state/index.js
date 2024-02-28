@@ -73,6 +73,7 @@ AFRAME.registerState({
       id: AFRAME.utils.getUrlParameter('challenge'),  // Will be empty string if not playing.
       image: '',
       isBeatsPreloaded: false,  // Whether we have passed the negative time.
+      leftHandedMode: false,
       numBeats: undefined,
       songDuration: 0,
       songName: '',
@@ -374,6 +375,7 @@ AFRAME.registerState({
 
     gamemenurestart: state => {
       resetScore(state);
+      setLeftHandedMode(state);
       state.challenge.isBeatsPreloaded = false;
       state.isGameOver = false;
       state.isPaused = false;
@@ -623,6 +625,8 @@ AFRAME.registerState({
 
       // Set challenge.
       Object.assign(state.challenge, state.menuSelectedChallenge);
+
+      setLeftHandedMode(state);
 
       gtag('event', 'difficulty', { event_label: state.challenge.difficulty });
 
@@ -952,6 +956,12 @@ function resetScore(state) {
   state.score.combo = 0;
   state.score.maxCombo = 0;
   state.score.score = 0;
+}
+
+function setLeftHandedMode(state) {
+  state.challenge.leftHandedMode =
+    state.challenge.beatmapCharacteristic == 'OneSaber' &&
+    state.activeHand == 'left';
 }
 
 function computeMenuSelectedChallengeIndex(state) {
