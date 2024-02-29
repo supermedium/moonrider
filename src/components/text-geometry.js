@@ -4,7 +4,10 @@
 var debug = AFRAME.utils.debug;
 
 var error = debug('aframe-text-component:error');
-
+import { TextGeometry } from '../lib/TextGeometry.js';
+THREE.TextGeometry = TextGeometry;
+import { FontLoader } from '../lib/FontLoader.js';
+THREE.FontLoader = FontLoader;
 var fontLoader = new THREE.FontLoader();
 
 AFRAME.registerComponent('text-geometry', {
