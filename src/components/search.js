@@ -33,8 +33,6 @@ AFRAME.registerComponent('search', {
   update: function (oldData) {
     if (!this.popularHits) { return; } // First load.
 
-    this.search(this.data.query);
-
     // Clear keyboard.
     if (oldData.query && !this.data.query) {
       this.keyboardEl.components['super-keyboard'].data.value = '';
@@ -42,6 +40,9 @@ AFRAME.registerComponent('search', {
     }
 
     this.debouncedSearch = debounce(this.search.bind(this), 1000);
+    // search ( but skip if no data available )
+    if(this.data.genre || this.data.playlist || this.data.query)
+      this.search(this.data.query);
   },
 
   play: function () {
