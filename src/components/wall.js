@@ -74,7 +74,7 @@ AFRAME.registerComponent('wall', {
       // Offset vectors to get the left / right vertex points to pass into curve helper.
       // Note that curve is upside down so the positions are reversed...normally, this would
       // read as `+ (width / 2) - 0.25`.
-      const origPosition = beatSystem.horizontalPositioning.scale * horizontalPosition + beatSystem.horizontalPositioning.offset;
+      const origPosition = beatSystem.horizontalPositioning.value(horizontalPosition);
       const centerPosition = (-1 * origPosition) - (width / 2) + 0.25;
       left.x = centerPosition - (width / 2);
       right.x = centerPosition + (width / 2);
@@ -97,7 +97,7 @@ AFRAME.registerComponent('wall', {
       }
 
       // Notes are higher in punch so lower a tad.
-      let ceilingHeight = beatSystem.verticalPositions.middle + beatSystem.size / 2;
+      let ceilingHeight = beatSystem.verticalPositioning.middle + beatSystem.size / 2;
       if (beatSystem.data.gameMode === 'punch') { ceilingHeight -= 0.1; }
 
       this.el.getObject3D('mesh').geometry = this.geometry;

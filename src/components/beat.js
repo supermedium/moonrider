@@ -203,9 +203,19 @@ AFRAME.registerComponent('beat-system', {
     }
   },
 
-  horizontalPositioning: {},
+  horizontalPositioning: {
+    value: function (noteSpace) {
+      return this.offset + this.scale * noteSpace;
+    },
+    get middle() { return this.value(1.5); }
+  },
 
-  verticalPositioning: {},
+  verticalPositioning: {
+    value: function (noteSpace) {
+      return this.offset + this.scale * noteSpace;
+    },
+    get middle() { return this.value(1); }
+  },
 
   /**
    * Update positioning between blocks, vertically and horizontally depending on
@@ -385,8 +395,7 @@ AFRAME.registerComponent('beat', {
     const supercurve = this.curveEl.components.supercurve;
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
-    el.object3D.position.x += this.beatSystem.horizontalPositioning.scale * horizontalPosition +
-      this.beatSystem.horizontalPositioning.offset;
+    el.object3D.position.x += this.beatSystem.horizontalPositioning.value(horizontalPosition);
 
     if (data.type !== DOT) {
       el.object3D.rotation.z = THREE.Math.degToRad(ROTATIONS[cutDirection]);
@@ -401,8 +410,7 @@ AFRAME.registerComponent('beat', {
     const offset = 0.5;
     el.object3D.position.y -= offset;
     this.positionStart = el.object3D.position.y;
-    this.positionChange = this.verticalPositioning.scale * verticalPosition +
-      this.verticalPositioning.offset + offset + heightOffset;
+    this.positionChange = this.verticalPositioning.value(verticalPosition) + offset + heightOffset;
   },
 
   /**

@@ -36,8 +36,7 @@ AFRAME.registerComponent('plume', {
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
     el.object3D.position.x += this.getHorizontalPosition(horizontalPosition);
-    el.object3D.position.y += this.verticalPositioning.scale * verticalPosition +
-      this.verticalPositioning.offset + heightOffset;
+    el.object3D.position.y += this.verticalPositioning.value(verticalPosition) + heightOffset;
     el.object3D.rotation.z = Math.random() * Math.PI * 2;
 
     this.songPosition = songPosition;
