@@ -1,9 +1,9 @@
 AFRAME.registerComponent('plume', {
   schema: {
-    color: {default: ''},
-    cutDirection: {default: ''},
-    songPosition: {default: 0},
-    type: {default: 'arrow', oneOf: ['arrow', 'dot', 'mine']},
+    color: { default: '' },
+    cutDirection: { default: '' },
+    songPosition: { default: 0 },
+    type: { default: 'arrow', oneOf: ['arrow', 'dot', 'mine'] },
   },
 
   getHorizontalPosition: noteSpace => {
@@ -16,7 +16,7 @@ AFRAME.registerComponent('plume', {
     this.curveFollowRig = document.getElementById('curveFollowRig');
     this.handsEls = this.el.sceneEl.querySelectorAll('.handStar');
     this.handPos = new THREE.Vector3();
-    this.verticalPositioning = this.el.sceneEl.components['beat-system'].verticalPositioning;
+    this.verticalPositions = this.el.sceneEl.components['beat-system'].verticalPositions;
 
     this.el.sceneEl.addEventListener('cleargame', this.returnToPool.bind(this));
   },
@@ -36,7 +36,7 @@ AFRAME.registerComponent('plume', {
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
     el.object3D.position.x += this.getHorizontalPosition(horizontalPosition);
-    el.object3D.position.y += this.verticalPositioning.value(verticalPosition) + heightOffset;
+    el.object3D.position.y += this.verticalPositions.value(verticalPosition) + heightOffset;
     el.object3D.rotation.z = Math.random() * Math.PI * 2;
 
     this.songPosition = songPosition;
