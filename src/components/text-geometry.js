@@ -1,11 +1,14 @@
 /**
  * TextGeometry component for A-Frame.
  */
+import { TextGeometry } from '../lib/TextGeometry.js';
+import { FontLoader } from '../lib/FontLoader.js';
+
 var debug = AFRAME.utils.debug;
 
 var error = debug('aframe-text-component:error');
 
-var fontLoader = new THREE.FontLoader();
+var fontLoader = new FontLoader();
 
 AFRAME.registerComponent('text-geometry', {
   schema: {
@@ -42,12 +45,12 @@ AFRAME.registerComponent('text-geometry', {
       fontLoader.load(data.font, function (response) {
         const textData = AFRAME.utils.clone(data);
         textData.font = response;
-        mesh.geometry = new THREE.TextGeometry(data.value, textData);
+        mesh.geometry = new TextGeometry(data.value, textData);
         mesh.geometry.translate(-0.18, 0, -0.07);
       });
     } else if (data.font.constructor === Object) {
       // Set font if already have a typeface.json through setAttribute.
-      mesh.geometry = new THREE.TextGeometry(data.value, data);
+      mesh.geometry = new TextGeometry(data.value, data);
       mesh.geometry.translate(-0.18, 0, -0.07);
     } else {
       error('Must provide `font` (typeface.json) or `fontPath` (string) to text component.');
