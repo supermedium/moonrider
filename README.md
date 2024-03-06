@@ -38,6 +38,13 @@ npm install
 npm run start
 ```
 
+or 
+
+```
+export DOCKER_DEFAULT_PLATFORM=linux/amd64 # Only for M1 chips
+docker compose up
+```
+
 Then head to `localhost:3000` in your browser.
 
 ### Remixing and Forking
