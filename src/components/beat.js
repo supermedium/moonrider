@@ -203,9 +203,19 @@ AFRAME.registerComponent('beat-system', {
     }
   },
 
-  horizontalPositions: {},
+  horizontalPositions: {
+    value: function (noteSpace) {
+      return this.offset + this.scale * noteSpace;
+    },
+    get middle() { return this.value(1.5); }
+  },
 
-  verticalPositions: {},
+  verticalPositions: {
+    value: function (noteSpace) {
+      return this.offset + this.scale * noteSpace;
+    },
+    get middle() { return this.value(1); }
+  },
 
   /**
    * Update positioning between blocks, vertically and horizontally depending on
@@ -236,26 +246,17 @@ AFRAME.registerComponent('beat-system', {
       // of extra margin.
       // For punch mode, we want a wider horizontal spread in punch range, but not vertical.
       const hMargin = gameMode === CLASSIC ? size : size * 1.2;
-      horizontalPositions.left = -1.5 * hMargin;
-      horizontalPositions.middleleft = -0.5 * hMargin;
-      horizontalPositions.middle = hMargin;
-      horizontalPositions.middleright = 0.5 * hMargin;
-      horizontalPositions.right = 1.5 * hMargin;
+      horizontalPositions.scale = hMargin;
+      horizontalPositions.offset = -1.5 * hMargin;
 
       // Vertical margin based on size of blocks so they don't overlap.
       // And then overall shifted up and down based on user height (camera Y).
       // But not too low to go underneath the ground.
       const bottomHeight = BOTTOM_HEIGHTS[gameMode];
       const vMargin = size;
-      verticalPositions.bottom = Math.max(
-        BOTTOM_HEIGHT_MIN,
-        bottomHeight + heightOffset);
-      verticalPositions.middle = Math.max(
-        BOTTOM_HEIGHT_MIN + vMargin,
-        bottomHeight + vMargin + heightOffset);
-      verticalPositions.top = Math.max(
-        BOTTOM_HEIGHT_MIN + vMargin * 2,
-        bottomHeight + (vMargin * 2) + heightOffset);
+      const vOffset = Math.max(BOTTOM_HEIGHT_MIN, bottomHeight + heightOffset);
+      verticalPositions.scale = vMargin;
+      verticalPositions.offset = vOffset;
     };
   })(),
 
@@ -394,7 +395,7 @@ AFRAME.registerComponent('beat', {
     const supercurve = this.curveEl.components.supercurve;
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
-    el.object3D.position.x += this.beatSystem.horizontalPositions[horizontalPosition];
+    el.object3D.position.x += this.beatSystem.horizontalPositions.value(horizontalPosition);
 
     if (data.type !== DOT) {
       el.object3D.rotation.z = THREE.Math.degToRad(ROTATIONS[cutDirection]);
@@ -409,7 +410,7 @@ AFRAME.registerComponent('beat', {
     const offset = 0.5;
     el.object3D.position.y -= offset;
     this.positionStart = el.object3D.position.y;
-    this.positionChange = this.verticalPositions[verticalPosition] + offset + heightOffset;
+    this.positionChange = this.verticalPositions.value(verticalPosition) + offset + heightOffset;
   },
 
   /**
@@ -638,7 +639,7 @@ AFRAME.registerComponent('beat', {
  * Load OBJ from already parsed and loaded OBJ template.
  */
 const geometries = {};
-function setObjModelFromTemplate (el, templateId) {
+function setObjModelFromTemplate(el, templateId) {
   // Load into cache.
   if (!geometries[templateId]) {
     const templateEl = document.getElementById(templateId);
@@ -662,12 +663,12 @@ function setObjModelFromTemplate (el, templateId) {
   }
 }
 
-function getElasticEasing (a, p) {
+function getElasticEasing(a, p) {
   return t => 1 - elastic(a, p)(1 - t);
 }
 
-function elastic (amplitude, period) {
-  function minMax (val, min, max) {
+function elastic(amplitude, period) {
+  function minMax(val, min, max) {
     return Math.min(Math.max(val, min), max);
   }
 
@@ -682,10 +683,10 @@ function elastic (amplitude, period) {
   };
 }
 
-function remap (value, low1, high1, low2, high2) {
+function remap(value, low1, high1, low2, high2) {
   return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
 
-function clamp (val, min, max) {
+function clamp(val, min, max) {
   return Math.min(Math.max(val, min), max);
 }

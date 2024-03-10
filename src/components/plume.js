@@ -1,18 +1,14 @@
 AFRAME.registerComponent('plume', {
   schema: {
-    color: {default: ''},
-    cutDirection: {default: ''},
-    horizontalPosition: {default: 'middleleft', oneOf: ['left', 'middleleft', 'middleright', 'right']},
-    songPosition: {default: 0},
-    type: {default: 'arrow', oneOf: ['arrow', 'dot', 'mine']},
-    verticalPosition: {default: 'middle', oneOf: ['bottom', 'middle', 'top']}
+    color: { default: '' },
+    cutDirection: { default: '' },
+    songPosition: { default: 0 },
+    type: { default: 'arrow', oneOf: ['arrow', 'dot', 'mine'] },
   },
 
-  horizontalPositions: {
-    left: -0.95,
-    middleleft: -0.6,
-    middleright: 0.6,
-    right: 0.95
+  getHorizontalPosition: noteSpace => {
+    const centered = noteSpace - 1.5;
+    return centered < 0 ? 0.35 * centered - 0.425 : 0.35 * centered + 0.425;
   },
 
   init: function () {
@@ -34,14 +30,13 @@ AFRAME.registerComponent('plume', {
   },
 
   onGenerate: function (songPosition, horizontalPosition, verticalPosition, heightOffset) {
-    const data = this.data;
     const el = this.el;
     // Set position.
     const supercurve = this.curveEl.components.supercurve;
     supercurve.getPointAt(songPosition, el.object3D.position);
     supercurve.alignToCurve(songPosition, el.object3D);
-    el.object3D.position.x += this.horizontalPositions[horizontalPosition];
-    el.object3D.position.y += this.verticalPositions[verticalPosition] + heightOffset;
+    el.object3D.position.x += this.getHorizontalPosition(horizontalPosition);
+    el.object3D.position.y += this.verticalPositions.value(verticalPosition) + heightOffset;
     el.object3D.rotation.z = Math.random() * Math.PI * 2;
 
     this.songPosition = songPosition;
