@@ -109,14 +109,36 @@ AFRAME.registerComponent('super-keyboard', {
     this.keyHoverColor = new THREE.Color();
     this.keyPressColor = new THREE.Color();
 
-    var self = this;
-    document.addEventListener('keydown', function (ev) {
-      if (ev.key === 't') {
-        var ss = '';
-        var s = 'abcdefghijklmopqrstuvQWIEUTGASDLIGKBXACQWETL102394676457';
-        var l = Math.floor(Math.random() * 20);
-        for (var i = 0; i < l; i++) ss += s[Math.floor(Math.random() * s.length)];
-        self.el.setAttribute('super-keyboard', {value: ss});
+    document.addEventListener('keydown', ev => {
+      // if (ev.key === 't') {
+      //   var ss = '';
+      //   var s = 'abcdefghijklmopqrstuvQWIEUTGASDLIGKBXACQWETL102394676457';
+      //   var l = Math.floor(Math.random() * 20);
+      //   for (var i = 0; i < l; i++) ss += s[Math.floor(Math.random() * s.length)];
+      //   this.el.setAttribute('super-keyboard', { value: ss });
+      // }
+
+      if (ev.key.length == 1) {
+        const key = ev.key.toLowerCase();
+        if (!'abcdefghijklmnopqrstuvwxyz '.includes(key)) { return; }
+        if (this.data.maxLength > 0 && this.rawValue.length > this.data.maxLength) { return; }
+        this.rawValue += key;
+        var newValue = this.filter(this.rawValue);
+        this.el.setAttribute('super-keyboard', 'value', newValue);
+        this.updateTextInput(newValue);
+        this.changeEventDetail.value = newValue;
+        this.el.emit('superkeyboardchange', this.changeEventDetail);
+      } else if (ev.key == 'Shift') {
+        this.shift = !this.shift;
+      } else if (ev.key == 'Backspace') {
+        this.rawValue = this.rawValue.substr(0, this.rawValue.length - 1);
+        var newValue = this.filter(this.rawValue);
+        this.el.setAttribute('super-keyboard', 'value', newValue);
+        this.updateTextInput(newValue);
+        this.changeEventDetail.value = newValue;
+        this.el.emit('superkeyboardchange', this.changeEventDetail);
+      } else if (ev.key == 'Escape') {
+        this.dismiss();
       }
     });
 
