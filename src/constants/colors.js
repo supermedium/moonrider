@@ -1,19 +1,19 @@
 const COLORS = {
   OFF: '#111',
-  WHITE: '#f0f0f0',
+  WHITE: '#F0F0F0',
 
   DARKRED: '#5A354B',
-  RED: '#f971c3',
-  BRIGHTRED: '#ffd3ee',
+  RED: '#F971C3',
+  BRIGHTRED: '#FFd3EE',
 
   DARKBLUE: '#2B4D4C',
-  BLUE: '#6ff9ea',
-  BRIGHTBLUE: '#d7fdf9',
+  BLUE: '#6FF9EA',
+  BRIGHTBLUE: '#D7FDF9',
 
-  YELLOW: '#fff568',
+  YELLOW: '#FFF568',
 
-  UI_ACCENT: '#08bfa2',
-  UI_ACCENT2: '#f01978'
+  UI_ACCENT: '#08BFA2',
+  UI_ACCENT2: '#F01978'
 };
 
 COLORS.schemes = {
@@ -30,11 +30,11 @@ COLORS.schemes = {
   blue: {
     name: 'Star Warrior',
     off: '#111',
-    primary: '#1e4482',
+    primary: '#1E4482',
     primarybright: '#0B4BB3',
-    secondary: '#c27727',
+    secondary: '#C27727',
     secondarybright: '#FFD840',
-    tertiary: '#d7fdf9'
+    tertiary: '#D7FDf9'
   },
 
   purple: {
@@ -80,21 +80,21 @@ COLORS.schemes = {
   rgb: {
     name: 'Mint Choco',
     off: '#111',
-    primary: '#34eb89',
-    primarYBRIGht: '#40fb95',
-    secondary: '#34ebd8',
-    secondarybright: '#40fbeA',
-    tertiary: '#eb3434'
+    primary: '#34EB89',
+    primarYBRIGht: '#40FB95',
+    secondary: '#34EBD8',
+    secondarybright: '#40FBEA',
+    tertiary: '#EB3434'
   },
 
   cheetah: {
     name: 'Cheetah SoL',
     off: '#111',
-    primary: '#c27727',
-    primarYBright: '#e68319',
-    secondary: '#635c54',
-    secondarybright: '#8a857f',
-    tertiary: '#ebebeb'
+    primary: '#C27727',
+    primarYBright: '#E68319',
+    secondary: '#635C54',
+    secondarybright: '#8A857F',
+    tertiary: '#EBEBEB'
   },
 
   black: {
