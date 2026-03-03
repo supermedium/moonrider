@@ -1,3 +1,105 @@
+<!-- LLM-BUILD-GUIDE-START -->
+## Build Guide for LLM Agents / AI Assistants
+
+> **This section is intended for AI/LLM models** (Claude, GPT, Copilot, etc.)
+> that need to build, modify, or deploy this repository.
+
+### Critical Requirements
+
+| Requirement | Version | Why |
+|---|---|---|
+| **Node.js** | **<= 12.18.3** (recommended: v11 or v12) | webpack 4 + legacy Babel plugins break on Node 14+ |
+| **npm** | **<= 6.14.6** | npm 7+ auto-installs peer deps, causing ERESOLVE conflicts |
+| **git** | any recent | Required for cloning and `zip-loader` GitHub dependency |
+| **OS** | Linux, macOS, Windows | All platforms supported |
+
+### Quick Start (copy-paste ready)
+
+**Linux/macOS with nvm:**
+```bash
+# Install nvm if not present
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.nvm/nvm.sh
+
+# Switch to required Node version
+nvm install 12.18.3
+nvm use 12.18.3
+
+# Verify versions
+node --version  # must show v12.18.3 or lower
+npm --version   # must show 6.x
+
+# Install and build
+npm install
+npm run build
+```
+
+**Windows with nvm-windows:**
+```powershell
+# Install nvm-windows from: https://github.com/coreybutler/nvm-windows/releases
+nvm install 12.18.3
+nvm use 12.18.3
+
+node --version  # must show v12.18.3 or lower
+npm --version   # must show 6.x
+
+npm install
+npm run build
+```
+
+**Docker (any platform, no local Node needed):**
+```bash
+docker run -it --rm -v "$(pwd)":/app -w /app node:12.18.3-alpine sh -c "npm install && npm run build"
+```
+
+### Using the Build Scripts
+
+This repo includes automated build scripts that check all dependencies before building:
+
+```bash
+# Linux/macOS
+chmod +x build.sh
+./build.sh              # Full check + build
+./build.sh --check-only # Only verify dependencies
+
+# Windows PowerShell
+.\build.ps1              # Full check + build
+.\build.ps1 -CheckOnly   # Only verify dependencies
+```
+
+### Common Problems & Solutions
+
+| Problem | Cause | Solution |
+|---|---|---|
+| `ERR_OSSL_EVP_UNSUPPORTED` | Node 17+ uses OpenSSL 3.0 | Downgrade to Node 12. Do NOT use `--openssl-legacy-provider` — other APIs are also broken |
+| `ERESOLVE unable to resolve dependency tree` | npm 7+ strict peer dep resolution | Downgrade to npm 6 (comes with Node 12). Do NOT use `--legacy-peer-deps` — may cause runtime issues |
+| `gyp ERR! build error` / native module failures | Missing C++ build tools | Linux: `apt install build-essential` / macOS: `xcode-select --install` / Windows: `npm install -g windows-build-tools` |
+| `Error: Cannot find module 'webpack-cli'` | Incomplete npm install | Delete `node_modules` and `package-lock.json`, then run `npm install` again |
+| `EACCES permission denied` | npm global install as wrong user | Use `nvm` (manages Node in user space, no sudo needed) |
+| Build hangs or OOM killed | Not enough memory | Ensure at least 1GB free RAM. For CI, use `NODE_OPTIONS=--max-old-space-size=1024` |
+| `zip-loader` install fails | Can't access GitHub | Ensure git is installed and GitHub is reachable. The `zip-loader` dep is fetched from `github:ngokevin/ziploader#xhrdist` |
+
+### Architecture Notes for LLMs
+
+- **Build system**: webpack 4 (`webpack.config.js`) with Babel 7
+- **Entry points**: `src/index.js` (main app), `src/workers/zip.js` (web worker)
+- **Output**: `build/build.js`, `build/zip.js`
+- **Dev server**: `npm run start` → `localhost:3000` (webpack-dev-server with HMR)
+- **Production build**: `npm run build` (sets `NODE_ENV=production`, enables minification)
+- **Deploy**: `npm run deploy` → builds and pushes to `gh-pages` branch
+- **Framework**: A-Frame (WebXR/VR) — global `AFRAME` and `THREE` are expected
+- **State management**: `aframe-state-component` (Redux-like for A-Frame)
+- **Templates**: Nunjucks (`.html` files processed by `super-nunjucks-loader`)
+- **No TypeScript, no ESM** — pure CommonJS/ES5-transpiled JS
+
+### CI/CD Notes
+
+- GitHub Pages deployment uses the `gh-pages` branch
+- If GitHub Actions build fails with HTTP 500, it's a GitHub infrastructure issue — just re-run the job
+- For GitHub Actions, use `node-version: '12.18.3'` in the setup-node action
+
+<!-- LLM-BUILD-GUIDE-END -->
+
 # Moon Rider
 
 ![moonrider](https://user-images.githubusercontent.com/674727/54646629-e91dc600-4a5c-11e9-8a6e-91e77f28523d.jpg)
