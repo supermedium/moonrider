@@ -20,7 +20,8 @@ module.exports = {
   },
   devServer: {
     disableHostCheck: true,
-    hotOnly: true
+    hotOnly: true,
+    https: true
   },
   entry: {
     build: './src/index.js',

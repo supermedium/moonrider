@@ -66,7 +66,7 @@
     "webpack-cli": "^3.2.0",
     "webpack-glsl-loader": "^1.0.1",
     "webpack-sources": "1.0.1",
-    "zip-loader": "github:ngokevin/ziploader#xhrdist",
+    "zip-loader": "https://github.com/ngokevin/ziploader.git#xhrdist",
     "unzip-js": "^1.0.0"
   },
   "overrides": {
