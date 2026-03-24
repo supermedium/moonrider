@@ -80,7 +80,7 @@ AFRAME.registerComponent('wall', {
       right.x = centerPosition + (width / 2);
 
       // TODO: Reuse box.
-      const geo = this.geometry = new THREE.BoxBufferGeometry(width, height, 1, 1, 1, 30);
+      const geo = this.geometry = new THREE.BoxGeometry(width, height, 1, 1, 1, 30);
       const positions = geo.attributes.position.array;
       for (let i = 0; i < positions.length; i += 3) {
         // Add half length (which will always be 1 / 2) for the box geometry offset.

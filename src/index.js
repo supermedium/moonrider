@@ -1,3 +1,12 @@
+require('aframe');
+
+// Polyfill removed BufferGeometry aliases for THREE r125+ compatibility.
+if (!THREE.PlaneBufferGeometry) { THREE.PlaneBufferGeometry = THREE.PlaneGeometry; }
+if (!THREE.BoxBufferGeometry) { THREE.BoxBufferGeometry = THREE.BoxGeometry; }
+if (!THREE.SphereBufferGeometry) { THREE.SphereBufferGeometry = THREE.SphereGeometry; }
+if (!THREE.CylinderBufferGeometry) { THREE.CylinderBufferGeometry = THREE.CylinderGeometry; }
+if (!THREE.CircleBufferGeometry) { THREE.CircleBufferGeometry = THREE.CircleGeometry; }
+
 function requireAll (req) { req.keys().forEach(req); }
 
 console.time = () => {

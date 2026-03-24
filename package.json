@@ -2,12 +2,13 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "preinstall": "node -e \"if(!/pnpm/.test(process.env.npm_execpath||'')){console.error('\\n\\x1b[31mERROR: Use pnpm instead of npm/yarn!\\x1b[0m\\npnpm install\\n');process.exit(1)}\"",
     "build": "cross-env NODE_ENV=production webpack",
-    "deploy": "npm run predeploy && ghpages git@github.com:supermedium/moonrider.git -p .ghpages && rm -rf .ghpages",
+    "deploy": "pnpm run predeploy && ghpages git@github.com:supermedium/moonrider.git -p .ghpages && rm -rf .ghpages",
     "lint": "semistandard -v | snazzy",
     "lint:fix": "semistandard --fix",
-    "predeploy": "cross-env NODE_ENV=production npm run build && shx mkdir -p .ghpages && cp -r index.html assets build vendor CNAME .ghpages",
-    "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot-only --inline --port 3000"
+    "predeploy": "cross-env NODE_ENV=production pnpm run build && shx mkdir -p .ghpages && cp -r index.html assets build CNAME .ghpages",
+    "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot-only --inline --port 4010"
   },
   "dependencies": {
     "@babel/cli": "^7.17.0",
@@ -29,6 +30,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/preset-env": "^7.16.11",
+    "aframe": "1.7.0",
     "aframe-aabb-collider-component": "^3.1.0",
     "aframe-atlas-uvs-component": "^3.0.0",
     "aframe-audioanalyser-component": "^6.0.0",
@@ -61,13 +63,14 @@
     "promise-polyfill": "^8.1.0",
     "style-loader": "^0.23.1",
     "super-nunjucks-loader": "^2.0.0",
+    "terser-webpack-plugin": "^4.2.3",
+    "unzip-js": "^1.0.0",
     "url-loader": "^1.1.2",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.2.0",
     "webpack-glsl-loader": "^1.0.1",
     "webpack-sources": "1.0.1",
-    "zip-loader": "https://github.com/ngokevin/ziploader.git#xhrdist",
-    "unzip-js": "^1.0.0"
+    "zip-loader": "https://github.com/ngokevin/ziploader.git#xhrdist"
   },
   "overrides": {
     "aframe-render-order-component": {

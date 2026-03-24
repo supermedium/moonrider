@@ -8,48 +8,42 @@
 
 | Requirement | Version | Why |
 |---|---|---|
-| **Node.js** | **<= 12.18.3** (recommended: v11 or v12) | webpack 4 + legacy Babel plugins break on Node 14+ |
-| **npm** | **<= 6.14.6** | npm 7+ auto-installs peer deps, causing ERESOLVE conflicts |
+| **Node.js** | any modern LTS (16+, 18+, 20+, 22+) | Projekt działa z nowszym Node dzięki pnpm i `--openssl-legacy-provider` |
+| **pnpm** | latest | **Jedyny dozwolony menedżer pakietów.** npm/yarn są zablokowane przez `preinstall` script |
 | **git** | any recent | Required for cloning and `zip-loader` GitHub dependency |
 | **OS** | Linux, macOS, Windows | All platforms supported |
 
+> **UWAGA:** Nie używaj `npm install` ani `yarn install` — zostaną zablokowane. Używaj wyłącznie `pnpm`.
+
 ### Quick Start (copy-paste ready)
 
-**Linux/macOS with nvm:**
+**Linux/macOS:**
 ```bash
-# Install nvm if not present
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source ~/.nvm/nvm.sh
-
-# Switch to required Node version
-nvm install 12.18.3
-nvm use 12.18.3
-
-# Verify versions
-node --version  # must show v12.18.3 or lower
-npm --version   # must show 6.x
+# Install pnpm (if not present)
+corepack enable && corepack prepare pnpm@latest --activate
+# Or: npm install -g pnpm
 
 # Install and build
-npm install
-npm run build
+pnpm install
+pnpm run build
+
+# Dev server
+pnpm run start    # https://localhost:4010
 ```
 
-**Windows with nvm-windows:**
+**Windows:**
 ```powershell
-# Install nvm-windows from: https://github.com/coreybutler/nvm-windows/releases
-nvm install 12.18.3
-nvm use 12.18.3
+# Install pnpm
+corepack enable
+corepack prepare pnpm@latest --activate
 
-node --version  # must show v12.18.3 or lower
-npm --version   # must show 6.x
-
-npm install
-npm run build
+pnpm install
+pnpm run build
 ```
 
 **Docker (any platform, no local Node needed):**
 ```bash
-docker run -it --rm -v "$(pwd)":/app -w /app node:12.18.3-alpine sh -c "npm install && npm run build"
+docker run -it --rm -v "$(pwd)":/app -w /app node:20-alpine sh -c "corepack enable && pnpm install && pnpm run build"
 ```
 
 ### Using the Build Scripts
@@ -67,15 +61,17 @@ chmod +x build.sh
 .\build.ps1 -CheckOnly   # Only verify dependencies
 ```
 
+> **Uwaga:** Build scripts mogą nadal odwoływać się do npm — w takim przypadku użyj bezpośrednio `pnpm run build`.
+
 ### Common Problems & Solutions
 
 | Problem | Cause | Solution |
 |---|---|---|
-| `ERR_OSSL_EVP_UNSUPPORTED` | Node 17+ uses OpenSSL 3.0 | Downgrade to Node 12. Do NOT use `--openssl-legacy-provider` — other APIs are also broken |
-| `ERESOLVE unable to resolve dependency tree` | npm 7+ strict peer dep resolution | Downgrade to npm 6 (comes with Node 12). Do NOT use `--legacy-peer-deps` — may cause runtime issues |
+| `ERR_OSSL_EVP_UNSUPPORTED` | Node 17+ uses OpenSSL 3.0 | Użyj `NODE_OPTIONS=--openssl-legacy-provider` przed komendą webpack |
+| `ERESOLVE unable to resolve dependency tree` | Użyto npm zamiast pnpm | Przełącz się na `pnpm install` — npm jest zablokowany w tym projekcie |
 | `gyp ERR! build error` / native module failures | Missing C++ build tools | Linux: `apt install build-essential` / macOS: `xcode-select --install` / Windows: `npm install -g windows-build-tools` |
-| `Error: Cannot find module 'webpack-cli'` | Incomplete npm install | Delete `node_modules` and `package-lock.json`, then run `npm install` again |
-| `EACCES permission denied` | npm global install as wrong user | Use `nvm` (manages Node in user space, no sudo needed) |
+| `Error: Cannot find module 'webpack-cli'` | Incomplete install | Delete `node_modules` and `pnpm-lock.yaml`, then run `pnpm install` again |
+| `EACCES permission denied` | Brak uprawnień | Use `corepack enable` lub zainstaluj pnpm przez `npm install -g pnpm` bez sudo (użyj nvm) |
 | Build hangs or OOM killed | Not enough memory | Ensure at least 1GB free RAM. For CI, use `NODE_OPTIONS=--max-old-space-size=1024` |
 | `zip-loader` install fails | Can't access GitHub | Ensure git is installed and GitHub is reachable. The `zip-loader` dep is fetched from `github:ngokevin/ziploader#xhrdist` |
 
@@ -84,9 +80,10 @@ chmod +x build.sh
 - **Build system**: webpack 4 (`webpack.config.js`) with Babel 7
 - **Entry points**: `src/index.js` (main app), `src/workers/zip.js` (web worker)
 - **Output**: `build/build.js`, `build/zip.js`
-- **Dev server**: `npm run start` → `localhost:3000` (webpack-dev-server with HMR)
-- **Production build**: `npm run build` (sets `NODE_ENV=production`, enables minification)
-- **Deploy**: `npm run deploy` → builds and pushes to `gh-pages` branch
+- **Package manager**: pnpm (npm/yarn zablokowane przez `preinstall` script)
+- **Dev server**: `pnpm run start` → `https://localhost:4010` (webpack-dev-server with HMR + HTTPS)
+- **Production build**: `pnpm run build` (sets `NODE_ENV=production`, enables minification)
+- **Deploy**: `pnpm run deploy` → builds and pushes to `gh-pages` branch
 - **Framework**: A-Frame (WebXR/VR) — global `AFRAME` and `THREE` are expected
 - **State management**: `aframe-state-component` (Redux-like for A-Frame)
 - **Templates**: Nunjucks (`.html` files processed by `super-nunjucks-loader`)
@@ -96,7 +93,7 @@ chmod +x build.sh
 
 - GitHub Pages deployment uses the `gh-pages` branch
 - If GitHub Actions build fails with HTTP 500, it's a GitHub infrastructure issue — just re-run the job
-- For GitHub Actions, use `node-version: '12.18.3'` in the setup-node action
+- For GitHub Actions, use `pnpm/action-setup` + `setup-node` with `cache: 'pnpm'`
 
 <!-- LLM-BUILD-GUIDE-END -->
 
@@ -133,14 +130,33 @@ Big thanks to @elliottate for helping out with this!
 
 ## Development
 
-Have Node (< v12, recommended v11) and npm installed.
+> **Ten projekt wymaga `pnpm` jako menedżera pakietów.** Użycie `npm` lub `yarn` jest zablokowane przez skrypt `preinstall`.
 
-```
-npm install
-npm run start
+### Instalacja pnpm
+
+```bash
+# Przez corepack (Node >= 16.13)
+corepack enable
+corepack prepare pnpm@latest --activate
+
+# Lub globalnie
+npm install -g pnpm
 ```
 
-Then head to `localhost:3000` in your browser.
+### Uruchomienie
+
+```bash
+pnpm install        # Instalacja zależności
+pnpm run start      # Dev server na https://localhost:4010
+pnpm run build      # Build produkcyjny
+pnpm run lint       # Linting (semistandard)
+pnpm run lint:fix   # Auto-fix lint
+pnpm run deploy     # Build + deploy na gh-pages
+```
+
+Then head to `https://localhost:4010` in your browser.
+
+> **Dlaczego pnpm?** Projekt ma złożone drzewo zależności z wieloma peer dependency conflicts. pnpm z `shamefully-hoist=true` (skonfigurowane w `.npmrc`) rozwiązuje te konflikty lepiej niż npm/yarn, jednocześnie zachowując kompatybilność z webpack 4 i A-Frame.
 
 ### Remixing and Forking
 
@@ -177,7 +193,7 @@ Showing off some crazy customizations? Enable GitHub Pages deployment to deploy
 `gh-pages` branch, and then:
 
 ```
-npm run deploy
+pnpm run deploy
 ```
 
 The website will be available on `https://yourusername.github.io/moonrider/`.

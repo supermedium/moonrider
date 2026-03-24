@@ -15,8 +15,18 @@ AFRAME.registerShader('supercurve', {
   vertexShader: require('./shaders/supercurve.vert.glsl'),
 
   update: function (data) {
-    this.updateVariables(data, 'attribute');
-    this.updateVariables(data, 'uniform');
+    if (this.material && this.material.uniforms) {
+      var dominated;
+      for (var key in data) {
+        dominated = this.schema[key];
+        if (!dominated || dominated.is !== 'uniform') { continue; }
+        if (dominated.type === 'color') {
+          this.material.uniforms[key].value = new THREE.Color(data[key]);
+        } else {
+          this.material.uniforms[key].value = data[key];
+        }
+      }
+    }
     this.el.sceneEl.systems.materials.registerCurve(this.material);
   }
 });

@@ -2,6 +2,7 @@ var fs = require('fs');
 var ip = require('ip');
 var path = require('path');
 var webpack = require('webpack');
+var TerserPlugin = require('terser-webpack-plugin');
 const COLORS = require('./src/constants/colors.js');
 
 PLUGINS = [
@@ -16,12 +17,14 @@ PLUGINS = [
 
 module.exports = {
   optimization: {
-    minimize: process.env.NODE_ENV === 'production'
+    minimize: process.env.NODE_ENV === 'production',
+    minimizer: [new TerserPlugin()]
   },
   devServer: {
     disableHostCheck: true,
     hotOnly: true,
-    https: true
+    https: true,
+    port: 4010
   },
   entry: {
     build: './src/index.js',
@@ -34,6 +37,7 @@ module.exports = {
   },
   plugins: PLUGINS,
   module: {
+    noParse: /aframe-master\.min\.js$/,
     rules: [
       {
         test: /\.js/,
@@ -91,6 +95,10 @@ module.exports = {
     ]
   },
   resolve: {
+    alias: {
+      'three': path.resolve(__dirname, 'src/lib/three-shim.js'),
+      'aframe': path.resolve(__dirname, 'node_modules/aframe/dist/aframe-master.min.js')
+    },
     modules: [path.join(__dirname, 'node_modules')]
   }
 };

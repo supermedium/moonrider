@@ -48,9 +48,9 @@ AFRAME.registerComponent('raycaster-target', {
 
       raycastTarget.object3D.visible = false;
       raycastTarget.object3D.position.copy(data.position);
-      raycastTarget.object3D.rotation.x = THREE.Math.degToRad(data.rotation.x);
-      raycastTarget.object3D.rotation.y = THREE.Math.degToRad(data.rotation.y);
-      raycastTarget.object3D.rotation.z = THREE.Math.degToRad(data.rotation.z);
+      raycastTarget.object3D.rotation.x = THREE.MathUtils.degToRad(data.rotation.x);
+      raycastTarget.object3D.rotation.y = THREE.MathUtils.degToRad(data.rotation.y);
+      raycastTarget.object3D.rotation.z = THREE.MathUtils.degToRad(data.rotation.z);
 
       el.appendChild(raycastTarget);
     };

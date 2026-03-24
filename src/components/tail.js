@@ -12,7 +12,7 @@ AFRAME.registerComponent('tail', {
   init: function () {
     const data = this.data;
 
-    const geometry = this.geometry = new THREE.PlaneBufferGeometry(
+    const geometry = this.geometry = new THREE.PlaneGeometry(
       data.width, data.height, data.segments, 1);
     geometry.deleteAttribute('normal');
     geometry.translate(data.width / 2, 0, 0);
