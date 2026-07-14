@@ -22,6 +22,10 @@ AFRAME.registerComponent('song-preview-system', {
 
     if (data.selectedChallengeId && oldData.selectedChallengeId !== data.selectedChallengeId) {
       this.audio.pause();
+      // gamemenuexit restores menuSelectedChallenge.id without the version
+      // (ziploaderend clears it on load), so guard against fetching the
+      // bogus https://cdn.beatsaver.com/.mp3 URL.
+      if (!data.selectedChallengeVersion) { return; }
       this.audio.setAttribute('src', 'https://cdn.beatsaver.com/' + data.selectedChallengeVersion + '.mp3');
       this.audio.currentTime = 0;
       this.audio.play();

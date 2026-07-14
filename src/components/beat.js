@@ -397,7 +397,7 @@ AFRAME.registerComponent('beat', {
     el.object3D.position.x += this.beatSystem.horizontalPositions[horizontalPosition];
 
     if (data.type !== DOT) {
-      el.object3D.rotation.z = THREE.Math.degToRad(ROTATIONS[cutDirection]);
+      el.object3D.rotation.z = THREE.MathUtils.degToRad(ROTATIONS[cutDirection]);
     }
 
     // Set up rotation warmup.
@@ -490,9 +490,8 @@ AFRAME.registerComponent('beat', {
    * Check if need to return to pool.
    */
   returnToPool: function () {
+    if (!this.el.isPlaying) { return; }
     this.beatSystem.unregisterBeat(this);
-    this.el.object3D.position.set(0, 0, -9999);
-    this.el.object3D.visible = false;
     this.el.sceneEl.components[this.poolName].returnEntity(this.el);
   },
 

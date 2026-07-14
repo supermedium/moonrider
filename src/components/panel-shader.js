@@ -19,8 +19,7 @@ AFRAME.registerShader('panelShader', {
   fragmentShader: require('./shaders/panel.frag.glsl'),
 
   update: function (data) {
-    this.updateVariables(data, 'attribute');
-    this.updateVariables(data, 'uniform');
+    Object.getPrototypeOf(Object.getPrototypeOf(this)).update.call(this, data);
     this.el.sceneEl.systems.materials.registerPanel(this.material);
   }
 });

@@ -38,13 +38,7 @@ AFRAME.registerSystem('materials', {
     this.generateFistsTexture();
     this.textureList.push(this.fistsTexture);
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        this.createMaterials();
-      });
-    } else {
-      this.createMaterials();
-    }
+    this.createMaterials();
   },
 
   play: function () {
@@ -542,9 +536,9 @@ AFRAME.registerSystem('materials', {
     const secondary = new THREE.Color(scheme.secondary);
 
     const img = document.getElementById('envmapTemplateImg');
-    img.addEventListener('load', () => {
-      const w = img.width;
-      const h = img.height;
+    const build = () => {
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
 
       const canvas = this.envmapCanvas;
       canvas.width = w;
@@ -573,7 +567,8 @@ AFRAME.registerSystem('materials', {
 
       ctx.putImageData(im, 0, 0);
       document.getElementById('envmapImg').src = canvas.toDataURL('image/png');
-    });
+    };
+    build();
   },
 
   /*

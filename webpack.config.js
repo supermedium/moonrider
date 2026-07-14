@@ -2,11 +2,13 @@ var fs = require('fs');
 var ip = require('ip');
 var path = require('path');
 var webpack = require('webpack');
-const COLORS = require('./src/constants/colors.js');
+var COLORS = require('./src/constants/colors.js');
 
-PLUGINS = [
-  new webpack.EnvironmentPlugin(['DEBUG_LOG', 'NODE_ENV']),
-  new webpack.HotModuleReplacementPlugin(),
+var PLUGINS = [
+  new webpack.EnvironmentPlugin({
+    DEBUG_LOG: '',
+    NODE_ENV: 'development'
+  }),
   // @firebase/polyfill not loading, stub it with some random module.
   new webpack.NormalModuleReplacementPlugin(
     /firebase\/polyfill/,
@@ -15,12 +17,16 @@ PLUGINS = [
 ];
 
 module.exports = {
-  optimization: {
-    minimize: process.env.NODE_ENV === 'production'
-  },
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devServer: {
-    disableHostCheck: true,
-    hotOnly: true
+    allowedHosts: 'all',
+    liveReload: true,
+    hot: false,
+    server: 'https',
+    static: {
+      directory: __dirname
+    },
+    watchFiles: ['src/**', 'index.html']
   },
   entry: {
     build: './src/index.js',
@@ -28,22 +34,22 @@ module.exports = {
   },
   output: {
     globalObject: 'this',
-    path: __dirname,
-    filename: 'build/[name].js'
+    path: path.resolve(__dirname, 'build'),
+    publicPath: 'auto',
+    filename: '[name].js'
   },
   plugins: PLUGINS,
   module: {
     rules: [
       {
-        test: /\.js/,
+        test: /\.js$/,
         exclude: /(node_modules)/,
         use: ['babel-loader', 'aframe-super-hot-loader']
       },
       {
         test: /\.json/,
         exclude: /(node_modules)/,
-        type: 'javascript/auto',
-        loader: ['json-loader']
+        type: 'json'
       },
       {
         test: /\.html/,
@@ -85,11 +91,17 @@ module.exports = {
       },
       {
         test: /\.(png|jpg)/,
-        loader: 'url-loader'
+        type: 'asset'
       }
     ]
   },
   resolve: {
     modules: [path.join(__dirname, 'node_modules')]
+  },
+  // A-Frame ships three.js and exposes it as window.THREE.
+  // Stub `import ... from 'three'` (used by some components) so it resolves
+  // to that global instead of bundling a second copy.
+  externals: {
+    three: 'THREE'
   }
 };

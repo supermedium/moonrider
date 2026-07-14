@@ -23,18 +23,6 @@ AFRAME.registerComponent('zip-loader', {
   update: function (oldData) {
     const data = this.data;
 
-    // Abort previous ZIP request if new song selected.
-    if (oldData.version && oldData.version !== data.version &&
-      this.cachedVersion !== data.version) {
-      this.message.abort = true;
-      this.message.difficulties = JSON.stringify(this.data.difficulties);
-      this.message.version = oldData.version;
-      this.message.directDownload = this.data.directDownload;
-      this.message.bpm = this.data.bpm;
-      this.message.hash = this.data.hash;
-      this.worker.postMessage(this.message); // Start the worker.
-    }
-
     if (data.version && oldData.version !== data.version) {
       this.cachedVersion = null;
       this.cachedZip = null;
@@ -52,7 +40,6 @@ AFRAME.registerComponent('zip-loader', {
   fetchZip: function (version) {
     this.el.emit('ziploaderstart', null, false);
 
-    this.message.abort = false;
     this.message.difficulties = JSON.stringify(this.data.difficulties);
     this.message.version = version;
     this.message.directDownload = this.data.directDownload;

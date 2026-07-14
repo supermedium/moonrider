@@ -5,6 +5,7 @@
 {% set firekey = true and 'AIzaSyAilakXLvMgwPcBcHs3oys51eLp4yrfz0w' or 'AIzaSyALCaDKg0b7aD3nOyRv_f5RTZ1vedrGyWw' %}
 
 <a-scene
+  renderer="colorManagement: false"
   bind__beat-generator="challengeId: challenge.id; difficulty: challenge.difficulty; beatmapCharacteristic: challenge.beatmapCharacteristic; gameMode: gameMode; has3DOFVR: has3DOFVR; hasSongLoadError: hasSongLoadError; isPlaying: isPlaying; isZipFetching: isZipFetching; menuSelectedChallengeId: menuSelectedChallenge.id; songDuration: challenge.metadata.duration; speed: speed"
   bind__beat-system="gameMode: gameMode; hasVR: hasVR; isLoading: isLoading; isPlaying: isPlaying"
   bind__gameover="isGameOver: isGameOver"
@@ -65,7 +66,7 @@
   render-order="stage, aurora, sideglow, tunnel, curve, curveshadow, beatShadow, score, beats, menu, menuitem, menubutton, menutext, menugenre, cursor, particles, weapon, victory, stepback"
   stats-param
   tunnels
-  vr-mode-ui="enterVRButton: #vrButton">
+  xr-mode-ui="enterVRButton: #vrButton">
 
   <a-assets timeout="3000">
     <require path="assets.html"></require>
@@ -195,7 +196,7 @@
 
           <!-- Blade. -->
           <a-entity bind__position="has3DOFVR && '0 0 -0.5' || '0 0 0'"
-                    bind__rotation="controllerType.indexOf('oculus') !== -1 && '135 0 0' || '90 0 0'">
+                    rotation="90 0 0">
             <a-entity
               class="bladeContainer"
               bind__visible="isPlaying && gameMode === 'classic'"

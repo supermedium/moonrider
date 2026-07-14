@@ -264,17 +264,25 @@ AFRAME.registerComponent('super-keyboard', {
    * The plane for visual feedback when a key is hovered or clicked
    */
   initKeyColorPlane: function () {
+    var kbdata = KEYBOARDS[this.data.model];
     var keyColorPlane = this.keyColorPlane = document.createElement('a-entity');
     keyColorPlane.classList.add('superKeyboardKeyColorPlane');
     keyColorPlane.object3D.position.z = 0.001;
     keyColorPlane.object3D.visible = false;
     keyColorPlane.setAttribute('geometry', {primitive: 'plane'});
-    keyColorPlane.setAttribute('material', {shader: 'flat', color: this.data.keyBgColor,
-                                            transparent: true});
-    keyColorPlane.addEventListener('componentinitialized', function (evt) {
-      if (evt.detail.name !== 'material') { return; }
-      this.getObject3D('mesh').material.blending = THREE.AdditiveBlending;
-    });
+    var matAttr = {
+      shader: 'flat',
+      color: this.data.keyBgColor,
+      transparent: true
+    };
+    if (kbdata.hoverImg) {
+      // Keyboards that ship a hover sprite blend normally so each key's
+      // highlight is sampled from the texture, not painted as a flat color.
+      matAttr.src = this.data.imagePath + '/' + kbdata.hoverImg;
+    } else {
+      matAttr.blending = 'additive';
+    }
+    keyColorPlane.setAttribute('material', matAttr);
     this.el.appendChild(keyColorPlane);
   },
 
@@ -307,7 +315,15 @@ AFRAME.registerComponent('super-keyboard', {
       keyColorPlane.object3D.position.x = kdata.x * w - w2 + keyw / 2;
       keyColorPlane.object3D.position.y = (1 - kdata.y) * h - h2 - keyh / 2;
       // Color.
-      keyColorPlane.getObject3D('mesh').material.color.copy(color);
+      var material = keyColorPlane.getObject3D('mesh').material;
+      material.color.copy(color);
+      // If the keyboard uses a hover sprite, offset/repeat the texture so
+      // the plane samples only the hovered key's region instead of the
+      // whole image squashed into the key rectangle.
+      if (kbdata.hoverImg && material.map) {
+        material.map.offset.set(kdata.x, 1 - kdata.y - kdata.h);
+        material.map.repeat.set(kdata.w, kdata.h);
+      }
       break;
     }
     keyColorPlane.object3D.visible = true;
@@ -324,12 +340,10 @@ AFRAME.registerComponent('super-keyboard', {
         '[cursor]',
         '[vive-controls]',
         '[tracked-controls]',
-        '[gearvr-controls]',
         '[oculus-go-controls]',
-        '[oculus-touch-controls]',
+        '[meta-touch-controls]',
         '[windows-motion-controls]',
-        '[hand-controls]',
-        '[daydream-controls] [cursor] > [raycaster]'
+        '[hand-controls]'
       ].join(','));
     }
 

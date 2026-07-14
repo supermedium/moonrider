@@ -422,15 +422,15 @@ AFRAME.registerComponent('beat-generator', {
     this.index.notes = 0;
     this.index.obstacles = 0;
 
+    // beatContainer and wallContainer hold every pooled entity (in-use and
+    // available). returnToPool is a no-op on already-returned entities.
     for (let i = 0; i < this.beatContainer.children.length; i++) {
       const child = this.beatContainer.children[i];
-      child.object3D.position.set(0, 0, -9999);
       if (child.components.beat) { child.components.beat.returnToPool(); }
     }
 
     for (let i = 0; i < this.wallContainer.children.length; i++) {
       const child = this.wallContainer.children[i];
-      child.object3D.position.set(0, -9999, 0);
       if (child.components.wall) { child.components.wall.returnToPool(); }
     }
   },

@@ -107,7 +107,7 @@ AFRAME.registerComponent('beat-cut-fx', {
       for (let i = 0; i < this.pieces.length; i++) {
         let piece = this.pieces[i];
         piece.posVelocity.copy(AUX_VECTOR);
-        piece.rotation.z = THREE.Math.degToRad(ROTATIONS[beatDirection]);
+        piece.rotation.z = THREE.MathUtils.degToRad(ROTATIONS[beatDirection]);
         if (correctHit) {
           // Dir is a hardcoded value, based on the position of meshes in .OBJ files.
           let dir = i % 2 == 0 ? -0.001 : 0.001;

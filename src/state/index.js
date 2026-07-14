@@ -234,17 +234,13 @@ AFRAME.registerState({
     controllerconnected: (state, payload) => {
       state.controllerType = payload.name;
       state.has6DOFVR = [
-        'oculus-quest-controls',
-        'oculus-touch-controls',
+        'meta-touch-controls',
         'vive-controls',
         'windows-motion-controls',
         'generic-tracked-controller-controls'
       ].indexOf(state.controllerType) !== -1;
 
-      state.has3DOFVR = [
-        'oculus-go-controls',
-        'daydream-controls'
-      ].indexOf(state.controllerType) !== -1;
+      state.has3DOFVR = state.controllerType === 'oculus-go-controls';
     },
 
     debugbeatpositioning: state => {

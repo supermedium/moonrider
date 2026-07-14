@@ -15,6 +15,9 @@ AFRAME.registerComponent('intro-song', {
 
     if (!this.el.sceneEl.isPlaying) { return; }
 
+    // Pause.
+    if (oldData.isPlaying && !this.data.isPlaying) { audio.pause(); }
+
     if (!oldData.isSearching && this.data.isSearching) { return; }
 
     // Play.
@@ -23,9 +26,6 @@ AFRAME.registerComponent('intro-song', {
       this.analyserEl.setAttribute('audioanalyser', 'src', audio);
       this.fadeInAudio();
     }
-
-    // Pause.
-    if (oldData.isPlaying && !this.data.isPlaying) { audio.pause(); }
   },
 
   pause: function () {
@@ -33,7 +33,9 @@ AFRAME.registerComponent('intro-song', {
   },
 
   play: function () {
-    this.fadeInAudio();
+    if (this.data.isPlaying && !this.data.isSearching) {
+      this.fadeInAudio();
+    }
   },
 
   fadeInAudio: function () {
@@ -41,7 +43,13 @@ AFRAME.registerComponent('intro-song', {
     const context = this.analyserEl.components.audioanalyser.context;
     const gainNode = this.analyserEl.components.audioanalyser.gainNode;
     gainNode.gain.setValueAtTime(0, context.currentTime);
-    this.audio.play();
+    // A pause() racing with a still-pending play() can lose: the element
+    // may briefly start playing after the pause. Chain off the play promise
+    // and re-check the bound state once it settles, so we end up paused if
+    // the state flipped while play was in flight.
+    this.audio.play().then(() => {
+      if (!this.data.isPlaying) { this.audio.pause(); }
+    }).catch(() => {});
     gainNode.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.5);
   }
 });

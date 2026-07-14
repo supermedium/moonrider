@@ -28,10 +28,10 @@ AFRAME.registerComponent('debug-controller', {
     });
 
     if (AFRAME.utils.getUrlParameter('debug') === 'oculus') {
-      primaryHand.emit('controllerconnected', {name: 'oculus-touch-controls'});
-      secondaryHand.emit('controllerconnected', {name: 'oculus-touch-controls'});
-      primaryHand.setAttribute('controller', 'controllerType', 'oculus-touch-controls');
-      secondaryHand.setAttribute('controller', 'controllerType', 'oculus-touch-controls');
+      primaryHand.emit('controllerconnected', {name: 'meta-touch-controls'});
+      secondaryHand.emit('controllerconnected', {name: 'meta-touch-controls'});
+      primaryHand.setAttribute('controller', 'controllerType', 'meta-touch-controls');
+      secondaryHand.setAttribute('controller', 'controllerType', 'meta-touch-controls');
     } else {
       primaryHand.emit('controllerconnected', {name: 'vive-controls'});
       secondaryHand.emit('controllerconnected', {name: 'vive-controls'});

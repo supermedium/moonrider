@@ -15,8 +15,7 @@ AFRAME.registerShader('supercurve', {
   vertexShader: require('./shaders/supercurve.vert.glsl'),
 
   update: function (data) {
-    this.updateVariables(data, 'attribute');
-    this.updateVariables(data, 'uniform');
+    Object.getPrototypeOf(Object.getPrototypeOf(this)).update.call(this, data);
     this.el.sceneEl.systems.materials.registerCurve(this.material);
   }
 });

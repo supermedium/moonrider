@@ -48,7 +48,7 @@ AFRAME.registerComponent('trail', {
 
     const material = new THREE.ShaderMaterial({
       side: THREE.DoubleSide,
-      vertexColors: THREE.VertexColors,
+      vertexColors: true,
       transparent: true,
       depthTest: false,
       blending: THREE.AdditiveBlending,

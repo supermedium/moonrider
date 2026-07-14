@@ -31,14 +31,14 @@ Big thanks to @elliottate for helping out with this!
 
 ## Development
 
-Have Node (< v12, recommended v11) and npm installed.
+Have Node.js 22+ and npm installed.
 
 ```
 npm install
 npm run start
 ```
 
-Then head to `localhost:3000` in your browser.
+Then head to `https://localhost:3000` in your browser.
 
 ### Remixing and Forking
 

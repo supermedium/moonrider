@@ -1,6 +1,3 @@
-require('../../vendor/Curve');
-require('../../vendor/CatmullRomCurve3');
-
 const EXTRA_LENGTH = 200;
 const CURVE_SAMPLES = 350;
 const CURVE_SECTION_LENGTH = 100;

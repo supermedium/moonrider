@@ -37,10 +37,11 @@ AFRAME.registerComponent('play-sound', {
   multiple: true,
 
   init: function () {
-    this.el.addEventListener(this.data.event, evt => {
+    this.onEvent = () => {
       if (!this.data.enabled) { return; }
       this.system.playSound(this.src, this.data.volume);
-    });
+    };
+    this.el.addEventListener(this.data.event, this.onEvent);
   },
 
   update: function () {
@@ -48,5 +49,9 @@ AFRAME.registerComponent('play-sound', {
     if (this.data.sound.startsWith('#')) {
       this.src = document.querySelector(this.data.sound).getAttribute('src');
     }
+  },
+
+  remove: function () {
+    this.el.removeEventListener(this.data.event, this.onEvent);
   }
 });
